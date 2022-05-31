@@ -31,7 +31,7 @@ class _MainState extends State<Main> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Text(
-        'hi, hello',
+        'hi, test',
         style: TextStyle(
           fontFamily: titleL['fontFamily'],
           fontSize: titleL['fontSize'],
