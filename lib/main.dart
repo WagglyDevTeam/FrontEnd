@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wagly/utils/textStyle.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -29,7 +30,13 @@ class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('hi'),
+      body: Text(
+        'hi',
+        style: TextStyle(
+          fontFamily: titleL['fontFamily'],
+          fontSize: titleL['fontSize'],
+        ),
+      ),
     );
     ;
   }
