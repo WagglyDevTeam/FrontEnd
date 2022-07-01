@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:wagly/utils/textFrame.dart';
 import 'package:wagly/widgets/index.dart';
-import 'package:wagly/widgets/signIn.dart';
+import 'package:wagly/screens/signIn/signIn.screen.dart';
 
-PageRouteWithAnimation sign = PageRouteWithAnimation(const SignUpRoute());
+PageRouteWithAnimation sign = PageRouteWithAnimation(const SignInScreen());
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -33,7 +33,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       centerTitle: false,
-      backgroundColor:Colors.white,
+      backgroundColor: Colors.white,
       title: const Text('와글리',
           style: TextStyle(
               fontSize: 16, fontWeight: FontWeight.w700, color: Colors.black)),
