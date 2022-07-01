@@ -18,11 +18,11 @@ class Screen extends StatefulWidget {
 class _ScreenState extends State<Screen> {
   int screenIndex = 0;
   List<Widget> screenList=<Widget>[
-    const HomeScreen(),
-    const ChatEditScreen(),
-    const ChatScreen(),
-    const PostScreen(),
-    const MyPageScreen(),
+    HomeScreen(),
+    ChatEditScreen(),
+    ChatScreen(),
+    PostScreen(),
+    MyPageScreen(),
   ];
   @override
   Widget build(BuildContext context) {
