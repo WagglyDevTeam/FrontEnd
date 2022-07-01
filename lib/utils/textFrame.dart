@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import './colors.dart';
 
 class CommonText {
-  final Colors ? color;
-  final int ? height;
+  final Colors? color;
+  final int? height;
 
-  CommonText({required this.color , required this.height});
+  CommonText({required this.color, required this.height});
 
   static TextStyle TitleL = TextStyle(
     fontSize: 24.0,
     color: Colors.black,
     fontFamily: 'NotoSansKR_Bold',
-    
   );
   static TextStyle TitleLargeWhite = TextStyle(
     fontSize: 24.0,
@@ -172,7 +171,7 @@ class CommonText {
     color: Colors.black,
     fontFamily: 'Roboto_Rg',
   );
-  
+
   static TextStyle BodyEngWhite = TextStyle(
     fontSize: 10.0,
     color: Colors.white,
@@ -183,15 +182,13 @@ class CommonText {
       fontSize: 10.0,
       color: Palette.violet,
       fontFamily: 'Roboto_Rg',
-      height: 1
-  );
+      height: 1);
 
   static TextStyle BodyEngGray = TextStyle(
       fontSize: 10.0,
       color: Palette.mdGray,
       fontFamily: 'Roboto_Rg',
-      height: 1
-  );
+      height: 1);
 
   static TextStyle BodyEngMain11 = TextStyle(
       fontSize: 11.0,
@@ -219,6 +216,12 @@ class CommonText {
       color: Palette.mdGray,
       fontFamily: 'NotoSansKR_Md',
       height: 1);
+
+  static TextStyle LabelLightGray = TextStyle(
+    fontSize: 10.0,
+    color: Palette.lightGray,
+    fontFamily: 'NotoSansKR_Md',
+  );
 
   static TextStyle Number = TextStyle(
     fontSize: 12.0,

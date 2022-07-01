@@ -11,8 +11,7 @@ class _renderTextFormFieldState extends State<renderTextFormField> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-
-    if(widget.mode == 'withButton') {
+    if (widget.mode == 'withButton') {
       return Form(
         key: formKey,
         child: Container(
@@ -23,7 +22,7 @@ class _renderTextFormFieldState extends State<renderTextFormField> {
                 children: [
                   Text('학교 이메일',
                       style:
-                      TextStyle(fontWeight: FontWeight.w500, fontSize: 12)),
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 12)),
                 ],
               ),
               Row(children: [
@@ -48,7 +47,7 @@ class _renderTextFormFieldState extends State<renderTextFormField> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
                       border:
-                      Border.all(color: Color.fromRGBO(182, 182, 182, 1))),
+                          Border.all(color: Color.fromRGBO(182, 182, 182, 1))),
                   child: TextButton(
                     child: Text(
                       '인증하기',
@@ -61,7 +60,9 @@ class _renderTextFormFieldState extends State<renderTextFormField> {
                   ),
                 )
               ]),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               TextFormField(
                 decoration: InputDecoration(
                   isDense: true,
@@ -78,7 +79,7 @@ class _renderTextFormFieldState extends State<renderTextFormField> {
             ],
           ),
         ),
-      )
+      );
     }
 
     return Column(

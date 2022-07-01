@@ -6,8 +6,6 @@ import 'package:wagly/screens/myPage.dart';
 import 'package:wagly/screens/post.dart';
 import 'package:wagly/utils/colors.dart';
 
-
-
 class Screen extends StatefulWidget {
   const Screen({Key? key}) : super(key: key);
 
@@ -17,7 +15,7 @@ class Screen extends StatefulWidget {
 
 class _ScreenState extends State<Screen> {
   int screenIndex = 0;
-  List<Widget> screenList=<Widget>[
+  List<Widget> screenList = <Widget>[
     HomeScreen(),
     ChatEditScreen(),
     ChatScreen(),
@@ -29,14 +27,16 @@ class _ScreenState extends State<Screen> {
     return Scaffold(
         body: screenList[screenIndex],
         bottomNavigationBar: Container(
-            decoration:const BoxDecoration(
-              color:Colors.white,
+            decoration: const BoxDecoration(
+              color: Colors.white,
             ),
-            child:Container(
+            child: Container(
               padding: const EdgeInsets.all(0),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
-                color:Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20)),
+                color: Colors.white,
                 border: Border.all(
                   color: const Color(0xFFE8E8E8),
                   width: 1.0,
@@ -45,50 +45,64 @@ class _ScreenState extends State<Screen> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(25.0),
                 child: NavigationBarTheme(
-                    data: const NavigationBarThemeData(
-                      backgroundColor: Colors.white,
-                      indicatorColor: Colors.white,
-                      height: 0,
-                    ),
-                    child: NavigationBar(
-                      height: 55,
-                      selectedIndex: screenIndex,
-                      labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-                      onDestinationSelected: (index)=>setState(() => {
-                        screenIndex = index
-                      }),
-                      destinations:const [
-                         NavigationDestination(
-                            icon: Icon(Icons.home,size: 23,),
-                            selectedIcon: Icon(Icons.home, color: Palette.main,size: 23,),
-                            label: ''
+                  data: const NavigationBarThemeData(
+                    backgroundColor: Colors.white,
+                    indicatorColor: Colors.white,
+                    height: 0,
+                  ),
+                  child: NavigationBar(
+                    height: 55,
+                    selectedIndex: screenIndex,
+                    labelBehavior:
+                        NavigationDestinationLabelBehavior.alwaysHide,
+                    onDestinationSelected: (index) =>
+                        setState(() => {screenIndex = index}),
+                    destinations: const [
+                      NavigationDestination(
+                          icon: Icon(
+                            Icons.home,
+                            color: Palette.gray,
+                            size: 23,
+                          ),
+                          selectedIcon: Icon(
+                            Icons.home,
+                            color: Palette.main,
+                            size: 23,
+                          ),
+                          label: ''),
+                      NavigationDestination(
+                        icon: Icon(
+                          Icons.add_comment,
+                          color: Palette.gray,
+                          size: 23,
                         ),
-                        NavigationDestination(
-                            icon: Icon(Icons.add_comment_rounded,size: 23,),
-                            selectedIcon: Icon(Icons.add_comment_rounded, color: Palette.main,size: 23),
-                            label: '',
-                        ),
-                        NavigationDestination(
-                            icon: Icon(Icons.mode_comment,size: 23),
-                            selectedIcon: Icon(Icons.mode_comment, color: Palette.main,size: 23),
-                            label: ''
-                        ),
-                        NavigationDestination(icon: Icon(
-                            Icons.format_list_bulleted,size: 23),
-                            selectedIcon: Icon(Icons.format_list_bulleted, color: Palette.main,size: 23),
-                            label: '',
-                        ),
-                        NavigationDestination(
-                            icon: Icon(Icons.supervisor_account,size: 23),
-                            selectedIcon: Icon(Icons.supervisor_account, color: Palette.main,size: 23),
-                            label: ''
-                        ),
-                      ],
-                    ),
+                        selectedIcon: Icon(Icons.add_comment,
+                            color: Palette.main, size: 23),
+                        label: '',
+                      ),
+                      NavigationDestination(
+                          icon: Icon(Icons.chat_bubble,
+                              color: Palette.gray, size: 23),
+                          selectedIcon: Icon(Icons.chat_bubble,
+                              color: Palette.main, size: 23),
+                          label: ''),
+                      NavigationDestination(
+                        icon: Icon(Icons.view_list,
+                            color: Palette.gray, size: 23),
+                        selectedIcon: Icon(Icons.view_list,
+                            color: Palette.main, size: 23),
+                        label: '',
+                      ),
+                      NavigationDestination(
+                          icon:
+                              Icon(Icons.person, color: Palette.gray, size: 23),
+                          selectedIcon:
+                              Icon(Icons.person, color: Palette.main, size: 23),
+                          label: ''),
+                    ],
+                  ),
                 ),
               ),
-            )
-        )
-    );
+            )));
   }
 }
