@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wagly/utils/colors.dart';
-import 'package:wagly/screens/active/requestlist.dart';
+import 'package:wagly/components/Mypage/active/requestlist.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:wagly/utils/textFrame.dart';
 

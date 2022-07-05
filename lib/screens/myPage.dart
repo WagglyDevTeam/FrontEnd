@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wagly/utils/textFrame.dart';
 import 'package:wagly/utils/colors.dart';
-import 'package:wagly/screens/active/index.dart';
-import 'package:wagly/screens/notification.dart';
+import 'package:wagly/components/Mypage/active/index.dart';
+import 'package:wagly/components/Notification/notification.dart';
 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
