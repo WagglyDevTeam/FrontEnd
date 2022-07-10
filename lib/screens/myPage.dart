@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:wagly/utils/textFrame.dart';
 import 'package:wagly/utils/colors.dart';
 import 'package:wagly/components/Mypage/active/index.dart';
 import 'package:wagly/components/Notification/notification.dart';
+import 'package:wagly/widgets/Button/Button.dart';
 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
-import 'home.dart';
+//for debugging
+import 'dart:developer';
 
 class MyPageScreen extends StatelessWidget {
   const MyPageScreen({Key? key}) : super(key: key);
@@ -96,8 +99,22 @@ class myPage extends StatefulWidget {
 }
 
 class _myPageState extends State<myPage> {
-  late PickedFile _imageFile;
-  final ImagePicker _picker = ImagePicker();
+  File? image;
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image == null) return;
+
+      final imageTemp = File(image.path);
+      debugPrint('data: $imageTemp');
+
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch (e) {
+      print('failed to pick image: $e');
+    }
+  }
 
   String userName = "와글바글신나";
   String savedbio = "";
@@ -112,9 +129,29 @@ class _myPageState extends State<myPage> {
 
   void _showModalBottomSheet(BuildContext context) {
     showModalBottomSheet(
+      //드래그 안되게~
+      enableDrag: false,
+      //modal 위치 외에 클릭 안되게 하는것
+      isDismissible: true,
+
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
       context: context,
       builder: ((context) {
         return bottomSheet();
+      }),
+    );
+  }
+
+  void _showModalWagglySheet(BuildContext context) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: ((context) {
+        return wagglyImg();
       }),
     );
   }
@@ -140,8 +177,10 @@ class _myPageState extends State<myPage> {
                       children: [
                         CircleAvatar(
                             radius: 20.0,
-                            backgroundImage:
-                                AssetImage("assets/images/defaultProfile.png")),
+                            backgroundImage: image != null
+                                ? FileImage(image!)
+                                : AssetImage("assets/images/defaultProfile.png")
+                                    as ImageProvider),
                         if (!profilehasSubmitted)
                           Positioned(
                               bottom: 10.0,
@@ -631,66 +670,101 @@ class _myPageState extends State<myPage> {
     ]);
   }
 
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.getImage(
-      source: source,
-    );
-    setState(() {
-      _imageFile = pickedFile!;
-    });
-  }
-
 //사진 고르기
-  Widget bottomSheet() {
-    return Container(
-        height: 100.0,
-        // width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 20,
-        ),
+  Widget bottomSheet() => Container(
+        padding: EdgeInsets.all(16),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              'Choose Profile Photo',
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                    icon: const Icon(
-                      Icons.camera_alt,
-                    ),
-                    splashRadius: 50,
-                    iconSize: 40,
-                    padding: EdgeInsets.zero,
-                    constraints: BoxConstraints(),
-                    color: Palette.gray,
-                    onPressed: () {
-                      takePhoto(ImageSource.camera);
-                    }),
-                SizedBox(width: 50),
-                IconButton(
-                    icon: const Icon(
-                      Icons.image,
-                    ),
-                    splashRadius: 50,
-                    iconSize: 40,
-                    padding: EdgeInsets.zero,
-                    constraints: BoxConstraints(),
-                    color: Palette.gray,
-                    onPressed: () {
-                      takePhoto(ImageSource.gallery);
-                    }),
-              ],
-            )
+            Text('프로필 설정'),
+            SizedBox(height: 16),
+            Divider(thickness: 1, height: 1, color: Palette.lightGray),
+            SizedBox(height: 10),
+            Button(
+                text: '와글리 이미지',
+                onPress: () {
+                  _showModalWagglySheet(context);
+                },
+                theme: 'small'),
+            SizedBox(height: 5),
+            Button(
+                text: '앨범',
+                onPress: () {
+                  pickImage();
+                },
+                theme: 'small'),
+            SizedBox(height: 25),
           ],
-        ));
-  }
+        ),
+      );
+
+  //와글리 이미지
+  Widget wagglyImg() => DraggableScrollableSheet(
+        initialChildSize: 0.9,
+        builder: (_, controller) => Expanded(
+          child: GridView.count(
+            padding: const EdgeInsets.all(16),
+            crossAxisCount: 4,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            children: [
+              GestureDetector(
+                child: Container(
+                  margin: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: AssetImage('assets/images/green.png'),
+                  )),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              GestureDetector(
+                child: Container(
+                  margin: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: AssetImage('assets/images/red.png'),
+                  )),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyPageScreen()),
+                  );
+                },
+              ),
+              GestureDetector(
+                child: Container(
+                  margin: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: AssetImage('assets/images/green.png'),
+                  )),
+                ),
+                onTap: () {
+                  print('hello');
+                },
+              ),
+              GestureDetector(
+                child: Container(
+                  margin: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: AssetImage('assets/images/purple.png'),
+                  )),
+                ),
+                onTap: () {
+                  print('hello');
+                },
+              ),
+            ],
+          ),
+        ),
+      );
 }
