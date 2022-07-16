@@ -93,6 +93,28 @@ class _ButtonState extends State<Button> {
           ),
         ),
       );
+    } else if (widget.theme == 'small') {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(18, 8, 18, 0),
+        child: Container(
+          width: 200,
+          height: 36,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(26),
+              color: Color.fromRGBO(218, 175, 254, 0.2)),
+          child: TextButton(
+            child: Text(
+              widget.text,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            onPressed: widget.onPress,
+          ),
+        ),
+      );
     }
     return Padding(
       padding: const EdgeInsets.fromLTRB(18, 8, 18, 0),

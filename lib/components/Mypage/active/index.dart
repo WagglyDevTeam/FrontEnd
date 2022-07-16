@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wagly/utils/colors.dart';
-import 'package:wagly/screens/active/requestlist.dart';
+import 'package:wagly/components/Mypage/active/requestlist.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:wagly/utils/textFrame.dart';
 
@@ -149,29 +149,7 @@ class _activeContentState extends State<activeContent> {
                           ),
                         ),
                         Text(
-                          '내가 작성한 글',
-                          style: CommonText.BodyXS,
-                        ),
-                      ],
-                    )),
-                onTap: () {},
-              ),
-              Divider(thickness: 0.5, height: 1, color: Palette.lightGray),
-              GestureDetector(
-                child: Container(
-                    height: 50,
-                    padding: EdgeInsets.only(left: 16),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 10, top: 3),
-                          child: Icon(
-                            Icons.chat_bubble,
-                            color: Palette.gray,
-                          ),
-                        ),
-                        Text(
-                          '내가 작성한 댓글',
+                          '내가 작성한 글/댓글',
                           style: CommonText.BodyXS,
                         ),
                       ],
