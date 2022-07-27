@@ -14,21 +14,22 @@ class _SignInState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: [
-        SignInHeader(),
-        Button(
-          text: '시작하기',
-          onPress: () {},
-          disabled: true,
-        ),
-        Button(
-          text: '둘러보기',
-          onPress: () {},
-          theme: 'abled',
-        )
-      ],
-    ));
+      body: Column(
+        children: [
+          SignInHeader(),
+          Button(
+            text: '시작하기',
+            onPress: () {},
+            disabled: true,
+          ),
+          Button(
+            text: '둘러보기',
+            onPress: () {},
+            theme: 'abled',
+          )
+        ],
+      ),
+    );
   }
 }
 
