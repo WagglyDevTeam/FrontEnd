@@ -156,7 +156,7 @@ class _requestListState extends State<requestList> {
                           width: 200,
                           margin: EdgeInsets.only(top: 25),
                           child: Text(
-                            '요청제안',
+                            '내가 보낸 요청',
                             style: CommonText.BodyL,
                           ),
                         ),
@@ -165,7 +165,7 @@ class _requestListState extends State<requestList> {
                           width: 200,
                           margin: EdgeInsets.only(top: 25),
                           child: Text(
-                            '요청목록',
+                            '내가 받은 요청',
                             style: CommonText.BodyL,
                           ),
                         ),
@@ -239,6 +239,7 @@ class _requestListState extends State<requestList> {
               ),
               if (requestStatus)
                 Container(
+                  height: MediaQuery.of(context).size.height - 120,
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
@@ -328,6 +329,7 @@ class _requestListState extends State<requestList> {
                 ),
               if (!requestStatus)
                 Container(
+                  height: MediaQuery.of(context).size.height - 120,
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,

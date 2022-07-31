@@ -217,7 +217,7 @@ class PostContext extends StatelessWidget {
           ),
           SizedBox(height: 6),
           Container(
-            width: 300,
+            width: MediaQuery.of(context).size.width - 32,
             child: Text(postDesc, style: CommonText.BodyS),
           ),
           SizedBox(height: 6),
@@ -225,7 +225,11 @@ class PostContext extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(authorMajor, style: CommonText.BodyEngGray),
-              CommentSide(commentCnt: postCommentCnt, likeCnt:postLikeCnt , imgCnt: postImageCnt,)
+              CommentSide(
+                commentCnt: postCommentCnt,
+                likeCnt: postLikeCnt,
+                imgCnt: postImageCnt,
+              )
             ],
           )
         ],
@@ -233,5 +237,3 @@ class PostContext extends StatelessWidget {
     );
   }
 }
-
-
