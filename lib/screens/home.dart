@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:wagly/utils/colors.dart';
 import 'package:wagly/utils/textFrame.dart';
@@ -8,6 +6,8 @@ import 'package:wagly/screens/signIn/signIn.screen.dart';
 
 PageRouteWithAnimation sign = PageRouteWithAnimation(const SignInScreen());
 
+const Color boxBorderColor = Colors.purple;
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -15,18 +15,25 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const HomeAppbar(),
-      body: ListView(
+      body: Column(
         children: <Widget>[
-          AdvertisementArea(), // 광고영역
-          SizedBox(height: 30),
-          PostTitleArea(),
-          PostBoxArea(),
-          SizedBox(height: 30),
-          GroupChatRecommendTitleArea(),
-          GroupChatRecommendBoxArea(),
-          SizedBox(height: 30), // 여기 그룹채팅 영역
-          PostTitleArea(),
-          PostBoxArea(),
+          Expanded(
+            child: ListView(
+              children: [
+                SizedBox(height: 10),
+                AdvertisementArea(), // 광고영역
+                SizedBox(height: 25),
+                PostTitleArea(),
+                PostBoxArea(),
+                SizedBox(height: 25),
+                GroupChatRecommendTitleArea(),
+                GroupChatRecommendBoxArea(),
+                SizedBox(height: 25),
+                PostTitleArea(),
+                PostBoxArea(),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -43,7 +50,7 @@ class PostBoxArea extends StatelessWidget {
     return Container(
       margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
       padding: EdgeInsets.all(20),
-      height: 150,
+      height: 140,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         border: Border.all(
@@ -86,7 +93,7 @@ class PostBoxArea extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 10),
           Container(
             alignment: Alignment.centerLeft,
             // color: Colors.green.shade300,
@@ -101,9 +108,7 @@ class PostBoxArea extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          SizedBox(
-            height: 15,
-          ),
+          SizedBox(height: 10),
           Row(
             children: [
               Container(
@@ -117,80 +122,74 @@ class PostBoxArea extends StatelessWidget {
                       color: Colors.grey),
                 ),
               ),
-              Container(
+              SizedBox(
                 // color: Colors.green.shade300,
                 width: MediaQuery.of(context).size.width * 0.47,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Container(
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.landscape,
-                            size: 16,
-                            color: Colors.purple,
-                          ),
-                          SizedBox(
-                            width: 3,
-                          ),
-                          Text(
-                            "15",
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.purple),
-                          ),
-                        ],
-                      ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.landscape,
+                          size: 16,
+                          color: Colors.purple,
+                        ),
+                        SizedBox(
+                          width: 3,
+                        ),
+                        Text(
+                          "15",
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.purple),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       width: 10,
                     ),
-                    Container(
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.face,
-                            size: 16,
-                            color: Colors.purple,
-                          ),
-                          SizedBox(
-                            width: 3,
-                          ),
-                          Text(
-                            "6000",
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.purple),
-                          ),
-                        ],
-                      ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.face,
+                          size: 16,
+                          color: Colors.purple,
+                        ),
+                        SizedBox(
+                          width: 3,
+                        ),
+                        Text(
+                          "6000",
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.purple),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       width: 10,
                     ),
-                    Container(
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.chat_bubble_outline_outlined,
-                            size: 16,
-                            color: Colors.purple,
-                          ),
-                          SizedBox(
-                            width: 3,
-                          ),
-                          Text(
-                            "6000",
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.purple),
-                          ),
-                        ],
-                      ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.chat_bubble_outline_outlined,
+                          size: 16,
+                          color: Colors.purple,
+                        ),
+                        SizedBox(
+                          width: 3,
+                        ),
+                        Text(
+                          "6000",
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.purple),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -229,120 +228,129 @@ class PostTitleArea extends StatelessWidget {
 }
 
 class GroupChatRecommendBoxArea extends StatelessWidget {
-  final File? image;
+  // final File? image;
 
-  GroupChatRecommendBoxArea({Key? key, this.image}) : super(key: key);
+  GroupChatRecommendBoxArea({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      scrollDirection: Axis.horizontal,
-      shrinkWrap: true,
-      children: [
-        Container(
-          height: 85,
-          margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0),
-            border: Border.all(
-              width: 0.7,
-              color: Colors.purple,
-            ),
-          ),
-          child: Row(
-            children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 30.0,
-                    foregroundImage: image != null
-                        ? image as ImageProvider
-                        : AssetImage("assets/images/red_face_big.png"),
-                  ),
-                  Positioned(
-                    top: 27,
-                    child: Center(
-                      child: Text(
-                        "99/99",
-                        style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          color: Colors.white,
-                        ),
-                      ),
+    return SizedBox(
+      height: 80,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 5,
+          itemBuilder: (ctx, index) {
+            return Row(
+              children: [
+                Container(
+                  height: 85.0,
+                  width: 270.0,
+                  margin: EdgeInsets.fromLTRB(20, 0, 5, 0),
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    border: Border.all(
+                      width: 0.7,
+                      color: Colors.purple,
                     ),
                   ),
-                ],
-              ), // 참여자 수 얼굴
-              SizedBox(width: 15),
-              Container(
-                width: 170,
-                color: Colors.red,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 55,
-                          height: 25,
-                          alignment: Alignment.center,
-                          // color: Colors.purple,
-                          decoration: BoxDecoration(
-                            color: Colors.purple,
-                            borderRadius: BorderRadius.circular(20.0),
+                  child: Row(
+                    children: [
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          CircleAvatar(
+                            radius: 30.0,
+                            foregroundImage:
+                                AssetImage("assets/images/red_face_big.png"),
                           ),
-                          child: Text(
-                            "대외활동",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
+                          Positioned(
+                            top: 27,
+                            child: Center(
+                              child: Text(
+                                "99/99",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "와글와글 채팅방 이름?이름이름이름",
-                            maxLines: 1,
-                            overflow: TextOverflow.clip,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                        ],
+                      ), // 참여자 수 얼굴
+                      SizedBox(width: 15),
+                      SizedBox(
+                        width: 170,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  width: 55,
+                                  height: 25,
+                                  alignment: Alignment.center,
+                                  // color: Colors.purple,
+                                  decoration: BoxDecoration(
+                                    color: Colors.purple,
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  child: Text(
+                                    "대외활동",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 7,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "와글와글 채팅방 이름?이름이름이름",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
+                            SizedBox(height: 6),
+                            Row(
+                              children: [
+                                Text(
+                                  "#취업",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.purple),
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  "#취업",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.purple),
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  "#취업",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.purple),
+                                ),
+                              ],
+                            )
+                          ],
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 6),
-                    Row(
-                      children: [
-                        Text(
-                          "#취업",
-                          style: TextStyle(fontSize: 16, color: Colors.purple),
-                        ),
-                        Text(
-                          "#취업",
-                          style: TextStyle(fontSize: 16, color: Colors.purple),
-                        ),
-                        Text(
-                          "#취업",
-                          style: TextStyle(fontSize: 16, color: Colors.purple),
-                        ),
-                      ],
-                    )
-                    // Text("여긴데?222"),
-                  ],
+                      ), // 카테고리, 채팅방이름
+                    ],
+                  ),
                 ),
-              ), // 카테고리, 채팅방이름
-            ],
-          ),
-        ),
-      ],
+              ],
+            );
+          }),
     );
   }
 }
@@ -371,15 +379,22 @@ class GroupChatRecommendTitleArea extends StatelessWidget {
 }
 
 class AdvertisementArea extends StatelessWidget {
-  const AdvertisementArea({
-    Key? key,
-  }) : super(key: key);
+  const AdvertisementArea({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       color: Colors.grey,
-      height: 110,
+      height: 100,
+      width: double.infinity,
+      child: Text(
+        "광 고 영 역",
+        style: TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 }
@@ -405,22 +420,33 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(sign.slideRitghtToLeft());
-                    },
-                    child: Text(
-                      "로그인",
-                      style: CommonText.BodyMediumWhite,
+                  onPressed: () {
+                    Navigator.of(context).push(sign.slideRitghtToLeft());
+                  },
+                  child: Text("로그인"),
+                  style: TextButton.styleFrom(
+                    textStyle: TextStyle(
+                      foreground: Paint()..color = Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
                     ),
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Palette.purple),
-                    )),
+                    backgroundColor: Colors.purple,
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+                // style: ButtonStyle(
+                //   padding: EdgeInsets.zero,
+                //   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                //     RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(30),
+                //     ),
+                //   ),
+                //   backgroundColor:
+                //       MaterialStateProperty.all<Color>(Palette.purple),
+                // )),
               ],
             ))
       ],
