@@ -1,17 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:wagly/utils/textFrame.dart';
-import 'package:wagly/utils/colors.dart';
+import 'package:get/get.dart';
+import 'package:wagly/components/Mypage/profileImg/profileImg.dart';
 import 'package:wagly/components/Mypage/active/index.dart';
 import 'package:wagly/components/Notification/notification.dart';
+import 'package:wagly/model/wagglyImg.dart';
 import 'package:wagly/widgets/Button/Button.dart';
-
+import 'package:wagly/widgets/index.dart';
+import 'package:wagly/utils/textFrame.dart';
+import 'package:wagly/utils/colors.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
-//for debugging
-import 'dart:developer';
+PageRouteWithAnimation profileImg =
+    PageRouteWithAnimation(const ProfileImgScreen());
+
+PageRouteWithAnimation activePage =
+    PageRouteWithAnimation(const ActiveScreen());
 
 class MyPageScreen extends StatelessWidget {
   const MyPageScreen({Key? key}) : super(key: key);
@@ -76,6 +82,7 @@ class TopNav extends StatelessWidget implements PreferredSizeWidget {
                     constraints: BoxConstraints(),
                     color: Palette.gray,
                     onPressed: () {
+                      // Server().getList();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -116,6 +123,9 @@ class _myPageState extends State<myPage> {
     }
   }
 
+  //FileImage(image!)
+  //"assets/images/defaultProfile.png";
+  var profilePic = <ProfileImgModel>[].obs;
   String userName = "와글바글신나";
   String savedbio = "";
   bool hasSubmitted = true;
@@ -146,16 +156,6 @@ class _myPageState extends State<myPage> {
     );
   }
 
-  void _showModalWagglySheet(BuildContext context) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: ((context) {
-        return wagglyImg();
-      }),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -165,7 +165,7 @@ class _myPageState extends State<myPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // profile section
-            Divider(thickness: 1, height: 1, color: Palette.lightGray),
+            Divider(thickness: 1, height: 1, color: Palette.paper),
             Container(
               height: 60,
               padding: EdgeInsets.only(top: 13, left: 16, right: 16),
@@ -295,7 +295,7 @@ class _myPageState extends State<myPage> {
               ),
             ),
             SizedBox(height: 15),
-            Divider(thickness: 1, height: 1, color: Palette.lightGray),
+            Divider(thickness: 1, height: 1, color: Palette.paper),
             SizedBox(height: 15),
 
             //자기소개 button
@@ -524,7 +524,7 @@ class _myPageState extends State<myPage> {
             ),
 //             grid view list
             SizedBox(height: 15),
-            Divider(thickness: 1, height: 1, color: Palette.lightGray),
+            Divider(thickness: 1, height: 1, color: Palette.paper),
             Expanded(
               child: GridView.count(
                 padding: const EdgeInsets.all(16),
@@ -545,10 +545,8 @@ class _myPageState extends State<myPage> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ActiveScreen()),
-                      );
+                      Navigator.of(context)
+                          .push(activePage.slideRitghtToLeft());
                     },
                   ),
                   GestureDetector(
@@ -678,12 +676,12 @@ class _myPageState extends State<myPage> {
           children: [
             Text('프로필 설정'),
             SizedBox(height: 16),
-            Divider(thickness: 1, height: 1, color: Palette.lightGray),
+            Divider(thickness: 1, height: 1, color: Palette.paper),
             SizedBox(height: 10),
             Button(
                 text: '와글리 이미지',
                 onPress: () {
-                  _showModalWagglySheet(context);
+                  Navigator.of(context).push(profileImg.slideRitghtToLeft());
                 },
                 theme: 'small'),
             SizedBox(height: 5),
@@ -695,76 +693,6 @@ class _myPageState extends State<myPage> {
                 theme: 'small'),
             SizedBox(height: 25),
           ],
-        ),
-      );
-
-  //와글리 이미지
-  Widget wagglyImg() => DraggableScrollableSheet(
-        initialChildSize: 0.9,
-        builder: (_, controller) => Expanded(
-          child: GridView.count(
-            padding: const EdgeInsets.all(16),
-            crossAxisCount: 4,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            children: [
-              GestureDetector(
-                child: Container(
-                  margin: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                    fit: BoxFit.contain,
-                    image: AssetImage('assets/images/green.png'),
-                  )),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              GestureDetector(
-                child: Container(
-                  margin: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                    fit: BoxFit.contain,
-                    image: AssetImage('assets/images/red.png'),
-                  )),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyPageScreen()),
-                  );
-                },
-              ),
-              GestureDetector(
-                child: Container(
-                  margin: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                    fit: BoxFit.contain,
-                    image: AssetImage('assets/images/green.png'),
-                  )),
-                ),
-                onTap: () {
-                  print('hello');
-                },
-              ),
-              GestureDetector(
-                child: Container(
-                  margin: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                    fit: BoxFit.contain,
-                    image: AssetImage('assets/images/purple.png'),
-                  )),
-                ),
-                onTap: () {
-                  print('hello');
-                },
-              ),
-            ],
-          ),
         ),
       );
 }
