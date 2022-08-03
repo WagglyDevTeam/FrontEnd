@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:wagly/utils/colors.dart';
-import 'package:wagly/utils/textFrame.dart';
 import 'package:wagly/widgets/index.dart';
 import 'package:wagly/screens/signIn/signIn.screen.dart';
+
+import '../controllers/postController.dart';
+import '../models/post/post.dart';
 
 PageRouteWithAnimation sign = PageRouteWithAnimation(const SignInScreen());
 
 const Color boxBorderColor = Colors.purple;
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  PostController p = Get.put(PostController());
 
   @override
   Widget build(BuildContext context) {
+    print("here2");
     return Scaffold(
       appBar: const HomeAppbar(),
       body: Column(
@@ -24,13 +28,13 @@ class HomeScreen extends StatelessWidget {
                 AdvertisementArea(), // 광고영역
                 SizedBox(height: 25),
                 PostTitleArea(),
-                PostBoxArea(),
+                PostBoxArea(post: p.bestPost.value),
                 SizedBox(height: 25),
                 GroupChatRecommendTitleArea(),
                 GroupChatRecommendBoxArea(),
                 SizedBox(height: 25),
                 PostTitleArea(),
-                PostBoxArea(),
+                PostBoxArea(post: p.bestPost.value),
               ],
             ),
           )
@@ -41,9 +45,8 @@ class HomeScreen extends StatelessWidget {
 }
 
 class PostBoxArea extends StatelessWidget {
-  const PostBoxArea({
-    Key? key,
-  }) : super(key: key);
+  final Post post;
+  PostBoxArea({required this.post});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +71,7 @@ class PostBoxArea extends StatelessWidget {
                 // color: Colors.green,
                 width: MediaQuery.of(context).size.width * 0.54,
                 child: Text(
-                  "누가 교수님 좀 기절시켜줘줘줘줘줘줘줘줘줘줘줘줘줘",
+                  "${post.postTitle}",
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -82,7 +85,7 @@ class PostBoxArea extends StatelessWidget {
                 // color: Colors.green.shade300,
                 width: MediaQuery.of(context).size.width * 0.249,
                 child: Text(
-                  "02/18 19:50",
+                  "${post.postCreatedAt}",
                   style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w300,
@@ -99,7 +102,7 @@ class PostBoxArea extends StatelessWidget {
             // color: Colors.green.shade300,
             width: MediaQuery.of(context).size.width,
             child: Text(
-              "얘들아 오늘 날씨가 너무 좋은데 난 과제를 하고 있어. 교수님이 3일만 기절했다 일어나시면 좋겠어. 가나다라마바사 아자차카타파하 동해물과백두산이마르고닳도록",
+              "${post.postDesc}",
               style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w300,

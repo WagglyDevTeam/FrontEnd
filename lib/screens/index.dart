@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:wagly/controllers/postController.dart';
 import 'package:wagly/screens/chat.dart';
 import 'package:wagly/screens/chatEdit.dart';
 import 'package:wagly/screens/home.dart';
@@ -7,13 +9,19 @@ import 'package:wagly/screens/post.dart';
 import 'package:wagly/utils/colors.dart';
 
 class Screen extends StatefulWidget {
-  const Screen({Key? key}) : super(key: key);
+  Screen({Key? key}) : super(key: key);
 
   @override
   State<Screen> createState() => _ScreenState();
 }
 
 class _ScreenState extends State<Screen> {
+  @override
+  void initState() {
+    super.initState();
+    Get.put(PostController());
+  }
+
   int screenIndex = 0;
   List<Widget> screenList = <Widget>[
     HomeScreen(),
@@ -24,6 +32,8 @@ class _ScreenState extends State<Screen> {
   ];
   @override
   Widget build(BuildContext context) {
+    print("here1");
+    Get.put(PostController());
     return Scaffold(
         body: screenList[screenIndex],
         bottomNavigationBar: Container(
