@@ -12,7 +12,8 @@ PageRouteWithAnimation sign = PageRouteWithAnimation(const SignInScreen());
 const Color boxBorderColor = Colors.purple;
 
 class HomeScreen extends StatelessWidget {
-  PostController p = Get.put(PostController());
+  // PostController p = Get.put(PostController());
+  PostController p = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +29,13 @@ class HomeScreen extends StatelessWidget {
                 AdvertisementArea(), // 광고영역
                 SizedBox(height: 25),
                 PostTitleArea(),
-                PostBoxArea(post: p.bestPost.value),
+                Obx(() => PostBoxArea(post: p.bestPost.value)),
                 SizedBox(height: 25),
                 GroupChatRecommendTitleArea(),
                 GroupChatRecommendBoxArea(),
                 SizedBox(height: 25),
                 PostTitleArea(),
-                PostBoxArea(post: p.bestPost.value),
+                Obx(() => PostBoxArea(post: p.bestPost.value)),
               ],
             ),
           )
@@ -53,7 +54,7 @@ class PostBoxArea extends StatelessWidget {
     return Container(
       margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
       padding: EdgeInsets.all(20),
-      height: 140,
+      height: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         border: Border.all(
@@ -391,13 +392,13 @@ class AdvertisementArea extends StatelessWidget {
       color: Colors.grey,
       height: 100,
       width: double.infinity,
-      child: Text(
-        "광 고 영 역",
-        style: TextStyle(
-          fontSize: 25,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+      // child: Text(
+      //   "광 고 영 역",
+      //   style: TextStyle(
+      //     fontSize: 25,
+      //     fontWeight: FontWeight.bold,
+      //   ),
+      // ),
     );
   }
 }

@@ -1,12 +1,14 @@
 import 'package:get/get.dart';
 
-const host = "http://192.168.199.158:8080";
+const host = "http://192.168.199.158:8080"; // 집
+const host2 = "http://192.168.10.60:8080"; // 회사
+
 const jwtToken =
-    "BEARER eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJFWFBJUkVEX0RBVEUiOjE2NTk3OTU0OTcsImlzcyI6IndhZ2dseSIsIlVTRVJfTkFNRSI6IndhZ2dseV90ZXN0M0B3YWdnbHkuY29tIn0.9D1Lu6zMk4uNtITFuRezcRZXZmEnZfi0q1NMSfs4lYw";
+    "BEARER eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJFWFBJUkVEX0RBVEUiOjE2NTk4NDU0ODQsImlzcyI6IndhZ2dseSIsIlVTRVJfTkFNRSI6IndhZ2dseV90ZXN0NEB3YWdnbHkuY29tIn0.uRao3MHA2Ha-tRGt1J3BCo4msrYmG2fxzEgqs5vLLSk";
 
 class PostProvider extends GetConnect {
   Future<Response> getBoard() => get(
-        "$host/board?college=social",
+        "$host2/board?college=social",
         headers: {"Authorization": jwtToken},
       );
   //

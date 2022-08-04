@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wagly/controllers/postController.dart';
 import 'package:wagly/screens/chat.dart';
 import 'package:wagly/screens/chatEdit.dart';
 import 'package:wagly/screens/index.dart';
 import 'package:wagly/screens/myPage.dart';
 import 'package:wagly/screens/post.dart';
 
-void main() {
+PostController p = Get.put(PostController());
+
+void main() async {
+  await p.getBoard();
   runApp(const HeroApp());
 }
 

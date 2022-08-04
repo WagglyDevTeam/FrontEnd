@@ -23,18 +23,18 @@ class Post {
     this.isBlind,
   });
 
-  factory Post.fromJson(Map<String, dynamic> map) {
+  factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      postId: map['postId'],
-      postTitle: map['postTitle'],
-      postDesc: map['postDesc'],
-      postCreatedAt: DateTime.parse(map['postCreatedAt']),
-      authorMajor: map['authorMajor'],
-      postImageCnt: map['postImageCnt'],
-      postLikeCnt: map['postLikeCnt'],
-      postCommentCnt: map['postCommentCnt'],
-      isLikedByMe: map['isLikedByMe'],
-      isBlind: map['isBlind'],
+      postId: json['postId'],
+      postTitle: json['postTitle'],
+      postDesc: json['postDesc'],
+      postCreatedAt: DateTime.parse(json['postCreatedAt']),
+      authorMajor: json['authorMajor'],
+      postImageCnt: json['postImageCnt'],
+      postLikeCnt: json['postLikeCnt'],
+      postCommentCnt: json['postCommentCnt'],
+      isLikedByMe: json['isLikedByMe'],
+      isBlind: json['isBlind'],
     );
   }
 }
