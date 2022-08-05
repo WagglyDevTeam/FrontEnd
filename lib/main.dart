@@ -7,10 +7,8 @@ import 'package:wagly/screens/index.dart';
 import 'package:wagly/screens/myPage.dart';
 import 'package:wagly/screens/post.dart';
 
-PostController p = Get.put(PostController());
-
 void main() async {
-  await p.getBoard();
+  // await p.getBoard();
   runApp(const HeroApp());
 }
 
