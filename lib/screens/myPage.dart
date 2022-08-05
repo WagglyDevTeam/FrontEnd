@@ -13,8 +13,9 @@ import 'package:wagly/utils/colors.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
-PageRouteWithAnimation profileImg =
-    PageRouteWithAnimation(const ProfileImgScreen());
+import '../controller/wagglyImg_controller.dart';
+
+PageRouteWithAnimation profileImg = PageRouteWithAnimation(ProfileImgScreen());
 
 PageRouteWithAnimation activePage =
     PageRouteWithAnimation(const ActiveScreen());
@@ -138,6 +139,7 @@ class _myPageState extends State<myPage> {
   final _formKey = GlobalKey<FormState>();
 
   void _showModalBottomSheet(BuildContext context) {
+    WagglyImgController controller = Get.put(WagglyImgController());
     showModalBottomSheet(
       //드래그 안되게~
       enableDrag: false,
@@ -151,7 +153,34 @@ class _myPageState extends State<myPage> {
       ),
       context: context,
       builder: ((context) {
-        return bottomSheet();
+        return Container(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('프로필 설정'),
+              SizedBox(height: 16),
+              Divider(thickness: 1, height: 1, color: Palette.paper),
+              SizedBox(height: 10),
+              Button(
+                  text: '와글리 이미지',
+                  onPress: () {
+                    controller.fetchData();
+                    controller.getImg();
+                    Navigator.of(context).push(profileImg.slideRitghtToLeft());
+                  },
+                  theme: 'small'),
+              SizedBox(height: 5),
+              Button(
+                  text: '앨범',
+                  onPress: () {
+                    pickImage();
+                  },
+                  theme: 'small'),
+              SizedBox(height: 25),
+            ],
+          ),
+        );
       }),
     );
   }
@@ -667,32 +696,4 @@ class _myPageState extends State<myPage> {
           ]),
     ]);
   }
-
-//사진 고르기
-  Widget bottomSheet() => Container(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('프로필 설정'),
-            SizedBox(height: 16),
-            Divider(thickness: 1, height: 1, color: Palette.paper),
-            SizedBox(height: 10),
-            Button(
-                text: '와글리 이미지',
-                onPress: () {
-                  Navigator.of(context).push(profileImg.slideRitghtToLeft());
-                },
-                theme: 'small'),
-            SizedBox(height: 5),
-            Button(
-                text: '앨범',
-                onPress: () {
-                  pickImage();
-                },
-                theme: 'small'),
-            SizedBox(height: 25),
-          ],
-        ),
-      );
 }

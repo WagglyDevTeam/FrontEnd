@@ -10,7 +10,7 @@ import 'package:wagly/utils/colors.dart';
 PageRouteWithAnimation requestPage =
     PageRouteWithAnimation(const RequestScreen());
 PageRouteWithAnimation mypostlistPage =
-    PageRouteWithAnimation(const MypostListScreen());
+    PageRouteWithAnimation(const MyPostListScreen());
 
 class ActiveScreen extends StatelessWidget {
   const ActiveScreen({Key? key}) : super(key: key);
