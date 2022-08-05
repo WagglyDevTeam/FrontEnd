@@ -73,7 +73,7 @@ class PostBoxArea extends StatelessWidget {
       ),
       width: MediaQuery.of(context).size.width,
       child: Skeleton(
-        isLoading: post.postTitle == null,
+        isLoading: post.postTitle != null ? false : true,
         skeleton: SkeletonParagraph(),
         child: Column(
           children: [
@@ -98,7 +98,9 @@ class PostBoxArea extends StatelessWidget {
                   // color: Colors.green.shade300,
                   width: MediaQuery.of(context).size.width * 0.249,
                   child: Text(
-                    DateFormat('yyyy-MM-dd').format(post.postCreatedAt!),
+                    post.postCreatedAt != null
+                        ? DateFormat('yyyy-MM-dd').format(post.postCreatedAt!)
+                        : "",
                     style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w300,
@@ -258,110 +260,110 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
           itemCount: 5,
           itemBuilder: (ctx, index) {
             return Container(
-                  height: 85.0,
-                  width: 270.0,
-                  margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    border: Border.all(
-                      width: 0.7,
-                      color: Colors.purple,
-                    ),
-                  ),
-                  child: Row(
+              height: 85.0,
+              width: 270.0,
+              margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                border: Border.all(
+                  width: 0.7,
+                  color: Colors.purple,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
                     children: [
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 30.0,
-                            foregroundImage:
-                                AssetImage("assets/images/red_face_big.png"),
+                      CircleAvatar(
+                        radius: 30.0,
+                        foregroundImage:
+                            AssetImage("assets/images/red_face_big.png"),
+                      ),
+                      Positioned(
+                        top: 27,
+                        child: Center(
+                          child: Text(
+                            "99/99",
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.white,
+                            ),
                           ),
-                          Positioned(
-                            top: 27,
-                            child: Center(
+                        ),
+                      ),
+                    ],
+                  ), // 참여자 수 얼굴
+                  SizedBox(width: 15),
+                  SizedBox(
+                    width: 170,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 55,
+                              height: 25,
+                              alignment: Alignment.center,
+                              // color: Colors.purple,
+                              decoration: BoxDecoration(
+                                color: Colors.purple,
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
                               child: Text(
-                                "99/99",
+                                "대외활동",
                                 style: TextStyle(
-                                  fontWeight: FontWeight.normal,
                                   color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ), // 참여자 수 얼굴
-                      SizedBox(width: 15),
-                      SizedBox(
-                        width: 170,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: 55,
-                                  height: 25,
-                                  alignment: Alignment.center,
-                                  // color: Colors.purple,
-                                  decoration: BoxDecoration(
-                                    color: Colors.purple,
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  child: Text(
-                                    "대외활동",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 7,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    "와글와글 채팅방 이름?이름이름이름",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            SizedBox(
+                              width: 7,
                             ),
-                            SizedBox(height: 6),
-                            Row(
-                              children: [
-                                Text(
-                                  "#취업",
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.purple),
+                            Expanded(
+                              child: Text(
+                                "와글와글 채팅방 이름?이름이름이름",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
                                 ),
-                                SizedBox(width: 5),
-                                Text(
-                                  "#취업",
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.purple),
-                                ),
-                                SizedBox(width: 5),
-                                Text(
-                                  "#취업",
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.purple),
-                                ),
-                              ],
-                            )
+                              ),
+                            ),
                           ],
                         ),
-                      ), // 카테고리, 채팅방이름
-                    ],
-                  ),
+                        SizedBox(height: 6),
+                        Row(
+                          children: [
+                            Text(
+                              "#취업",
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.purple),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              "#취업",
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.purple),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              "#취업",
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.purple),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ), // 카테고리, 채팅방이름
+                ],
+              ),
             );
           }),
     );
@@ -401,13 +403,11 @@ class AdvertisementArea extends StatelessWidget {
       color: Colors.grey,
       height: 100,
       width: double.infinity,
-      // child: Text(
-      //   "광 고 영 역",
-      //   style: TextStyle(
-      //     fontSize: 25,
-      //     fontWeight: FontWeight.bold,
-      //   ),
-      // ),
+      child: Text(
+        "배 너 / 광 고 영 역",
+        style: TextStyle(
+            fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
+      ),
     );
   }
 }

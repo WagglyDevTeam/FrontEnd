@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import '../models/dtos/wagglyResponseDto.dart';
 import '../models/post/post.dart';
-import '../models/post/post_repository.dart';
+import '../models/post/postRepository.dart';
 
 class PostController extends GetxController {
   final PostRepository _postRepository = PostRepository();
@@ -20,6 +20,6 @@ class PostController extends GetxController {
     List<Post> convertedPosts = postsJson.map((e) => Post.fromJson(e)).toList();
     posts.value = convertedPosts;
     bestPost.value = Post.fromJson(result.datas["bestPost"]);
-    print(posts.value[0].postTitle);
+    print(posts[0].postTitle);
   }
 }
