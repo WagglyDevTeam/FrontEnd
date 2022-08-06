@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:wagly/screens/chat.dart';
-import 'package:wagly/screens/chatEdit.dart';
-import 'package:wagly/screens/home.dart';
-import 'package:wagly/screens/myPage.dart';
-import 'package:wagly/screens/post.dart';
-import 'package:wagly/utils/colors.dart';
+import 'package:get/get.dart';
+import 'package:waggly/screens/chat.dart';
+import 'package:waggly/screens/chat_edit.dart';
+import 'package:waggly/screens/home.dart';
+import 'package:waggly/screens/my_page.dart';
+import 'package:waggly/screens/post.dart';
+import 'package:waggly/utils/colors.dart';
+
+import '../controller/post/post_controller.dart';
 
 class Screen extends StatefulWidget {
-  const Screen({Key? key}) : super(key: key);
+  Screen({Key? key}) : super(key: key);
 
   @override
   State<Screen> createState() => _ScreenState();
 }
 
 class _ScreenState extends State<Screen> {
+  @override
+  void initState() {
+    super.initState();
+    Get.put(PostController());
+  }
+
   int screenIndex = 0;
   List<Widget> screenList = <Widget>[
     HomeScreen(),
@@ -24,6 +33,8 @@ class _ScreenState extends State<Screen> {
   ];
   @override
   Widget build(BuildContext context) {
+    print("here1");
+    Get.put(PostController());
     return Scaffold(
         body: screenList[screenIndex],
         bottomNavigationBar: Container(

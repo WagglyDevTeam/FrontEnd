@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:waggly/utils/text_frame.dart';
-
 import 'home.dart';
 
-class ChatScreen extends StatelessWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+class ChatEditScreen extends StatelessWidget {
+  const ChatEditScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +12,7 @@ class ChatScreen extends StatelessWidget {
       body: Container(
         child: Center(
           child: Text(
-            'Hello ChatScreen',
+            'Hello ChatEditScreen',
             style: CommonText.BodyBoldMain,
           ),
         ),
