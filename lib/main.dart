@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:wagly/screens/index.dart';
 
 void main() {
@@ -9,7 +10,7 @@ class HeroApp extends StatelessWidget {
   const HeroApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return const GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'wagly',
       home: MyApp(),
@@ -23,11 +24,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-        body: Screen(),
+      body: Screen(),
     );
   }
 }
-
-
 
 // stless

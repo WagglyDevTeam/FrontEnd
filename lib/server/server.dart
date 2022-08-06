@@ -10,10 +10,17 @@ class Services {
     return wagglyImgFromJson(response.toString());
   }
 
-  static Future<List<MyPostListModel>?> getMyPostList() async {
+  static Future<List<MyCommentListModel>?> getMyPostList() async {
     Dio dio = new Dio();
     var response = await dio.get(
         'https://2e828a7c-3f92-4016-bd0f-a0a58904819d.mock.pstmn.io/mycomments');
+    return myCommentListModelFromJson(response.toString());
+  }
+
+  static Future<MyPostListModel> getPostsList() async {
+    Dio dio = new Dio();
+    var response = await dio.get(
+        'https://2e828a7c-3f92-4016-bd0f-a0a58904819d.mock.pstmn.io/myposts');
     return myPostListModelFromJson(response.toString());
   }
 }
