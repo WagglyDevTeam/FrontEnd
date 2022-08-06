@@ -1,29 +1,37 @@
 import 'package:flutter/material.dart';
 
-class renderTextFormField extends StatefulWidget {
-  const renderTextFormField({Key? key, this.mode}) : super(key: key);
+class RenderTextFormField extends StatefulWidget {
+  const RenderTextFormField({Key? key, this.mode, this.placeholder, this.buttonText, this.label}) : super(key: key);
   final mode;
+  final placeholder;
+  final buttonText;
+  final label;
+
   @override
-  State<renderTextFormField> createState() => _renderTextFormFieldState();
+  State<RenderTextFormField> createState() => _RenderTextFormFieldState();
 }
 
-class _renderTextFormFieldState extends State<renderTextFormField> {
+class _RenderTextFormFieldState extends State<RenderTextFormField> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+
     if (widget.mode == 'withButton') {
       return Form(
         key: formKey,
         child: Container(
-          margin: EdgeInsets.fromLTRB(18, 40, 18, 40),
+          padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
           child: Column(
             children: [
               Row(
                 children: [
-                  Text('학교 이메일',
+                  Text(widget.label,
                       style:
                           TextStyle(fontWeight: FontWeight.w500, fontSize: 12)),
                 ],
+              ),
+              SizedBox(
+                height: 4,
               ),
               Row(children: [
                 Flexible(
@@ -31,11 +39,17 @@ class _renderTextFormFieldState extends State<renderTextFormField> {
                     decoration: InputDecoration(
                       isDense: true,
                       contentPadding: EdgeInsets.fromLTRB(12, 12, 12, 12),
-                      border: OutlineInputBorder(
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(218, 175, 254, 1)
+                          )
+                      ),
+                      enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Color.fromRGBO(218, 175, 254, 0.5),
                           ),
                           borderRadius: BorderRadius.circular(4)),
+                      hintText: widget.placeholder,
                     ),
                     onSaved: (val) {},
                     validator: (val) {},
@@ -47,10 +61,11 @@ class _renderTextFormFieldState extends State<renderTextFormField> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
                       border:
-                          Border.all(color: Color.fromRGBO(182, 182, 182, 1))),
+                          Border.all(color: Color.fromRGBO(182, 182, 182, 1))
+                  ),
                   child: TextButton(
                     child: Text(
-                      '인증하기',
+                      widget.buttonText,
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
@@ -63,30 +78,39 @@ class _renderTextFormFieldState extends State<renderTextFormField> {
               SizedBox(
                 height: 10,
               ),
-              TextFormField(
-                decoration: InputDecoration(
-                  isDense: true,
-                  contentPadding: EdgeInsets.fromLTRB(12, 12, 12, 12),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color.fromRGBO(218, 175, 254, 0.5),
-                      ),
-                      borderRadius: BorderRadius.circular(4)),
-                ),
-                onSaved: (val) {},
-                validator: (val) {},
-              )
             ],
           ),
         ),
       );
     }
 
-    return Column(
+    return  Column(
       children: [
-        Row(
-          children: [],
-        )
+        Padding(
+          padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
+          child: TextFormField(
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.fromLTRB(12, 12, 12, 12),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color.fromRGBO(218, 175, 254, 1)
+                )
+              ),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color.fromRGBO(218, 175, 254, 0.5),
+                  ),
+                  borderRadius: BorderRadius.circular(4)),
+              hintText: widget.placeholder,
+            ),
+            onSaved: (val) {},
+            validator: (val) {},
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
       ],
     );
   }

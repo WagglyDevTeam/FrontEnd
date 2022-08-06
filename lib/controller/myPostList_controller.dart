@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:wagly/model/myPageModel.dart';
-import 'package:wagly/sever/server.dart';
+import 'package:wagly/server/server.dart';
 
 class MyPostListController extends GetxController {
   var myCommentsList = <MyPostListModel>[].obs;
@@ -14,7 +14,7 @@ class MyPostListController extends GetxController {
   void fetchData() async {
     var myComment = await Services.getMyPostList();
     if (myComment != null) {
-      myCommentsList.value = myComment;
+      // myCommentsList.value = myComment;
     }
   }
 }

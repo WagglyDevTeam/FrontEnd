@@ -106,17 +106,17 @@ class _MyPostListState extends State<MyPostList> {
   void getMyComments() async {
     final controller = Get.put(MyPostListController());
     for (var i = 0; i < controller.myCommentsList.length; i++) {
-      var comment = controller.myCommentsList[i];
-      commentList.add(
-        MyPostListModel(
-          postId: comment.postId,
-          postTitle: comment.postTitle,
-          boardType: comment.boardType,
-          commentId: comment.commentId,
-          commentCreatedAt: comment.commentCreatedAt,
-          commentDesc: comment.commentDesc,
-        ),
-      );
+      // var comment = controller.myCommentsList[i];
+      // commentList.add(
+      //   // MyPostListModel(
+      //   //   postId: comment.postId,
+      //   //   postTitle: comment.postTitle,
+      //   //   boardType: comment.boardType,
+      //   //   commentId: comment.commentId,
+      //   //   commentCreatedAt: comment.commentCreatedAt,
+      //   //   commentDesc: comment.commentDesc,
+      //   ),
+      // );
     }
   }
 
