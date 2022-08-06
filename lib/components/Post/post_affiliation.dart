@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wagly/components/Post/post_common.dart';
-import 'package:wagly/components/Post/post_detail_screen.dart';
-import 'package:wagly/widgets/index.dart';
+import 'package:waggly/components/Post/post_common.dart';
+import 'package:waggly/components/Post/post_detail_screen.dart';
+import 'package:waggly/widgets/index.dart';
 import '../../utils/colors.dart';
 import '../../utils/textFrame.dart';
 import './post_app_bar.dart';
@@ -217,7 +217,7 @@ class PostContext extends StatelessWidget {
           ),
           SizedBox(height: 6),
           Container(
-            width: 300,
+            width: MediaQuery.of(context).size.width - 32,
             child: Text(postDesc, style: CommonText.BodyS),
           ),
           SizedBox(height: 6),
@@ -225,7 +225,11 @@ class PostContext extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(authorMajor, style: CommonText.BodyEngGray),
-              CommentSide(commentCnt: postCommentCnt, likeCnt:postLikeCnt , imgCnt: postImageCnt,)
+              CommentSide(
+                commentCnt: postCommentCnt,
+                likeCnt: postLikeCnt,
+                imgCnt: postImageCnt,
+              )
             ],
           )
         ],
@@ -233,5 +237,3 @@ class PostContext extends StatelessWidget {
     );
   }
 }
-
-

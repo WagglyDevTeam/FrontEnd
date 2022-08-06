@@ -1,14 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:wagly/components/Post/post_app_bar.dart';
-import 'package:wagly/components/Post/post_common.dart';
-import 'package:wagly/utils/textFrame.dart';
-import 'package:wagly/widgets/signIn.dart';
+import 'package:waggly/components/Post/post_app_bar.dart';
+import 'package:waggly/components/Post/post_common.dart';
+import 'package:waggly/utils/textFrame.dart';
+import 'package:waggly/widgets/signIn.dart';
 import '../components/Post/post_affiliation.dart';
 import '../components/Post/post_data.dart';
 import '../utils/colors.dart';
-import 'package:wagly/widgets/index.dart';
+import 'package:waggly/widgets/index.dart';
 
 class PostScreen extends StatelessWidget {
   PostScreen({Key? key}) : super(key: key);

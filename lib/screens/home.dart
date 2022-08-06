@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:wagly/utils/colors.dart';
-import 'package:wagly/widgets/index.dart';
-import 'package:wagly/screens/signIn/signIn.screen.dart';
+import 'package:waggly/screens/signIn.screen.dart';
+import 'package:waggly/utils/colors.dart';
+import 'package:waggly/widgets/index.dart';
 
 import '../controllers/postController.dart';
 import '../models/post/post.dart';
 
-PageRouteWithAnimation sign = PageRouteWithAnimation(const SignInScreen());
+PageRouteWithAnimation sign = PageRouteWithAnimation(SignInScreen());
 
 const Color boxBorderColor = Colors.purple;
 
@@ -438,7 +438,8 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
             children: <Widget>[
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).push(sign.slideRitghtToLeft());
+                  Get.toNamed('/signIn');
+                  // Navigator.of(context).push(sign.slideRitghtToLeft());
                 },
                 child: Text("로그인"),
                 style: TextButton.styleFrom(

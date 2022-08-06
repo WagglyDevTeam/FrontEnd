@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wagly/screens/post.dart';
-import 'package:wagly/utils/textFrame.dart';
-import 'package:wagly/widgets/index.dart';
-import 'package:wagly/widgets/signIn.dart';
+import 'package:waggly/screens/post.dart';
+import 'package:waggly/utils/textFrame.dart';
+import 'package:waggly/widgets/index.dart';
+import 'package:waggly/widgets/signIn.dart';
 import '../../utils/colors.dart';
 
 

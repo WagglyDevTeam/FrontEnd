@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:wagly/utils/textFrame.dart';
-import 'package:wagly/widgets/Button/Button.dart';
+import 'package:waggly/utils/textFrame.dart';
+import 'package:waggly/widgets/Button/Button.dart';
+import 'package:waggly/widgets/TextFormFiled/TextFormFiled.dart';
+import 'package:waggly/components/SignIn/Checkbox/Checkbox.dart';
+import 'package:waggly/components/SignIn/BottomTextButton/BottomTextButton.dart';
+import 'package:waggly/screens/home.dart';
+import 'package:waggly/widgets/index.dart';
+
+PageRouteWithAnimation home = PageRouteWithAnimation(HomeScreen());
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -11,22 +18,45 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInState extends State<SignInScreen> {
+  bool isChecked = false;
+
+  setChecked() {
+    setState(() {
+      isChecked = !isChecked;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
           SignInHeader(),
+          RenderTextFormField(
+            placeholder: '학교 이메일',
+          ),
+          RenderTextFormField(
+            placeholder: '비밀번호',
+          ),
+          CustomCheckbox(),
           Button(
             text: '시작하기',
-            onPress: () {},
+            onPress: () {
+              Navigator.of(context).push(home.slideRitghtToLeft());
+            },
             disabled: true,
           ),
           Button(
             text: '둘러보기',
-            onPress: () {},
+            onPress: () {
+              Navigator.of(context).push(home.slideRitghtToLeft());
+            },
             theme: 'abled',
-          )
+          ),
+          SizedBox(
+            height: 18,
+          ),
+          BottomTextButton()
         ],
       ),
     );
@@ -45,7 +75,7 @@ class SignInHeader extends StatelessWidget {
           child: Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(18, 80, 0, 0),
+                padding: const EdgeInsets.fromLTRB(18, 55, 0, 0),
                 child: Text(
                   '로그인',
                   style: CommonText.TitleM,

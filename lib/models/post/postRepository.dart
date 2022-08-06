@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get_connect/http/src/response/response.dart';
-import 'package:wagly/models/post/postProvider.dart';
+import 'package:waggly/models/post/postProvider.dart';
 
 import '../dtos/wagglyResponseDto.dart';
 

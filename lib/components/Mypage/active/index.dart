@@ -1,9 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wagly/utils/colors.dart';
-import 'package:wagly/components/Mypage/active/requestlist.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:wagly/utils/textFrame.dart';
+import 'package:waggly/components/Mypage/active/requestlist.dart';
+import 'package:waggly/components/Mypage/active/mypostlist.dart';
+import 'package:waggly/widgets/index.dart';
+import 'package:waggly/utils/textFrame.dart';
+import 'package:waggly/utils/colors.dart';
+
+PageRouteWithAnimation requestPage =
+    PageRouteWithAnimation(const RequestScreen());
+PageRouteWithAnimation mypostlistPage =
+    PageRouteWithAnimation(const MyPostListScreen());
 
 class ActiveScreen extends StatelessWidget {
   const ActiveScreen({Key? key}) : super(key: key);
@@ -128,10 +135,7 @@ class _activeContentState extends State<activeContent> {
                       ],
                     )),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RequestScreen()),
-                  );
+                  Navigator.of(context).push(requestPage.slideLeftToRight());
                 },
               ),
               Divider(thickness: 0.5, height: 1, color: Palette.lightGray),
@@ -154,7 +158,9 @@ class _activeContentState extends State<activeContent> {
                         ),
                       ],
                     )),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(mypostlistPage.slideLeftToRight());
+                },
               ),
               Divider(thickness: 0.5, height: 1, color: Palette.lightGray),
             ],
