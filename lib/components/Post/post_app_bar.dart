@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:wagly/screens/post.dart';
+import 'package:wagly/screens/writePage.dart';
 import 'package:wagly/utils/textFrame.dart';
 import 'package:wagly/widgets/index.dart';
 import 'package:wagly/widgets/signIn.dart';
 import '../../utils/colors.dart';
 
-
-enum Status {
-  home,
-  main, 
-  detail, 
-  edit,
-  login
-}
+enum Status { home, main, detail, edit, login }
 
 class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String postName;
@@ -86,7 +81,7 @@ class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
         return ActionBtns();
       case Status.main:
         return ActionBtns();
-      case  Status.login:
+      case Status.login:
         return LoginBtn();
       case Status.edit:
         return Text('edit');
@@ -94,7 +89,6 @@ class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
         return DetailBtn();
     }
   }
-
 }
 
 class ActionBtns extends StatelessWidget {
@@ -119,7 +113,7 @@ class ActionBtns extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ActionButton(
-                    event: () => Navigator.of(context).pop(),
+                    event: () => Get.to(() => WritePage()),
                     isIcon: Icon(
                       Icons.add,
                       color: Palette.gray,
