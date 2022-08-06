@@ -6,16 +6,21 @@ import 'package:wagly/components/Post/custom_text_form_field.dart';
 import 'package:wagly/components/Post/post_common.dart';
 import 'package:wagly/components/Post/post_detail_screen.dart';
 import 'package:wagly/controller/image_controller.dart';
+import 'package:wagly/models/dtos/postRequestDto.dart';
 import 'package:wagly/widgets/PageNav/PageNav.dart';
 import 'package:wagly/widgets/index.dart';
 import '../../utils/colors.dart';
 import '../../utils/textFrame.dart';
 import '../components/Post/post_app_bar.dart';
+import '../controllers/postController.dart';
 
 class WritePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ImageController imageController = Get.put(ImageController());
+    // ImageController imageController = Get.put(ImageController());
+    PostController postController = Get.put(PostController());
+    final _title = TextEditingController();
+    final _content = TextEditingController();
 
     var page = Status.home;
     const postName = "글쓰기";
@@ -57,6 +62,7 @@ class WritePage extends StatelessWidget {
                 alignment: Alignment.center,
                 height: titleAreaHeight,
                 child: CustomTextFormField(
+                  controller: _title,
                   hint: "제목을 입력하세요.",
                 ),
               ),
@@ -83,7 +89,8 @@ class WritePage extends StatelessWidget {
                     alignment: Alignment.topCenter,
                     height: contentAreaHeight,
                     child: CustomTextFormField(
-                      // maxLines: 25,
+                      // maxLines: 15,
+                      controller: _content,
                       hint: "내용을 입력하세요.",
                     ),
                   ),
@@ -149,7 +156,10 @@ class WritePage extends StatelessWidget {
                 // color: Colors.yellow.shade300,
                 child: TextButton(
                   onPressed: () {
-                    // Navigator.of(context).push(sign.slideRitghtToLeft());
+                    postController.writeBoard(
+                      PostRequestDto(
+                          _title.text, _content.text, "SOCIAL", false),
+                    );
                   },
                   child: Text("게시글 작성하기"),
                   style: TextButton.styleFrom(
