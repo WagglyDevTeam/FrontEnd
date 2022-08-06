@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:wagly/components/Post/post_detail_screen.dart';
-import 'package:wagly/widgets/index.dart';
-import 'package:wagly/utils/colors.dart';
-import 'package:wagly/utils/textFrame.dart';
+import 'package:waggly/components/Post/post_detail_screen.dart';
+import 'package:waggly/widgets/index.dart';
+import 'package:waggly/utils/colors.dart';
+import 'package:waggly/utils/textFrame.dart';
 
 class CommentContext extends StatelessWidget {
   final postId;

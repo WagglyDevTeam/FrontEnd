@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:wagly/screens/chat.dart';
-import 'package:wagly/screens/chatEdit.dart';
-import 'package:wagly/screens/home.dart';
-import 'package:wagly/screens/myPage.dart';
-import 'package:wagly/screens/post.dart';
-import 'package:wagly/utils/colors.dart';
+import 'package:waggly/screens/chat.dart';
+import 'package:waggly/screens/chatEdit.dart';
+import 'package:waggly/screens/home.dart';
+import 'package:waggly/screens/myPage.dart';
+import 'package:waggly/screens/post.dart';
+import 'package:waggly/utils/colors.dart';
 
 class Screen extends StatefulWidget {
   const Screen({Key? key}) : super(key: key);

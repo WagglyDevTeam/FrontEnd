@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:wagly/model/wagglyImg.dart';
-import 'package:wagly/server/server.dart';
+import 'package:waggly/model/Mypage/wagglyImg.dart';
+import 'package:waggly/server/server.dart';
 
 class WagglyImgController extends GetxController {
   var wagglyImglist = <WagglyImg>[].obs;

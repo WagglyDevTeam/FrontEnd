@@ -2,18 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:wagly/components/Mypage/profileImg/profileImg.dart';
-import 'package:wagly/components/Mypage/active/index.dart';
-import 'package:wagly/components/Notification/notification.dart';
-import 'package:wagly/model/wagglyImg.dart';
-import 'package:wagly/widgets/Button/Button.dart';
-import 'package:wagly/widgets/index.dart';
-import 'package:wagly/utils/textFrame.dart';
-import 'package:wagly/utils/colors.dart';
+import 'package:waggly/components/Mypage/profileImg/profileImg.dart';
+import 'package:waggly/components/Mypage/active/index.dart';
+import 'package:waggly/components/Notification/notification.dart';
+import 'package:waggly/model/Mypage/wagglyImg.dart';
+import 'package:waggly/widgets/Button/Button.dart';
+import 'package:waggly/widgets/index.dart';
+import 'package:waggly/utils/textFrame.dart';
+import 'package:waggly/utils/colors.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
-import '../controller/wagglyImg_controller.dart';
+import '../controller/Mypage/wagglyImg_controller.dart';
 
 PageRouteWithAnimation profileImg = PageRouteWithAnimation(ProfileImgScreen());
 

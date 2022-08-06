@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:wagly/utils/textFrame.dart';
-import 'package:wagly/utils/colors.dart';
-import 'package:wagly/widgets/PageNav/PageNav.dart';
-import 'package:wagly/model/notification.dart';
+import 'package:waggly/utils/textFrame.dart';
+import 'package:waggly/utils/colors.dart';
+import 'package:waggly/widgets/PageNav/PageNav.dart';
+import 'package:waggly/model/Mypage/notification.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({Key? key}) : super(key: key);

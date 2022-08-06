@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:wagly/model/wagglyImg.dart';
-import 'package:wagly/model/myPageModel.dart';
+import 'package:waggly/model/Mypage/wagglyImg.dart';
+import 'package:waggly/model/Mypage/myPageModel.dart';
 
 class Services {
   static Future<List<WagglyImg>?> getWagglyImg() async {

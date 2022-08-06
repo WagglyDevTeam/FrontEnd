@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wagly/components/Post/post_affiliation.dart';
-import 'package:wagly/components/Post/post_app_bar.dart';
-import 'package:wagly/components/Post/post_common.dart';
-import 'package:wagly/components/Post/post_data.dart';
-import 'package:wagly/utils/colors.dart';
-import 'package:wagly/utils/textFrame.dart';
+import 'package:waggly/components/Post/post_affiliation.dart';
+import 'package:waggly/components/Post/post_app_bar.dart';
+import 'package:waggly/components/Post/post_common.dart';
+import 'package:waggly/components/Post/post_data.dart';
+import 'package:waggly/utils/colors.dart';
+import 'package:waggly/utils/textFrame.dart';
 
 class PostDetail extends StatelessWidget {
   final postId;

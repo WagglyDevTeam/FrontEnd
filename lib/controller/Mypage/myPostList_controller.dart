@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:wagly/model/myPageModel.dart';
-import 'package:wagly/server/server.dart';
+import 'package:waggly/model/Mypage/myPageModel.dart';
+import 'package:waggly/server/server.dart';
 
 class MyPostListController extends GetxController {
   var myCommentsList = <MyPostListModel>[].obs;

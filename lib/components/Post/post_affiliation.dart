@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wagly/components/Post/post_common.dart';
-import 'package:wagly/components/Post/post_detail_screen.dart';
-import 'package:wagly/widgets/index.dart';
+import 'package:waggly/components/Post/post_common.dart';
+import 'package:waggly/components/Post/post_detail_screen.dart';
+import 'package:waggly/widgets/index.dart';
 import '../../utils/colors.dart';
 import '../../utils/textFrame.dart';
 import './post_app_bar.dart';

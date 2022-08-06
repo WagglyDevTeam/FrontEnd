@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wagly/utils/colors.dart';
-import 'package:wagly/utils/textFrame.dart';
-import 'package:wagly/controller/myPostList_controller.dart';
-import 'package:wagly/model/myPageModel.dart';
-import 'package:wagly/widgets/MyPage/myPageComment.dart';
+import 'package:waggly/utils/colors.dart';
+import 'package:waggly/utils/textFrame.dart';
+import 'package:waggly/controller/Mypage/myPostList_controller.dart';
+import 'package:waggly/model/Mypage/myPageModel.dart';
+import 'package:waggly/widgets/MyPage/myPageComment.dart';
 import '../../Post/post_affiliation.dart';
 import '../../Post/post_data.dart';
 

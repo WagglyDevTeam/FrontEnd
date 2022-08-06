@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:wagly/utils/textFrame.dart';
-import 'package:wagly/widgets/Button/Button.dart';
-import 'package:wagly/widgets/TextFormFiled/TextFormFiled.dart';
-import 'package:wagly/components/SignIn/Checkbox/Checkbox.dart';
-import 'package:wagly/components/SignIn/BottomTextButton/BottomTextButton.dart';
-import 'package:wagly/screens/home.dart';
-import 'package:wagly/widgets/index.dart';
+import 'package:waggly/utils/textFrame.dart';
+import 'package:waggly/widgets/Button/Button.dart';
+import 'package:waggly/widgets/TextFormFiled/TextFormFiled.dart';
+import 'package:waggly/components/SignIn/Checkbox/Checkbox.dart';
+import 'package:waggly/components/SignIn/BottomTextButton/BottomTextButton.dart';
+import 'package:waggly/screens/home.dart';
+import 'package:waggly/widgets/index.dart';
 
 PageRouteWithAnimation home = PageRouteWithAnimation(const HomeScreen());
 

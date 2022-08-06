@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wagly/screens/myPage.dart';
-import 'package:wagly/widgets/Button/Button.dart';
-import 'package:wagly/widgets/PageNav/PageNav.dart';
-import 'package:wagly/utils/colors.dart';
-import 'package:wagly/model/wagglyImg.dart';
-import 'package:wagly/controller/wagglyImg_controller.dart';
+import 'package:waggly/screens/myPage.dart';
+import 'package:waggly/widgets/Button/Button.dart';
+import 'package:waggly/widgets/PageNav/PageNav.dart';
+import 'package:waggly/utils/colors.dart';
+import 'package:waggly/model/Mypage/wagglyImg.dart';
+import 'package:waggly/controller/Mypage/wagglyImg_controller.dart';
 
 class ProfileImgScreen extends StatelessWidget {
   @override

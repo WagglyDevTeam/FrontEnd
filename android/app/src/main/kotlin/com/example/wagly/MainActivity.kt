@@ -1,4 +1,4 @@
-package com.example.wagly
+package com.example.waggly
 
 import io.flutter.embedding.android.FlutterActivity
 

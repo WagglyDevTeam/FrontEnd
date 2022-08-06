@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:wagly/components/Post/post_data.dart';
-import 'package:wagly/utils/colors.dart';
-import 'package:wagly/utils/textFrame.dart';
+import 'package:waggly/components/Post/post_data.dart';
+import 'package:waggly/utils/colors.dart';
+import 'package:waggly/utils/textFrame.dart';
 
 class PostDifferentList extends StatelessWidget {
   PostDifferentList({Key? key, required this.widgetList}) : super(key: key);

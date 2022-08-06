@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wagly/screens/index.dart';
+import 'package:waggly/screens/index.dart';
 
 void main() {
   runApp(const HeroApp());
@@ -12,7 +12,7 @@ class HeroApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'wagly',
+      title: 'waggly',
       home: MyApp(),
     );
   }

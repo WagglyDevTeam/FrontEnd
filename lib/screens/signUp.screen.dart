@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:wagly/widgets/Button/Button.dart';
-import 'package:wagly/widgets/TextFormFiled/TextFormFiled.dart';
+import 'package:waggly/widgets/Button/Button.dart';
+import 'package:waggly/widgets/TextFormFiled/TextFormFiled.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);

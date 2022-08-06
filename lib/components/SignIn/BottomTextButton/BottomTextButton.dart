@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wagly/screens/signUp/signUp.screen.dart';
-import 'package:wagly/screens/password/password.screen.dart';
-import 'package:wagly/widgets/index.dart';
+import 'package:waggly/screens/signUp.screen.dart';
+import 'package:waggly/screens/password.screen.dart';
+import 'package:waggly/widgets/index.dart';
 
 
 PageRouteWithAnimation home = PageRouteWithAnimation(const SignUp());

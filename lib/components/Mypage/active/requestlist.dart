@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wagly/utils/colors.dart';
-import 'package:wagly/utils/textFrame.dart';
+import 'package:waggly/utils/colors.dart';
+import 'package:waggly/utils/textFrame.dart';
 
 class RequestScreen extends StatelessWidget {
   const RequestScreen({Key? key}) : super(key: key);

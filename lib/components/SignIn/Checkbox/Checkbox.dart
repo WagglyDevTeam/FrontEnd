@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wagly/utils/textFrame.dart';
+import 'package:waggly/utils/textFrame.dart';
 
 class CustomCheckbox extends StatefulWidget {
   const CustomCheckbox({Key? key}) : super(key: key);

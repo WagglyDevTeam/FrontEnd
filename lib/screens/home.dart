@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wagly/utils/textFrame.dart';
-import 'package:wagly/widgets/index.dart';
-import 'package:wagly/screens/signIn/signIn.screen.dart';
+import 'package:waggly/utils/textFrame.dart';
+import 'package:waggly/widgets/index.dart';
+import 'package:waggly/screens/signIn.screen.dart';
 
 PageRouteWithAnimation sign = PageRouteWithAnimation(const SignInScreen());
 

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:wagly/components/Mypage/active/requestlist.dart';
-import 'package:wagly/components/Mypage/active/mypostlist.dart';
-import 'package:wagly/widgets/index.dart';
-import 'package:wagly/utils/textFrame.dart';
-import 'package:wagly/utils/colors.dart';
+import 'package:waggly/components/Mypage/active/requestlist.dart';
+import 'package:waggly/components/Mypage/active/mypostlist.dart';
+import 'package:waggly/widgets/index.dart';
+import 'package:waggly/utils/textFrame.dart';
+import 'package:waggly/utils/colors.dart';
 
 PageRouteWithAnimation requestPage =
     PageRouteWithAnimation(const RequestScreen());

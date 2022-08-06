@@ -1,4 +1,4 @@
-# wagly
+# waggly
 
 A new Flutter project.
 
