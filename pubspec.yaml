@@ -43,9 +43,12 @@ dependencies:
   #state
   get: ^4.6.5
 
+
   #image-upload
   image_picker: ^0.8.5+3
   path_provider: ^2.0.11
+  skeletons: ^0.0.3
+  intl: ^0.17.0
 
   #sever api
   retrofit: ^3.0.1+1

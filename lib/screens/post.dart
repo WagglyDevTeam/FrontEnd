@@ -1,16 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:card_swiper/card_swiper.dart';
 import 'package:waggly/components/Post/post_app_bar.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/utils/textFrame.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:waggly/widgets/signIn.dart';
 import '../components/Post/post_affiliation.dart';
 import '../components/Post/post_data.dart';
 import '../utils/colors.dart';
-import 'home.dart';
 import 'package:waggly/widgets/index.dart';
 
 class PostScreen extends StatelessWidget {
@@ -47,7 +44,7 @@ class PostScreen extends StatelessWidget {
       'postId': 1556
     })
   ];
-  
+
   @override
   Widget build(BuildContext context) {
     bool on = false;
@@ -55,7 +52,7 @@ class PostScreen extends StatelessWidget {
     String mySchool = '예술체육계열';
     Status page = Status.main;
     String postName = '게시판';
-  
+
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: PostAppbar(
@@ -77,7 +74,7 @@ class PostScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 5),
                 PostCard(
-                  datas: page == 'login '? dummy : dummy,
+                  datas: page == 'login ' ? dummy : dummy,
                   postName: mySchool,
                   on: on,
                   page: page,
@@ -94,7 +91,7 @@ class PostScreen extends StatelessWidget {
                   height: 190,
                   child: PostDifferentList(widgetList: [
                     PostCard(
-                      datas: page == 'login '? dummy : dummy,
+                      datas: page == 'login ' ? dummy : dummy,
                       postName: '자연계열',
                       on: off,
                       page: page,
@@ -103,7 +100,7 @@ class PostScreen extends StatelessWidget {
                       width: 10,
                     ),
                     PostCard(
-                      datas: page == 'login '? dummy : dummy,
+                      datas: page == 'login ' ? dummy : dummy,
                       postName: '공과계열',
                       on: off,
                       page: page,
@@ -112,7 +109,7 @@ class PostScreen extends StatelessWidget {
                       width: 10,
                     ),
                     PostCard(
-                      datas: page == 'login'? dummy : dummy,
+                      datas: page == 'login' ? dummy : dummy,
                       postName: '인문계열',
                       on: off,
                       page: page,
@@ -138,7 +135,8 @@ class PostCard extends StatelessWidget {
   final page;
   @override
   Widget build(BuildContext context) {
-    PageRouteWithAnimation postingList = PageRouteWithAnimation(PostAffiliation(postName: postName));
+    PageRouteWithAnimation postingList =
+        PageRouteWithAnimation(PostAffiliation(postName: postName));
     PageRouteWithAnimation sign = PageRouteWithAnimation(SignUpRoute());
     return Container(
       height: 195,
@@ -172,23 +170,22 @@ class PostCard extends StatelessWidget {
                           date: datas[index].postCreatedAt,
                           id: datas[index].postId),
                       Positioned(
-                          top: 1,left: 1,
+                          top: 1,
+                          left: 1,
                           child: SizedBox(
-                                  height: 20,
-                                  width: 200,
-                                  child: BackdropFilter(
-                                    filter: ImageFilter.blur(sigmaX: 3, sigmaY: 2),
-                                    child:
-                                        Container(color: Colors.white.withOpacity(0.1)),
-                                  ),
-                                )),
+                            height: 20,
+                            width: 200,
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 2),
+                              child: Container(
+                                  color: Colors.white.withOpacity(0.1)),
+                            ),
+                          )),
                       Positioned(
-                          top: 1,right: -160,
+                          top: 1,
+                          right: -160,
                           child: SizedBox(
-                                  height: 20,
-                                  width: 200,
-                                  child: NewItem()
-                                ))
+                              height: 20, width: 200, child: NewItem()))
                     ],
                   );
                 } else {
@@ -203,12 +200,11 @@ class PostCard extends StatelessWidget {
           ),
           GestureDetector(
               onTap: () {
-                if(page == 'login'){
-                   Navigator.of(context).push(sign.slideLeftToRight());
-                }else{
+                if (page == 'login') {
+                  Navigator.of(context).push(sign.slideLeftToRight());
+                } else {
                   Navigator.of(context).push(postingList.slideLeftToRight());
                 }
-                
               },
               child: Container(
                 height: 60,
@@ -335,5 +331,3 @@ class NewItem extends StatelessWidget {
         ));
   }
 }
-
-

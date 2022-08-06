@@ -8,7 +8,7 @@ import 'package:waggly/components/SignIn/BottomTextButton/BottomTextButton.dart'
 import 'package:waggly/screens/home.dart';
 import 'package:waggly/widgets/index.dart';
 
-PageRouteWithAnimation home = PageRouteWithAnimation(const HomeScreen());
+PageRouteWithAnimation home = PageRouteWithAnimation(HomeScreen());
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -25,36 +25,41 @@ class _SignInState extends State<SignInScreen> {
       isChecked = !isChecked;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: [
-        SignInHeader(),
-        RenderTextFormField(placeholder: '학교 이메일',),
-        RenderTextFormField(placeholder: '비밀번호',),
-
-        CustomCheckbox(),
-        Button(
-          text: '시작하기',
-          onPress: () {
-            Navigator.of(context).push(home.slideRitghtToLeft());
-          },
-          disabled: true,
-        ),
-        Button(
-          text: '둘러보기',
-          onPress: () {
-            Navigator.of(context).push(home.slideRitghtToLeft());
-          },
-          theme: 'abled',
-        ),
-        SizedBox(
-          height: 18,
-        ),
-        BottomTextButton()
-      ],
-    ));
+      body: Column(
+        children: [
+          SignInHeader(),
+          RenderTextFormField(
+            placeholder: '학교 이메일',
+          ),
+          RenderTextFormField(
+            placeholder: '비밀번호',
+          ),
+          CustomCheckbox(),
+          Button(
+            text: '시작하기',
+            onPress: () {
+              Navigator.of(context).push(home.slideRitghtToLeft());
+            },
+            disabled: true,
+          ),
+          Button(
+            text: '둘러보기',
+            onPress: () {
+              Navigator.of(context).push(home.slideRitghtToLeft());
+            },
+            theme: 'abled',
+          ),
+          SizedBox(
+            height: 18,
+          ),
+          BottomTextButton()
+        ],
+      ),
+    );
   }
 }
 
