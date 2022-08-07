@@ -23,10 +23,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        children: [
-          TopBar(),
-          SignUpInput(steps: steps, setSteps: handleClick)
-        ],
+        children: [TopBar(), SignUpInput(steps: steps, setSteps: handleClick)],
       ),
     );
   }
@@ -77,7 +74,9 @@ class _SignUpInputState extends State<SignUpInput> {
     return Column(children: [
       Title(),
       Step(steps: widget.steps),
+      SizedBox(height: 58,),
       Input(steps: widget.steps),
+      SizedBox(height: 48,),
       Buttons(steps: widget.steps, setSteps: widget.setSteps)
     ]);
   }
@@ -129,11 +128,11 @@ class _StepState extends State<Step> {
                     decoration: BoxDecoration(
                         border: Border(
                             bottom: BorderSide(
-                              color: widget.steps == 0
-                                  ? Color(0xffB863FB)
-                                  : Color(0xffE8E8E8),
-                              width: 2,
-                            ))),
+                      color: widget.steps == 0
+                          ? Color(0xffB863FB)
+                          : Color(0xffE8E8E8),
+                      width: 2,
+                    ))),
                     child: Container(
                         alignment: Alignment.center,
                         width: 16,
@@ -159,26 +158,13 @@ class _StepState extends State<Step> {
                     style: TextStyle(
                       fontSize: widget.steps == 0 ? 16 : 10,
                       fontWeight:
-                      widget.steps == 0 ? FontWeight.w700 : FontWeight.w400,
+                          widget.steps == 0 ? FontWeight.w700 : FontWeight.w400,
                       color: widget.steps == 0
                           ? Color(0xff2B173B)
                           : Color(0xff959595),
                     ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(18, 4, 0, 0),
-                  child: widget.steps == 0
-                      ? Text(
-                    '학교 인증을 위해 정보를 입력하세요.',
-                    style: TextStyle(
-                        fontSize: 11, fontWeight: FontWeight.w600),
-                  )
-                      : Text(
-                    '',
-                    style: TextStyle(fontSize: 11),
-                  ),
-                )
               ],
             ),
             flex: widget.steps == 0 ? 6 : 2,
@@ -194,11 +180,11 @@ class _StepState extends State<Step> {
                     decoration: BoxDecoration(
                         border: Border(
                             bottom: BorderSide(
-                              color: widget.steps == 1
-                                  ? Color(0xffB863FB)
-                                  : Color(0xffE8E8E8),
-                              width: 2,
-                            ))),
+                      color: widget.steps == 1
+                          ? Color(0xffB863FB)
+                          : Color(0xffE8E8E8),
+                      width: 2,
+                    ))),
                     child: Container(
                         alignment: Alignment.center,
                         width: 16,
@@ -224,26 +210,13 @@ class _StepState extends State<Step> {
                     style: TextStyle(
                       fontSize: widget.steps == 1 ? 16 : 10,
                       fontWeight:
-                      widget.steps == 1 ? FontWeight.w700 : FontWeight.w400,
+                          widget.steps == 1 ? FontWeight.w700 : FontWeight.w400,
                       color: widget.steps == 1
                           ? Color(0xff2B173B)
                           : Color(0xff959595),
                     ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 4, 0, 0),
-                  child: widget.steps == 1
-                      ? Text(
-                    '학교 정보를 입력해주세요.',
-                    style: TextStyle(
-                        fontSize: 11, fontWeight: FontWeight.w600),
-                  )
-                      : Text(
-                    '',
-                    style: TextStyle(fontSize: 11),
-                  ),
-                )
               ],
             ),
             flex: widget.steps == 1 ? 6 : 2,
@@ -259,11 +232,11 @@ class _StepState extends State<Step> {
                     decoration: BoxDecoration(
                         border: Border(
                             bottom: BorderSide(
-                              color: widget.steps == 2
-                                  ? Color(0xffB863FB)
-                                  : Color(0xffE8E8E8),
-                              width: 2,
-                            ))),
+                      color: widget.steps == 2
+                          ? Color(0xffB863FB)
+                          : Color(0xffE8E8E8),
+                      width: 2,
+                    ))),
                     child: Container(
                         alignment: Alignment.center,
                         width: 16,
@@ -289,26 +262,13 @@ class _StepState extends State<Step> {
                     style: TextStyle(
                       fontSize: widget.steps == 2 ? 16 : 10,
                       fontWeight:
-                      widget.steps == 2 ? FontWeight.w700 : FontWeight.w400,
+                          widget.steps == 2 ? FontWeight.w700 : FontWeight.w400,
                       color: widget.steps == 2
                           ? Color(0xff2B173B)
                           : Color(0xff959595),
                     ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 4, 0, 0),
-                  child: widget.steps == 2
-                      ? Text(
-                    '비밀번호와 닉네임을 입력해주세요.',
-                    style: TextStyle(fontSize: 11),
-                  )
-                      : Text(
-                    '',
-                    style: TextStyle(
-                        fontSize: 11, fontWeight: FontWeight.w600),
-                  ),
-                )
               ],
             ),
             flex: widget.steps == 2 ? 6 : 2,
@@ -333,18 +293,65 @@ class _InputState extends State<Input> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        widget.steps == 0 ?
-        Column(
-          children: [
-            RenderTextFormField(mode: 'withButton', label: '학교 이메일', placeholder: 'abc@email.com', buttonText: '인증하기'),
-            RenderTextFormField(mode: 'withButton', label: '인증번호', placeholder: '인증번호 입력', buttonText: 'test',),
-          ],
-        )
-            : widget.steps == 1 ? Text('hi') : Text('bye');
 
+    return widget.steps == 0
+        ? Column(
+            children: [
+              RenderTextFormField(
+                  mode: 'withButtonAndLabel',
+                  label: '학교 이메일',
+                  placeholder: 'abc@email.com',
+                  buttonText: '인증하기'),
+              RenderTextFormField(
+                mode: 'withLabel',
+                label: '인증번호',
+                placeholder: '인증번호 입력',
+                buttonText: 'test',
+              ),
+            ],
+          )
+        : widget.steps == 1
+            ? Column(
+                children: [
+                  RenderTextFormField(
+                    mode: 'withLabel',
+                    label: '학교',
+                    placeholder: '학교 입력',
+                  ),
+                  RenderTextFormField(
+                    mode: 'withLabel',
+                    label: '학번',
+                    placeholder: '학번 입력',
+                  ),
+                  RenderTextFormField(
+                    mode: 'withButtonAndLabel',
+                    label: '학과',
+                    placeholder: '학과 검색',
+                    buttonText: '검색하기',
+                  ),
+                ],
+              )
+            : Column(
+                children: [
+                  RenderTextFormField(
+                    mode: 'withLabel',
+                    label: '비밀번호',
+                    placeholder: '영문, 숫자 포함 8자 이상',
+                  ),
+                  RenderTextFormField(
+                    mode: 'withLabel',
+                    label: '비밀번호 확인',
+                    placeholder: '영문, 숫자 포함 8자 이상',
+                  ),
+                  RenderTextFormField(
+                    mode: 'withButtonAndLabel',
+                    label: '닉네임',
+                    placeholder: '한글 또는 영문 6자 이하',
+                    buttonText: '중복확인',
+                  ),
+                ],
+              );
   }
-
 }
 
 // Button
