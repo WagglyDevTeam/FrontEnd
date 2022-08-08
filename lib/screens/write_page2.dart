@@ -2,33 +2,25 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import '../components/Post/post_app_bar.dart';
 import '../components/post/custom_text_form_field.dart';
+import '../components/post/post_app_bar.dart';
 import '../controller/post/image_controller.dart';
 import '../controller/post/post_controller.dart';
 import '../model/post/dtos/post_request_dto.dart';
 
 const double appBarHeight = 50.0;
 const double dividerHeight = 16.0;
-const double titleAreaHeight = 45.0;
-const double tagAreaHeight = 45.0;
-const double buttonAreaHeight = 45.0;
+const double titleAreaHeight = 40.0;
+const double tagAreaHeight = 40.0;
+const double buttonAreaHeight = 50.0;
 const double cameraButtonAreaHeight = 40.0;
 const double imageThumbnailAreaHeight = 100.0;
 const double cameraButtonWidth = 40.0;
 
-class WritePage extends StatefulWidget {
-  @override
-  State<WritePage> createState() => _WritePageState();
-}
-
-class _WritePageState extends State<WritePage> {
-  final ImagePicker imagePicker = ImagePicker();
-  List<XFile>? imageFileList = <XFile>[];
-
+class WritePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ImageController imageController = Get.put(ImageController());
     PostController postController = Get.put(PostController());
     final _title = TextEditingController();
     final _hashtag = TextEditingController();
@@ -49,9 +41,11 @@ class _WritePageState extends State<WritePage> {
         buttonAreaHeight -
         cameraButtonAreaHeight -
         imageThumbnailAreaHeight -
-        (dividerHeight * 4);
+        (dividerHeight * 4) -
+        30;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: PostAppbar(
         page: page,
         postName: postName,
@@ -94,19 +88,19 @@ class _WritePageState extends State<WritePage> {
               child: Container(
                 alignment: Alignment.topCenter,
                 height: contentAreaHeight,
-                child: CustomTextFormField(
-                  // maxLines: 15,
-                  controller: _content,
-                  hint: "내용을 입력하세요.",
+                child: Container(
+                  width: safeWidth,
+                  child: CustomTextFormField(
+                    maxLines: 15,
+                    controller: _content,
+                    hint: "내용을 입력하세요.",
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: imageThumbnailAreaHeight,
-              child: imageFileList!.isEmpty
-                  ? Container()
-                  : SelectedImage(imageFileList: imageFileList),
-            ),
+            ), // 내용 영역
+            Obx(
+              () => PhotoWidget(imageController: imageController, length: imageController.images!.length),
+            ), // 선택된 이미지 표시 영역
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20.0),
               child: Row(
@@ -114,8 +108,8 @@ class _WritePageState extends State<WritePage> {
                   SizedBox(
                     width: cameraButtonWidth,
                     child: IconButton(
-                      onPressed: () {
-                        selectImages();
+                      onPressed: () async {
+                        await imageController.getImage();
                       },
                       icon: Icon(
                         Icons.photo_camera,
@@ -150,7 +144,7 @@ class _WritePageState extends State<WritePage> {
                   ), // 커뮤니티 이용 수칙
                 ],
               ),
-            ), // 내용을 입력하세요.
+            ), // 카메라 아이콘, 커뮤니티 이용규칙
             Divider(),
             Padding(
               padding: const EdgeInsets.only(left: 30, right: 30),
@@ -181,57 +175,62 @@ class _WritePageState extends State<WritePage> {
                   ),
                 ),
               ),
-            ), // 게시글 작성하기
+            ), // 게시글 작성하기 버튼
           ],
         ),
       ),
     );
   }
-
-  void selectImages() async {
-    final List<XFile>? selectedImages = await imagePicker.pickMultiImage(
-      maxHeight: double.infinity,
-      maxWidth: double.infinity,
-      imageQuality: 100,
-    );
-    if (selectedImages != null) {
-      setState(() {
-        imageFileList = selectedImages;
-      });
-    }
-    print(selectedImages!.length);
-  }
 }
 
-class SelectedImage extends StatelessWidget {
-  const SelectedImage({
+class PhotoWidget extends StatelessWidget {
+  const PhotoWidget({
     Key? key,
-    required this.imageFileList,
+    required this.imageController, required this.length,
   }) : super(key: key);
 
-  final List<XFile>? imageFileList;
+  final int length;
+  final ImageController imageController;
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      padding: EdgeInsets.only(left: 20.0, right: 20.0),
-      scrollDirection: Axis.horizontal,
-      // itemExtent: imageThumbnailAreaHeight,
-      itemCount: imageFileList!.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          width: imageThumbnailAreaHeight,
-          padding: EdgeInsets.all(3.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(18.0),
-            child: Image.file(
-              File(imageFileList![index].path),
-              fit: BoxFit.fill,
-            ),
-          ),
-        );
-      },
-    );
+    return length > 0
+        ? Container(
+        height: imageThumbnailAreaHeight,
+        child: ListView.builder(
+          // shrinkWrap: true,
+          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+          scrollDirection: Axis.horizontal,
+          itemCount: imageController.images!.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              width: imageThumbnailAreaHeight,
+              padding: EdgeInsets.all(3.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(18.0),
+                child: Image.file(
+                  File(imageController.images![index].path),
+                  fit: BoxFit.fill,
+                ),
+              ),
+            );
+          },
+        ),
+      )
+        : Container(color: Colors.pink.shade300, height: imageThumbnailAreaHeight);
   }
 }
+//
+// class SelectedImageArea extends StatelessWidget {
+//   const SelectedImageArea({
+//     Key? key,
+//     required this.imageController,
+//   }) : super(key: key);
+//
+//   final ImageController imageController;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ;
+//   }
+// }
