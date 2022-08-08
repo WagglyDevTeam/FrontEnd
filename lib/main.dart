@@ -6,6 +6,8 @@ import 'package:waggly/screens/index.dart';
 import 'package:waggly/screens/my_page.dart';
 import 'package:waggly/screens/post.dart';
 import 'package:waggly/screens/sign_in.dart';
+import 'package:waggly/screens/write_page.dart';
+import 'package:waggly/screens/write_page2.dart';
 
 void main() async {
   runApp(const HeroApp());
@@ -46,6 +48,10 @@ class HeroApp extends StatelessWidget {
             name: "/signInPage",
             page: () => SignInScreen(),
             transition: Transition.rightToLeft),
+        GetPage(
+            name: "/writePage",
+            page: () => WritePage(),
+            transition: Transition.rightToLeft)
       ],
     );
   }
