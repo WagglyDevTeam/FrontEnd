@@ -12,7 +12,7 @@ class ImageController extends GetxController {
   }
 
   Future getImage() async {
-    var image = await ImagePicker().pickMultiImage();
+    var image = await ImagePicker().pickMultiImage(maxWidth: 1024, maxHeight: 1024, imageQuality: 50);
     List<String> existBytesString = <String>[];
     if (image != null) {
       if (images == null || images!.isEmpty) {

@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_social_textfield/controller/social_text_editing_controller.dart';
 import 'package:get/get.dart';
+import 'package:hashtagable/hashtagable.dart';
 import '../components/post/custom_text_form_field.dart';
 import '../components/post/post_app_bar.dart';
 import '../controller/post/image_controller.dart';
@@ -12,7 +14,7 @@ const double appBarHeight = 50.0;
 const double dividerHeight = 16.0;
 const double titleAreaHeight = 40.0;
 const double tagAreaHeight = 40.0;
-const double buttonAreaHeight = 50.0;
+const double buttonAreaHeight = 40.0;
 const double cameraButtonAreaHeight = 40.0;
 const double imageThumbnailAreaHeight = 100.0;
 const double cameraButtonWidth = 40.0;
@@ -21,18 +23,18 @@ class WritePage extends StatelessWidget {
   ImageController imageController = Get.put(ImageController());
   PostController postController = Get.put(PostController());
   final _title = TextEditingController();
-  final _hashtag = TextEditingController();
+  final _hashtag = SocialTextEditingController();
   final _content = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     var page = Status.edit;
-    const postName = "글쓰기";
+    const postName = "게시글 작성";
     var mediaQuery = MediaQuery.of(context);
     var screenHeight = mediaQuery.size.height -
         mediaQuery.padding.top -
         mediaQuery.padding.bottom;
-    var safeWidth = mediaQuery.size.width - 40;
+    var safeWidth = mediaQuery.size.width - 40; // 좌우 Padding 20 씩
 
     var contentAreaHeight = screenHeight -
         appBarHeight -
@@ -41,8 +43,8 @@ class WritePage extends StatelessWidget {
         buttonAreaHeight -
         cameraButtonAreaHeight -
         imageThumbnailAreaHeight -
-        (dividerHeight * 4) -
-        30;
+        (dividerHeight * 4)
+        - 8; // 왠지 모르겠는데 키보드가 올라가면 8만큼 높이가 오버플로우 돼서 8 빼줬음
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -76,12 +78,7 @@ class WritePage extends StatelessWidget {
                 child: Container(
                   alignment: Alignment.centerLeft,
                   height: tagAreaHeight,
-                  child: CustomTextFormField(
-                    // maxLines: 15,
-                    controller: _hashtag,
-                    hint: "#해시태그를 이용하여 게시글을 소개해주세요.",
-                    hintStyle: TextStyle(color: Colors.purple.shade200),
-                  ),
+                  child: HashtagInputField(controller: _hashtag),
                 ),
               ), // 해시태그 영역
               Divider(),
@@ -93,7 +90,7 @@ class WritePage extends StatelessWidget {
                   child: Container(
                     width: safeWidth,
                     child: CustomTextFormField(
-                      maxLines: 15,
+                      maxLines: 200,
                       controller: _content,
                       hint: "내용을 입력하세요.",
                     ),
@@ -117,7 +114,7 @@ class WritePage extends StatelessWidget {
                         },
                         icon: Icon(
                           Icons.photo_camera,
-                          size: 30,
+                          size: 25,
                           color: Color(0xFF6C6C6C),
                         ),
                       ),
@@ -125,22 +122,25 @@ class WritePage extends StatelessWidget {
                     SizedBox(width: 140),
                     Padding(
                       padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-                      child: SizedBox(
-                        // color: Colors.red.shade700,
-                        // alignment: Alignment.centerRight,
-                        width: safeWidth - cameraButtonWidth - 140,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Text("커뮤니티 이용규칙 전체보기"),
-                          style: TextButton.styleFrom(
-                            textStyle: TextStyle(
-                              foreground: Paint()..color = Color(0xFF959595),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12,
+                      child: InkWell(
+                        onTap: () {},
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          width: safeWidth - cameraButtonWidth - 140,
+                          child: Container(
+                            margin: EdgeInsets.only(right: 10.0),
+                            padding: EdgeInsets.fromLTRB(14, 7, 14, 7),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE8E8E8),
+                              borderRadius: BorderRadius.circular(30),
                             ),
-                            backgroundColor: Color(0xFFE8E8E8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(40),
+                            child: Text(
+                              "커뮤니티 이용규칙 전체 보기",
+                              style: TextStyle(
+                                foreground: Paint()..color = Color(0xFF959595),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 10,
+                              ),
                             ),
                           ),
                         ),
@@ -155,12 +155,17 @@ class WritePage extends StatelessWidget {
                 child: SizedBox(
                   width: double.infinity,
                   height: buttonAreaHeight,
-                  // color: Colors.yellow.shade300,
                   child: TextButton(
-                    onPressed: () {
-                      postController.writeBoard(
+                    onPressed: () async {
+                      List<MultipartFile> file = imageToMultipartFile();
+                      await postController.writeBoard(
                         PostRequestDto(
-                            _title.text, _content.text, "SOCIAL", false),
+                            _title.text,
+                            _content.text,
+                            "SOCIAL",
+                            false,
+                            file
+                        ),
                       );
                     },
                     child: Text("게시글 작성하기"),
@@ -186,6 +191,45 @@ class WritePage extends StatelessWidget {
       ),
     );
   }
+
+  List<MultipartFile> imageToMultipartFile() {
+    List<MultipartFile> file = <MultipartFile>[];
+    for (var img in imageController.images!) {
+      print(img.name);
+      file.add(MultipartFile(File(img.path), filename: img.name));
+    }
+    return file;
+  }
+}
+
+class HashtagInputField extends StatelessWidget {
+  final SocialTextEditingController controller;
+
+  HashtagInputField({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return HashTagTextField(
+      onChanged: (text) {
+        if (text[text.length - 2] == ',') {
+          controller.text = text + " ";
+          controller.selection =
+              TextSelection.collapsed(offset: controller.text.lastIndexOf(" "));
+        }
+      },
+      keyboardAppearance: Brightness.light,
+      keyboardType: TextInputType.text,
+      controller: controller,
+      decoration: InputDecoration(
+        hintText: "#해시태그를 이용하여 게시글을 소개해주세요.",
+        hintStyle: TextStyle(color: Colors.purple.shade200),
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+      ),
+      decoratedStyle: TextStyle(fontSize: 14.0, color: Colors.purple),
+    );
+  }
 }
 
 class PhotoWidget extends StatelessWidget {
@@ -201,7 +245,7 @@ class PhotoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return length > 0
-        ? Container(
+        ? SizedBox(
             height: imageThumbnailAreaHeight,
             child: ListView.builder(
               // shrinkWrap: true,
@@ -211,20 +255,39 @@ class PhotoWidget extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   width: imageThumbnailAreaHeight,
-                  padding: EdgeInsets.all(3.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(18.0),
-                    child: Image.file(
-                      File(imageController.images![index].path),
-                      fit: BoxFit.fill,
-                    ),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(18.0),
+                          child: Image.file(
+                            File(imageController.images![index].path),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: -15,
+                        left: imageThumbnailAreaHeight - 35,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.cancel,
+                            color: Colors.purple.shade600,
+                            size: 20.0,
+                          ),
+                          onPressed: () {
+                            imageController.images!.removeAt(index);
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 );
               },
             ),
           )
-        : Container(
-            color: Colors.pink.shade300, height: imageThumbnailAreaHeight);
+        : SizedBox(height: imageThumbnailAreaHeight);
   }
 }
-
