@@ -23,6 +23,10 @@ class CustomTextFormField extends StatelessWidget {
       maxLines: maxLines ?? 1,
       initialValue: initialValue,
       validator: validator,
+      onChanged: (text) {
+        print(text);
+      },
+      autocorrect: false,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: hintStyle,

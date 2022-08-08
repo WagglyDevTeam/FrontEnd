@@ -6,7 +6,7 @@ import 'package:waggly/screens/index.dart';
 import 'package:waggly/screens/my_page.dart';
 import 'package:waggly/screens/post.dart';
 import 'package:waggly/screens/sign_in.dart';
-import 'package:waggly/screens/write_page2.dart';
+import 'package:waggly/screens/write_page.dart';
 
 void main() async {
   runApp(const HeroApp());
