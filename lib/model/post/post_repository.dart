@@ -19,6 +19,5 @@ class PostRepository {
   Future<void> writeBoard(FormData data) async {
     Response response = await _postProvider.writeBoard(data);
     dynamic body = response.body;
-    print(body);
   }
 }

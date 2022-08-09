@@ -158,13 +158,15 @@ class WritePage extends StatelessWidget {
                   child: TextButton(
                     onPressed: () async {
                       List<MultipartFile> file = imageToMultipartFile();
+                      List<String> hashtags = extractHashTags(_hashtag.text);
                       await postController.writeBoard(
                         PostRequestDto(
                             _title.text,
                             _content.text,
                             "SOCIAL",
                             false,
-                            file
+                            hashtags,
+                            file,
                         ),
                       );
                     },
@@ -195,7 +197,6 @@ class WritePage extends StatelessWidget {
   List<MultipartFile> imageToMultipartFile() {
     List<MultipartFile> file = <MultipartFile>[];
     for (var img in imageController.images!) {
-      print(img.name);
       file.add(MultipartFile(File(img.path), filename: img.name));
     }
     return file;

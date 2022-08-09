@@ -19,7 +19,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("here2");
     return Scaffold(
       appBar: const HomeAppbar(),
       body: RefreshIndicator(

@@ -22,12 +22,10 @@ class PostController extends GetxController {
     List<Post> convertedPosts = postsJson.map((e) => Post.fromJson(e)).toList();
     posts.value = convertedPosts;
     bestPost.value = Post.fromJson(result.datas["bestPost"]);
-    print(posts[0].postTitle);
   }
 
   Future<void> writeBoard(PostRequestDto postRequestDto) async {
     FormData form = FormData(postRequestDto.toJson());
     await _postRepository.writeBoard(form);
-    // print(result);
   }
 }
