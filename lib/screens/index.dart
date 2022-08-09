@@ -33,7 +33,6 @@ class _ScreenState extends State<Screen> {
   ];
   @override
   Widget build(BuildContext context) {
-    print("here1");
     Get.put(PostController());
     return Scaffold(
         body: screenList[screenIndex],

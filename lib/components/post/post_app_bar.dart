@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:waggly/screens/post.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/index.dart';
@@ -111,7 +112,7 @@ class ActionBtns extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ActionButton(
-                    event: () => Navigator.of(context).pop(),
+                    event: () => Get.toNamed("/writePage"),
                     isIcon: Icon(
                       Icons.add,
                       color: Palette.gray,
