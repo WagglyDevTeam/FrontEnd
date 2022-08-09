@@ -7,6 +7,7 @@ import 'package:waggly/screens/my_page.dart';
 import 'package:waggly/screens/post.dart';
 import 'package:waggly/screens/sign_in.dart';
 import 'package:waggly/screens/write_page.dart';
+import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 
 void main() async {
   runApp(const HeroApp());
@@ -50,7 +51,11 @@ class HeroApp extends StatelessWidget {
         GetPage(
             name: "/writePage",
             page: () => WritePage(),
-            transition: Transition.rightToLeft)
+            transition: Transition.rightToLeft),
+        GetPage(
+            name: "/profileImg",
+            page: () => ProfileImgScreen(),
+            transition: Transition.rightToLeft),
       ],
     );
   }

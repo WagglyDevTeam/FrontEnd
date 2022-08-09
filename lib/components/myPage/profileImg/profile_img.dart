@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:waggly/screens/my_page.dart';
+import 'package:waggly/components/myPage/profileImg/img_tile.dart';
 import 'package:waggly/widgets/Button/button.dart';
 import 'package:waggly/widgets/PageNav/page_nav.dart';
 import 'package:waggly/utils/colors.dart';
-import 'package:waggly/model/Mypage/waggly_img.dart';
-import 'package:waggly/controller/Mypage/waggly_img_controller.dart';
+import 'package:waggly/model/myPage/waggly_img.dart';
+import 'package:waggly/controller/myPage/waggly_img_controller.dart';
 
 class ProfileImgScreen extends StatelessWidget {
   @override
@@ -18,8 +18,8 @@ class ProfileImgList extends StatelessWidget {
   WagglyImgController controller = Get.put(WagglyImgController());
 
   bool focus = false;
-  dynamic checkedImg;
   String imgUrl = '';
+  dynamic checkedImg;
 
   @override
   Widget build(BuildContext context) {
@@ -35,35 +35,17 @@ class ProfileImgList extends StatelessWidget {
               ),
               Expanded(
                 child: Obx(
-                  () => GridView.count(
-                    padding: const EdgeInsets.all(26),
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    children: [
-                      // ...(controller.wagglyImglist).map(
-                      ...(controller.imgList).map(
-                        (item) => GestureDetector(
-                          child: Container(
-                            padding: const EdgeInsets.all(20),
-                            child: Image.network(item.img.toString()),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16.0),
-                              border: Border.all(
-                                  color: checkedImg?.id == item.id
-                                      ? Palette.main
-                                      : Palette.light),
-                            ),
-                          ),
-                          onTap: () {
-                            // setState(() {
-                            // onClick(item);
-                            // imgUrl = item.img.toString();
-                            // });
-                          },
-                        ),
-                      ),
-                    ],
+                  () => GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                    ),
+                    itemBuilder: (context, index) {
+                      //반복될 카드가 이미지와 텍스트를 이용하는 것이라서 그 타일 모양을 만들어주는게 좋다.
+                      // return ImgTile(controller.wagglyImgList[index])
+                    },
+                    itemCount: controller.wagglyImglist.length,
                   ),
                 ),
               ),
@@ -75,11 +57,7 @@ class ProfileImgList extends StatelessWidget {
                     text: '적용하기',
                     onPress: () {
                       ProfileImgModel(img: imgUrl);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyPageScreen()),
-                      );
-                      print(imgUrl);
+                      Get.toNamed('/myPage');
                     },
                     disabled: checkedImg != null ? false : true,
                     theme: 'double'),
@@ -90,10 +68,5 @@ class ProfileImgList extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void onClick(WagglyImgModel item) {
-    item.value = !item.value;
-    checkedImg = item;
   }
 }

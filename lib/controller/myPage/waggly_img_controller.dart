@@ -5,7 +5,7 @@ import 'package:waggly/server/server.dart';
 class WagglyImgController extends GetxController {
   var wagglyImglist = <WagglyImg>[].obs;
   var imgList = <WagglyImgModel>[].obs;
-  int checkedImgNumber = 0;
+  dynamic checkedImg;
 
   @override
   void onInit() {
@@ -14,22 +14,22 @@ class WagglyImgController extends GetxController {
   }
 
   void fetchData() async {
+    imgList.value = <WagglyImgModel>[].obs;
     var wagglyImgs = await Services.getWagglyImg();
     if (wagglyImgs != null) {
       wagglyImglist.value = wagglyImgs;
     }
-  }
-
-  void getImg() async {
-    imgList.value = <WagglyImgModel>[];
-    for (var i = 0; i < wagglyImglist.length; i++) {
-      var imgItem = wagglyImglist[i];
-      imgList.add(
-        WagglyImgModel(
-          id: imgItem.id,
-          img: imgItem.img,
-        ),
-      );
-    }
+    print(wagglyImglist);
+    // imgList.value = <WagglyImgModel>[].obs;
+    // for (var i = 0; i < wagglyImglist.length; i++) {
+    //   var imgItem = wagglyImglist[i];
+    //   imgList.add(
+    //     WagglyImgModel(
+    //       id: imgItem.id,
+    //       img: imgItem.img,
+    //       value: false,
+    //     ),
+    //   );
+    // }
   }
 }
