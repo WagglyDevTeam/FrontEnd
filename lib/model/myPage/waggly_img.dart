@@ -16,7 +16,7 @@ class WagglyImg {
   int id;
   String img;
 
-  var selected = false.obs;
+  // var selected = false.obs;
 
   factory WagglyImg.fromJson(Map<String, dynamic> json) => WagglyImg(
         id: json["id"],
@@ -29,13 +29,13 @@ class WagglyImg {
       };
 }
 
-class WagglyImgModel {
-  int id;
-  String img;
-  bool value;
-
-  WagglyImgModel({this.value = false, required this.id, required this.img});
-}
+// class WagglyImgModel {
+//   int id;
+//   String img;
+//   bool value;
+//
+//   WagglyImgModel({this.value = false, required this.id, required this.img});
+// }
 
 class ProfileImgModel {
   String img;

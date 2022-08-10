@@ -15,7 +15,7 @@ class ProfileImgScreen extends StatelessWidget {
 }
 
 class ProfileImgList extends StatelessWidget {
-  WagglyImgController controller = Get.put(WagglyImgController());
+  final WagglyImgController controller = Get.put(WagglyImgController());
 
   bool focus = false;
   String imgUrl = '';
@@ -43,7 +43,29 @@ class ProfileImgList extends StatelessWidget {
                     ),
                     itemBuilder: (context, index) {
                       //반복될 카드가 이미지와 텍스트를 이용하는 것이라서 그 타일 모양을 만들어주는게 좋다.
-                      // return ImgTile(controller.wagglyImgList[index])
+                      //return (controller.selected == index)
+                      return GestureDetector(
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          child: Obx(
+                            () => Image.network(
+                                controller.wagglyImglist[index].img),
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.0),
+                            border: Border.all(
+                                color: controller.selected == index
+                                    ? Palette.main
+                                    : Palette.lightGray),
+                          ),
+                        ),
+                        onTap: () {
+                          controller.selected = index;
+                          print(index);
+                          // checkedImg = item;
+                          // imgUrl = item.img.toString();
+                        },
+                      );
                     },
                     itemCount: controller.wagglyImglist.length,
                   ),
