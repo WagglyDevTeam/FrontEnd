@@ -18,3 +18,4 @@ class MyPostListController extends GetxController {
     }
   }
 }
+// 변경
