@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:waggly/components/myPage/profileImg/profile_img.dart';
-import 'package:waggly/components/Mypage/active/index.dart';
+import 'package:waggly/components/myPage/active/index.dart';
 import 'package:waggly/components/Notification/notification.dart';
 import 'package:waggly/model/myPage/waggly_img.dart';
 import 'package:waggly/widgets/Button/button.dart';
