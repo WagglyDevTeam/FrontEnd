@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waggly/screens/chat.dart';
 import 'package:waggly/screens/chat_edit.dart';
+import 'package:waggly/screens/group_chat_create.dart';
 import 'package:waggly/screens/home.dart';
 import 'package:waggly/screens/my_page.dart';
 import 'package:waggly/screens/post.dart';

@@ -31,7 +31,6 @@ class HomeScreen extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  SizedBox(height: 10),
                   AdvertisementArea(), // 광고영역
                   SizedBox(height: 25),
                   PostTitleArea(),

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waggly/screens/chat.dart';
 import 'package:waggly/screens/chat_edit.dart';
+import 'package:waggly/screens/group_chat_create.dart';
 import 'package:waggly/screens/index.dart';
 import 'package:waggly/screens/my_page.dart';
 import 'package:waggly/screens/post.dart';
 import 'package:waggly/screens/sign_in.dart';
-import 'package:waggly/screens/write_page.dart';
+import 'package:waggly/screens/write.dart';
 
 void main() async {
   runApp(const HeroApp());
@@ -49,7 +50,9 @@ class HeroApp extends StatelessWidget {
             transition: Transition.rightToLeft),
         GetPage(
             name: "/writePage",
-            page: () => WritePage(),
+            // page: () => WritePage(),
+            // 그룹채팅방 만들기 페이지가 갈 곳이 없어서 임시로 여기에 라우팅 해둠
+            page: () => GroupChatCreatePage(),
             transition: Transition.rightToLeft)
       ],
     );
