@@ -7,6 +7,7 @@ class ChatEditController extends GetxController{
   final stepOneOption = "".obs;
   final stepTwoOption = "".obs;
   final isSameSex = false.obs;
+  final isUseMyIntro = false.obs;
 
   void changeStepNumber(step){
     stepNumber.value = step;
@@ -24,6 +25,10 @@ class ChatEditController extends GetxController{
 
   void changeIsSameSex(value){
     isSameSex.value = value;
+  }
+
+  void changeIsUseMyIntro(value){
+    isUseMyIntro.value = value;
   }
   void pr(){
     print(stepNumber);

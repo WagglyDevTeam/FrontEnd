@@ -19,24 +19,34 @@ class ChatEditScreen extends StatelessWidget {
     Status page = Status.alarm;
     String postName = '채팅';
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PostAppbar(
-        page: page,
-        postName: postName,
-      ),
-      body: Obx(() =>
-          Column(
-            children: [
-              SizedBox(height: 10.h),
-              ChatTypeList(),
-              SizedBox(height: 96.h),
-
-              ChatEditStep(stepNumber: controller.stepNumber.value,),
-              ChatEditBody(stepNumber: controller.stepNumber.value)
-            ],
+    return GestureDetector(
+      onTap: ()=> FocusScope.of(context).unfocus(),
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.white,
+          appBar: PostAppbar(
+            page: page,
+            postName: postName,
           ),
-      )
+          body: Obx(() =>
+              Column(
+                children: [
+                  SizedBox(height: 10.h),
+                  ChatTypeList(),
+                  SizedBox(height: 96.h),
+                  Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            ChatEditStep(stepNumber: controller.stepNumber.value,),
+                            ChatEditBody(stepNumber: controller.stepNumber.value)
+                          ],
+                        ),
+                      ))
+                ],
+              ),
+          )
+      ),
     );
   }
 }

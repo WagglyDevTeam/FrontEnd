@@ -40,6 +40,8 @@ class ChatEditBody extends StatelessWidget{
           StepOneOption(stepNumber: stepNumber,)
         else if(stepNumber == 2)
           StepTwoOption(stepNumber: stepNumber)
+        else if(stepNumber == 3)
+          StepThreeOption()
       ],
     );
   }
@@ -167,6 +169,113 @@ class StepTwoOption extends StatelessWidget{
                 )
               ],
             ))
+        )
+      ],
+    );
+  }
+
+}
+
+class StepThreeOption extends StatelessWidget{
+  const StepThreeOption({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    ChatEditController controller = Get.put(ChatEditController());
+    return Column(
+      children: [
+        Container(
+          width: 324.w,
+          height: 67.h,
+          child: TextField(
+            maxLines: 5,
+            decoration: InputDecoration(
+              hintText: "다른 친구들에게 자신을 소개해보세요. (60자 이내)",
+              hintStyle: TextStyle(
+                  fontFamily: "NotoSansKR_Md",
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                  color:Color.fromRGBO(149,149,149,1)
+              ),
+              contentPadding: EdgeInsets.symmetric(
+                  vertical: 16.h, horizontal: 18.w),
+              isCollapsed: true,
+              fillColor: Color.fromRGBO(232,232,232,0.7),
+              filled: true,
+              enabledBorder:  OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color.fromRGBO(232,232,232,1)
+                ),
+                borderRadius: BorderRadius.circular(20)
+              ),
+              focusedBorder:  OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Color.fromRGBO(232,232,232,1)
+                    ),
+                  borderRadius: BorderRadius.circular(20)
+                ),
+            ),
+          ),
+        ),
+        SizedBox(height: 8.h,),
+        Container(
+            alignment: Alignment.centerLeft,
+            width: 324.w,
+            height: 14.h,
+            child: Obx(() => Row(
+              children: [
+                Transform.scale(
+                  scale: 0.7.w,
+                  child: Theme(
+                    data: Theme.of(context).copyWith(
+                      unselectedWidgetColor: Palette.main,
+                    ),
+                    child: Checkbox(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)
+                        ),
+                        checkColor: Palette.main,
+                        activeColor: Colors.white,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        value: controller.isUseMyIntro.value,
+                        onChanged: (value){
+                          controller.changeIsUseMyIntro(value);}
+                    ),
+                  ),
+                ),
+                Text(
+                    "자기소개글 그대로 사용하기",
+                    style: TextStyle(
+                        fontFamily: "NotoSansKR_Md",
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w500,
+                        color:Colors.black)
+                )
+              ],
+            ))
+        ),
+        SizedBox(height: 24.h,),
+        InkWell(
+            borderRadius: BorderRadius.circular(20),
+            onTap: (){
+            },
+            child: Container(
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              width: 324.w,
+              height: 42.h,
+              alignment: Alignment.center,
+              decoration:BoxDecoration(
+                  color: Palette.main,
+                  borderRadius: BorderRadius.circular(20)
+              ),
+              child: Text("신청 보내기",
+                  style: TextStyle(
+                      fontFamily: "NotoSansKR_Md",
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white)),
+            )
         )
       ],
     );
