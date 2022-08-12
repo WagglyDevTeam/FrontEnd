@@ -60,8 +60,8 @@ class PostBoxArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-      padding: EdgeInsets.all(20),
-      height: 150,
+      padding: EdgeInsets.fromLTRB(20, 16, 20, 16),
+      height: 130,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         border: Border.all(
@@ -111,8 +111,8 @@ class PostBoxArea extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Container(
+              height: 30,
               alignment: Alignment.centerLeft,
-              // color: Colors.green.shade300,
               width: MediaQuery.of(context).size.width,
               child: Text(
                 "${post.postDesc}",
@@ -124,7 +124,7 @@ class PostBoxArea extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 18),
             Row(
               children: [
                 Container(
@@ -251,16 +251,19 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
       height: 80,
-      child: ListView.builder(
+      child: ListView.separated(
+          separatorBuilder: (BuildContext context, int index) {
+            return SizedBox(width: 10.0);
+          },
           scrollDirection: Axis.horizontal,
           itemCount: 5,
           itemBuilder: (ctx, index) {
             return Container(
               height: 85.0,
               width: 270.0,
-              margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),

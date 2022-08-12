@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:waggly/model/Mypage/waggly_img.dart';
+import 'package:waggly/model/myPage/waggly_img.dart';
 import 'package:waggly/server/server.dart';
 
 class WagglyImgController extends GetxController {
