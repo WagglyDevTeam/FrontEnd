@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:waggly/screens/chat.dart';
 import 'package:waggly/screens/chat_edit.dart';
@@ -18,43 +19,48 @@ class HeroApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'waggly',
-      home: MyApp(),
-      initialRoute: "/",
-      getPages: [
-        GetPage(
-            name: "/",
-            page: () => Screen(),
-            transition: Transition.rightToLeft),
-        GetPage(
-            name: "/post",
-            page: () => PostScreen(),
-            transition: Transition.rightToLeft),
-        GetPage(
-            name: "/chat",
-            page: () => ChatScreen(),
-            transition: Transition.rightToLeft),
-        GetPage(
-            name: "/myPage",
-            page: () => MyPageScreen(),
-            transition: Transition.rightToLeft),
-        GetPage(
-            name: "/chatEdit",
-            page: () => ChatEditScreen(),
-            transition: Transition.rightToLeft),
-        GetPage(
-            name: "/signInPage",
-            page: () => SignInScreen(),
-            transition: Transition.rightToLeft),
-        GetPage(
-            name: "/writePage",
-            // page: () => WritePage(),
-            // 그룹채팅방 만들기 페이지가 갈 곳이 없어서 임시로 여기에 라우팅 해둠
-            page: () => GroupChatCreatePage(),
-            transition: Transition.rightToLeft)
-      ],
+    return ScreenUtilInit(
+      designSize: const Size(360, 760),
+      builder: (context, child) {
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'waggly',
+          home: MyApp(),
+          initialRoute: "/",
+          getPages: [
+            GetPage(
+                name: "/",
+                page: () => Screen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/post",
+                page: () => PostScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/chat",
+                page: () => ChatScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/myPage",
+                page: () => MyPageScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/chatEdit",
+                page: () => ChatEditScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/signInPage",
+                page: () => SignInScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/writePage",
+                // page: () => WritePage(),
+                // 그룹채팅방 만들기 페이지가 갈 곳이 없어서 임시로 여기에 라우팅 해둠
+                page: () => GroupChatCreatePage(),
+                transition: Transition.rightToLeft)
+          ],
+        );
+      },
     );
   }
 }

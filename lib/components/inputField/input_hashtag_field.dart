@@ -5,15 +5,15 @@ import 'package:hashtagable/hashtagable.dart';
 class InputHashtagField extends StatelessWidget {
   final SocialTextEditingController controller;
   final String hintText;
-  final double height;
+  // final double height;
 
-  InputHashtagField({required this.controller, required this.height, required this.hintText});
+  InputHashtagField({required this.controller, required this.hintText});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      height: height,
+      // height: height,
       child: HashTagTextField(
         onChanged: (text) {
           if (text[text.length - 2] == ',') {

@@ -58,10 +58,13 @@ class PostBoxArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double safeWidth = Get.width - 80;
+
+
     return Container(
       margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
       padding: EdgeInsets.fromLTRB(20, 16, 20, 16),
-      height: 130,
+      height: 140,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         border: Border.all(
@@ -74,13 +77,13 @@ class PostBoxArea extends StatelessWidget {
         isLoading: post.postTitle != null ? false : true,
         skeleton: SkeletonParagraph(),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  // color: Colors.green,
-                  width: MediaQuery.of(context).size.width * 0.54,
+                  width: safeWidth * 0.7,
                   child: Text(
                     "${post.postTitle}",
                     style: TextStyle(
@@ -93,8 +96,7 @@ class PostBoxArea extends StatelessWidget {
                 ),
                 Container(
                   alignment: Alignment.centerRight,
-                  // color: Colors.green.shade300,
-                  width: MediaQuery.of(context).size.width * 0.249,
+                  width: safeWidth * 0.29,
                   child: Text(
                     post.postCreatedAt != null
                         ? DateFormat('yyyy-MM-dd').format(post.postCreatedAt!)
@@ -111,9 +113,8 @@ class PostBoxArea extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Container(
-              height: 30,
+              height: 38,
               alignment: Alignment.centerLeft,
-              width: MediaQuery.of(context).size.width,
               child: Text(
                 "${post.postDesc}",
                 style: TextStyle(
@@ -129,18 +130,20 @@ class PostBoxArea extends StatelessWidget {
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  width: MediaQuery.of(context).size.width * 0.319,
+                  width: safeWidth * 0.46,
                   child: Text(
-                    "시각디자인학과",
+                    "시각디자인학과와건축학과",
                     style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w300,
                         color: Colors.grey),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                SizedBox(
-                  // color: Colors.green.shade300,
-                  width: MediaQuery.of(context).size.width * 0.47,
+                Container(
+                  alignment: Alignment.centerRight,
+                  width: safeWidth * 0.53,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -152,7 +155,7 @@ class PostBoxArea extends StatelessWidget {
                             color: Colors.purple,
                           ),
                           SizedBox(
-                            width: 3,
+                            width: 2,
                           ),
                           Text(
                             "15",
@@ -164,7 +167,7 @@ class PostBoxArea extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        width: 10,
+                        width: 8,
                       ),
                       Row(
                         children: [
@@ -174,10 +177,10 @@ class PostBoxArea extends StatelessWidget {
                             color: Colors.purple,
                           ),
                           SizedBox(
-                            width: 3,
+                            width: 2,
                           ),
                           Text(
-                            "6000",
+                            "60000",
                             style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w300,
@@ -186,7 +189,7 @@ class PostBoxArea extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        width: 10,
+                        width: 8,
                       ),
                       Row(
                         children: [
@@ -196,10 +199,10 @@ class PostBoxArea extends StatelessWidget {
                             color: Colors.purple,
                           ),
                           SizedBox(
-                            width: 3,
+                            width: 2,
                           ),
                           Text(
-                            "6000",
+                            "60000",
                             style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w300,

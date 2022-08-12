@@ -70,7 +70,7 @@ class WritePage extends StatelessWidget {
                   child: InputTitleField(
                     controller: _title,
                     hintText: "제목을 입력하세요.",
-                    height: titleAreaHeight,
+                    // height: titleAreaHeight,
                   ),
                 ), // 제목 영역
                 Divider(),
@@ -79,7 +79,7 @@ class WritePage extends StatelessWidget {
                   child: InputHashtagField(
                     controller: _hashtag,
                     hintText: "#해시태그를 이용하여 게시글을 소개해주세요.",
-                    height: hashtagAreaHeight,
+                    // height: hashtagAreaHeight,
                   ),
                 ), // 해시태그 영역
                 Divider(),
