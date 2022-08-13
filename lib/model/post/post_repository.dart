@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:get/get_connect/http/src/response/response.dart';
+import 'package:get/get.dart';
 import 'package:waggly/model/post/post_provider.dart';
 
 import 'dtos/waggly_response_dto.dart';
@@ -14,5 +14,10 @@ class PostRepository {
 
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
     return wagglyResponseDto;
+  }
+
+  Future<void> writeBoard(FormData data) async {
+    Response response = await _postProvider.writeBoard(data);
+    dynamic body = response.body;
   }
 }

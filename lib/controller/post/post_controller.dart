@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../model/post/dtos/post_request_dto.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
 import '../../model/post/post.dart';
 import '../../model/post/post_repository.dart';
@@ -21,6 +22,10 @@ class PostController extends GetxController {
     List<Post> convertedPosts = postsJson.map((e) => Post.fromJson(e)).toList();
     posts.value = convertedPosts;
     bestPost.value = Post.fromJson(result.datas["bestPost"]);
-    print(posts[0].postTitle);
+  }
+
+  Future<void> writeBoard(PostRequestDto postRequestDto) async {
+    FormData form = FormData(postRequestDto.toJson());
+    await _postRepository.writeBoard(form);
   }
 }
