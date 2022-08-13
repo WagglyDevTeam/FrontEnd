@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/myPage/active/index.dart';
+import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/Notification/notification.dart';
 import 'package:waggly/model/myPage/waggly_img.dart';
 import 'package:waggly/widgets/Button/button.dart';
@@ -164,7 +164,6 @@ class _myPageState extends State<myPage> {
               Button(
                   text: '와글리 이미지',
                   onPress: () {
-                    controller.fetchData();
                     controller.getImg();
                     Navigator.of(context).push(profileImg.slideRitghtToLeft());
                   },

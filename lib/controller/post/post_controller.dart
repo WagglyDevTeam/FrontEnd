@@ -16,6 +16,10 @@ class PostController extends GetxController {
     await getBoard();
   }
 
+  bool isButtonActivate() {
+    return false;
+  }
+
   Future<void> getBoard() async {
     WagglyResponseDto result = await _postRepository.getBoard();
     List<dynamic> postsJson = result.datas["posts"];

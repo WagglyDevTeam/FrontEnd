@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:waggly/utils/text_frame.dart';
 import '../components/chatEdit/chat_edit_body.dart';
 import '../components/chatEdit/chat_edit_step.dart';
 import '../components/post/post_app_bar.dart';
