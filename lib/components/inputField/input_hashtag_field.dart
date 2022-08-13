@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_social_textfield/controller/social_text_editing_controller.dart';
-import 'package:get/get.dart';
 import 'package:hashtagable/hashtagable.dart';
 import 'package:waggly/controller/group_chat_controller.dart';
 import 'package:waggly/utils/colors.dart';
@@ -20,7 +19,7 @@ class InputHashtagField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      // height: height,
+      // TODO: 입력 방식이 불편하지는 않은지? 해시태그마다 # 을 쳐줘야하는데
       child: HashTagTextField(
         onChanged: (text) {
           if (text.length > 1 && text[text.length - 2] == ',') {
