@@ -57,110 +57,116 @@ class WritePage extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
+        onTap: () {
+          FocusNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
         child: SizedBox(
-          height: screenHeight,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Divider(),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                  child: InputTitleField(
-                    controller: _title,
-                    hintText: "제목을 입력하세요.",
-                    // height: titleAreaHeight,
-                  ),
-                ), // 제목 영역
-                Divider(),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                  child: InputHashtagField(
-                    controller: _hashtag,
-                    hintText: "#해시태그를 이용하여 게시글을 소개해주세요.",
-                    // height: hashtagAreaHeight,
-                  ),
-                ), // 해시태그 영역
-                Divider(),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                  child: Container(
-                    alignment: Alignment.topCenter,
-                    height: contentAreaHeight,
-                    child: SizedBox(
-                      width: safeWidth,
-                      child: CustomTextFormField(
-                        maxLines: 200,
-                        controller: _content,
-                        hint: "내용을 입력하세요.",
+            height: screenHeight,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Divider(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    child: InputTitleField(
+                      onEditingComplete: (){},
+                      controller: _title,
+                      hintText: "제목을 입력하세요.",
+                      // height: titleAreaHeight,
+                    ),
+                  ), // 제목 영역
+                  Divider(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    child: InputHashtagField(
+                      controller: _hashtag,
+                      hintText: "#해시태그를 이용하여 게시글을 소개해주세요.",
+                      // height: hashtagAreaHeight,
+                    ),
+                  ), // 해시태그 영역
+                  Divider(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    child: Container(
+                      alignment: Alignment.topCenter,
+                      height: contentAreaHeight,
+                      child: SizedBox(
+                        width: safeWidth,
+                        child: CustomTextFormField(
+                          maxLines: 200,
+                          controller: _content,
+                          hint: "내용을 입력하세요.",
+                        ),
                       ),
                     ),
-                  ),
-                ), // 내용 영역
-                Obx(
-                  () => PhotoWidget(
-                      imageController: imageController,
-                      length: imageController.images!.length),
-                ), // 선택된 이미지 표시 영역
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          width: cameraButtonWidth,
-                          child: IconButton(
-                            onPressed: () async {
-                              await imageController.getImage();
-                            },
-                            icon: Icon(
-                              Icons.photo_camera,
-                              size: 25,
-                              color: Color(0xFF6C6C6C),
+                  ), // 내용 영역
+                  Obx(
+                    () => PhotoWidget(
+                        imageController: imageController,
+                        length: imageController.images!.length),
+                  ), // 선택된 이미지 표시 영역
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            width: cameraButtonWidth,
+                            child: IconButton(
+                              onPressed: () async {
+                                await imageController.getImage();
+                              },
+                              icon: Icon(
+                                Icons.photo_camera,
+                                size: 25,
+                                color: Color(0xFF6C6C6C),
+                              ),
                             ),
                           ),
-                        ),
-                      ), // 카메라 아이콘
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, right: 10.0),
-                            child: RulesButton(text: "커뮤니티 이용규칙 전체 보기"),
+                        ), // 카메라 아이콘
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, right: 10.0),
+                              child: RulesButton(text: "커뮤니티 이용규칙 전체 보기"),
+                            ),
                           ),
-                        ),
-                      ), // 커뮤니티 이용 수칙
-                    ],
-                  ),
-                ), // 카메라 아이콘, 커뮤니티 이용규칙
-                Divider(),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30, right: 30),
-                  child: BottomLongButton(
-                    text: "게시글 작성하기",
-                    height: buttonAreaHeight,
-                    onPressed: () async {
-                      List<MultipartFile> file = imageToMultipartFile();
-                      List<String> hashtags = extractHashTags(_hashtag.text);
-                      await postController.writeBoard(
-                        PostRequestDto(
-                          _title.text,
-                          _content.text,
-                          "SOCIAL",
-                          false,
-                          hashtags,
-                          file,
-                        ),
-                      );
-                    },
-                  ),
-                ), // 게시글 작성하기 버튼
-              ],
+                        ), // 커뮤니티 이용 수칙
+                      ],
+                    ),
+                  ), // 카메라 아이콘, 커뮤니티 이용규칙
+                  Divider(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 30),
+                    child: BottomLongButton(
+                      text: "게시글 작성하기",
+                      height: buttonAreaHeight,
+                      onPressed: () async {
+                        List<MultipartFile> file = imageToMultipartFile();
+                        List<String> hashtags = extractHashTags(_hashtag.text);
+                        await postController.writeBoard(
+                          PostRequestDto(
+                            _title.text,
+                            _content.text,
+                            "SOCIAL",
+                            false,
+                            hashtags,
+                            file,
+                          ),
+                        );
+                      },
+                    ),
+                  ), // 게시글 작성하기 버튼
+                ],
+              ),
             ),
           ),
-        ),
       ),
     );
   }
