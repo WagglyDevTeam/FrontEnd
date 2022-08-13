@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/widgets/PageNav/page_nav.dart';
-import 'package:waggly/model/Mypage/notification.dart';
+import 'package:waggly/model/myPage/notification.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({Key? key}) : super(key: key);

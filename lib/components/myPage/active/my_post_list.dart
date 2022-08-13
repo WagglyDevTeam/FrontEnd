@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
-import 'package:waggly/controller/Mypage/my_post_list_controller.dart';
-import 'package:waggly/model/Mypage/my_page_model.dart';
-import 'package:waggly/widgets/MyPage/my_page_comment.dart';
+import 'package:waggly/controller/myPage/my_post_list_controller.dart';
+import 'package:waggly/model/myPage/my_page_model.dart';
+import 'package:waggly/widgets/myPage/my_page_comment.dart';
 import '../../Post/post_affiliation.dart';
 import '../../Post/post_data.dart';
 

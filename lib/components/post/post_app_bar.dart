@@ -7,8 +7,7 @@ import 'package:waggly/widgets/index.dart';
 import 'package:waggly/widgets/sign_in.dart';
 import '../../utils/colors.dart';
 
-enum Status { home, main, detail, edit, login }
-
+enum Status { home, main, detail, edit, login, alarm}
 class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String postName;
   final Status page;
@@ -33,6 +32,7 @@ class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   leadingCase(context) {
     switch (page) {
+      case Status.alarm:
       case Status.main:
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -86,6 +86,8 @@ class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
         return Text('edit');
       case Status.detail:
         return DetailBtn();
+      case Status.alarm:
+        return AlarmBtns();
     }
   }
 }
@@ -159,6 +161,7 @@ class ActionBtns extends StatelessWidget {
   }
 }
 
+
 PageRouteWithAnimation sign = PageRouteWithAnimation(const SignUpRoute());
 
 class LoginBtn extends StatelessWidget {
@@ -221,6 +224,67 @@ class ActionButton extends StatelessWidget {
       child: GestureDetector(
         onTap: event,
         child: isIcon,
+      ),
+    );
+  }
+}
+
+class AlarmBtns extends StatelessWidget {
+  const AlarmBtns({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 140,
+      padding: const EdgeInsets.all(10.0),
+      child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(40.0) // POINT
+            ),
+            border: Border.all(width: 1.0, color: Palette.lightGray),
+          ),
+          child: Container(
+            padding:
+            const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ActionButton(
+                    event: () => Navigator.of(context).pop(),
+                    isIcon: Icon(
+                      Icons.add,
+                      color: Palette.gray,
+                      size: 15,
+                    )),
+                Line(),
+                ActionButton(
+                    event: () => Navigator.of(context).pop(),
+                    isIcon: Icon(
+                      Icons.search,
+                      color: Palette.gray,
+                      size: 15,
+                    ))
+              ],
+            ),
+          )),
+    );
+  }
+
+  Line() {
+    return const SizedBox(
+      width: 1,
+      height: 10,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(
+            right: BorderSide(
+              // POINT
+              color: Color(0xFFE8E8E8),
+              width: 1.0,
+            ),
+          ),
+        ),
       ),
     );
   }

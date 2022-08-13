@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:waggly/model/Mypage/my_page_model.dart';
+import 'package:waggly/model/myPage/my_page_model.dart';
 import 'package:waggly/server/server.dart';
 
 class MyPostListController extends GetxController {

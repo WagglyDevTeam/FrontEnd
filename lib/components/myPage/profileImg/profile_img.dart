@@ -4,8 +4,8 @@ import 'package:waggly/screens/my_page.dart';
 import 'package:waggly/widgets/Button/button.dart';
 import 'package:waggly/widgets/PageNav/page_nav.dart';
 import 'package:waggly/utils/colors.dart';
-import 'package:waggly/model/Mypage/waggly_img.dart';
-import 'package:waggly/controller/Mypage/waggly_img_controller.dart';
+import 'package:waggly/model/myPage/waggly_img.dart';
+import 'package:waggly/controller/myPage/waggly_img_controller.dart';
 
 class ProfileImgScreen extends StatelessWidget {
   @override

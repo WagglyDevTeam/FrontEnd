@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/components/Post/post_app_bar.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/utils/text_frame.dart';
@@ -68,27 +69,27 @@ class PostScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text(mySchool, style: CommonText.BodyL),
-                    SizedBox(width: 6),
+                    SizedBox(width: 6.w),
                     Icon(Icons.auto_awesome, color: Palette.main, size: 17),
                   ],
                 ),
-                SizedBox(height: 5),
+                SizedBox(height: 5.h),
                 PostCard(
                   datas: page == 'login ' ? dummy : dummy,
                   postName: mySchool,
                   on: on,
                   page: page,
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 20.h),
                 Row(
                   children: [
                     Text('다른 계열 둘러보기', style: CommonText.BodyL),
-                    SizedBox(width: 6),
+                    SizedBox(width: 6.w),
                   ],
                 ),
-                SizedBox(height: 5),
+                SizedBox(height: 5.h),
                 SizedBox(
-                  height: 190,
+                  height: 190.h,
                   child: PostDifferentList(widgetList: [
                     PostCard(
                       datas: page == 'login ' ? dummy : dummy,
@@ -139,9 +140,9 @@ class PostCard extends StatelessWidget {
         PageRouteWithAnimation(PostAffiliation(postName: postName));
     PageRouteWithAnimation sign = PageRouteWithAnimation(SignUpRoute());
     return Container(
-      height: 195,
-      width: 250,
-      padding: EdgeInsets.only(left: 10, top: 8, right: 10, bottom: 8),
+      height: 195.h,
+      width: 250.w,
+      padding: EdgeInsets.only(left: 10.w, top: 8.h, right: 10.h, bottom: 8.w),
       // margin: EdgeInsets.only(right:on ? 30 : 0),
       decoration: BoxDecoration(
           color: on ? Palette.paper : Colors.white,
@@ -155,7 +156,7 @@ class PostCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            height: 110,
+            height: 110.h,
             child: ListView.builder(
               scrollDirection: Axis.vertical,
               padding: const EdgeInsets.all(5),
@@ -207,7 +208,7 @@ class PostCard extends StatelessWidget {
                 }
               },
               child: Container(
-                height: 60,
+                height: 60.h,
                 padding:
                     EdgeInsets.only(left: 20, right: 20, top: 8, bottom: 8),
                 decoration: BoxDecoration(
@@ -235,8 +236,8 @@ class PostCard extends StatelessWidget {
                         ],
                       ),
                       Container(
-                        width: 35,
-                        height: 35,
+                        width: 35.w,
+                        height: 35.h,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
                           border: Border.all(
@@ -275,16 +276,16 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 20,
+      height: 20.h,
       child: Row(children: [
         Text(category, style: CommonText.BodyB),
-        SizedBox(width: 8),
+        SizedBox(width: 8.w),
         Expanded(
             flex: 2,
             child: RichText(
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
-              strutStyle: StrutStyle(fontSize: 12.0),
+              strutStyle: StrutStyle(fontSize: 12.0.sp),
               text: TextSpan(text: title, style: CommonText.BodyS),
             )),
         NewItem(),
@@ -305,8 +306,8 @@ class NewItem extends StatelessWidget {
             Opacity(
               opacity: 0.3,
               child: Container(
-                width: 20,
-                height: 20,
+                width: 20.w,
+                height: 20.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
                   gradient: RadialGradient(
@@ -325,7 +326,7 @@ class NewItem extends StatelessWidget {
                 child: Text('N',
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 10,
+                        fontSize: 10.sp,
                         color: Palette.violet))),
           ],
         ));
