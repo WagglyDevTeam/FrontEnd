@@ -4,7 +4,7 @@ import 'package:waggly/server/server.dart';
 
 class WagglyImgController extends GetxController {
   var wagglyImglist = <WagglyImg>[].obs;
-  int selected = -1.obs;
+  final selected = 999.obs;
 
   @override
   void onInit() {
