@@ -38,13 +38,13 @@ class HomeScreen extends StatelessWidget {
           child: ListView(
             children: [
               AdvertisementArea(), // 광고영역
-              SizedBox(height: 24.h),
+              SizedBox(height: 22.h),
               PostTitleArea(),
               Obx(() => PostBoxArea(post: p.bestPost.value)),
-              SizedBox(height: 24.h),
+              SizedBox(height: 22.h),
               GroupChatRecommendTitleArea(),
               GroupChatRecommendBoxArea(),
-              SizedBox(height: 24.h),
+              SizedBox(height: 22.h),
               PostTitleArea(),
               Obx(() => PostBoxArea(post: p.bestPost.value)),
             ],
