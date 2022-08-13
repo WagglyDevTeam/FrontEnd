@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_textfield/controller/social_text_editing_controller.dart';
 import 'package:get/get.dart';
+import 'package:hashtagable/hashtagable.dart';
 import 'package:waggly/components/button/rules_button.dart';
 import 'package:waggly/components/inputField/input_hashtag_field.dart';
 import 'package:waggly/components/post/post_app_bar.dart';
@@ -42,7 +43,7 @@ class GroupChatCreatePage extends StatelessWidget {
 
   void buttonActivateCheck() {
     if (_title.text.isBlank == true ||
-        _hashtag.text.isBlank == true ||
+        extractHashTags(_hashtag.text).isEmpty ||
         groupChatController.selectedCategoryIndex.value == 999 ||
         groupChatController.selectedParticipantsNumberIndex.value == 999) {
       groupChatController.isButtonActivate.value = false;
