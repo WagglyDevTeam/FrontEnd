@@ -10,8 +10,8 @@ import 'package:waggly/screens/post.dart';
 import 'package:waggly/screens/sign_in.dart';
 import 'package:waggly/screens/write.dart';
 
-void main() async {
-  runApp(const HeroApp());
+void main(){
+  runApp(HeroApp());
 }
 
 class HeroApp extends StatelessWidget {
@@ -71,6 +71,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Screen(),
     );
   }
