@@ -124,7 +124,7 @@ class PostBoxArea extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   width: safeWidth * 0.46,
                   child: Text(
-                    "시각디자인학과와건축학과",
+                    "치토스양념제조학과",
                     style: CommonText.BodyXSmallGray,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -139,7 +139,7 @@ class PostBoxArea extends StatelessWidget {
                       Row(
                         children: [
                           Icon(
-                            Icons.landscape,
+                            Icons.image_outlined,
                             size: 13.r,
                             color: Palette.violet,
                           ),
@@ -147,18 +147,18 @@ class PostBoxArea extends StatelessWidget {
                             width: 2.w,
                           ),
                           Text(
-                            "15",
+                            "150",
                             style: CommonText.BodyEngMain.copyWith(fontSize: 10.0.r),
                           ),
                         ],
                       ),
                       SizedBox(
-                        width: 8.w,
+                        width: 5.w,
                       ),
                       Row(
                         children: [
                           Icon(
-                            Icons.face,
+                            Icons.sentiment_satisfied,
                             size: 13.r,
                             color: Palette.violet,
                           ),
@@ -166,18 +166,18 @@ class PostBoxArea extends StatelessWidget {
                             width: 2.w,
                           ),
                           Text(
-                            "6000",
+                            "60000",
                             style: CommonText.BodyEngMain,
                           ),
                         ],
                       ),
                       SizedBox(
-                        width: 8.w,
+                        width: 5.w,
                       ),
                       Row(
                         children: [
                           Icon(
-                            Icons.chat_bubble_outline_outlined,
+                            Icons.mode_comment_outlined,
                             size: 13.r,
                             color: Palette.violet,
                           ),
@@ -185,7 +185,7 @@ class PostBoxArea extends StatelessWidget {
                             width: 2.w,
                           ),
                           Text(
-                            "6000",
+                            "60000",
                             style: CommonText.BodyEngMain,
                           ),
                         ],
