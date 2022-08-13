@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/textFormField/text_form_field.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -21,7 +22,13 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        children: [TopBar(), SignUpInput(steps: steps, setSteps: handleClick)],
+        children: [
+          TopBar(),
+          SignUpInput(
+            steps: steps,
+            setSteps: handleClick,
+          ),
+        ],
       ),
     );
   }
@@ -39,19 +46,23 @@ class _TopBarState extends State<TopBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // color: Colors.red,
       width: double.infinity,
-      height: 80,
-      alignment: Alignment(0.9, 0.0),
-      child: (IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: Icon(
-          Icons.close,
-          color: Color(0xffB6B6B6),
-        ),
-        iconSize: 20,
-      )),
+      height: 80.h,
+      alignment: Alignment.topRight,
+      child: Padding(
+        padding: EdgeInsets.only(top: 40.h, right: 8.w),
+        child: (IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.close,
+            color: Color(0xffB6B6B6),
+          ),
+          iconSize: 20.r,
+        )),
+      ),
     );
   }
 }
@@ -72,9 +83,13 @@ class _SignUpInputState extends State<SignUpInput> {
     return Column(children: [
       Title(),
       Step(steps: widget.steps),
-      SizedBox(height: 58,),
+      SizedBox(
+        height: 58.h,
+      ),
       Input(steps: widget.steps),
-      SizedBox(height: 48,),
+      SizedBox(
+        height: 48.w,
+      ),
       Buttons(steps: widget.steps, setSteps: widget.setSteps)
     ]);
   }
@@ -88,13 +103,10 @@ class Title extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.fromLTRB(18, 0, 0, 0),
+        padding: EdgeInsets.fromLTRB(18.w, 0.h, 0.w, 0.h),
         child: Text(
           '회원가입',
-          style: TextStyle(
-              color: Color(0xff000000),
-              fontWeight: FontWeight.w700,
-              fontSize: 20),
+          style: TextStyle(color: Color(0xff000000), fontWeight: FontWeight.w700, fontSize: 20.sp),
         ));
   }
 }
@@ -112,7 +124,7 @@ class _StepState extends State<Step> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+      margin: EdgeInsets.fromLTRB(0.w, 20.h, 0.w, 20.h),
       child: Row(
         children: [
           Flexible(
@@ -121,45 +133,35 @@ class _StepState extends State<Step> {
               children: [
                 Container(
                     alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.fromLTRB(18, 0, 2, 0),
-                    padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    margin: EdgeInsets.fromLTRB(18.w, 0.h, 2.w, 0.h),
+                    padding: EdgeInsets.fromLTRB(0.w, 8.h, 0.w, 8.h),
                     decoration: BoxDecoration(
                         border: Border(
                             bottom: BorderSide(
-                      color: widget.steps == 0
-                          ? Color(0xffB863FB)
-                          : Color(0xffE8E8E8),
+                      color: widget.steps == 0 ? Color(0xffB863FB) : Color(0xffE8E8E8),
                       width: 2,
                     ))),
                     child: Container(
                         alignment: Alignment.center,
-                        width: 16,
-                        height: 16,
+                        width: 16.w,
+                        height: 16.h,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
-                          color: widget.steps == 0
-                              ? Color(0xffB863FB)
-                              : Color(0xffE8E8E8),
+                          color: widget.steps == 0 ? Color(0xffB863FB) : Color(0xffE8E8E8),
                         ),
                         child: Text(
                           '1',
-                          style: TextStyle(
-                              color: widget.steps == 0
-                                  ? Color(0xffFFFFFF)
-                                  : Color(0xff959595)),
+                          style: TextStyle(color: widget.steps == 0 ? Color(0xffFFFFFF) : Color(0xff959595)),
                         ))),
                 Container(
-                  height: 22,
-                  margin: EdgeInsets.fromLTRB(18, 8, 0, 0),
+                  height: 22.h,
+                  margin: EdgeInsets.fromLTRB(18.w, 8.h, 0.w, 0.h),
                   child: Text(
                     '학교 인증',
                     style: TextStyle(
-                      fontSize: widget.steps == 0 ? 16 : 10,
-                      fontWeight:
-                          widget.steps == 0 ? FontWeight.w700 : FontWeight.w400,
-                      color: widget.steps == 0
-                          ? Color(0xff2B173B)
-                          : Color(0xff959595),
+                      fontSize: widget.steps == 0 ? 16.sp : 10.sp,
+                      fontWeight: widget.steps == 0 ? FontWeight.w700 : FontWeight.w400,
+                      color: widget.steps == 0 ? Color(0xff2B173B) : Color(0xff959595),
                     ),
                   ),
                 ),
@@ -173,45 +175,35 @@ class _StepState extends State<Step> {
               children: [
                 Container(
                     alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.fromLTRB(2, 0, 2, 0),
-                    padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    margin: EdgeInsets.fromLTRB(2.w, 0.h, 2.w, 0.h),
+                    padding: EdgeInsets.fromLTRB(0.w, 8.h, 0.w, 8.h),
                     decoration: BoxDecoration(
                         border: Border(
                             bottom: BorderSide(
-                      color: widget.steps == 1
-                          ? Color(0xffB863FB)
-                          : Color(0xffE8E8E8),
-                      width: 2,
+                      color: widget.steps == 1 ? Color(0xffB863FB) : Color(0xffE8E8E8),
+                      width: 2.w,
                     ))),
                     child: Container(
                         alignment: Alignment.center,
-                        width: 16,
-                        height: 16,
+                        width: 16.w,
+                        height: 16.h,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
-                          color: widget.steps == 1
-                              ? Color(0xffB863FB)
-                              : Color(0xffE8E8E8),
+                          color: widget.steps == 1 ? Color(0xffB863FB) : Color(0xffE8E8E8),
                         ),
                         child: Text(
                           '2',
-                          style: TextStyle(
-                              color: widget.steps == 1
-                                  ? Color(0xffFFFFFF)
-                                  : Color(0xff959595)),
+                          style: TextStyle(color: widget.steps == 1 ? Color(0xffFFFFFF) : Color(0xff959595)),
                         ))),
                 Container(
-                  height: 22,
-                  margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                  height: 22.h,
+                  margin: EdgeInsets.fromLTRB(0.w, 8.h, 0.w, 0.h),
                   child: Text(
                     '학교 정보',
                     style: TextStyle(
-                      fontSize: widget.steps == 1 ? 16 : 10,
-                      fontWeight:
-                          widget.steps == 1 ? FontWeight.w700 : FontWeight.w400,
-                      color: widget.steps == 1
-                          ? Color(0xff2B173B)
-                          : Color(0xff959595),
+                      fontSize: widget.steps == 1 ? 16.sp : 10.sp,
+                      fontWeight: widget.steps == 1 ? FontWeight.w700 : FontWeight.w400,
+                      color: widget.steps == 1 ? Color(0xff2B173B) : Color(0xff959595),
                     ),
                   ),
                 ),
@@ -225,45 +217,35 @@ class _StepState extends State<Step> {
               children: [
                 Container(
                     alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.fromLTRB(2, 0, 18, 0),
-                    padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    margin: EdgeInsets.fromLTRB(2.w, 0.h, 18.w, 0.h),
+                    padding: EdgeInsets.fromLTRB(0.w, 8.h, 0.w, 8.h),
                     decoration: BoxDecoration(
                         border: Border(
                             bottom: BorderSide(
-                      color: widget.steps == 2
-                          ? Color(0xffB863FB)
-                          : Color(0xffE8E8E8),
-                      width: 2,
+                      color: widget.steps == 2 ? Color(0xffB863FB) : Color(0xffE8E8E8),
+                      width: 2.w,
                     ))),
                     child: Container(
                         alignment: Alignment.center,
-                        width: 16,
-                        height: 16,
+                        width: 16.w,
+                        height: 16.h,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
-                          color: widget.steps == 2
-                              ? Color(0xffB863FB)
-                              : Color(0xffE8E8E8),
+                          color: widget.steps == 2 ? Color(0xffB863FB) : Color(0xffE8E8E8),
                         ),
                         child: Text(
                           '3',
-                          style: TextStyle(
-                              color: widget.steps == 2
-                                  ? Color(0xffFFFFFF)
-                                  : Color(0xff959595)),
+                          style: TextStyle(color: widget.steps == 2 ? Color(0xffFFFFFF) : Color(0xff959595)),
                         ))),
                 Container(
-                  height: 22,
-                  margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                  height: 22.h,
+                  margin: EdgeInsets.fromLTRB(0.w, 8.h, 0.w, 0.h),
                   child: Text(
                     '아이디 생성',
                     style: TextStyle(
-                      fontSize: widget.steps == 2 ? 16 : 10,
-                      fontWeight:
-                          widget.steps == 2 ? FontWeight.w700 : FontWeight.w400,
-                      color: widget.steps == 2
-                          ? Color(0xff2B173B)
-                          : Color(0xff959595),
+                      fontSize: widget.steps == 2 ? 16.sp : 10.sp,
+                      fontWeight: widget.steps == 2 ? FontWeight.w700 : FontWeight.w400,
+                      color: widget.steps == 2 ? Color(0xff2B173B) : Color(0xff959595),
                     ),
                   ),
                 ),
@@ -291,15 +273,10 @@ class _InputState extends State<Input> {
 
   @override
   Widget build(BuildContext context) {
-
     return widget.steps == 0
         ? Column(
             children: [
-              RenderTextFormField(
-                  mode: 'withButtonAndLabel',
-                  label: '학교 이메일',
-                  placeholder: 'abc@email.com',
-                  buttonText: '인증하기'),
+              RenderTextFormField(mode: 'withButtonAndLabel', label: '학교 이메일', placeholder: 'abc@email.com', buttonText: '인증하기'),
               RenderTextFormField(
                 mode: 'withLabel',
                 label: '인증번호',
@@ -366,28 +343,22 @@ class _ButtonsState extends State<Buttons> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
+        padding: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 0.h),
         width: double.infinity,
-        height: 36,
+        height: 36.h,
         child: Stack(
           children: [
             if (widget.steps == 0)
               Container(
                 width: double.infinity,
-                height: 36,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(26),
-                    color: widget.steps == 0
-                        ? Color(0xffB863FB)
-                        : Color(0xffE8E8E8)),
+                height: 36.h,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(26), color: widget.steps == 0 ? Color(0xffB863FB) : Color(0xffE8E8E8)),
                 child: TextButton(
                   child: Text(
                     '다음',
                     style: TextStyle(
-                      color: widget.steps == 0
-                          ? Color(0xffFFFFFF)
-                          : Color(0xff959595),
-                      fontSize: 12,
+                      color: widget.steps == 0 ? Color(0xffFFFFFF) : Color(0xff959595),
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -397,25 +368,22 @@ class _ButtonsState extends State<Buttons> {
                 ),
               ),
             if (widget.steps == 1)
-              Container(
+              SizedBox(
                 width: double.infinity,
-                padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      width: 155,
-                      height: 36,
+                      width: 155.h,
+                      height: 36.w,
                       alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(26),
-                          color: Color.fromRGBO(218, 175, 254, 0.2)),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(26), color: Color.fromRGBO(218, 175, 254, 0.2)),
                       child: TextButton(
                         child: Text(
                           '이전',
                           style: TextStyle(
                             color: Color(0xffA558E0),
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -425,8 +393,8 @@ class _ButtonsState extends State<Buttons> {
                       ),
                     ),
                     Container(
-                      width: 155,
-                      height: 36,
+                      width: 155.w,
+                      height: 36.h,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(26),
@@ -437,7 +405,7 @@ class _ButtonsState extends State<Buttons> {
                           '다음',
                           style: TextStyle(
                             color: Color(0xff959595),
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -452,23 +420,20 @@ class _ButtonsState extends State<Buttons> {
             if (widget.steps == 2)
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      width: 155,
-                      height: 36,
+                      width: 155.w,
+                      height: 36.h,
                       alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(26),
-                          color: Color.fromRGBO(218, 175, 254, 0.2)),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(26), color: Color.fromRGBO(218, 175, 254, 0.2)),
                       child: TextButton(
                         child: Text(
                           '이전',
                           style: TextStyle(
                             color: Color(0xffA558E0),
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -478,8 +443,8 @@ class _ButtonsState extends State<Buttons> {
                       ),
                     ),
                     Container(
-                      width: 155,
-                      height: 36,
+                      width: 155.w,
+                      height: 36.h,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(26),
@@ -490,7 +455,7 @@ class _ButtonsState extends State<Buttons> {
                           '다음',
                           style: TextStyle(
                             color: Color(0xff959595),
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ),

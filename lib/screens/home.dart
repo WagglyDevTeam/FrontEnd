@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
@@ -411,18 +410,23 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  margin: EdgeInsets.only(right: 16.0.w),
-                  alignment: Alignment.center,
-                  width: 60.0.w,
-                  height: 24.0.h,
-                  child: Text(
-                    "로그인",
-                    style: CommonText.LabelWhite,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Palette.main,
-                    borderRadius: BorderRadius.circular(20.0),
+                InkWell(
+                  onTap: () {
+                    Get.toNamed('/signInPage');
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 16.0.w),
+                    alignment: Alignment.center,
+                    width: 60.0.w,
+                    height: 24.0.h,
+                    child: Text(
+                      "로그인",
+                      style: CommonText.LabelWhite,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Palette.main,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
                   ),
                 ),
               ],
