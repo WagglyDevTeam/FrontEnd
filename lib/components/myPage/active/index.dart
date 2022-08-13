@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:waggly/components/Mypage/active/request_list.dart';
-import 'package:waggly/components/Mypage/active/my_post_list.dart';
+import 'package:waggly/components/myPage/active/request_list.dart';
+import 'package:waggly/components/myPage/active/my_post_list.dart';
 import 'package:waggly/widgets/index.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/utils/colors.dart';

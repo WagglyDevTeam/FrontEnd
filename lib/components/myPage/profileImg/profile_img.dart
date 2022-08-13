@@ -15,11 +15,11 @@ class ProfileImgScreen extends StatelessWidget {
 }
 
 class ProfileImgList extends StatelessWidget {
-  final WagglyImgController controller = Get.put(WagglyImgController());
+  WagglyImgController controller = Get.put(WagglyImgController());
 
   bool focus = false;
-  String imgUrl = '';
   dynamic checkedImg;
+  String imgUrl = '';
 
   @override
   Widget build(BuildContext context) {

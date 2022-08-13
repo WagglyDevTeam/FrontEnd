@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/myPage/active/index.dart';
+import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/Notification/notification.dart';
 import 'package:waggly/controller/myPage/waggly_img_controller.dart';
 import 'package:waggly/widgets/index.dart';
@@ -12,6 +12,9 @@ import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/utils/colors.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+
+import '../controller/myPage/waggly_img_controller.dart';
+import '../widgets/index.dart';
 
 PageRouteWithAnimation profileImg = PageRouteWithAnimation(ProfileImgScreen());
 
@@ -130,7 +133,7 @@ class _myPageState extends State<myPage> {
   bool hasSubmitted = true;
   bool profilehasSubmitted = true;
 
-  //final controller = TextEditingController();
+  final controller = TextEditingController();
   bool isDisabled = false;
 
   // for getting access to form
@@ -164,7 +167,7 @@ class _myPageState extends State<myPage> {
                   text: '와글리 이미지',
                   onPress: () {
                     controller.fetchData();
-                    Get.toNamed('/profileImg');
+                    Navigator.of(context).push(profileImg.slideRitghtToLeft());
                   },
                   theme: 'small'),
               SizedBox(height: 5),
