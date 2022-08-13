@@ -47,13 +47,9 @@ class GroupChatCreatePage extends StatelessWidget {
         groupChatController.selectedCategoryIndex.value == 999 ||
         groupChatController.selectedParticipantsNumberIndex.value == 999) {
       groupChatController.isButtonActivate.value = false;
-      print("title is blank ${_title.text.isBlank}, ${_title.text}");
-      print("hashtag is blank ${_hashtag.text.isBlank}");
     } else {
       groupChatController.isButtonActivate.value = true;
     }
-    print("title is blank ${_title.text.isBlank}");
-    print("hashtag is blank ${_hashtag.text.isBlank}");
   }
 
   @override
@@ -77,23 +73,25 @@ class GroupChatCreatePage extends StatelessWidget {
           }
         },
         child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Divider(height: dividerHeight.h),
-                SizedBox(
-                  height: titleAreaHeight,
+          child: Column(
+            children: [
+              Divider(height: dividerHeight.h),
+              Padding(
+                padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
+                child: SizedBox(
+                  height: titleAreaHeight.h,
                   child: InputTitleField(
                     onEditingComplete: buttonActivateCheck,
                     controller: _title,
                     hintText: "채팅방 제목",
                     // height: titleAreaHeight.h,
                   ),
-                ), // 제목 영역
-                Divider(height: dividerHeight.h),
-                SizedBox(
+                ),
+              ), // 제목 영역
+              Divider(height: dividerHeight.h),
+              Padding(
+                padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
+                child: SizedBox(
                   height: hashtagAreaHeight.h,
                   child: InputHashtagField(
                     onEditingComplete: buttonActivateCheck,
@@ -101,67 +99,68 @@ class GroupChatCreatePage extends StatelessWidget {
                     hintText: "#해시태그를 이용하여 채팅방을 소개해주세요.",
                     // height: hashtagAreaHeight.h,
                   ),
-                ), // 해시태그 영역
-                Divider(height: dividerHeight.h),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.0.h, bottom: 5.0.h),
-                  child: SizedBox(
-                    height: selectAreaHeight.h,
-                    child: SelectAreaBox(
-                      onTap: buttonActivateCheck,
-                      controller: groupChatController,
-                      text: "카테고리 선택",
-                      itemList: categoryList,
-                      flagIndex: groupChatController.selectedCategoryIndex,
-                    ),
-                  ),
-                ), // 카테고리 선택 영역
-                Divider(height: dividerHeight.h),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.0.h, bottom: 5.0.h),
-                  child: SizedBox(
-                    height: selectAreaHeight.h,
-                    child: SelectAreaBox(
-                      onTap: buttonActivateCheck,
-                      controller: groupChatController,
-                      text: "참여 인원",
-                      itemList: participantsNumberList,
-                      flagIndex:
-                          groupChatController.selectedParticipantsNumberIndex,
-                    ),
-                  ),
-                ), // 참여 인원 선택 영역
-                Divider(height: dividerHeight.h),
-                Expanded(
-                  child: SizedBox(),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(right: 10.w),
-                  child: Container(
-                    height: rulesButtonAreaHeight.h,
-                    alignment: Alignment.centerRight,
-                    child: RulesButton(
-                      text: "채팅방 생성 가이드 전체보기",
-                    ),
-                  ),
-                ), // 채팅방 생성 가이드 보기
-                Divider(height: dividerHeight.h),
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: bottomButtonPaddingTop.h,
-                    bottom: os == "ios" ? 0.0 : bottomButtonPaddingBottom.h,
-                  ),
-                  child: BottomLongButton(
+              ), // 해시태그 영역
+              Divider(height: dividerHeight.h),
+              Padding(
+                padding: EdgeInsets.only(top: 5.0.h, bottom: 5.0.h, left: 20.0.w, right: 20.0.w),
+                child: SizedBox(
+                  height: selectAreaHeight.h,
+                  child: SelectAreaBox(
+                    onTap: buttonActivateCheck,
                     controller: groupChatController,
-                    text: "채팅방 생성하기",
-                    height: buttonAreaHeight.h,
-                    onPressed: () {
-                      print(groupChatController.isButtonActivate.value);
-                    },
+                    text: "카테고리 선택",
+                    itemList: categoryList,
+                    flagIndex: groupChatController.selectedCategoryIndex,
                   ),
-                ), // 채팅방 생성하기 버튼
-              ],
-            ),
+                ),
+              ), // 카테고리 선택 영역
+              Divider(height: dividerHeight.h),
+              Padding(
+                padding: EdgeInsets.only(top: 5.0.h, bottom: 5.0.h, left: 20.0.w, right: 20.0.w),
+                child: SizedBox(
+                  height: selectAreaHeight.h,
+                  child: SelectAreaBox(
+                    onTap: buttonActivateCheck,
+                    controller: groupChatController,
+                    text: "참여 인원",
+                    itemList: participantsNumberList,
+                    flagIndex:
+                        groupChatController.selectedParticipantsNumberIndex,
+                  ),
+                ),
+              ), // 참여 인원 선택 영역
+              Divider(height: dividerHeight.h),
+              Expanded(
+                child: SizedBox(),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
+                child: Container(
+                  height: rulesButtonAreaHeight.h,
+                  alignment: Alignment.centerRight,
+                  child: RulesButton(
+                    text: "채팅방 생성 가이드 전체보기",
+                  ),
+                ),
+              ), // 채팅방 생성 가이드 보기
+              Divider(height: dividerHeight.h),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 20.0.w,
+                  right: 20.0.w,
+                  top: bottomButtonPaddingTop.h,
+                  bottom: os == "ios" ? 0.0 : bottomButtonPaddingBottom.h,
+                ),
+                child: BottomLongButton(
+                  controller: groupChatController,
+                  text: "채팅방 생성하기",
+                  height: buttonAreaHeight.h,
+                  onPressed: () {
+                  },
+                ),
+              ), // 채팅방 생성하기 버튼
+            ],
           ),
         ),
       ),
