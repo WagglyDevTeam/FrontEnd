@@ -9,7 +9,7 @@ class BottomLongButton extends StatelessWidget {
   final double height;
   final Function() onPressed;
   final String text;
-  final GroupChatController? controller;
+  final controller;
 
   const BottomLongButton({
     Key? key,

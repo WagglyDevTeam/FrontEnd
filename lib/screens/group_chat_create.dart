@@ -32,7 +32,7 @@ const double hashtagAreaHeight = 40.0;
 const double buttonAreaHeight = 41.0;
 const double rulesButtonAreaHeight = 40.0;
 const double selectAreaHeight = 60;
-const double bottomButtonPaddingTop = 20.0;
+const double bottomButtonPaddingTop = 10.0;
 const double bottomButtonPaddingBottom = 15.0;
 
 class GroupChatCreatePage extends StatelessWidget {
@@ -103,7 +103,7 @@ class GroupChatCreatePage extends StatelessWidget {
               ), // 해시태그 영역
               Divider(height: dividerHeight.h),
               Padding(
-                padding: EdgeInsets.only(top: 5.0.h, bottom: 5.0.h, left: 20.0.w, right: 20.0.w),
+                padding: EdgeInsets.only(top: 5.0.h, bottom: 5.0.h),
                 child: SizedBox(
                   height: selectAreaHeight.h,
                   child: SelectAreaBox(
@@ -117,7 +117,7 @@ class GroupChatCreatePage extends StatelessWidget {
               ), // 카테고리 선택 영역
               Divider(height: dividerHeight.h),
               Padding(
-                padding: EdgeInsets.only(top: 5.0.h, bottom: 5.0.h, left: 20.0.w, right: 20.0.w),
+                padding: EdgeInsets.only(top: 5.0.h, bottom: 5.0.h),
                 child: SizedBox(
                   height: selectAreaHeight.h,
                   child: SelectAreaBox(
@@ -188,11 +188,14 @@ class SelectAreaBox extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            text,
-            style: CommonText.BodyM,
+        Padding(
+          padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
+          child: Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              text,
+              style: CommonText.BodyM,
+            ),
           ),
         ),
         SizedBox(height: 10.0.h),
@@ -222,8 +225,7 @@ class SelectButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
+    return SizedBox(
       height: 24.h,
       child: ListView.separated(
           separatorBuilder: (BuildContext context, int index) {
@@ -232,39 +234,45 @@ class SelectButton extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemCount: itemList.length,
           itemBuilder: (ctx, index) {
-            return Obx(
-              () => InkWell(
-                onTap: () {
-                  flagIndex.value = index;
-                  onTap();
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  padding:
-                      EdgeInsets.only(left: 15.w, right: 15.w),
-                  decoration: BoxDecoration(
-                    color: flagIndex.value == index
-                        ? Palette.main
-                        : Palette.paper,
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                  child: Text(
-                    itemList[index].toString(),
-                    style: CommonText.BodyM.copyWith(
-                      color: flagIndex.value == index
-                          ? Colors.white
-                          : Palette.data,
-                    )
+            return Row(
+              children: [
+                if (index == 0) SizedBox(width: 20.0.w),
+                Obx(
+                  () => InkWell(
+                    onTap: () {
+                      flagIndex.value = index;
+                      onTap();
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding:
+                          EdgeInsets.only(left: 15.w, right: 15.w),
+                      decoration: BoxDecoration(
+                        color: flagIndex.value == index
+                            ? Palette.main
+                            : Palette.paper,
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                      child: Text(
+                        itemList[index].toString(),
+                        style: CommonText.BodyM.copyWith(
+                          color: flagIndex.value == index
+                              ? Colors.white
+                              : Palette.data,
+                        )
 
-                    // TextStyle(
-                    //     color: flagIndex.value == index
-                    //         ? Colors.white
-                    //         : Palette.data,
-                    //     fontSize: 13.0,
-                    //     fontWeight: FontWeight.w400),
+                        // TextStyle(
+                        //     color: flagIndex.value == index
+                        //         ? Colors.white
+                        //         : Palette.data,
+                        //     fontSize: 13.0,
+                        //     fontWeight: FontWeight.w400),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                if (index == itemList.length-1) SizedBox(width: 20.0.w),
+              ],
             );
           }),
     );

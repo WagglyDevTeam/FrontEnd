@@ -244,7 +244,7 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
           itemBuilder: (ctx, index) {
             return Row(
               children: [
-                if (index == 0) SizedBox(width: 16.0.w),
+                if (index == 0) SizedBox(width: 20.0.w),
                 Container(
                   height: 85.0.h,
                   width: 217.0.w,
@@ -340,7 +340,7 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (index == groupChatItem.length-1) SizedBox(width: 16.0.w),
+                if (index == groupChatItem.length-1) SizedBox(width: 20.0.w),
               ],
             );
           }),
