@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
@@ -12,6 +11,10 @@ import 'package:waggly/model/post/post.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 PageRouteWithAnimation sign = PageRouteWithAnimation(SignInScreen());
+
+List<dynamic> groupChatItem = [
+  {"a": "b"}, {"c": "d"}, {"e": "f"}, {"g": "h"}, {"i","j"}
+];
 
 class HomeScreen extends StatelessWidget {
   PostController p = Get.put(PostController());
@@ -26,7 +29,7 @@ class HomeScreen extends StatelessWidget {
       //TODO: SVG 이미지 배너 왜 안나옴
       appBar: HomeAppbar(),
       body: Container(
-        transform: Matrix4.translationValues(0, -10, 0),
+        // transform: Matrix4.translationValues(0, -10, 0),
         child: RefreshIndicator(
           key: refreshKey,
           onRefresh: () async {
@@ -230,112 +233,119 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
+    return SizedBox(
       height: 72.h,
       child: ListView.separated(
           separatorBuilder: (BuildContext context, int index) {
             return SizedBox(width: 16.0.w);
           },
           scrollDirection: Axis.horizontal,
-          itemCount: 5,
+          itemCount: groupChatItem.length,
           itemBuilder: (ctx, index) {
-            return Container(
-              height: 85.0.h,
-              width: 217.0.w,
-              padding: EdgeInsets.all(12.5.r),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-                border: Border.all(
-                  width: 0.7,
-                  color: Palette.lavender,
-                ),
-              ),
-              child: Row(
-                children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      SizedBox(
-                        width: 48.0.w,
-                        height: 48.0.h,
-                        child: CircleAvatar(
-                          radius: 30.0,
-                          foregroundImage: AssetImage("assets/images/red_face_big.png"),
-                        ),
-                      ),
-                      Positioned(
-                        top: 22.5.h,
-                        child: Center(
-                          child: Text(
-                            "99/99",
-                            style: CommonText.BodyEngWhite,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ), // 참여자 수 얼굴
-                  SizedBox(width: 7.w),
-                  SizedBox(
-                    width: 135.5.w,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.fromLTRB(5.0.w, 3.0.h, 5.0.w, 3.0.h),
-                              height: 14.h,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Palette.main,
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: Text(
-                                "대외활동",
-                                style: CommonText.ChipWhite,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 7.w,
-                            ),
-                            Expanded(
-                              child: Text(
-                                "와글와글 채팅방 이름?이름이름이름",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: CommonText.BodyL,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 3.h),
-                        Row(
-                          children: [
-                            Text(
-                              "#도전",
-                              style: CommonText.BodyXSmallMain,
-                            ),
-                            SizedBox(width: 3.w),
-                            Text(
-                              "#취직",
-                              style: CommonText.BodyXSmallMain,
-                            ),
-                            SizedBox(width: 3.w),
-                            Text(
-                              "#파이팅",
-                              style: CommonText.BodyXSmallMain,
-                            ),
-                          ],
-                        )
-                      ],
+            return Row(
+              children: [
+                if (index == 0) SizedBox(width: 16.0.w),
+                Container(
+                  height: 85.0.h,
+                  width: 217.0.w,
+                  padding: EdgeInsets.all(12.5.r),
+                  decoration: BoxDecoration(
+                    // color: Colors.red,
+                    borderRadius: BorderRadius.circular(20.0),
+                    border: Border.all(
+                      width: 0.7,
+                      color: Palette.lavender,
                     ),
-                  ), // 카테고리, 채팅방이름
-                ],
-              ),
+                  ),
+                  child: Row(
+                    children: [
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          SizedBox(
+                            width: 48.0.w,
+                            height: 48.0.h,
+                            child: CircleAvatar(
+                              radius: 30.0,
+                              foregroundImage: AssetImage("assets/images/red_face_big.png"),
+                            ),
+                          ),
+                          Positioned(
+                            top: 22.5.h,
+                            child: Center(
+                              child: Text(
+                                "99/99",
+                                style: CommonText.BodyEngWhite,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ), // 참여자 수 얼굴
+                      SizedBox(width: 7.w),
+                      SizedBox(
+                        width: 135.5.w,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.fromLTRB(5.0.w, 3.0.h, 5.0.w, 3.0.h),
+                                  height: 14.h,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Palette.main,
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  child: Text(
+                                    "대외활동",
+                                    style: CommonText.ChipWhite,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 7.w,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "와글와글 채팅방 이름?이름이름이름",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: CommonText.BodyL,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 3.h),
+                            Row(
+                              children: [
+                                Text(
+                                  "#도전",
+                                  style: CommonText.BodyXSmallMain,
+                                ),
+                                SizedBox(width: 3.w),
+                                Text(
+                                  "#취직",
+                                  style: CommonText.BodyXSmallMain,
+                                ),
+                                SizedBox(width: 3.w),
+                                Text(
+                                  "#파이팅",
+                                  style: CommonText.BodyXSmallMain,
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ), // 카테고리, 채팅방이름
+                    ],
+                  ),
+                ),
+                if (index == groupChatItem.length-1) SizedBox(width: 16.0.w),
+              ],
             );
           }),
     );
+
   }
 }
 
@@ -400,18 +410,23 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  margin: EdgeInsets.only(right: 16.0.w),
-                  alignment: Alignment.center,
-                  width: 60.0.w,
-                  height: 24.0.h,
-                  child: Text(
-                    "로그인",
-                    style: CommonText.LabelWhite,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Palette.main,
-                    borderRadius: BorderRadius.circular(20.0),
+                InkWell(
+                  onTap: () {
+                    Get.toNamed('/signInPage');
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 16.0.w),
+                    alignment: Alignment.center,
+                    width: 60.0.w,
+                    height: 24.0.h,
+                    child: Text(
+                      "로그인",
+                      style: CommonText.LabelWhite,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Palette.main,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
                   ),
                 ),
               ],

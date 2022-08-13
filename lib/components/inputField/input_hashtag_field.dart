@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_social_textfield/controller/social_text_editing_controller.dart';
-import 'package:get/get.dart';
 import 'package:hashtagable/hashtagable.dart';
 import 'package:waggly/controller/group_chat_controller.dart';
 import 'package:waggly/utils/colors.dart';
@@ -20,24 +19,22 @@ class InputHashtagField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      // height: height,
+      // TODO: 입력 방식이 불편하지는 않은지? 해시태그마다 # 을 쳐줘야하는데
       child: HashTagTextField(
         onChanged: (text) {
-          //TODO: 쉼표가 붙어있을 경우, 휴대폰의 키보드를 이용해서 해시태그 삭제가 안됨. 키보드 이벤트가 안먹힘.
           if (text.length > 1 && text[text.length - 2] == ',') {
-            controller.text = text + " ";
+            controller.text = controller.text.replaceFirst(",", " ");
             controller.selection = TextSelection.collapsed(
                 offset: controller.text.lastIndexOf(" "));
           }
 
           if (extractHashTags(controller.text).isNotEmpty) {
+            print(extractHashTags(controller.text));
             onEditingComplete();
           } else {
             GroupChatController().isButtonActivate.value = false;
+            onEditingComplete();
           }
-
-          print(controller.text);
-          print(extractHashTags(controller.text));
         },
         keyboardAppearance: Brightness.light,
         keyboardType: TextInputType.text,
