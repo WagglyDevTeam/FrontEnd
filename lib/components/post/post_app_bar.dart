@@ -6,8 +6,10 @@ import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/index.dart';
 import 'package:waggly/widgets/sign_in.dart';
 import '../../utils/colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-enum Status { home, main, detail, edit, login, alarm}
+enum Status { home, main, detail, edit, login, alarm, editAlarmOnly }
+
 class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String postName;
   final Status page;
@@ -15,8 +17,7 @@ class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(50);
 
-  const PostAppbar({Key? key, required this.postName, required this.page})
-      : super(key: key);
+  const PostAppbar({Key? key, required this.postName, required this.page}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,19 +38,13 @@ class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox.shrink(),
-            Text(postName, style: CommonText.TitleM)
-          ],
+          children: [SizedBox.shrink(), Text(postName, style: CommonText.TitleM)],
         );
       case Status.login:
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox.shrink(),
-            Text(postName, style: CommonText.TitleM)
-          ],
+          children: [SizedBox.shrink(), Text(postName, style: CommonText.TitleM)],
         );
       default:
         return Row(
@@ -84,6 +79,8 @@ class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
         return LoginBtn();
       case Status.edit:
         return Text('edit');
+      case Status.editAlarmOnly:
+        return AlarmOnly();
       case Status.detail:
         return DetailBtn();
       case Status.alarm:
@@ -107,8 +104,7 @@ class ActionBtns extends StatelessWidget {
             border: Border.all(width: 1.0, color: Palette.lightGray),
           ),
           child: Container(
-            padding:
-                const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
+            padding: const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -161,30 +157,27 @@ class ActionBtns extends StatelessWidget {
   }
 }
 
-
 PageRouteWithAnimation sign = PageRouteWithAnimation(const SignUpRoute());
 
 class LoginBtn extends StatelessWidget {
   const LoginBtn({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Navigator.of(context).push(sign.slideRitghtToLeft()),
       child: Container(
         width: 80,
-        padding:
-            const EdgeInsets.only(top: 14, bottom: 10, left: 12, right: 12),
+        padding: const EdgeInsets.only(top: 14, bottom: 10, left: 12, right: 12),
         child: DecoratedBox(
             decoration: BoxDecoration(
-              borderRadius:
-                  const BorderRadius.all(Radius.circular(40.0) // POINT
-                      ),
+              borderRadius: const BorderRadius.all(Radius.circular(40.0) // POINT
+                  ),
               color: Palette.main,
             ),
             child: Container(
               padding: const EdgeInsets.all(5),
-              child: Text('로그인',
-                  style: CommonText.LabelWhite, textAlign: TextAlign.center),
+              child: Text('로그인', style: CommonText.LabelWhite, textAlign: TextAlign.center),
             )),
       ),
     );
@@ -193,6 +186,7 @@ class LoginBtn extends StatelessWidget {
 
 class DetailBtn extends StatelessWidget {
   const DetailBtn({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -213,8 +207,8 @@ class DetailBtn extends StatelessWidget {
 class ActionButton extends StatelessWidget {
   final Icon isIcon;
   final void Function()? event;
-  ActionButton({Key? key, required this.isIcon, required this.event})
-      : super(key: key);
+
+  ActionButton({Key? key, required this.isIcon, required this.event}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -240,12 +234,11 @@ class AlarmBtns extends StatelessWidget {
       child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(40.0) // POINT
-            ),
+                ),
             border: Border.all(width: 1.0, color: Palette.lightGray),
           ),
           child: Container(
-            padding:
-            const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
+            padding: const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -286,6 +279,59 @@ class AlarmBtns extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class AlarmOnly extends StatelessWidget {
+  const AlarmOnly({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          child: InkWell(
+            onTap: () {
+              // 알림 페이지로 이동
+            },
+            child: Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(right: 15.0.w, top: 7.0.h),
+              width: 36.0.w,
+              height: 36.0.h,
+              decoration: BoxDecoration(
+                border: Border.all(width: 1.0, color: Palette.lightGray),
+                shape: BoxShape.circle,
+              ),
+              child: Stack(
+                children: [
+                  Icon(
+                    Icons.notifications_none,
+                    color: Palette.gray,
+                    size: 18.r,
+                  ),
+                  Positioned(
+                    top: 1.6.h,
+                    left: 11.w,
+                    // right: -20,
+                    child: Container(
+                      width: 6.0.w,
+                      height: 6.0.h,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 0.5.w, color: Colors.white),
+                        color: Color(0xFFFF5F5F),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

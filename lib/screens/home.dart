@@ -28,27 +28,24 @@ class HomeScreen extends StatelessWidget {
       //TODO: 아이폰 하단바 높이 조절해야함
       //TODO: SVG 이미지 배너 왜 안나옴
       appBar: HomeAppbar(),
-      body: Container(
-        // transform: Matrix4.translationValues(0, -10, 0),
-        child: RefreshIndicator(
-          key: refreshKey,
-          onRefresh: () async {
-            await p.getBoard();
-          },
-          child: ListView(
-            children: [
-              AdvertisementArea(), // 광고영역
-              SizedBox(height: 22.h),
-              PostTitleArea(),
-              Obx(() => PostBoxArea(post: p.bestPost.value)),
-              SizedBox(height: 22.h),
-              GroupChatRecommendTitleArea(),
-              GroupChatRecommendBoxArea(),
-              SizedBox(height: 22.h),
-              PostTitleArea(),
-              Obx(() => PostBoxArea(post: p.bestPost.value)),
-            ],
-          ),
+      body: RefreshIndicator(
+        key: refreshKey,
+        onRefresh: () async {
+          await p.getBoard();
+        },
+        child: ListView(
+          children: [
+            AdvertisementArea(), // 광고영역
+            SizedBox(height: 24.h),
+            PostTitleArea(),
+            Obx(() => PostBoxArea(post: p.bestPost.value)),
+            SizedBox(height: 24.h),
+            GroupChatRecommendTitleArea(),
+            GroupChatRecommendBoxArea(),
+            SizedBox(height: 24.h),
+            PostTitleArea(),
+            Obx(() => PostBoxArea(post: p.bestPost.value)),
+          ],
         ),
       ),
     );
@@ -67,7 +64,7 @@ class PostBoxArea extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(left: 20.w, right: 20.w),
       padding: EdgeInsets.fromLTRB(16.0.w, 12.0.h, 16.0.w, 12.0.h),
-      height: 112.h,
+      height: 113.5.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         border: Border.all(
