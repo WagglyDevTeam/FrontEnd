@@ -21,6 +21,7 @@ class InputHashtagField extends StatelessWidget {
       alignment: Alignment.centerLeft,
       // TODO: 입력 방식이 불편하지는 않은지? 해시태그마다 # 을 쳐줘야하는데
       child: HashTagTextField(
+        basicStyle: CommonText.BodyM,
         onChanged: (text) {
           if (text.length > 1 && text[text.length - 2] == ',') {
             controller.text = controller.text.replaceFirst(",", " ");
@@ -29,7 +30,6 @@ class InputHashtagField extends StatelessWidget {
           }
 
           if (extractHashTags(controller.text).isNotEmpty) {
-            print(extractHashTags(controller.text));
             onEditingComplete();
           } else {
             GroupChatController().isButtonActivate.value = false;
@@ -40,6 +40,7 @@ class InputHashtagField extends StatelessWidget {
         keyboardType: TextInputType.text,
         controller: controller,
         decoration: InputDecoration(
+          isDense: true,
           hintText: hintText,
           hintStyle: CommonText.BodyMediumMain.copyWith(color: Palette.lavender),
           enabledBorder: InputBorder.none,

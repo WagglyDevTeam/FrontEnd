@@ -28,27 +28,24 @@ class HomeScreen extends StatelessWidget {
       //TODO: 아이폰 하단바 높이 조절해야함
       //TODO: SVG 이미지 배너 왜 안나옴
       appBar: HomeAppbar(),
-      body: Container(
-        // transform: Matrix4.translationValues(0, -10, 0),
-        child: RefreshIndicator(
-          key: refreshKey,
-          onRefresh: () async {
-            await p.getBoard();
-          },
-          child: ListView(
-            children: [
-              AdvertisementArea(), // 광고영역
-              SizedBox(height: 24.h),
-              PostTitleArea(),
-              Obx(() => PostBoxArea(post: p.bestPost.value)),
-              SizedBox(height: 24.h),
-              GroupChatRecommendTitleArea(),
-              GroupChatRecommendBoxArea(),
-              SizedBox(height: 24.h),
-              PostTitleArea(),
-              Obx(() => PostBoxArea(post: p.bestPost.value)),
-            ],
-          ),
+      body: RefreshIndicator(
+        key: refreshKey,
+        onRefresh: () async {
+          await p.getBoard();
+        },
+        child: ListView(
+          children: [
+            AdvertisementArea(), // 광고영역
+            SizedBox(height: 24.h),
+            PostTitleArea(),
+            Obx(() => PostBoxArea(post: p.bestPost.value)),
+            SizedBox(height: 24.h),
+            GroupChatRecommendTitleArea(),
+            GroupChatRecommendBoxArea(),
+            SizedBox(height: 24.h),
+            PostTitleArea(),
+            Obx(() => PostBoxArea(post: p.bestPost.value)),
+          ],
         ),
       ),
     );
@@ -67,7 +64,7 @@ class PostBoxArea extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(left: 20.w, right: 20.w),
       padding: EdgeInsets.fromLTRB(16.0.w, 12.0.h, 16.0.w, 12.0.h),
-      height: 112.h,
+      height: 113.5.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         border: Border.all(
@@ -124,7 +121,7 @@ class PostBoxArea extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   width: safeWidth * 0.46,
                   child: Text(
-                    "시각디자인학과와건축학과",
+                    "치토스양념제조학과",
                     style: CommonText.BodyXSmallGray,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -139,7 +136,7 @@ class PostBoxArea extends StatelessWidget {
                       Row(
                         children: [
                           Icon(
-                            Icons.landscape,
+                            Icons.image_outlined,
                             size: 13.r,
                             color: Palette.violet,
                           ),
@@ -147,18 +144,18 @@ class PostBoxArea extends StatelessWidget {
                             width: 2.w,
                           ),
                           Text(
-                            "15",
+                            "150",
                             style: CommonText.BodyEngMain.copyWith(fontSize: 10.0.r),
                           ),
                         ],
                       ),
                       SizedBox(
-                        width: 8.w,
+                        width: 5.w,
                       ),
                       Row(
                         children: [
                           Icon(
-                            Icons.face,
+                            Icons.sentiment_satisfied,
                             size: 13.r,
                             color: Palette.violet,
                           ),
@@ -166,18 +163,18 @@ class PostBoxArea extends StatelessWidget {
                             width: 2.w,
                           ),
                           Text(
-                            "6000",
+                            "60000",
                             style: CommonText.BodyEngMain,
                           ),
                         ],
                       ),
                       SizedBox(
-                        width: 8.w,
+                        width: 5.w,
                       ),
                       Row(
                         children: [
                           Icon(
-                            Icons.chat_bubble_outline_outlined,
+                            Icons.mode_comment_outlined,
                             size: 13.r,
                             color: Palette.violet,
                           ),
@@ -185,7 +182,7 @@ class PostBoxArea extends StatelessWidget {
                             width: 2.w,
                           ),
                           Text(
-                            "6000",
+                            "60000",
                             style: CommonText.BodyEngMain,
                           ),
                         ],
@@ -244,7 +241,7 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
           itemBuilder: (ctx, index) {
             return Row(
               children: [
-                if (index == 0) SizedBox(width: 16.0.w),
+                if (index == 0) SizedBox(width: 20.0.w),
                 Container(
                   height: 85.0.h,
                   width: 217.0.w,
@@ -340,12 +337,11 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (index == groupChatItem.length-1) SizedBox(width: 16.0.w),
+                if (index == groupChatItem.length-1) SizedBox(width: 20.0.w),
               ],
             );
           }),
     );
-
   }
 }
 

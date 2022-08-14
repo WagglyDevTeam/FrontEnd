@@ -9,15 +9,12 @@ class PostController extends GetxController {
   final PostRepository _postRepository = PostRepository();
   final posts = <Post>[].obs;
   final bestPost = Post().obs;
+  final isButtonActivate = false.obs;
 
   @override
   void onInit() async {
     super.onInit();
     await getBoard();
-  }
-
-  bool isButtonActivate() {
-    return false;
   }
 
   Future<void> getBoard() async {

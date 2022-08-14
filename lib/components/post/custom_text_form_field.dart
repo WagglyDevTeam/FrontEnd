@@ -21,6 +21,7 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: CommonText.BodyM,
       controller: controller,
       maxLines: maxLines ?? 1,
       initialValue: initialValue,
@@ -30,6 +31,7 @@ class CustomTextFormField extends StatelessWidget {
       },
       autocorrect: false,
       decoration: InputDecoration(
+        isDense: true,
         hintText: hint,
         hintStyle: CommonText.BodyMediumGray,
         enabledBorder: InputBorder.none,
