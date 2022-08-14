@@ -288,50 +288,46 @@ class AlarmOnly extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: InkWell(
-            onTap: () {
-              // 알림 페이지로 이동
-            },
-            child: Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(right: 15.0.w, top: 7.0.h),
-              width: 36.0.w,
-              height: 36.0.h,
-              decoration: BoxDecoration(
-                border: Border.all(width: 1.0, color: Palette.lightGray),
-                shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: InkWell(
+        onTap: () {
+          // 알림 페이지로 이동
+        },
+        child: Container(
+          alignment: Alignment.center,
+          margin: EdgeInsets.only(right: 15.0.w, top: 7.0.h),
+          width: 36.0.w,
+          height: 36.0.h,
+          decoration: BoxDecoration(
+            border: Border.all(width: 1.0, color: Palette.lightGray),
+            shape: BoxShape.circle,
+          ),
+          child: Stack(
+            children: [
+              Icon(
+                Icons.notifications_none,
+                color: Palette.gray,
+                size: 18.r,
               ),
-              child: Stack(
-                children: [
-                  Icon(
-                    Icons.notifications_none,
-                    color: Palette.gray,
-                    size: 18.r,
+              Positioned(
+                top: 1.6.h,
+                left: 11.w,
+                // right: -20,
+                child: Container(
+                  width: 6.0.w,
+                  height: 6.0.h,
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 0.5.w, color: Colors.white),
+                    color: Color(0xFFFF5F5F),
+                    shape: BoxShape.circle,
                   ),
-                  Positioned(
-                    top: 1.6.h,
-                    left: 11.w,
-                    // right: -20,
-                    child: Container(
-                      width: 6.0.w,
-                      height: 6.0.h,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 0.5.w, color: Colors.white),
-                        color: Color(0xFFFF5F5F),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
+                ),
+              )
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

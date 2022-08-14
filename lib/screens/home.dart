@@ -342,7 +342,6 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
             );
           }),
     );
-
   }
 }
 

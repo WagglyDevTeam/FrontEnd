@@ -260,13 +260,6 @@ class SelectButton extends StatelessWidget {
                               ? Colors.white
                               : Palette.data,
                         )
-
-                        // TextStyle(
-                        //     color: flagIndex.value == index
-                        //         ? Colors.white
-                        //         : Palette.data,
-                        //     fontSize: 13.0,
-                        //     fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),
