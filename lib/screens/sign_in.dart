@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:waggly/controller/signIn/sign_in_conroller.dart';
+import 'package:waggly/model/signIn/dtos/sign_in_reqeust_dto.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/Button/button.dart';
 import 'package:waggly/components/SignIn/Checkbox/checkbox.dart';
@@ -20,6 +24,9 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInState extends State<SignInScreen> {
   bool isChecked = false;
+  final _signInController = SignInController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   setChecked() {
     setState(() {
@@ -29,21 +36,31 @@ class _SignInState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: [
           SignInHeader(),
           RenderTextFormField(
             placeholder: '학교 이메일',
+            controller: _emailController
           ),
           RenderTextFormField(
             placeholder: '비밀번호',
+              controller: _passwordController
           ),
           CustomCheckbox(),
           Button(
             text: '시작하기',
-            onPress: () {
-              Navigator.of(context).push(home.slideRitghtToLeft());
+            onPress: () async {
+              print(_emailController.text);
+              var isSignIn = await _signInController.signIn(SignInRequestDto(_emailController.text, _passwordController.text));
+              if(isSignIn == true){
+                Get.toNamed("/");
+              }else{
+                
+              }
             },
             disabled: true,
           ),
@@ -71,8 +88,6 @@ class SignInHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: MediaQuery.of(context).size.width,
-        child: Flexible(
-          fit: FlexFit.loose,
           child: Stack(
             children: [
               Padding(
@@ -92,6 +107,6 @@ class SignInHeader extends StatelessWidget {
               )
             ],
           ),
-        ));
+        );
   }
 }
