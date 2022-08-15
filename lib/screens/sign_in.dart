@@ -57,8 +57,8 @@ class _SignInState extends State<SignInScreen> {
               print(_emailController.text);
               var isSignIn = await _signInController.signIn(SignInRequestDto(_emailController.text, _passwordController.text));
               if(isSignIn == true){
-                Get.toNamed("/");
-              }else{
+                Get.offAllNamed("/");
+              } else{
                 
               }
             },
