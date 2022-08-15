@@ -1,20 +1,24 @@
 import 'package:get/get.dart';
-import 'package:waggly/model/myPage/my_page_model.dart';
-import 'package:waggly/server/server.dart';
+import 'package:waggly/model/myPage/my_post_provider.dart';
+import 'package:waggly/model/myPage/my_post_model.dart';
 
-class MyPostListController extends GetxController {
-  var myCommentsList = <MyPostListModel>[].obs;
+class MyPostsListController extends GetxController {
+  final MyPostsListProvider _myPostsListProvider = MyPostsListProvider();
+  final myPosts = [].obs;
+  final mine = true.obs;
 
   @override
   void onInit() {
     super.onInit();
-    fetchData();
+    getMyPosts();
   }
 
-  void fetchData() async {
-    var myComment = await Services.getMyPostList();
-    if (myComment != null) {
-      // myCommentsList.value = myComment;
-    }
+  Future<void> getMyPosts() async {
+    Response response = await _myPostsListProvider.getMyPosts();
+    dynamic body = response.body;
+    List<dynamic> myPostsListJson = body['datas']['myPosts'];
+    List<Data> convertMyPosts =
+        myPostsListJson.map((e) => Data.fromJson(e)).toList();
+    myPosts.value = convertMyPosts;
   }
 }

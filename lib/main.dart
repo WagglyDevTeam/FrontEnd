@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:waggly/components/myPage/active/my_post_list.dart';
 import 'package:waggly/components/notification/notification.dart';
+import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/screens/chat.dart';
 import 'package:waggly/screens/chat_edit.dart';
 import 'package:waggly/screens/group_chat_create.dart';
@@ -72,6 +74,10 @@ class HeroApp extends StatelessWidget {
             GetPage(
                 name: "/notification",
                 page: () => NotificationScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/myPostsList",
+                page: () => MyPostListScreen(),
                 transition: Transition.rightToLeft),
           ],
         );
