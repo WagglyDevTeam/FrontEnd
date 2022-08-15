@@ -607,7 +607,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
             style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700, color: Colors.black),
           ),
           actions: <Widget>[
-            signInController.checkLoggedIn().value == true
+            signInController.isLoggedIn.value == true
                 ? InkWell(
                     onTap: () {
                       // 알림 페이지로 이동
