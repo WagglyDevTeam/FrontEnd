@@ -19,7 +19,6 @@ class InputTitleField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      // height: height,
       child: CustomTextFormField(
         onChanged: (text) {
             onEditingComplete;

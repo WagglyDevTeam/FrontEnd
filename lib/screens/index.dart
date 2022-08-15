@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:waggly/screens/chat.dart';
 import 'package:waggly/screens/chat_edit.dart';
+import 'package:waggly/screens/chat_search.dart';
 import 'package:waggly/screens/group_chat_create.dart';
 import 'package:waggly/screens/home.dart';
 import 'package:waggly/screens/my_page.dart';
@@ -29,7 +30,8 @@ class _ScreenState extends State<Screen> {
   List<Widget> screenList = <Widget>[
     HomeScreen(),
     ChatEditScreen(),
-    ChatScreen(),
+    ChatSearchScreen(),
+    // ChatScreen(),
     PostScreen(),
     MyPageScreen(),
   ];

@@ -11,6 +11,7 @@ import 'package:waggly/screens/post.dart';
 import 'package:waggly/screens/sign_in.dart';
 import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/myPage/active/index.dart';
+import 'package:waggly/screens/write.dart';
 
 void main() {
   runApp(HeroApp());
