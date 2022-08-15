@@ -3,12 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RenderTextFormField extends StatefulWidget {
   const RenderTextFormField(
-      {Key? key, this.mode, this.placeholder, this.buttonText, this.label})
+      {Key? key, this.mode, this.placeholder, this.buttonText, this.label, this.controller})
       : super(key: key);
   final mode;
   final placeholder;
   final buttonText;
   final label;
+  final controller;
 
   @override
   State<RenderTextFormField> createState() => _RenderTextFormFieldState();
@@ -180,6 +181,7 @@ class _RenderTextFormFieldState extends State<RenderTextFormField> {
             ),
             onSaved: (val) {},
             validator: (val) {},
+            controller: widget.controller,
           ),
         ),
         SizedBox(

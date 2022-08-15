@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:waggly/components/notification/notification.dart';
 import 'package:waggly/screens/chat.dart';
 import 'package:waggly/screens/chat_edit.dart';
@@ -13,7 +16,9 @@ import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/myPage/active/index.dart';
 import 'package:waggly/screens/write.dart';
 
-void main() {
+void main() async{
+  await Hive.initFlutter();
+  await Hive.openBox("user");
   runApp(HeroApp());
 }
 
