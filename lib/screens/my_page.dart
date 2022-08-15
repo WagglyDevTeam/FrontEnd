@@ -4,20 +4,16 @@ import 'package:get/get.dart';
 import 'package:waggly/components/myPage/active/index.dart';
 import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/Notification/notification.dart';
+import 'package:waggly/controller/myPage/notification_controller.dart';
+import 'package:waggly/controller/myPage/waggly_img_controller.dart';
+import 'package:waggly/widgets/index.dart';
 import 'package:waggly/model/myPage/waggly_img.dart';
 import 'package:waggly/widgets/Button/button.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/utils/colors.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-
-import '../controller/myPage/waggly_img_controller.dart';
-import '../widgets/index.dart';
-
-PageRouteWithAnimation profileImg = PageRouteWithAnimation(ProfileImgScreen());
-
-PageRouteWithAnimation activePage =
-    PageRouteWithAnimation(const ActiveScreen());
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyPageScreen extends StatelessWidget {
   const MyPageScreen({Key? key}) : super(key: key);
@@ -57,10 +53,9 @@ class TopNav extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: <Widget>[
         Container(
-          width: 36,
-          height: 36,
-          margin: EdgeInsets.only(top: 20, right: 16, bottom: 0),
-          //padding: const EdgeInsets.all(7.0),
+          width: 36.w,
+          height: 36.h,
+          margin: EdgeInsets.only(top: 20.h, right: 16.w, bottom: 0),
           child: DecoratedBox(
             decoration: BoxDecoration(
               borderRadius:
@@ -81,13 +76,9 @@ class TopNav extends StatelessWidget implements PreferredSizeWidget {
                     padding: EdgeInsets.zero,
                     constraints: BoxConstraints(),
                     color: Palette.gray,
-                    onPressed: () {
-                      // Server().getList();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => NotificationScreen()),
-                      );
+                    onPressed: () async {
+                      await Get.put(NotificationController()).getNotification();
+                      Get.toNamed('/notification');
                     })
               ],
             ),
@@ -158,24 +149,24 @@ class _myPageState extends State<myPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('프로필 설정'),
-              SizedBox(height: 16),
+              SizedBox(height: 16.h),
               Divider(thickness: 1, height: 1, color: Palette.paper),
-              SizedBox(height: 10),
+              SizedBox(height: 10.h),
               Button(
                   text: '와글리 이미지',
                   onPress: () {
-                    controller.getImg();
-                    Navigator.of(context).push(profileImg.slideRitghtToLeft());
+                    controller.fetchData();
+                    Get.toNamed('/profileImg');
                   },
                   theme: 'small'),
-              SizedBox(height: 5),
+              SizedBox(height: 5.h),
               Button(
                   text: '앨범',
                   onPress: () {
                     pickImage();
                   },
                   theme: 'small'),
-              SizedBox(height: 25),
+              SizedBox(height: 25.h),
             ],
           ),
         );
@@ -185,6 +176,8 @@ class _myPageState extends State<myPage> {
 
   @override
   Widget build(BuildContext context) {
+    var contextAreaWidth = MediaQuery.of(context).size.width - 32;
+
     return Stack(children: [
       //close button
       Column(
@@ -194,7 +187,7 @@ class _myPageState extends State<myPage> {
             // profile section
             Divider(thickness: 1, height: 1, color: Palette.paper),
             Container(
-              height: 60,
+              height: 60.h,
               padding: EdgeInsets.only(top: 13, left: 16, right: 16),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -210,8 +203,8 @@ class _myPageState extends State<myPage> {
                                     as ImageProvider),
                         if (!profilehasSubmitted)
                           Positioned(
-                              bottom: 10.0,
-                              right: 10.0,
+                              bottom: 8.0.h,
+                              right: 8.0.w,
                               child: InkWell(
                                   onTap: () {
                                     _showModalBottomSheet(context);
@@ -224,10 +217,10 @@ class _myPageState extends State<myPage> {
                       ],
                     ),
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width: 10.w),
                   Container(
-                      width: MediaQuery.of(context).size.width - 140,
-                      padding: EdgeInsets.only(top: 8),
+                      width: MediaQuery.of(context).size.width - 110.w,
+                      padding: EdgeInsets.only(top: 8.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -237,26 +230,26 @@ class _myPageState extends State<myPage> {
                               style: CommonText.TitleS,
                             ),
                           if (!profilehasSubmitted)
-                            Container(
-                              child: TextFormField(
-                                key: ValueKey(1),
-                                validator: (value) {},
-                                onSaved: (value) {},
-                                onChanged: (value) {
-                                  setState(() {
-                                    userName = value;
-                                  });
-                                },
-                                cursorColor: Palette.main,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  isDense: true,
-                                  contentPadding:
-                                      EdgeInsets.only(top: -2, bottom: -1),
-                                  counterText: '',
-                                  hintText: userName,
-                                  hintStyle: CommonText.TitleS,
-                                ),
+                            TextFormField(
+                              key: ValueKey(1),
+                              validator: (value) {},
+                              onSaved: (value) {},
+                              maxLines: 1,
+                              maxLength: 10,
+                              onChanged: (value) {
+                                setState(() {
+                                  userName = value;
+                                });
+                              },
+                              cursorColor: Palette.main,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                isDense: true,
+                                contentPadding:
+                                    EdgeInsets.only(top: -2, bottom: -1),
+                                counterText: '',
+                                hintText: userName,
+                                hintStyle: CommonText.TitleS,
                               ),
                             ),
                           Row(
@@ -270,11 +263,9 @@ class _myPageState extends State<myPage> {
                         ],
                       )),
                   if (profilehasSubmitted)
-                    Container(
-                      width: 52.0,
-                      height: 25.0,
-                      padding: EdgeInsets.all(0),
-                      margin: EdgeInsets.only(left: 5),
+                    SizedBox(
+                      width: 43.0.w,
+                      height: 19.0.h,
                       child: ElevatedButton(
                         child: Text(
                           "수정",
@@ -295,10 +286,9 @@ class _myPageState extends State<myPage> {
                       ),
                     ),
                   if (!profilehasSubmitted)
-                    Container(
-                      width: 52.0,
-                      height: 25.0,
-                      margin: EdgeInsets.only(left: 5),
+                    SizedBox(
+                      width: 43.0.w,
+                      height: 19.0.h,
                       child: ElevatedButton(
                         child: Text(
                           "완료",
@@ -321,9 +311,9 @@ class _myPageState extends State<myPage> {
                 ],
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 15.h),
             Divider(thickness: 1, height: 1, color: Palette.paper),
-            SizedBox(height: 15),
+            SizedBox(height: 15.h),
 
             //자기소개 button
             Container(
@@ -334,127 +324,29 @@ class _myPageState extends State<myPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     //서버에서 받아오는 데이터가 있을 경우
-                    if (savedbio.length > 0)
-                      Container(
-                        child: Row(
-                          children: [
-                            if (hasSubmitted)
-                              Container(
-                                width: MediaQuery.of(context).size.width - 90,
-                                child: Text(
-                                  savedbio,
-                                  style: CommonText.BodyS,
-                                ),
-                              ),
-                            if (!hasSubmitted)
-                              Container(
-                                width: MediaQuery.of(context).size.width - 90,
-                                child: TextFormField(
-                                  key: ValueKey(1),
-                                  validator: (value) {},
-                                  onSaved: (value) {},
-                                  onChanged: (value) {
-                                    setState(() {
-                                      savedbio = value;
-                                    });
-                                  },
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    isDense: true,
-                                    contentPadding:
-                                        EdgeInsets.only(top: 0, bottom: 0),
-                                    counterText: '',
-                                    hintText: savedbio,
-                                    hintStyle: CommonText.BodyM,
-                                  ),
-                                ),
-                              ),
-                            if (hasSubmitted)
-                              Container(
-                                width: 52.0,
-                                height: 25.0,
-                                margin: EdgeInsets.only(left: 5),
-                                child: ElevatedButton(
-                                  child: Text(
-                                    "수정",
-                                    style: CommonText.BodyXS,
-                                  ),
-                                  onPressed: () {
-                                    // validating form
-                                    if (!_formKey.currentState!.validate()) {
-                                      return;
-                                    }
-
-                                    // saving form
-                                    _formKey.currentState!.save();
-                                    // updating hasSubmitted
-                                    setState(() {
-                                      // updating hasSubmitted
-                                      hasSubmitted = false;
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Palette.candy,
-                                    onPrimary: Colors.black,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(32.0),
-                                    ),
-                                  ).copyWith(
-                                      elevation:
-                                          ButtonStyleButton.allOrNull(0.0)),
-                                ),
-                              ),
-                            if (!hasSubmitted)
-                              Container(
-                                width: 52.0,
-                                height: 25.0,
-                                margin: EdgeInsets.only(left: 5),
-                                child: ElevatedButton(
-                                  child: Text(
-                                    "완료",
-                                    style: CommonText.BodyXSmallWhite,
-                                  ),
-                                  onPressed: () {
-                                    // validating form
-                                    if (!_formKey.currentState!.validate()) {
-                                      return;
-                                    }
-
-                                    // saving form
-                                    _formKey.currentState!.save();
-                                    // updating hasSubmitted
-                                    setState(() {
-                                      // updating hasSubmitted
-                                      hasSubmitted = true;
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Palette.main,
-                                    onPrimary: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(32.0),
-                                    ),
-                                  ).copyWith(
-                                      elevation:
-                                          ButtonStyleButton.allOrNull(0.0)),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                    //서버에서 받아오는 데이터가 없을 경우
-                    if (savedbio.length == 0)
-                      Container(
-                        child: Row(
-                          children: [
+                    if (savedbio.isNotEmpty)
+                      Row(
+                        children: [
+                          if (hasSubmitted)
                             Container(
-                              width: MediaQuery.of(context).size.width - 100,
+                              height: 60.h,
+                              width: MediaQuery.of(context).size.width - 70.w,
+                              padding: EdgeInsets.only(top: 2),
+                              child: Text(
+                                savedbio,
+                                style: CommonText.BodyS,
+                              ),
+                            ),
+                          if (!hasSubmitted)
+                            Container(
+                              height: 60.h,
+                              width: MediaQuery.of(context).size.width - 72.w,
                               child: TextFormField(
-                                maxLength: 100,
-                                enabled: hasSubmitted ? false : true,
                                 key: ValueKey(1),
                                 validator: (value) {},
                                 onSaved: (value) {},
+                                maxLength: 100,
+                                maxLines: 2,
                                 onChanged: (value) {
                                   setState(() {
                                     savedbio = value;
@@ -463,94 +355,190 @@ class _myPageState extends State<myPage> {
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   isDense: true,
-                                  contentPadding: EdgeInsets.all(5),
                                   counterText: '',
-                                  hintText: hasSubmitted
-                                      ? '다른 친구들에게 자신을 소개해보세요'
-                                      : savedbio,
-                                  hintStyle: CommonText.BodyMediumGray,
+                                  contentPadding: EdgeInsets.only(top: 2),
+                                  hintText: savedbio,
+                                  hintStyle: CommonText.BodyS,
                                 ),
                               ),
                             ),
-                            if (hasSubmitted)
-                              Container(
-                                width: 52.0,
-                                height: 25.0,
-                                margin: EdgeInsets.only(left: 5),
-                                child: ElevatedButton(
-                                  child: Text(
-                                    "수정",
-                                    style: CommonText.BodyXS,
-                                  ),
-                                  onPressed: () {
-                                    // validating form
-                                    if (!_formKey.currentState!.validate()) {
-                                      return;
-                                    }
-
-                                    // saving form
-                                    _formKey.currentState!.save();
-                                    // updating hasSubmitted
-                                    setState(() {
-                                      // updating hasSubmitted
-                                      hasSubmitted = false;
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Palette.candy,
-                                    onPrimary: Colors.black,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(32.0),
-                                    ),
-                                  ).copyWith(
-                                      elevation:
-                                          ButtonStyleButton.allOrNull(0.0)),
+                          if (hasSubmitted)
+                            SizedBox(
+                              width: 43.0.w,
+                              height: 19.0.h,
+                              child: ElevatedButton(
+                                child: Text(
+                                  "수정",
+                                  style: CommonText.BodyXS,
                                 ),
-                              ),
-                            if (!hasSubmitted)
-                              Container(
-                                width: 52.0,
-                                height: 25.0,
-                                margin: EdgeInsets.only(left: 5),
-                                child: ElevatedButton(
-                                  child: Text(
-                                    "완료",
-                                    style: CommonText.BodyXSmallWhite,
-                                  ),
-                                  onPressed: () {
-                                    // validating form
-                                    if (!_formKey.currentState!.validate()) {
-                                      return;
-                                    }
+                                onPressed: () {
+                                  // validating form
+                                  if (!_formKey.currentState!.validate()) {
+                                    return;
+                                  }
 
-                                    // saving form
-                                    _formKey.currentState!.save();
+                                  // saving form
+                                  _formKey.currentState!.save();
+                                  // updating hasSubmitted
+                                  setState(() {
                                     // updating hasSubmitted
-                                    setState(() {
-                                      // updating hasSubmitted
-                                      hasSubmitted = true;
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Palette.main,
-                                    onPrimary: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(32.0),
-                                    ),
-                                  ).copyWith(
-                                      elevation:
-                                          ButtonStyleButton.allOrNull(0.0)),
-                                ),
+                                    hasSubmitted = false;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Palette.candy,
+                                  onPrimary: Colors.black,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32.0),
+                                  ),
+                                ).copyWith(
+                                    elevation:
+                                        ButtonStyleButton.allOrNull(0.0)),
                               ),
-                          ],
-                        ),
+                            ),
+                          if (!hasSubmitted)
+                            Container(
+                              width: 43.0.w,
+                              height: 19.0.h,
+                              margin: EdgeInsets.only(left: 5),
+                              child: ElevatedButton(
+                                child: Text(
+                                  "완료",
+                                  style: CommonText.BodyXSmallWhite,
+                                ),
+                                onPressed: () {
+                                  // validating form
+                                  if (!_formKey.currentState!.validate()) {
+                                    return;
+                                  }
+
+                                  // saving form
+                                  _formKey.currentState!.save();
+                                  // updating hasSubmitted
+                                  setState(() {
+                                    // updating hasSubmitted
+                                    hasSubmitted = true;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Palette.main,
+                                  onPrimary: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32.0),
+                                  ),
+                                ).copyWith(
+                                    elevation:
+                                        ButtonStyleButton.allOrNull(0.0)),
+                              ),
+                            ),
+                        ],
+                      ),
+                    //서버에서 받아오는 데이터가 없을 경우
+                    if (savedbio.isEmpty)
+                      Row(
+                        children: [
+                          Container(
+                            height: 60.h,
+                            width: MediaQuery.of(context).size.width - 70.w,
+                            child: TextFormField(
+                              maxLength: 100,
+                              maxLines: 2,
+                              enabled: hasSubmitted ? false : true,
+                              key: ValueKey(1),
+                              validator: (value) {},
+                              onSaved: (value) {},
+                              onChanged: (value) {
+                                setState(() {
+                                  savedbio = value;
+                                });
+                              },
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                isDense: true,
+                                // contentPadding: EdgeInsets.all(5),
+                                counterText: '',
+                                hintText: hasSubmitted
+                                    ? '다른 친구들에게 자신을 소개해보세요'
+                                    : savedbio,
+                                hintStyle: CommonText.BodyMediumGray,
+                              ),
+                            ),
+                          ),
+                          if (hasSubmitted)
+                            SizedBox(
+                              width: 43.0.w,
+                              height: 19.0.h,
+                              child: ElevatedButton(
+                                child: Text(
+                                  "수정",
+                                  style: CommonText.BodyXS,
+                                ),
+                                onPressed: () {
+                                  // validating form
+                                  if (!_formKey.currentState!.validate()) {
+                                    return;
+                                  }
+
+                                  // saving form
+                                  _formKey.currentState!.save();
+                                  // updating hasSubmitted
+                                  setState(() {
+                                    // updating hasSubmitted
+                                    hasSubmitted = false;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Palette.candy,
+                                  onPrimary: Colors.black,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32.0),
+                                  ),
+                                ).copyWith(
+                                    elevation:
+                                        ButtonStyleButton.allOrNull(0.0)),
+                              ),
+                            ),
+                          if (!hasSubmitted)
+                            Container(
+                              width: 43.0.w,
+                              height: 19.0.h,
+                              child: ElevatedButton(
+                                child: Text(
+                                  "완료",
+                                  style: CommonText.BodyXSmallWhite,
+                                ),
+                                onPressed: () {
+                                  // validating form
+                                  if (!_formKey.currentState!.validate()) {
+                                    return;
+                                  }
+                                  // saving form
+                                  _formKey.currentState!.save();
+                                  // updating hasSubmitted
+                                  setState(() {
+                                    // updating hasSubmitted
+                                    hasSubmitted = true;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Palette.main,
+                                  onPrimary: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32.0),
+                                  ),
+                                ).copyWith(
+                                    elevation:
+                                        ButtonStyleButton.allOrNull(0.0)),
+                              ),
+                            ),
+                        ],
                       ),
                   ],
                 ),
               ),
             ),
-//             grid view list
-            SizedBox(height: 15),
+            //grid view list
+            SizedBox(height: 15.h),
             Divider(thickness: 1, height: 1, color: Palette.paper),
             Expanded(
               child: GridView.count(
@@ -572,8 +560,7 @@ class _myPageState extends State<myPage> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context)
-                          .push(activePage.slideRitghtToLeft());
+                      Get.toNamed('active');
                     },
                   ),
                   GestureDetector(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:waggly/components/notification/notification.dart';
 import 'package:waggly/screens/chat.dart';
 import 'package:waggly/screens/chat_edit.dart';
 import 'package:waggly/screens/group_chat_create.dart';
@@ -8,9 +9,11 @@ import 'package:waggly/screens/index.dart';
 import 'package:waggly/screens/my_page.dart';
 import 'package:waggly/screens/post.dart';
 import 'package:waggly/screens/sign_in.dart';
+import 'package:waggly/components/myPage/profileImg/profile_img.dart';
+import 'package:waggly/components/myPage/active/index.dart';
 import 'package:waggly/screens/write.dart';
 
-void main(){
+void main() {
   runApp(HeroApp());
 }
 
@@ -57,7 +60,19 @@ class HeroApp extends StatelessWidget {
                 // page: () => WritePage(),
                 // 그룹채팅방 만들기 페이지가 갈 곳이 없어서 임시로 여기에 라우팅 해둠
                 page: () => GroupChatCreatePage(),
-                transition: Transition.rightToLeft)
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/profileImg",
+                page: () => ProfileImgScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/active",
+                page: () => ActiveScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/notification",
+                page: () => NotificationScreen(),
+                transition: Transition.rightToLeft),
           ],
         );
       },

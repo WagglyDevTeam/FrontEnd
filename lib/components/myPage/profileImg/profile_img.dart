@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:waggly/controller/myPage/waggly_img_controller.dart';
-import 'package:waggly/model/myPage/waggly_img.dart';
-import 'package:waggly/screens/my_page.dart';
+import 'package:waggly/components/myPage/profileImg/img_tile.dart';
 import 'package:waggly/widgets/Button/button.dart';
 import 'package:waggly/widgets/PageNav/page_nav.dart';
 import 'package:waggly/utils/colors.dart';
+import 'package:waggly/model/myPage/waggly_img.dart';
+import 'package:waggly/controller/myPage/waggly_img_controller.dart';
 
 class ProfileImgScreen extends StatelessWidget {
   @override
@@ -18,7 +18,7 @@ class ProfileImgList extends StatelessWidget {
   WagglyImgController controller = Get.put(WagglyImgController());
 
   bool focus = false;
-  dynamic checkedImg;
+  int checkedImg = 100;
   String imgUrl = '';
 
   @override
@@ -35,35 +35,38 @@ class ProfileImgList extends StatelessWidget {
               ),
               Expanded(
                 child: Obx(
-                  () => GridView.count(
-                    padding: const EdgeInsets.all(26),
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    children: [
-                      // ...(controller.wagglyImglist).map(
-                      ...(controller.imgList).map(
-                        (item) => GestureDetector(
+                  () => GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                    ),
+                    itemBuilder: (context, index) {
+                      //반복될 카드가 이미지와 텍스트를 이용하는 것이라서 그 타일 모양을 만들어주는게 좋다.
+                      return Obx(
+                        () => InkWell(
                           child: Container(
                             padding: const EdgeInsets.all(20),
-                            child: Image.network(item.img.toString()),
+                            child: Image.network(
+                                controller.wagglyImglist[index].img),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16.0),
                               border: Border.all(
-                                  color: checkedImg?.id == item.id
+                                  color: controller.selected.value == index
                                       ? Palette.main
-                                      : Palette.light),
+                                      : Palette.lightGray),
                             ),
                           ),
                           onTap: () {
-                            // setState(() {
-                            // onClick(item);
-                            // imgUrl = item.img.toString();
-                            // });
+                            controller.selected.value = index;
+                            checkedImg = index;
+                            print(controller.selected.value);
+                            imgUrl = controller.wagglyImglist[index].img;
                           },
                         ),
-                      ),
-                    ],
+                      );
+                    },
+                    itemCount: controller.wagglyImglist.length,
                   ),
                 ),
               ),
@@ -71,18 +74,18 @@ class ProfileImgList extends StatelessWidget {
               SizedBox(height: 20),
               SizedBox(
                 height: 50,
-                child: Button(
-                    text: '적용하기',
-                    onPress: () {
-                      ProfileImgModel(img: imgUrl);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyPageScreen()),
-                      );
-                      print(imgUrl);
-                    },
-                    disabled: checkedImg != null ? false : true,
-                    theme: 'double'),
+                child: Obx(
+                  () => Button(
+                      text: '적용하기',
+                      onPress: () {
+                        ProfileImgModel(img: imgUrl);
+                        Get.toNamed('/myPage');
+                      },
+                      disabled: controller.selected.value == checkedImg
+                          ? false
+                          : true,
+                      theme: 'double'),
+                ),
               ),
               SizedBox(height: 30),
             ],
@@ -90,10 +93,5 @@ class ProfileImgList extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void onClick(WagglyImgModel item) {
-    item.value = !item.value;
-    checkedImg = item;
   }
 }

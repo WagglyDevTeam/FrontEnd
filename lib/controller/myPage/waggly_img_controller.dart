@@ -4,8 +4,7 @@ import 'package:waggly/server/server.dart';
 
 class WagglyImgController extends GetxController {
   var wagglyImglist = <WagglyImg>[].obs;
-  var imgList = <WagglyImgModel>[].obs;
-  int checkedImgNumber = 0;
+  final selected = 999.obs;
 
   @override
   void onInit() {
@@ -14,22 +13,10 @@ class WagglyImgController extends GetxController {
   }
 
   void fetchData() async {
-    var wagglyImgs = await Services.getWagglyImg();
-    if (wagglyImgs != null) {
-      wagglyImglist.value = wagglyImgs;
+    var wagglyImage = await Services.getWagglyImg();
+    if (wagglyImage != null) {
+      wagglyImglist.value = wagglyImage;
     }
-  }
-
-  void getImg() async {
-    imgList.value = <WagglyImgModel>[];
-    for (var i = 0; i < wagglyImglist.length; i++) {
-      var imgItem = wagglyImglist[i];
-      imgList.add(
-        WagglyImgModel(
-          id: imgItem.id,
-          img: imgItem.img,
-        ),
-      );
-    }
+    print(wagglyImglist);
   }
 }
