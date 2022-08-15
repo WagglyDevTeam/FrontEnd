@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:waggly/components/myPage/active/index.dart';
 import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/Notification/notification.dart';
+import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/myPage/waggly_img_controller.dart';
 import 'package:waggly/widgets/index.dart';
 import 'package:waggly/model/myPage/waggly_img.dart';
@@ -75,8 +76,8 @@ class TopNav extends StatelessWidget implements PreferredSizeWidget {
                     padding: EdgeInsets.zero,
                     constraints: BoxConstraints(),
                     color: Palette.gray,
-                    onPressed: () {
-                      // Server().getList();
+                    onPressed: () async {
+                      await Get.put(NotificationController()).getNotification();
                       Get.toNamed('/notification');
                     })
               ],

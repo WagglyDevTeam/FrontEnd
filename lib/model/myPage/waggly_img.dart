@@ -29,14 +29,6 @@ class WagglyImg {
       };
 }
 
-// class WagglyImgModel {
-//   int id;
-//   String img;
-//   bool value;
-//
-//   WagglyImgModel({this.value = false, required this.id, required this.img});
-// }
-
 class ProfileImgModel {
   String img;
 
