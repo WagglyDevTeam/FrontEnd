@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:waggly/components/notification/notification.dart';
+import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/screens/chat.dart';
 import 'package:waggly/screens/chat_edit.dart';
 import 'package:waggly/screens/group_chat_create.dart';
@@ -12,9 +13,11 @@ import 'package:waggly/screens/index.dart';
 import 'package:waggly/screens/my_page.dart';
 import 'package:waggly/screens/post.dart';
 import 'package:waggly/screens/sign_in.dart';
+import 'package:waggly/screens/write.dart';
 import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/myPage/active/index.dart';
-import 'package:waggly/screens/write.dart';
+import 'package:waggly/components/myPage/active/my_post_list.dart';
+
 
 void main() async{
   await Hive.initFlutter();
@@ -77,6 +80,10 @@ class HeroApp extends StatelessWidget {
             GetPage(
                 name: "/notification",
                 page: () => NotificationScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/myPostsList",
+                page: () => MyPostListScreen(),
                 transition: Transition.rightToLeft),
           ],
         );
