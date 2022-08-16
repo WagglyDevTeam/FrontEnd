@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:waggly/components/notification/notification.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
+import 'package:waggly/model/hive/search_history.dart';
 import 'package:waggly/screens/chat.dart';
 import 'package:waggly/screens/chat_edit.dart';
 import 'package:waggly/screens/group_chat_create.dart';
@@ -18,10 +19,11 @@ import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/myPage/active/index.dart';
 import 'package:waggly/components/myPage/active/my_post_list.dart';
 
-
-void main() async{
+void main() async {
   await Hive.initFlutter();
+  Hive.registerAdapter(SearchHistoryAdapter());
   await Hive.openBox("user");
+  await Hive.openBox<SearchHistory>('searchHistory');
   runApp(HeroApp());
 }
 
