@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waggly/model/myPage/notification_model.dart';
 import 'package:waggly/model/myPage/notification_provider.dart';

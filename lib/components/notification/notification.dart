@@ -88,6 +88,7 @@ class myNotification extends StatelessWidget {
                               onPressed: () {
                                 controller.isEdit.value =
                                     !controller.isEdit.value;
+                                controller.isCheckedId.value = [];
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Palette.candy,

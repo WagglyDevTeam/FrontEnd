@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:get/get.dart';
 import 'package:waggly/components/myPage/active/request_list.dart';
-import 'package:waggly/components/myPage/active/my_post_list.dart';
+import 'package:waggly/controller/myPage/my_comment_list_controller.dart';
+import 'package:waggly/controller/myPage/my_post_list_controller.dart';
 import 'package:waggly/widgets/index.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/utils/colors.dart';
 
 PageRouteWithAnimation requestPage =
     PageRouteWithAnimation(const RequestScreen());
-PageRouteWithAnimation mypostlistPage =
-    PageRouteWithAnimation(const MyPostListScreen());
 
 class ActiveScreen extends StatelessWidget {
   const ActiveScreen({Key? key}) : super(key: key);
@@ -139,7 +139,7 @@ class _activeContentState extends State<activeContent> {
                 },
               ),
               Divider(thickness: 0.5, height: 1, color: Palette.lightGray),
-              GestureDetector(
+              InkWell(
                 child: Container(
                     height: 50,
                     padding: EdgeInsets.only(left: 16),
@@ -158,8 +158,10 @@ class _activeContentState extends State<activeContent> {
                         ),
                       ],
                     )),
-                onTap: () {
-                  Navigator.of(context).push(mypostlistPage.slideLeftToRight());
+                onTap: () async {
+                  await Get.put(MyPostsListController()).getMyPosts();
+                  await Get.put(MyCommentsListController()).getMyComments();
+                  Get.toNamed('/myPostsList');
                 },
               ),
               Divider(thickness: 0.5, height: 1, color: Palette.lightGray),
