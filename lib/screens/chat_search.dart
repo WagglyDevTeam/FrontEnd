@@ -83,7 +83,7 @@ class ChatSearchScreen extends StatelessWidget {
                       child: Icon(
                         Icons.search,
                         color: Palette.gray,
-                        size: 18.r,
+                        size: 18.w,
                       ),
                     ),
                   ),
@@ -189,7 +189,7 @@ class SearchHistoryItemsBox extends StatelessWidget {
                                     },
                                     child: Container(
                                       alignment: AlignmentDirectional(0.w, 0.15.h),
-                                      child: Icon(Icons.close, size: 10.r),
+                                      child: Icon(Icons.close, size: 10.w),
                                     ),
                                   ),
                                 ],
@@ -247,7 +247,7 @@ class GroupChatBoxArea extends StatelessWidget {
                     Container(
                       height: 85.0.h,
                       width: 217.0.w,
-                      padding: EdgeInsets.all(12.5.r),
+                      padding: EdgeInsets.fromLTRB(12.5.w, 12.5.h, 12.5.w, 12.5.h),
                       decoration: BoxDecoration(
                         // color: Colors.red,
                         borderRadius: BorderRadius.circular(20.0),

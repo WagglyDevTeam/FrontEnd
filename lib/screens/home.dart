@@ -192,7 +192,7 @@ class MajorAreaLogin extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.image_outlined,
-                    size: 13.r,
+                    size: 13.w,
                     color: Palette.violet,
                   ),
                   SizedBox(
@@ -200,7 +200,7 @@ class MajorAreaLogin extends StatelessWidget {
                   ),
                   Text(
                     "150",
-                    style: CommonText.BodyEngMain.copyWith(fontSize: 10.0.r),
+                    style: CommonText.BodyEngMain.copyWith(fontSize: 10.0.sp),
                   ),
                 ],
               ),
@@ -211,7 +211,7 @@ class MajorAreaLogin extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.sentiment_satisfied,
-                    size: 13.r,
+                    size: 13.w,
                     color: Palette.violet,
                   ),
                   SizedBox(
@@ -230,7 +230,7 @@ class MajorAreaLogin extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.mode_comment_outlined,
-                    size: 13.r,
+                    size: 13.w,
                     color: Palette.violet,
                   ),
                   SizedBox(
@@ -285,7 +285,7 @@ class MajorAreaLogout extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.image_outlined,
-                          size: 13.r,
+                          size: 13.w,
                           color: Palette.violet,
                         ),
                         SizedBox(
@@ -293,7 +293,7 @@ class MajorAreaLogout extends StatelessWidget {
                         ),
                         Text(
                           "150",
-                          style: CommonText.BodyEngMain.copyWith(fontSize: 10.0.r),
+                          style: CommonText.BodyEngMain.copyWith(fontSize: 10.0.sp),
                         ),
                       ],
                     ),
@@ -304,7 +304,7 @@ class MajorAreaLogout extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.sentiment_satisfied,
-                          size: 13.r,
+                          size: 13.w,
                           color: Palette.violet,
                         ),
                         SizedBox(
@@ -323,7 +323,7 @@ class MajorAreaLogout extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.mode_comment_outlined,
-                          size: 13.r,
+                          size: 13.w,
                           color: Palette.violet,
                         ),
                         SizedBox(
@@ -401,7 +401,7 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
                 Container(
                   height: 85.0.h,
                   width: 217.0.w,
-                  padding: EdgeInsets.all(12.5.r),
+                  padding: EdgeInsets.fromLTRB(12.5.w, 12.5.h, 12.5.w, 12.5.h),
                   decoration: BoxDecoration(
                     // color: Colors.red,
                     borderRadius: BorderRadius.circular(20.0),
@@ -626,7 +626,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
                           Icon(
                             Icons.notifications_none,
                             color: Palette.gray,
-                            size: 18.r,
+                            size: 18.w,
                           ),
                           Positioned(
                             top: 1.6.h,
