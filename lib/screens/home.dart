@@ -15,7 +15,6 @@ import 'package:waggly/model/post/post.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 PageRouteWithAnimation sign = PageRouteWithAnimation(SignInScreen());
-
 List<dynamic> groupChatItem = [
   {"a": "b"},
   {"c": "d"},
@@ -26,7 +25,6 @@ List<dynamic> groupChatItem = [
 
 class HomeScreen extends StatelessWidget {
   PostController postController = Get.put(PostController());
-  SignInController signInController = Get.put(SignInController());
   var refreshKey = GlobalKey<RefreshIndicatorState>();
 
   @override
@@ -65,10 +63,10 @@ class PostBoxArea extends StatelessWidget {
   final Post post;
 
   PostBoxArea({required this.post});
+  SignInController signInController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    SignInController signInController = Get.find();
     double safeWidth = Get.width - 72.w;
 
     return Container(
@@ -118,14 +116,13 @@ class PostBoxArea extends StatelessWidget {
               height: 38.h,
               alignment: Alignment.centerLeft,
               child: Obx(
-                () => Get.put(SignInController()).isLoggedIn.value == true
-                    ? SizedBox(
-                        child: Text(
-                          "${post.postDesc}",
-                          style: CommonText.BodyM,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                // () => signInController.checkLoggedIn().value == true
+                () => signInController.checkLoggedIn().value == true
+                    ? Text(
+                        "${post.postDesc}",
+                        style: CommonText.BodyM,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       )
                     : ClipRect(
                         child: Stack(
@@ -138,9 +135,9 @@ class PostBoxArea extends StatelessWidget {
                             ),
                             Positioned.fill(
                               child: BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                                filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
                                 child: Container(
-                                  color: Colors.white.withOpacity(0.7),
+                                  color: Colors.white.withOpacity(0.5),
                                 ),
                               ),
                             ),
@@ -150,7 +147,7 @@ class PostBoxArea extends StatelessWidget {
               ),
             ), // 내용
             SizedBox(height: 7.h),
-            Obx(() => signInController.isLoggedIn.value == true
+            Obx(() => signInController.checkLoggedIn().value == true
                 ? MajorAreaLogin(safeWidth: safeWidth)
                 : MajorAreaLogout(safeWidth: safeWidth)), // 학과, 이미지, 좋아요, 코멘트 수
           ],
@@ -161,7 +158,7 @@ class PostBoxArea extends StatelessWidget {
 }
 
 class MajorAreaLogin extends StatelessWidget {
-  const MajorAreaLogin({
+  MajorAreaLogin({
     Key? key,
     required this.safeWidth,
   }) : super(key: key);
@@ -384,7 +381,7 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SignInController signInController = Get.find();
+    RxBool isLoggedIn = Get.put(SignInController()).isLoggedIn;
 
     return SizedBox(
       height: 72.h,
@@ -471,7 +468,7 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
                             SizedBox(height: 3.h),
                             Obx(
                               //TODO: 리스트로 바꾸기
-                              () => signInController.isLoggedIn.value == true
+                              () => isLoggedIn.value == true
                                   ? Row(
                                       children: [
                                         Text(
@@ -491,7 +488,7 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
                                       ],
                                     )
                                   : ClipRect(
-                                    child: Stack(
+                                      child: Stack(
                                         children: [
                                           Row(
                                             children: [
@@ -521,7 +518,7 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
                                           ),
                                         ],
                                       ),
-                                  ),
+                                    ),
                             ),
                           ],
                         ),
@@ -567,11 +564,8 @@ class AdvertisementArea extends StatelessWidget {
     return InkWell(
       onTap: () {
         // 로긴 로그아웃 체크
-        print(Get.put(SignInController()).checkLoggedIn().value);
-        print(Get.put(SignInController()).getToken());
         if (Get.put(SignInController()).checkLoggedIn().value == true) {
           Get.put(SignInController()).logout();
-          print(Get.put(SignInController()).checkLoggedIn().value);
         }
       },
       child: Container(
@@ -586,12 +580,12 @@ class AdvertisementArea extends StatelessWidget {
 
 class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
   double appbarHeight = 68.0.h;
-  SignInController signInController = Get.put(SignInController());
 
   @override
   Size get preferredSize => Size.fromHeight(appbarHeight);
 
   HomeAppbar({Key? key}) : super(key: key);
+  SignInController signInController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -607,7 +601,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
             style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700, color: Colors.black),
           ),
           actions: <Widget>[
-            signInController.isLoggedIn.value == true
+            signInController.checkLoggedIn().value == true
                 ? InkWell(
                     onTap: () {
                       // 알림 페이지로 이동

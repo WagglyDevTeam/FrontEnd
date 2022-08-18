@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:waggly/components/post/post_app_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/controller/chat_search_controller.dart';
+import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/model/hive/search_history.dart';
+import 'package:waggly/model/hive/user.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 
@@ -20,12 +23,15 @@ class ChatSearchScreen extends StatelessWidget {
   final String _postName = "채팅 검색";
   final Status _page = Status.editAlarmOnly;
   final _searchKeyword = TextEditingController();
-  final ChatSearchController chatSearchController =
-      Get.put(ChatSearchController());
-  // Box<SearchHistory> box = Hive.box<SearchHistory>('searchHistory');
+  final ChatSearchController chatSearchController = Get.put(ChatSearchController());
+  final SignInController signInController = Get.put(SignInController());
 
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box<User>('user');
+    var userId = box.get('user')?.id;
+    chatSearchController.toList(userId!);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PostAppbar(
@@ -59,13 +65,11 @@ class ChatSearchScreen extends StatelessWidget {
                       filled: true,
                       fillColor: Color(0xFFF8F8F8),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0xFFE8E8E8), width: 1.0),
+                        borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1.0),
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0xFFE8E8E8), width: 1.0),
+                        borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1.0),
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
@@ -74,18 +78,17 @@ class ChatSearchScreen extends StatelessWidget {
                 Expanded(child: SizedBox()),
                 InkWell(
                   onTap: () async {
-                    final box = chatSearchController.searchHistoryBox.value;
+                    final searchList = chatSearchController.searchHistoryBox.value;
 
                     int id = 0;
                     if (chatSearchController.historyList.isNotEmpty == true) {
-                      final prevItem = box.getAt(box.length - 1);
+                      final prevItem = searchList.getAt(searchList.length - 1);
                       id = prevItem!.id + 1;
                     }
 
-                    chatSearchController.searchHistoryBox.value.add(
-                        SearchHistory(
-                            id: id, userId: 4, keyword: _searchKeyword.text));
-                    chatSearchController.toList();
+                    chatSearchController.searchHistoryBox.value
+                        .add(SearchHistory(id: id, userId: userId, keyword: _searchKeyword.text));
+                    chatSearchController.toList(userId);
                     print(chatSearchController.historyList);
                   },
                   child: Container(
@@ -111,8 +114,8 @@ class ChatSearchScreen extends StatelessWidget {
             height: 65.h,
             child: SearchHistoryItemsBox(
               text: "최근 검색어",
-              // itemList: chatSearchController.searchHistory,
               itemList: chatSearchController.historyList,
+              // itemList: chatSearchController.getHistoryList(userId),
             ),
           ), // 최근 검색어
           SizedBox(height: 24.0.h),
@@ -130,7 +133,7 @@ class ChatSearchScreen extends StatelessWidget {
 }
 
 class SearchHistoryItemsBox extends StatelessWidget {
-  const SearchHistoryItemsBox({
+  SearchHistoryItemsBox({
     Key? key,
     required this.text,
     required this.itemList,
@@ -138,10 +141,13 @@ class SearchHistoryItemsBox extends StatelessWidget {
 
   final String text;
   final itemList;
+  SignInController signInController = Get.find();
+  ChatSearchController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    final ChatSearchController controller = Get.find();
+    int? userId = Hive.box<User>('user').get('user')?.id;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -203,20 +209,18 @@ class SearchHistoryItemsBox extends StatelessWidget {
                                   onTap: () {
                                     // controller.searchHistory.removeAt(index);
                                     controller.deleteSearchHistory(index);
-                                    controller.toList();
+                                    controller.toList(userId!);
                                     // print(controller.searchHistory.isEmpty);
                                   },
                                   child: Container(
-                                    alignment:
-                                        AlignmentDirectional(0.w, 0.15.h),
+                                    alignment: AlignmentDirectional(0.w, 0.15.h),
                                     child: Icon(Icons.close, size: 10.w),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          if (index == itemList.length - 1)
-                            SizedBox(width: 20.0.w),
+                          if (index == itemList.length - 1) SizedBox(width: 20.0.w),
                         ],
                       );
                     },
@@ -269,8 +273,7 @@ class GroupChatBoxArea extends StatelessWidget {
                     Container(
                       height: 85.0.h,
                       width: 217.0.w,
-                      padding:
-                          EdgeInsets.fromLTRB(12.5.w, 12.5.h, 12.5.w, 12.5.h),
+                      padding: EdgeInsets.fromLTRB(12.5.w, 12.5.h, 12.5.w, 12.5.h),
                       decoration: BoxDecoration(
                         // color: Colors.red,
                         borderRadius: BorderRadius.circular(20.0),
@@ -289,8 +292,7 @@ class GroupChatBoxArea extends StatelessWidget {
                                 height: 48.0.h,
                                 child: CircleAvatar(
                                   radius: 30.0,
-                                  foregroundImage: AssetImage(
-                                      "assets/images/red_face_big.png"),
+                                  foregroundImage: AssetImage("assets/images/red_face_big.png"),
                                 ),
                               ),
                               Positioned(
@@ -313,14 +315,12 @@ class GroupChatBoxArea extends StatelessWidget {
                                 Row(
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.fromLTRB(
-                                          5.0.w, 3.0.h, 5.0.w, 3.0.h),
+                                      padding: EdgeInsets.fromLTRB(5.0.w, 3.0.h, 5.0.w, 3.0.h),
                                       height: 14.h,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                         color: Palette.main,
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
+                                        borderRadius: BorderRadius.circular(20.0),
                                       ),
                                       child: Text(
                                         "대외활동",
@@ -365,8 +365,7 @@ class GroupChatBoxArea extends StatelessWidget {
                         ],
                       ),
                     ),
-                    if (index == groupChatItem.length - 1)
-                      SizedBox(width: 20.0.w),
+                    if (index == groupChatItem.length - 1) SizedBox(width: 20.0.w),
                   ],
                 );
               }),

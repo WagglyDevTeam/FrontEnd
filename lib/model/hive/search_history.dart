@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 part 'search_history.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 2)
 class SearchHistory {
   @HiveField(0)
   final int id;
