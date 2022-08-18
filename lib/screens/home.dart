@@ -24,11 +24,13 @@ List<dynamic> groupChatItem = [
 ];
 
 class HomeScreen extends StatelessWidget {
-  PostController postController = Get.put(PostController());
   var refreshKey = GlobalKey<RefreshIndicatorState>();
 
   @override
   Widget build(BuildContext context) {
+    PostController postController = Get.put(PostController());
+    SignInController signInController = Get.put(SignInController());
+
     return Scaffold(
       backgroundColor: Colors.white,
       //TODO: HomeAppbar와 Body 사이에 약간의 공간이 있는데 뭐지?
@@ -63,10 +65,10 @@ class PostBoxArea extends StatelessWidget {
   final Post post;
 
   PostBoxArea({required this.post});
-  SignInController signInController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    SignInController signInController = Get.put(SignInController());
     double safeWidth = Get.width - 72.w;
 
     return Container(
@@ -116,7 +118,6 @@ class PostBoxArea extends StatelessWidget {
               height: 38.h,
               alignment: Alignment.centerLeft,
               child: Obx(
-                // () => signInController.checkLoggedIn().value == true
                 () => signInController.checkLoggedIn().value == true
                     ? Text(
                         "${post.postDesc}",
@@ -585,10 +586,12 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(appbarHeight);
 
   HomeAppbar({Key? key}) : super(key: key);
-  SignInController signInController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    SignInController signInController = Get.find();
+
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

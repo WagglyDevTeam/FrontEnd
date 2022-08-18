@@ -1,8 +1,6 @@
-import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:waggly/model/hive/user.dart';
 import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
@@ -27,7 +25,9 @@ class SignInController extends GetxController {
       user.jwtToken = response.headers!["authorization"];
 
       box.put('user', user);
-      print(box.get('user')?.jwtToken);
+      print(box
+          .get('user')
+          ?.jwtToken);
 
       return true;
     } else {
@@ -42,16 +42,22 @@ class SignInController extends GetxController {
   }
 
   RxBool checkLoggedIn() {
-    String? token = getToken();
+    String? token = box.get('user')?.jwtToken;
     if (token == null) {
-      isLoggedIn.value = false;
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => isLoggedIn.value = false);
     } else {
-      isLoggedIn.value = true;
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => isLoggedIn.value = true);
     }
     return isLoggedIn;
   }
 
   String? getToken() {
-    return box.get('user')?.jwtToken;
+    String? token;
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) async => token = box.get('user')?.jwtToken);
+
+    return token;
   }
 }
