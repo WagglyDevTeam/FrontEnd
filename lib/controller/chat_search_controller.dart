@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:waggly/model/hive/search_history.dart';
 
@@ -9,7 +8,6 @@ class ChatSearchController extends GetxController {
   RxList<String> historyList = <String>[].obs;
 
   getHistoryList(int userId) {
-    print(searchHistoryBox.value.values.where((element) => element.userId == userId).toList());
     return searchHistoryBox.value.values.where((element) => element.userId == userId).toList();
   }
 
@@ -25,6 +23,7 @@ class ChatSearchController extends GetxController {
     historyList.clear();
     for (var s in searchHistoryBox.value.values.where((element) => element.userId == userId)) {
       historyList.add(s.keyword);
+      historyList.reversed;
     }
   }
 

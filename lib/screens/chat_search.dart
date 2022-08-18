@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:waggly/components/post/post_app_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

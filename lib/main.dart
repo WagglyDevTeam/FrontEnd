@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,9 +28,6 @@ void main() async {
   await Hive.initFlutter();
 
   const FlutterSecureStorage secureStorage = FlutterSecureStorage();
-  // final containsEncryptionKey = await secureStorage.containsKey(key: 'key');
-  // print(containsEncryptionKey);
-  // print(await secureStorage.read(key: 'key'));
 
   String? encryptionKey = await secureStorage.read(key: 'encryptionKey');
   if (encryptionKey == null) {
