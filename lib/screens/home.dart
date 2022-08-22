@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
+import 'package:waggly/controller/home/home_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/screens/sign_in.dart';
 import 'package:waggly/utils/colors.dart';
@@ -28,6 +29,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeController homeController = Get.put(HomeController());
     PostController postController = Get.put(PostController());
     SignInController signInController = Get.put(SignInController());
 
@@ -40,7 +42,7 @@ class HomeScreen extends StatelessWidget {
       body: RefreshIndicator(
         key: refreshKey,
         onRefresh: () async {
-          await postController.getBoard();
+          await homeController.getHome();
         },
         child: ListView(
           children: [
