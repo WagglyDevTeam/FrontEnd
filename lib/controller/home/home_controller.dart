@@ -30,8 +30,8 @@ class HomeController extends GetxController {
 
   @override
   void onInit() async {
-    super.onInit();
     await getHome();
+    super.onInit();
   }
 
   Future<void> getHome() async {
@@ -40,12 +40,10 @@ class HomeController extends GetxController {
     final othersBestData = result.datas["randomBestPostSummary"];
 
     final collegeName = CollegeType.getByKey(collegeBestData['first']);
-    print(collegeName.displayName);
-
+    // print(collegeName.displayName);
+    college.value = collegeName.displayName;
     collegeBestPost.value = PostResponseDto.fromJson(collegeBestData["second"]);
     othersBestPost.value = PostResponseDto.fromJson(othersBestData);
-
-    print(collegeBestPost.value.postTitle);
-    print(othersBestPost.value.postTitle);
+    print(college.value);
   }
 }

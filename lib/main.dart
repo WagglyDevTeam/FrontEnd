@@ -8,6 +8,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:waggly/components/notification/notification.dart';
+import 'package:waggly/controller/home/home_controller.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/model/hive/search_history.dart';
 import 'package:waggly/model/hive/user.dart';
@@ -40,7 +41,7 @@ void main() async {
   Hive.registerAdapter(SearchHistoryAdapter());
   await Hive.openBox<User>("user", encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey!)));
   await Hive.openBox<SearchHistory>('searchHistory', encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey)));
-
+  Get.put(HomeController());
   runApp(HeroApp());
 }
 
