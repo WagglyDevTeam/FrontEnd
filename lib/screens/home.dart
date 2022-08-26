@@ -26,7 +26,8 @@ List<dynamic> groupChatItem = [
 ];
 
 HomeController _homeController = Get.find();
-SignInController signInController = Get.put(SignInController());
+SignInController signInController = Get.find();
+double bottomAppbarHeight = 55.0;
 
 class HomeScreen extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
@@ -75,18 +76,20 @@ class PostBoxArea extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "로그인이 필요입니다.",
-              textAlign: TextAlign.center,
-            ),
-            duration: Duration(milliseconds: 1000),
-            behavior: SnackBarBehavior.floating,
-            width: 250.0.w,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
-          ),
-        );
+        signInController.checkLoggedIn().value == false
+            ? ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    "로그인이 필요합니다.",
+                    textAlign: TextAlign.center,
+                  ),
+                  duration: Duration(milliseconds: 1000),
+                  behavior: SnackBarBehavior.floating,
+                  margin: EdgeInsets.only(bottom: bottomAppbarHeight + 20, left: 50.w, right: 50.w),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                ),
+              )
+            : () {};
       },
       child: Container(
         margin: EdgeInsets.only(left: 20.w, right: 20.w),
@@ -612,79 +615,81 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AppBar(
-          elevation: 0,
-          centerTitle: false,
-          backgroundColor: Colors.white,
-          title: Text(
-            '와글리',
-            style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700, color: Colors.black),
-          ),
-          actions: <Widget>[
-            signInController.checkLoggedIn().value == true
-                ? InkWell(
-                    onTap: () {
-                      // 알림 페이지로 이동
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(right: 15.0.w, top: 7.0.h),
-                      width: 36.0.w,
-                      height: 36.0.h,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1.0, color: Palette.lightGray),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Stack(
-                        children: [
-                          Icon(
-                            Icons.notifications_none,
-                            color: Palette.gray,
-                            size: 18.w,
-                          ),
-                          Positioned(
-                            top: 1.6.h,
-                            left: 11.w,
-                            // right: -20,
-                            child: Container(
-                              width: 6.0.w,
-                              height: 6.0.h,
-                              decoration: BoxDecoration(
-                                border: Border.all(width: 0.5.w, color: Colors.white),
-                                color: Color(0xFFFF5F5F),
-                                shape: BoxShape.circle,
-                              ),
+        Obx(
+          () => AppBar(
+            elevation: 0,
+            centerTitle: false,
+            backgroundColor: Colors.white,
+            title: Text(
+              '와글리',
+              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700, color: Colors.black),
+            ),
+            actions: <Widget>[
+              signInController.checkLoggedIn().value == true
+                  ? InkWell(
+                      onTap: () {
+                        // 알림 페이지로 이동
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(right: 15.0.w, top: 7.0.h),
+                        width: 36.0.w,
+                        height: 36.0.h,
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 1.0, color: Palette.lightGray),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Stack(
+                          children: [
+                            Icon(
+                              Icons.notifications_none,
+                              color: Palette.gray,
+                              size: 18.w,
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Get.toNamed('/signInPage');
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(right: 16.0.w),
-                          alignment: Alignment.center,
-                          width: 60.0.w,
-                          height: 24.0.h,
-                          child: Text(
-                            "로그인",
-                            style: CommonText.LabelWhite,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Palette.main,
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
+                            Positioned(
+                              top: 1.6.h,
+                              left: 11.w,
+                              // right: -20,
+                              child: Container(
+                                width: 6.0.w,
+                                height: 6.0.h,
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 0.5.w, color: Colors.white),
+                                  color: Color(0xFFFF5F5F),
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                    ],
-                  )
-          ],
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed('/signInPage');
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right: 16.0.w),
+                            alignment: Alignment.center,
+                            width: 60.0.w,
+                            height: 24.0.h,
+                            child: Text(
+                              "로그인",
+                              style: CommonText.LabelWhite,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Palette.main,
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+            ],
+          ),
         ),
       ],
     );
