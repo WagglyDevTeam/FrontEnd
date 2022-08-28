@@ -89,7 +89,7 @@ class PostBoxArea extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                 ),
               )
-            : () {};
+            : Get.toNamed('/post');
       },
       child: Container(
         margin: EdgeInsets.only(left: 20.w, right: 20.w),
