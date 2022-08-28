@@ -53,7 +53,7 @@ class _SignInState extends State<SignInScreen> {
               var isSignIn = await _signInController.signIn(SignInRequestDto(
                   _emailController.text, _passwordController.text));
               if (isSignIn == true) {
-                Get.offAllNamed("/");
+                Get.offAllNamed("/home");
               } else {}
             },
             disabled: true,

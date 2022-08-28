@@ -8,7 +8,9 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:waggly/components/notification/notification.dart';
+import 'package:waggly/controller/home/home_controller.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
+import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/model/hive/search_history.dart';
 import 'package:waggly/model/hive/user.dart';
 import 'package:waggly/screens/chat.dart';
@@ -40,7 +42,8 @@ void main() async {
   Hive.registerAdapter(SearchHistoryAdapter());
   await Hive.openBox<User>("user", encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey!)));
   await Hive.openBox<SearchHistory>('searchHistory', encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey)));
-
+  Get.put(HomeController());
+  Get.put(SignInController());
   runApp(HeroApp());
 }
 
@@ -59,6 +62,14 @@ class HeroApp extends StatelessWidget {
           initialRoute: "/",
           getPages: [
             GetPage(name: "/", page: () => Screen(), transition: Transition.rightToLeft),
+            GetPage(
+              name: "/home",
+              page: () => Screen(),
+              transition: Transition.rightToLeft,
+              binding: BindingsBuilder<SignInController>(() {
+                Get.put(() { return SignInController(); });
+              })
+            ),
             GetPage(name: "/post", page: () => PostScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/chat", page: () => ChatScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/myPage", page: () => MyPageScreen(), transition: Transition.rightToLeft),

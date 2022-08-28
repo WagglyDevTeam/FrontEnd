@@ -14,7 +14,7 @@ class PostController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    await getBoard();
+    // await getBoard();
   }
 
   Future<void> getBoard() async {
