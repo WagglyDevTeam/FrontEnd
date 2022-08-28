@@ -2,10 +2,12 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:waggly/components/snackBar/custom_snack_bar.dart';
 import 'package:waggly/controller/signUp/sign_up_controller.dart';
 import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
 import 'package:waggly/model/signUp/dtos/sign_up_request_dto.dart';
 import 'package:waggly/model/signUp/dtos/verify_email_request_dto.dart';
+import 'package:waggly/utils/input_validator.dart';
 import '../widgets/textFormField/text_form_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -286,7 +288,7 @@ class Input extends StatefulWidget {
 }
 
 class _InputState extends State<Input> {
-  final formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
   final SignUpController _signUpController = Get.find();
 
   @override
@@ -301,8 +303,18 @@ class _InputState extends State<Input> {
                 buttonText: '인증하기',
                 controller: _emailInput,
                 onclick: () async {
-                  await _signUpController.sendEmailForVerify(_emailInput.text);
-                  _signUpController.startTimer();
+                  final String validResult = validateEmail(_emailInput.text);
+                  print(validResult);
+                  if (validResult.isNotEmpty) {
+                    CustomSnackBar.errorSnackbar(
+                      context,
+                      validResult,
+                      EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                    );
+                  } else {
+                    await _signUpController.sendEmailForVerify(_emailInput.text);
+                    _signUpController.startTimer();
+                  }
                 },
               ),
               RenderTextFormField(
@@ -405,10 +417,14 @@ class _ButtonsState extends State<Buttons> {
                     final WagglyResponseDto verifyResult = await _signUpController.verifyEmail(
                       VerifyEmailReqeustDto(_emailInput.text, _certiNumberInput.text),
                     );
-                    if (_signUpController.emailVerified.value == true) {
+                    if (_signUpController.emailVerified == true) {
                       widget.setSteps(1);
                     } else {
-                      print("인증 실패: ${verifyResult.message}");
+                      CustomSnackBar.errorSnackbar(
+                        context,
+                        verifyResult.message,
+                        EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                      );
                     }
                   },
                 ),

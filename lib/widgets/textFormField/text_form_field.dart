@@ -5,17 +5,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:waggly/controller/signUp/sign_up_controller.dart';
+import 'package:waggly/utils/colors.dart';
 
 class RenderTextFormField extends StatelessWidget {
-  const RenderTextFormField(
-      {Key? key, this.mode, this.placeholder, this.buttonText, this.label, this.controller, this.onclick})
-      : super(key: key);
+  const RenderTextFormField({
+    Key? key,
+    this.mode,
+    this.placeholder,
+    this.buttonText,
+    this.label,
+    this.controller,
+    this.onclick,
+    this.inputDecoration,
+  }) : super(key: key);
   final mode;
   final placeholder;
   final buttonText;
   final label;
   final controller;
   final onclick;
+  final inputDecoration;
 
   String paresTime(int time) {
     if (time % 60 < 10) {
@@ -26,7 +35,7 @@ class RenderTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SignUpController signUpController = Get.put(SignUpController());
+    SignUpController _signUpController = Get.put(SignUpController());
     if (mode == 'withButtonAndLabel') {
       return Container(
         padding: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 0.h),
@@ -46,7 +55,7 @@ class RenderTextFormField extends StatelessWidget {
                 Flexible(
                   child: TextFormField(
                     controller: controller,
-                    obscureText: label == '비밀번호' ? true : false,
+                    obscureText: label == '비밀번호' || label == '비밀번호 확인' ? true : false,
                     decoration: InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
@@ -59,29 +68,51 @@ class RenderTextFormField extends StatelessWidget {
                             borderRadius: BorderRadius.circular(4)),
                         hintText: placeholder,
                         hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
-                    onSaved: (val) {},
-                    validator: (val) {
-                      return null;
+                    onChanged: (val) {
+                      if (label == '학교 이메일' && controller.text.isEmpty == true) {
+                        _signUpController.emailInputEmpty.value = true;
+                      } else if (label == '학교 이메일' && controller.text.isEmpty == false) {
+                        _signUpController.emailInputEmpty.value = false;
+                      }
                     },
+                    onSaved: (val) {},
                   ),
                 ),
-                Container(
-                  width: 70.w,
-                  margin: EdgeInsets.fromLTRB(8.w, 0.h, 0.w, 0.h),
-                  padding: EdgeInsets.fromLTRB(0.w, 3.h, 0.w, 3.h),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: Color.fromRGBO(182, 182, 182, 1))),
-                  child: TextButton(
-                    child: Text(
-                      buttonText,
-                      style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: Color(0xff959595)),
-                    ),
-                    onPressed: () {
-                      onclick();
-                    },
-                  ),
-                )
+                Obx(() => _signUpController.emailInputEmpty.value == true
+                    ? Container(
+                        width: 70.w,
+                        margin: EdgeInsets.fromLTRB(8.w, 0.h, 0.w, 0.h),
+                        padding: EdgeInsets.fromLTRB(0.w, 3.h, 0.w, 3.h),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: Color.fromRGBO(182, 182, 182, 1))),
+                        child: TextButton(
+                          child: Text(
+                            buttonText,
+                            style: TextStyle(
+                                fontSize: 12.sp, fontWeight: FontWeight.w500, color: Color.fromRGBO(182, 182, 182, 1)),
+                          ),
+                          onPressed: () {
+                            onclick();
+                          },
+                        ),
+                      )
+                    : Container(
+                        width: 70.w,
+                        margin: EdgeInsets.fromLTRB(8.w, 0.h, 0.w, 0.h),
+                        padding: EdgeInsets.fromLTRB(0.w, 3.h, 0.w, 3.h),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4), border: Border.all(color: Palette.main)),
+                        child: TextButton(
+                          child: Text(
+                            buttonText,
+                            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: Palette.main),
+                          ),
+                          onPressed: () {
+                            onclick();
+                          },
+                        ),
+                      ))
               ]),
             ),
             SizedBox(
@@ -117,7 +148,6 @@ class RenderTextFormField extends StatelessWidget {
               print(val);
             },
             onSaved: (val) {},
-            validator: (val) {},
           ),
           SizedBox(
             height: 12.h,
@@ -137,7 +167,7 @@ class RenderTextFormField extends StatelessWidget {
                 width: 8.w,
               ),
               Obx(() => Text(
-                  "${(signUpController.count.value / 60).floor()}:${paresTime(signUpController.count.value)}",
+                  "${(_signUpController.count.value / 60).floor()}:${paresTime(_signUpController.count.value)}",
                   style: TextStyle(
                       fontWeight: FontWeight.w500, fontSize: 12.sp, color: Color.fromRGBO(149, 149, 149, 1)))),
             ],
@@ -165,7 +195,6 @@ class RenderTextFormField extends StatelessWidget {
                 print(val);
               },
               onSaved: (val) {},
-              validator: (val) {},
             ),
           ),
           SizedBox(
@@ -197,7 +226,6 @@ class RenderTextFormField extends StatelessWidget {
               print(val);
             },
             onSaved: (val) {},
-            validator: (val) {},
           ),
         ),
         SizedBox(
