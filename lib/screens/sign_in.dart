@@ -36,31 +36,25 @@ class _SignInState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
         children: [
           SignInHeader(),
           RenderTextFormField(
-            placeholder: '학교 이메일',
-            controller: _emailController
-          ),
+              placeholder: '학교 이메일', controller: _emailController),
           RenderTextFormField(
-            placeholder: '비밀번호',
-              controller: _passwordController
-          ),
+              placeholder: '비밀번호', controller: _passwordController),
           CustomCheckbox(),
           Button(
             text: '시작하기',
             onPress: () async {
-              print(_emailController.text);
-              var isSignIn = await _signInController.signIn(SignInRequestDto(_emailController.text, _passwordController.text));
-              if(isSignIn == true){
-                Get.toNamed("/");
-              }else{
-                
-              }
+              // print(_emailController.text);
+              var isSignIn = await _signInController.signIn(SignInRequestDto(
+                  _emailController.text, _passwordController.text));
+              if (isSignIn == true) {
+                Get.offAllNamed("/home");
+              } else {}
             },
             disabled: true,
           ),
@@ -87,26 +81,26 @@ class SignInHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width,
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(18, 55, 0, 0),
-                child: Text(
-                  '로그인',
-                  style: CommonText.TitleM,
-                ),
-              ),
-              Container(
-                // width: MediaQuery.of(context).size.width,
-                alignment: Alignment.topCenter,
-                child: SvgPicture.asset(
-                  'assets/icons/wagleLoginBg.svg',
-                  width: MediaQuery.of(context).size.width < 850 ? 270 : 500,
-                ),
-              )
-            ],
+      width: MediaQuery.of(context).size.width,
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18, 55, 0, 0),
+            child: Text(
+              '로그인',
+              style: CommonText.TitleM,
+            ),
           ),
-        );
+          Container(
+            // width: MediaQuery.of(context).size.width,
+            alignment: Alignment.topCenter,
+            child: SvgPicture.asset(
+              'assets/icons/wagleLoginBg.svg',
+              width: MediaQuery.of(context).size.width < 850 ? 270 : 500,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

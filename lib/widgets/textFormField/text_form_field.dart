@@ -40,6 +40,7 @@ class _RenderTextFormFieldState extends State<RenderTextFormField> {
               child: Row(children: [
                 Flexible(
                   child: TextFormField(
+                    obscureText: widget.placeholder == '비밀번호' ? true : false,
                     decoration: InputDecoration(
                       isDense: true,
                       contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
@@ -95,6 +96,7 @@ class _RenderTextFormFieldState extends State<RenderTextFormField> {
             height: 4.h,
           ),
           TextFormField(
+            obscureText: widget.placeholder == '비밀번호' ? true : false,
             decoration: InputDecoration(
               isDense: true,
               contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
@@ -135,6 +137,7 @@ class _RenderTextFormFieldState extends State<RenderTextFormField> {
           SizedBox(
             height: 34.h,
             child: TextFormField(
+              obscureText: widget.placeholder == '비밀번호' ? true : false,
               decoration: InputDecoration(
                 isDense: true,
                 contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
@@ -165,6 +168,7 @@ class _RenderTextFormFieldState extends State<RenderTextFormField> {
         Padding(
           padding: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 0.h),
           child: TextFormField(
+            obscureText: widget.placeholder == '비밀번호' ? true : false,
             decoration: InputDecoration(
               isDense: true,
               contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),

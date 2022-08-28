@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:waggly/components/post/post_app_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/controller/chat_search_controller.dart';
+import 'package:waggly/controller/signIn/sign_in_conroller.dart';
+import 'package:waggly/model/hive/search_history.dart';
+import 'package:waggly/model/hive/user.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 
@@ -19,9 +23,14 @@ class ChatSearchScreen extends StatelessWidget {
   final Status _page = Status.editAlarmOnly;
   final _searchKeyword = TextEditingController();
   final ChatSearchController chatSearchController = Get.put(ChatSearchController());
+  final SignInController signInController = Get.put(SignInController());
 
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box<User>('user');
+    var userId = box.get('user')?.id;
+    chatSearchController.toList(userId!);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PostAppbar(
@@ -66,25 +75,33 @@ class ChatSearchScreen extends StatelessWidget {
                   ),
                 ),
                 Expanded(child: SizedBox()),
-                GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: InkWell(
-                    onTap: () {
-                      // 알림 페이지로 이동
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: 36.0.w,
-                      height: 36.0.h,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1.0, color: Palette.lightGray),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.search,
-                        color: Palette.gray,
-                        size: 18.r,
-                      ),
+                InkWell(
+                  onTap: () async {
+                    final searchList = chatSearchController.searchHistoryBox.value;
+
+                    int id = 0;
+                    if (chatSearchController.historyList.isNotEmpty == true) {
+                      final prevItem = searchList.getAt(searchList.length - 1);
+                      id = prevItem!.id + 1;
+                    }
+
+                    chatSearchController.searchHistoryBox.value
+                        .add(SearchHistory(id: id, userId: userId, keyword: _searchKeyword.text));
+                    chatSearchController.toList(userId);
+                    print(chatSearchController.historyList);
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 36.0.w,
+                    height: 36.0.h,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1.0, color: Palette.lightGray),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.search,
+                      color: Palette.gray,
+                      size: 18.w,
                     ),
                   ),
                 ),
@@ -95,9 +112,9 @@ class ChatSearchScreen extends StatelessWidget {
           SizedBox(
             height: 65.h,
             child: SearchHistoryItemsBox(
-              controller: chatSearchController,
               text: "최근 검색어",
-              itemList: chatSearchController.searchHistory,
+              itemList: chatSearchController.historyList,
+              // itemList: chatSearchController.getHistoryList(userId),
             ),
           ), // 최근 검색어
           SizedBox(height: 24.0.h),
@@ -115,19 +132,21 @@ class ChatSearchScreen extends StatelessWidget {
 }
 
 class SearchHistoryItemsBox extends StatelessWidget {
-  const SearchHistoryItemsBox({
+  SearchHistoryItemsBox({
     Key? key,
     required this.text,
     required this.itemList,
-    required this.controller,
   }) : super(key: key);
 
   final String text;
   final itemList;
-  final ChatSearchController controller;
+  SignInController signInController = Get.find();
+  ChatSearchController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    int? userId = Hive.box<User>('user').get('user')?.id;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -142,63 +161,69 @@ class SearchHistoryItemsBox extends StatelessWidget {
           ),
         ), // 타이틀
         SizedBox(height: 10.0.h),
+        // 검색 내역 존재하지 않을 경우 메시지 출력
         Obx(
-          // 검색 내역 존재하지 않을 경우 메시지 출력
-          () => controller.searchHistory.isEmpty == true
+          () => itemList.isEmpty == true
               ? Padding(
-                padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
-                child: Container(
+                  padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
+                  child: Container(
                     alignment: Alignment.centerLeft,
                     height: 24.0.h,
-                    child: Text("검색 내역이 존재하지 않습니다.", style: CommonText.BodyMediumGray,),
+                    child: Text(
+                      "검색 내역이 존재하지 않습니다.",
+                      style: CommonText.BodyMediumGray,
+                    ),
                   ),
-              )
+                )
               : SizedBox(
-                  height: 24.h,
+                  height: 24.0.h,
                   child: ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) {
-                        return SizedBox(width: 7.0.h);
-                      },
-                      scrollDirection: Axis.horizontal,
-                      itemCount: itemList.length,
-                      itemBuilder: (ctx, index) {
-                        return Row(
-                          children: [
-                            if (index == 0) SizedBox(width: 20.0.w),
-                            Container(
-                              alignment: AlignmentDirectional(0.w, -0.2.h),
-                              height: 24.0.h,
-                              padding: EdgeInsets.only(left: 15.w, right: 15.w),
-                              decoration: BoxDecoration(
-                                color: Palette.candy,
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    itemList[index],
-                                    style: CommonText.BodyM,
-                                  ),
-                                  SizedBox(
-                                    width: 4.0.w,
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      controller.searchHistory.removeAt(index);
-                                      print(controller.searchHistory.isEmpty);
-                                    },
-                                    child: Container(
-                                      alignment: AlignmentDirectional(0.w, 0.15.h),
-                                      child: Icon(Icons.close, size: 10.r),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(width: 7.0.h);
+                    },
+                    scrollDirection: Axis.horizontal,
+                    itemCount: itemList.length,
+                    itemBuilder: (ctx, index) {
+                      return Row(
+                        children: [
+                          if (index == 0) SizedBox(width: 20.0.w),
+                          Container(
+                            alignment: AlignmentDirectional(0.w, -0.2.h),
+                            height: 24.0.h,
+                            padding: EdgeInsets.only(left: 15.w, right: 15.w),
+                            decoration: BoxDecoration(
+                              color: Palette.candy,
+                              borderRadius: BorderRadius.circular(25.0),
                             ),
-                            if (index == itemList.length - 1) SizedBox(width: 20.0.w),
-                          ],
-                        );
-                      }),
+                            child: Row(
+                              children: [
+                                Text(
+                                  itemList[index],
+                                  style: CommonText.BodyM,
+                                ),
+                                SizedBox(
+                                  width: 4.0.w,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    // controller.searchHistory.removeAt(index);
+                                    controller.deleteSearchHistory(index);
+                                    controller.toList(userId!);
+                                    // print(controller.searchHistory.isEmpty);
+                                  },
+                                  child: Container(
+                                    alignment: AlignmentDirectional(0.w, 0.15.h),
+                                    child: Icon(Icons.close, size: 10.w),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (index == itemList.length - 1) SizedBox(width: 20.0.w),
+                        ],
+                      );
+                    },
+                  ),
                 ),
         ),
       ],
@@ -247,7 +272,7 @@ class GroupChatBoxArea extends StatelessWidget {
                     Container(
                       height: 85.0.h,
                       width: 217.0.w,
-                      padding: EdgeInsets.all(12.5.r),
+                      padding: EdgeInsets.fromLTRB(12.5.w, 12.5.h, 12.5.w, 12.5.h),
                       decoration: BoxDecoration(
                         // color: Colors.red,
                         borderRadius: BorderRadius.circular(20.0),
