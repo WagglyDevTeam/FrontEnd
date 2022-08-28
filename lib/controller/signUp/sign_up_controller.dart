@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
 import 'package:waggly/model/signUp/dtos/sign_up_request_dto.dart';
+import 'package:waggly/model/signUp/dtos/verify_email_request_dto.dart';
 import 'package:waggly/model/signUp/sign_up_provider.dart';
 import 'package:waggly/model/signUp/sign_up_repository.dart';
 
 class SignUpController extends GetxController {
   final _signUpProvider = SignUpProvider();
   final _signUpRepository = SignUpRepository();
+  final emailVerified = false.obs;
   final count = (60 * 1).obs;
   Timer _timer = Timer(Duration(milliseconds: 1), () {});
   bool isStart = false;
@@ -29,6 +32,21 @@ class SignUpController extends GetxController {
 
   Future<void> signUp(SignUpRequestDto dto) async {
     await _signUpRepository.signUp(dto);
+  }
+
+  Future<void> sendEmailForVerify(String email) async {
+    await _signUpRepository.sendEmailForVerify(email);
+  }
+
+  Future<WagglyResponseDto> verifyEmail(VerifyEmailReqeustDto dto) async {
+    final WagglyResponseDto verifyResult = await _signUpRepository.verifyEmail(dto);
+    if (verifyResult.code == 200) {
+      emailVerified.value = true;
+    } else {
+      emailVerified.value = false;
+    }
+
+    return verifyResult;
   }
 }
 

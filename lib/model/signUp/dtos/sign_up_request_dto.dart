@@ -23,7 +23,7 @@ class SignUpRequestDto {
         "nickname": nickname,
         "university": university,
         "classNumber": int.parse(classNumber),
-        "major": 17623,
+        "major": int.parse(major),
         "gender": gender,
       };
 }

@@ -14,7 +14,7 @@ class WagglyResponseDto {
   factory WagglyResponseDto.fromJson(Map<String, dynamic> json) {
     return WagglyResponseDto(
       code: json["code"],
-      message: json["msg"],
+      message: json["message"],
       status: json["status"],
       datas: json["datas"],
     );

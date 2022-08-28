@@ -7,13 +7,15 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:waggly/controller/signUp/sign_up_controller.dart';
 
 class RenderTextFormField extends StatelessWidget {
-  const RenderTextFormField({Key? key, this.mode, this.placeholder, this.buttonText, this.label, this.controller})
+  const RenderTextFormField(
+      {Key? key, this.mode, this.placeholder, this.buttonText, this.label, this.controller, this.onclick})
       : super(key: key);
   final mode;
   final placeholder;
   final buttonText;
   final label;
   final controller;
+  final onclick;
 
   String paresTime(int time) {
     if (time % 60 < 10) {
@@ -57,11 +59,10 @@ class RenderTextFormField extends StatelessWidget {
                             borderRadius: BorderRadius.circular(4)),
                         hintText: placeholder,
                         hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
-                    onChanged: (val) {
-                      print(val);
-                    },
                     onSaved: (val) {},
-                    validator: (val) {},
+                    validator: (val) {
+                      return null;
+                    },
                   ),
                 ),
                 Container(
@@ -77,7 +78,7 @@ class RenderTextFormField extends StatelessWidget {
                       style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: Color(0xff959595)),
                     ),
                     onPressed: () {
-                      signUpController.startTimer();
+                      onclick();
                     },
                   ),
                 )
