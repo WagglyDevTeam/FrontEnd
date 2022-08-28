@@ -1,6 +1,20 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:waggly/controller/signUp/sign_up_controller.dart';
+import 'package:waggly/model/signUp/dtos/sign_up_request_dto.dart';
 import '../widgets/textFormField/text_form_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+final _emailInput = TextEditingController();
+final _authNumberInput = TextEditingController();
+final _universityInput = TextEditingController();
+final _classNumberInput = TextEditingController();
+final _majorInput = TextEditingController();
+final _passwordInput = TextEditingController();
+final _passwordConfirmInput = TextEditingController();
+final _nicknameInput = TextEditingController();
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -277,12 +291,19 @@ class _InputState extends State<Input> {
     return widget.steps == 0
         ? Column(
             children: [
-              RenderTextFormField(mode: 'withButtonAndLabel', label: '학교 이메일', placeholder: 'abc@email.com', buttonText: '인증하기'),
+              RenderTextFormField(
+                mode: 'withButtonAndLabel',
+                label: '학교 이메일',
+                placeholder: _emailInput.text == '' ? 'abc@email.com' : null,
+                buttonText: '인증하기',
+                controller: _emailInput,
+              ),
               RenderTextFormField(
                 mode: 'withLabel',
                 label: '인증번호',
-                placeholder: '인증번호 입력',
+                placeholder: _authNumberInput.text == '' ? '인증번호 입력' : null,
                 buttonText: 'test',
+                controller: _authNumberInput,
               ),
             ],
           )
@@ -293,17 +314,20 @@ class _InputState extends State<Input> {
                     mode: 'withLabel',
                     label: '학교',
                     placeholder: '학교 입력',
+                    controller: _universityInput,
                   ),
                   RenderTextFormField(
                     mode: 'withLabel',
                     label: '학번',
                     placeholder: '학번 입력',
+                    controller: _classNumberInput,
                   ),
                   RenderTextFormField(
                     mode: 'withButtonAndLabel',
                     label: '학과',
                     placeholder: '학과 검색',
                     buttonText: '검색하기',
+                    controller: _majorInput,
                   ),
                 ],
               )
@@ -313,17 +337,20 @@ class _InputState extends State<Input> {
                     mode: 'withLabel',
                     label: '비밀번호',
                     placeholder: '영문, 숫자 포함 8자 이상',
+                    controller: _passwordInput,
                   ),
                   RenderTextFormField(
                     mode: 'withLabel',
                     label: '비밀번호 확인',
                     placeholder: '영문, 숫자 포함 8자 이상',
+                    controller: _passwordConfirmInput,
                   ),
                   RenderTextFormField(
                     mode: 'withButtonAndLabel',
                     label: '닉네임',
                     placeholder: '한글 또는 영문 6자 이하',
                     buttonText: '중복확인',
+                    controller: _nicknameInput,
                   ),
                 ],
               );
@@ -341,6 +368,8 @@ class Buttons extends StatefulWidget {
 }
 
 class _ButtonsState extends State<Buttons> {
+  final SignUpController _signUpController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -353,7 +382,9 @@ class _ButtonsState extends State<Buttons> {
               Container(
                 width: double.infinity,
                 height: 36.h,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(26), color: widget.steps == 0 ? Color(0xffB863FB) : Color(0xffE8E8E8)),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(26),
+                    color: widget.steps == 0 ? Color(0xffB863FB) : Color(0xffE8E8E8)),
                 child: TextButton(
                   child: Text(
                     '다음',
@@ -378,7 +409,8 @@ class _ButtonsState extends State<Buttons> {
                       width: 155.h,
                       height: 36.w,
                       alignment: Alignment.center,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(26), color: Color.fromRGBO(218, 175, 254, 0.2)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(26), color: Color.fromRGBO(218, 175, 254, 0.2)),
                       child: TextButton(
                         child: Text(
                           '이전',
@@ -428,7 +460,8 @@ class _ButtonsState extends State<Buttons> {
                       width: 155.w,
                       height: 36.h,
                       alignment: Alignment.center,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(26), color: Color.fromRGBO(218, 175, 254, 0.2)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(26), color: Color.fromRGBO(218, 175, 254, 0.2)),
                       child: TextButton(
                         child: Text(
                           '이전',
@@ -460,8 +493,16 @@ class _ButtonsState extends State<Buttons> {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        onPressed: () {
-                          print('회원가입 완료');
+                        onPressed: () async {
+                          await _signUpController.signUp(SignUpRequestDto(
+                            _emailInput.text,
+                            _passwordInput.text,
+                            _nicknameInput.text,
+                            _universityInput.text,
+                            _classNumberInput.text,
+                            _majorInput.text,
+                            'male',
+                          ));
                         },
                       ),
                     ),

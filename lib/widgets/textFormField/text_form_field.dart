@@ -6,16 +6,17 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:waggly/controller/signUp/sign_up_controller.dart';
 
-class RenderTextFormField extends StatelessWidget{
-  const RenderTextFormField({Key? key, this.mode, this.placeholder, this.buttonText, this.label, this.controller}) : super(key: key);
+class RenderTextFormField extends StatelessWidget {
+  const RenderTextFormField({Key? key, this.mode, this.placeholder, this.buttonText, this.label, this.controller})
+      : super(key: key);
   final mode;
   final placeholder;
   final buttonText;
   final label;
   final controller;
 
-  String paresTime(int time){
-    if(time % 60 < 10){
+  String paresTime(int time) {
+    if (time % 60 < 10) {
       return "0${time % 60}";
     }
     return "${time % 60}";
@@ -31,9 +32,7 @@ class RenderTextFormField extends StatelessWidget{
           children: [
             Row(
               children: [
-                Text(label,
-                    style:
-                    TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp)),
+                Text(label, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp)),
               ],
             ),
             SizedBox(
@@ -44,21 +43,23 @@ class RenderTextFormField extends StatelessWidget{
               child: Row(children: [
                 Flexible(
                   child: TextFormField(
-                    obscureText: placeholder == '비밀번호' ? true : false,
+                    controller: controller,
+                    obscureText: label == '비밀번호' ? true : false,
                     decoration: InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromRGBO(218, 175, 254, 1))),
+                        focusedBorder:
+                            OutlineInputBorder(borderSide: BorderSide(color: Color.fromRGBO(218, 175, 254, 1))),
                         enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Color.fromRGBO(218, 175, 254, 0.5),
                             ),
                             borderRadius: BorderRadius.circular(4)),
                         hintText: placeholder,
-                        hintStyle: TextStyle( color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)
-                    ),
+                        hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
+                    onChanged: (val) {
+                      print(val);
+                    },
                     onSaved: (val) {},
                     validator: (val) {},
                   ),
@@ -69,17 +70,15 @@ class RenderTextFormField extends StatelessWidget{
                   padding: EdgeInsets.fromLTRB(0.w, 3.h, 0.w, 3.h),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
-                      border:
-                      Border.all(color: Color.fromRGBO(182, 182, 182, 1))),
+                      border: Border.all(color: Color.fromRGBO(182, 182, 182, 1))),
                   child: TextButton(
                     child: Text(
                       buttonText,
-                      style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff959595)),
+                      style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: Color(0xff959595)),
                     ),
-                    onPressed: () {signUpController.startTimer();},
+                    onPressed: () {
+                      signUpController.startTimer();
+                    },
                   ),
                 )
               ]),
@@ -100,21 +99,22 @@ class RenderTextFormField extends StatelessWidget{
             height: 4.h,
           ),
           TextFormField(
-            obscureText: placeholder == '비밀번호' ? true : false,
+            controller: controller,
+            obscureText: label == '비밀번호' ? true : false,
             decoration: InputDecoration(
                 isDense: true,
                 contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
-                focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: Color.fromRGBO(218, 175, 254, 1))),
+                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color.fromRGBO(218, 175, 254, 1))),
                 enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color.fromRGBO(218, 175, 254, 0.5),
                     ),
                     borderRadius: BorderRadius.circular(4)),
                 hintText: placeholder,
-                hintStyle: TextStyle( color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)
-            ),
+                hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
+            onChanged: (val) {
+              print(val);
+            },
             onSaved: (val) {},
             validator: (val) {},
           ),
@@ -131,11 +131,14 @@ class RenderTextFormField extends StatelessWidget{
         child: Column(children: [
           Row(
             children: [
-              Text(label,
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp)),
-              SizedBox(width: 8.w,),
-              Obx(() => Text("${(signUpController.count.value / 60).floor()}:${paresTime(signUpController.count.value)}",
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.sp, color: Color.fromRGBO(149, 149, 149, 1)))),
+              Text(label, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp)),
+              SizedBox(
+                width: 8.w,
+              ),
+              Obx(() => Text(
+                  "${(signUpController.count.value / 60).floor()}:${paresTime(signUpController.count.value)}",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 12.sp, color: Color.fromRGBO(149, 149, 149, 1)))),
             ],
           ),
           SizedBox(
@@ -144,21 +147,22 @@ class RenderTextFormField extends StatelessWidget{
           SizedBox(
             height: 34.h,
             child: TextFormField(
-              obscureText: placeholder == '비밀번호' ? true : false,
+              controller: controller,
+              obscureText: label == '비밀번호' ? true : false,
               decoration: InputDecoration(
                   isDense: true,
                   contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: Color.fromRGBO(218, 175, 254, 1))),
+                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color.fromRGBO(218, 175, 254, 1))),
                   enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color.fromRGBO(218, 175, 254, 0.5),
                       ),
                       borderRadius: BorderRadius.circular(4)),
                   hintText: placeholder,
-                  hintStyle: TextStyle( color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)
-              ),
+                  hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
+              onChanged: (val) {
+                print(val);
+              },
               onSaved: (val) {},
               validator: (val) {},
             ),
@@ -175,24 +179,24 @@ class RenderTextFormField extends StatelessWidget{
         Padding(
           padding: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 0.h),
           child: TextFormField(
-            obscureText: placeholder == '비밀번호' ? true : false,
+            controller: controller,
+            obscureText: label == '비밀번호' ? true : false,
             decoration: InputDecoration(
                 isDense: true,
                 contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
-                focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: Color.fromRGBO(218, 175, 254, 1))),
+                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color.fromRGBO(218, 175, 254, 1))),
                 enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color.fromRGBO(218, 175, 254, 0.5),
                     ),
                     borderRadius: BorderRadius.circular(4)),
                 hintText: placeholder,
-                hintStyle: TextStyle( color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.h)
-            ),
+                hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.h)),
+            onChanged: (val) {
+              print(val);
+            },
             onSaved: (val) {},
             validator: (val) {},
-            controller: controller,
           ),
         ),
         SizedBox(
@@ -201,9 +205,7 @@ class RenderTextFormField extends StatelessWidget{
       ],
     );
   }
-
 }
-
 
 // class RenderTextFormField extends StatefulWidget {
 //   const RenderTextFormField(

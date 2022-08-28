@@ -1,7 +1,7 @@
 class WagglyResponseDto {
   final int? code;
   final String? message;
-  final String? status;
+  final dynamic status;
   final dynamic datas;
 
   WagglyResponseDto({
