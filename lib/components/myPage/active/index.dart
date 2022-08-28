@@ -159,9 +159,9 @@ class _activeContentState extends State<activeContent> {
                       ],
                     )),
                 onTap: () async {
+                  Get.toNamed('/myPostsList');
                   await Get.put(MyPostsListController()).getMyPosts();
                   await Get.put(MyCommentsListController()).getMyComments();
-                  Get.toNamed('/myPostsList');
                 },
               ),
               Divider(thickness: 0.5, height: 1, color: Palette.lightGray),
