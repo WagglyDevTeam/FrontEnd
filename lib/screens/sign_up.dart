@@ -7,6 +7,7 @@ import 'package:waggly/controller/signUp/sign_up_controller.dart';
 import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
 import 'package:waggly/model/signUp/dtos/sign_up_request_dto.dart';
 import 'package:waggly/model/signUp/dtos/verify_email_request_dto.dart';
+import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/input_validator.dart';
 import '../widgets/textFormField/text_form_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -290,6 +291,7 @@ class Input extends StatefulWidget {
 class _InputState extends State<Input> {
   // final _formKey = GlobalKey<FormState>();
   final SignUpController _signUpController = Get.find();
+  // RxBool
 
   @override
   Widget build(BuildContext context) {
@@ -305,16 +307,17 @@ class _InputState extends State<Input> {
                 onclick: () async {
                   final String validResult = validateEmail(_emailInput.text);
                   if (validResult.isNotEmpty) {
+                    _signUpController.emailValidateSuccess.value = false;
                     CustomSnackBar.messageSnackbar(
                       context,
                       validResult,
                       EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
                     );
                   } else {
-                    await _signUpController.sendEmailForVerify(_emailInput.text);
+                    _signUpController.emailValidateSuccess.value = true;
                     CustomSnackBar.messageSnackbar(context, "Email로 인증번호가 발송되었습니다.", null);
+                    await _signUpController.sendEmailForVerify(_emailInput.text);
                     _signUpController.startTimer();
-
                   }
                 },
               ),
@@ -399,35 +402,50 @@ class _ButtonsState extends State<Buttons> {
         child: Stack(
           children: [
             if (widget.steps == 0)
-              Container(
-                width: double.infinity,
-                height: 36.h,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(26),
-                    color: widget.steps == 0 ? Color(0xffB863FB) : Color(0xffE8E8E8)),
-                child: TextButton(
-                  child: Text(
-                    '다음',
-                    style: TextStyle(
-                      color: widget.steps == 0 ? Color(0xffFFFFFF) : Color(0xff959595),
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w700,
+              Obx(
+                () => Container(
+                  width: double.infinity,
+                  height: 36.h,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(26),
+                      color: _signUpController.emailInputEmpty.value == false &&
+                              _signUpController.certiNumberInputEmpty.value == false
+                          ? Color(0xffB863FB)
+                          : Color(0xffE8E8E8)),
+                  child: TextButton(
+                    child: Text(
+                      '다음',
+                      style: TextStyle(
+                        color: _signUpController.emailInputEmpty.value == false &&
+                                _signUpController.certiNumberInputEmpty.value == false
+                            ? Color(0xffFFFFFF)
+                            : Palette.mdGray,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
+                    onPressed: () async {
+                      if (_signUpController.emailVerified == true) {
+                        widget.setSteps(1);
+                      } else {
+                        final WagglyResponseDto verifyResult = await _signUpController.verifyEmail(
+                          VerifyEmailReqeustDto(_emailInput.text, _certiNumberInput.text),
+                        );
+                        if (_signUpController.emailVerified == true) {
+                          _signUpController.certiNumValidateSuccess.value = true;
+                          print(_signUpController.confirmedUniversityName);
+                          widget.setSteps(1);
+                        } else {
+                          _signUpController.certiNumValidateSuccess.value = false;
+                          CustomSnackBar.messageSnackbar(
+                            context,
+                            verifyResult.message,
+                            EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                          );
+                        }
+                      }
+                    },
                   ),
-                  onPressed: () async {
-                    final WagglyResponseDto verifyResult = await _signUpController.verifyEmail(
-                      VerifyEmailReqeustDto(_emailInput.text, _certiNumberInput.text),
-                    );
-                    if (_signUpController.emailVerified == true) {
-                      widget.setSteps(1);
-                    } else {
-                      CustomSnackBar.messageSnackbar(
-                        context,
-                        verifyResult.message,
-                        EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
-                      );
-                    }
-                  },
                 ),
               ),
             if (widget.steps == 1)

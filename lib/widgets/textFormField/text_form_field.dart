@@ -53,66 +53,83 @@ class RenderTextFormField extends StatelessWidget {
               height: 34.h,
               child: Row(children: [
                 Flexible(
-                  child: TextFormField(
-                    controller: controller,
-                    obscureText: placeholder == '비밀번호' || label == '비밀번호' || label == '비밀번호 확인' ? true : false,
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
-                        focusedBorder:
-                            OutlineInputBorder(borderSide: BorderSide(color: Color.fromRGBO(218, 175, 254, 1))),
-                        enabledBorder: OutlineInputBorder(
+                  child: Obx(
+                    () => TextFormField(
+                      readOnly: label == '학과' ? true : false,
+                      autofocus: label == '학교 이메일' ? true : false,
+                      controller: controller,
+                      decoration: InputDecoration(
+                          isDense: true,
+                          contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
+                          focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Color.fromRGBO(218, 175, 254, 0.5),
+                              color: _signUpController.emailValidateSuccess.value == true && label == '학교 이메일'
+                                  ? Color.fromRGBO(218, 175, 254, 1)
+                                  : label != '학교 이메일'
+                                      ? Color.fromRGBO(218, 175, 254, 1)
+                                      : Colors.red,
                             ),
-                            borderRadius: BorderRadius.circular(4)),
-                        hintText: placeholder,
-                        hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
-                    onChanged: (val) {
-                      if (label == '학교 이메일' && controller.text.isEmpty == true) {
-                        _signUpController.emailInputEmpty.value = true;
-                      } else if (label == '학교 이메일' && controller.text.isEmpty == false) {
-                        _signUpController.emailInputEmpty.value = false;
-                      }
-                    },
-                    onSaved: (val) {},
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _signUpController.emailValidateSuccess.value == true && label == '학교 이메일'
+                                    ? Color.fromRGBO(218, 175, 254, 0.5)
+                                    : label != '학교 이메일'
+                                        ? Color.fromRGBO(218, 175, 254, 0.5)
+                                        : Colors.red.shade200,
+                              ),
+                              borderRadius: BorderRadius.circular(4)),
+                          hintText: placeholder,
+                          hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
+                      onChanged: (val) {
+                        if (label == '학교 이메일' && controller.text.isEmpty == true) {
+                          _signUpController.emailInputEmpty.value = true;
+                        } else if (label == '학교 이메일' && controller.text.isEmpty == false) {
+                          _signUpController.emailInputEmpty.value = false;
+                        }
+                      },
+                      onSaved: (val) {},
+                    ),
                   ),
                 ),
-                Obx(() => _signUpController.emailInputEmpty.value == true
-                    ? Container(
-                        width: 70.w,
-                        margin: EdgeInsets.fromLTRB(8.w, 0.h, 0.w, 0.h),
-                        padding: EdgeInsets.fromLTRB(0.w, 3.h, 0.w, 3.h),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(color: Color.fromRGBO(182, 182, 182, 1))),
-                        child: TextButton(
-                          child: Text(
-                            buttonText,
-                            style: TextStyle(
-                                fontSize: 12.sp, fontWeight: FontWeight.w500, color: Color.fromRGBO(182, 182, 182, 1)),
-                          ),
-                          onPressed: () {
-                            onclick();
-                          },
+                Obx(
+                  () => Container(
+                    width: 70.w,
+                    margin: EdgeInsets.fromLTRB(8.w, 0.h, 0.w, 0.h),
+                    padding: EdgeInsets.fromLTRB(0.w, 3.h, 0.w, 3.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(
+                        color: buttonText == '인증하기'
+                            ? _signUpController.emailInputEmpty.value == false
+                                ? Palette.main
+                                : Color.fromRGBO(182, 182, 182, 1)
+                            : buttonText == '검색하기'
+                                ? Palette.main
+                                : Color.fromRGBO(182, 182, 182, 1),
+                      ),
+                    ),
+                    child: TextButton(
+                      child: Text(
+                        buttonText,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500,
+                          color: buttonText == '인증하기'
+                              ? _signUpController.emailInputEmpty.value == false
+                                  ? Palette.main
+                                  : Color.fromRGBO(182, 182, 182, 1)
+                              : buttonText == '검색하기'
+                                  ? Palette.main
+                                  : Color.fromRGBO(182, 182, 182, 1),
                         ),
-                      )
-                    : Container(
-                        width: 70.w,
-                        margin: EdgeInsets.fromLTRB(8.w, 0.h, 0.w, 0.h),
-                        padding: EdgeInsets.fromLTRB(0.w, 3.h, 0.w, 3.h),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4), border: Border.all(color: Palette.main)),
-                        child: TextButton(
-                          child: Text(
-                            buttonText,
-                            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: Palette.main),
-                          ),
-                          onPressed: () {
-                            onclick();
-                          },
-                        ),
-                      ))
+                      ),
+                      onPressed: () {
+                        onclick();
+                      },
+                    ),
+                  ),
+                ),
               ]),
             ),
             SizedBox(
@@ -132,11 +149,14 @@ class RenderTextFormField extends StatelessWidget {
           ),
           TextFormField(
             controller: controller,
-            obscureText: placeholder == '비밀번호' || label == '비밀번호' || label == '비밀번호 확인' ? true : false,
             decoration: InputDecoration(
                 isDense: true,
                 contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
-                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color.fromRGBO(218, 175, 254, 1))),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color.fromRGBO(218, 175, 254, 1),
+                  ),
+                ),
                 enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color.fromRGBO(218, 175, 254, 0.5),
@@ -162,12 +182,15 @@ class RenderTextFormField extends StatelessWidget {
         child: Column(children: [
           Row(
             children: [
-              Text(label, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp)),
+              Text(
+                label,
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp),
+              ),
               SizedBox(
                 width: 8.w,
               ),
               Obx(
-                () => _signUpController.count.value != 60 && _signUpController.count.value > 0
+                () => _signUpController.count.value != 60 && _signUpController.count.value > 0 && label == '인증번호'
                     ? Text(
                         "${(_signUpController.count.value / 60).floor()}:${parseTime(_signUpController.count.value)}",
                         style: TextStyle(
@@ -181,24 +204,49 @@ class RenderTextFormField extends StatelessWidget {
           ),
           SizedBox(
             height: 34.h,
-            child: TextFormField(
-              controller: controller,
-              obscureText: placeholder == '비밀번호' || label == '비밀번호' || label == '비밀번호 확인' ? true : false,
-              decoration: InputDecoration(
-                  isDense: true,
-                  contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
-                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color.fromRGBO(218, 175, 254, 1))),
-                  enabledBorder: OutlineInputBorder(
+            child: Obx(
+              () => TextFormField(
+                autofocus: label == '학교' || label == '비밀번호'
+                    ? true
+                    : label == '학번' || label == '비밀번호 확인'
+                        ? false
+                        : false,
+                initialValue: label == '학교' ? _signUpController.confirmedUniversityName : null,
+                readOnly: label == '학교' ? true : false,
+                controller: label == '학교' ? null : controller,
+                obscureText: placeholder == '비밀번호' || label == '비밀번호' || label == '비밀번호 확인' ? true : false,
+                decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
+                    focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Color.fromRGBO(218, 175, 254, 0.5),
+                        color: _signUpController.certiNumValidateSuccess.value == true && label == '인증번호'
+                            ? Color.fromRGBO(218, 175, 254, 1)
+                            : label != '인증번호'
+                                ? Color.fromRGBO(218, 175, 254, 1)
+                                : Colors.red,
                       ),
-                      borderRadius: BorderRadius.circular(4)),
-                  hintText: placeholder,
-                  hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
-              onChanged: (val) {
-                print(val);
-              },
-              onSaved: (val) {},
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: _signUpController.certiNumValidateSuccess.value == true && label == '인증번호'
+                              ? Color.fromRGBO(218, 175, 254, 0.5)
+                              : label != '인증번호'
+                                  ? Color.fromRGBO(218, 175, 254, 0.5)
+                                  : Colors.red.shade200,
+                        ),
+                        borderRadius: BorderRadius.circular(4)),
+                    hintText: label == '학교' ? null : placeholder,
+                    hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
+                onChanged: (val) {
+                  if (label == '인증번호' && controller.text.isEmpty == true) {
+                    _signUpController.certiNumberInputEmpty.value = true;
+                  } else if (label == '인증번호' && controller.text.isEmpty == false) {
+                    _signUpController.certiNumberInputEmpty.value = false;
+                  }
+                },
+                onSaved: (val) {},
+              ),
             ),
           ),
           SizedBox(
@@ -213,8 +261,12 @@ class RenderTextFormField extends StatelessWidget {
         Padding(
           padding: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 0.h),
           child: TextFormField(
+            autofocus: label == '학교' || label == '비밀번호'
+                ? true
+                : label == '학번' || label == '비밀번호 확인'
+                    ? false
+                    : false,
             controller: controller,
-            obscureText: placeholder == '비밀번호' || label == '비밀번호' || label == '비밀번호 확인' ? true : false,
             decoration: InputDecoration(
                 isDense: true,
                 contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
