@@ -11,22 +11,11 @@ const jwtToken =
 final SignInController signInController = Get.put(SignInController());
 final token = signInController.getToken();
 
-class PostProvider extends GetConnect {
+class HomeProvider extends GetConnect {
   final Map<String, String> authHeaders = token != null ? {"Authorization": token!} : {};
 
-  Future<Response> getBoard() => get(
-        "$host/board?college=social",
-        headers: authHeaders,
-      );
-
-  Future<Response> writeBoard(FormData data) => post(
-        "$host/board",
-        data,
-        headers: authHeaders,
-      );
-
   Future<Response> getHome() => get(
-        "$host/home",
-        headers: authHeaders,
-      );
+    "$host/home",
+    headers: authHeaders,
+  );
 }

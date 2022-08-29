@@ -28,4 +28,12 @@ class PostRepository {
     Response response = await _postProvider.writeBoard(data);
     dynamic body = response.body;
   }
+
+  Future<WagglyResponseDto> getHome() async {
+    Response response = await _postProvider.getHome();
+    dynamic body = response.body;
+
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+    return wagglyResponseDto;
+  }
 }

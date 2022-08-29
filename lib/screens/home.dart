@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
+import 'package:waggly/controller/home/home_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
+import 'package:waggly/model/post/dtos/post_response_dto.dart';
 import 'package:waggly/screens/sign_in.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
@@ -23,14 +25,15 @@ List<dynamic> groupChatItem = [
   {"i", "j"}
 ];
 
+HomeController _homeController = Get.find();
+SignInController signInController = Get.find();
+double bottomAppbarHeight = 55.0;
+
 class HomeScreen extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
 
   @override
   Widget build(BuildContext context) {
-    PostController postController = Get.put(PostController());
-    SignInController signInController = Get.put(SignInController());
-
     return Scaffold(
       backgroundColor: Colors.white,
       //TODO: HomeAppbar와 Body 사이에 약간의 공간이 있는데 뭐지?
@@ -40,20 +43,20 @@ class HomeScreen extends StatelessWidget {
       body: RefreshIndicator(
         key: refreshKey,
         onRefresh: () async {
-          await postController.getBoard();
+          await _homeController.getHome();
         },
         child: ListView(
           children: [
             AdvertisementArea(), // 광고영역
             SizedBox(height: 24.h),
-            PostTitleArea(),
-            Obx(() => PostBoxArea(post: postController.bestPost.value)),
+            Obx(() => PostTitleArea(_homeController.college.value)),
+            Obx(() => PostBoxArea(post: _homeController.collegeBestPost.value)),
             SizedBox(height: 24.h),
             GroupChatRecommendTitleArea(),
             GroupChatRecommendBoxArea(),
             SizedBox(height: 24.h),
-            PostTitleArea(),
-            Obx(() => PostBoxArea(post: postController.bestPost.value)),
+            PostTitleArea("다른 계열"),
+            Obx(() => PostBoxArea(post: _homeController.othersBestPost.value)),
           ],
         ),
       ),
@@ -62,7 +65,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 class PostBoxArea extends StatelessWidget {
-  final Post post;
+  final PostResponseDto post;
 
   PostBoxArea({required this.post});
 
@@ -71,87 +74,105 @@ class PostBoxArea extends StatelessWidget {
     SignInController signInController = Get.put(SignInController());
     double safeWidth = Get.width - 72.w;
 
-    return Container(
-      margin: EdgeInsets.only(left: 20.w, right: 20.w),
-      padding: EdgeInsets.fromLTRB(16.0.w, 12.0.h, 16.0.w, 12.0.h),
-      height: 113.5.h,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.0),
-        border: Border.all(
-          width: 0.7,
-          color: Palette.lavender,
+    return InkWell(
+      onTap: () {
+        signInController.checkLoggedIn().value == false
+            ? ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    "로그인이 필요합니다.",
+                    textAlign: TextAlign.center,
+                  ),
+                  duration: Duration(milliseconds: 1000),
+                  behavior: SnackBarBehavior.floating,
+                  margin: EdgeInsets.only(bottom: bottomAppbarHeight + 20, left: 50.w, right: 50.w),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                ),
+              )
+            : Get.toNamed('/post');
+      },
+      child: Container(
+        margin: EdgeInsets.only(left: 20.w, right: 20.w),
+        padding: EdgeInsets.fromLTRB(16.0.w, 12.0.h, 16.0.w, 12.0.h),
+        height: 113.5.h,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+          border: Border.all(
+            width: 0.7,
+            color: Palette.lavender,
+          ),
         ),
-      ),
-      width: MediaQuery.of(context).size.width,
-      child: Skeleton(
-        isLoading: post.postTitle != null ? false : true,
-        skeleton: SkeletonParagraph(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  width: safeWidth * 0.7,
-                  child: Text(
-                    "${post.postTitle}",
-                    style: CommonText.BodyL,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+        width: MediaQuery.of(context).size.width,
+        child: Skeleton(
+          isLoading: post.postTitle != null ? false : true,
+          skeleton: SkeletonParagraph(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: safeWidth * 0.7,
+                    child: Text(
+                      "${post.postTitle}",
+                      style: CommonText.BodyL,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                Container(
-                  alignment: Alignment.centerRight,
-                  width: safeWidth * 0.29,
-                  child: Text(
-                    post.postCreatedAt != null ? DateFormat('MM/dd HH:mm').format(post.postCreatedAt!) : "",
-                    style: CommonText.BodyEngGray,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  Container(
+                    alignment: Alignment.centerRight,
+                    width: safeWidth * 0.29,
+                    child: Text(
+                      post.postCreatedAt != null ? post.postCreatedAt! : "",
+                      style: CommonText.BodyEngGray,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-              ],
-            ), // 제목, 날짜
-            SizedBox(height: 7.h),
-            Container(
-              height: 38.h,
-              alignment: Alignment.centerLeft,
-              child: Obx(
-                () => signInController.checkLoggedIn().value == true
-                    ? Text(
-                        "${post.postDesc}",
-                        style: CommonText.BodyM,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    : ClipRect(
-                        child: Stack(
-                          children: [
-                            Text(
-                              "${post.postDesc}",
-                              style: CommonText.BodyM,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Positioned.fill(
-                              child: BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-                                child: Container(
-                                  color: Colors.white.withOpacity(0.5),
+                ],
+              ), // 제목, 날짜
+              SizedBox(height: 7.h),
+              Container(
+                height: 38.h,
+                alignment: Alignment.centerLeft,
+                child: Obx(
+                  () => signInController.checkLoggedIn().value == true
+                      ? Text(
+                          "${post.postDesc}",
+                          style: CommonText.BodyM,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      : ClipRect(
+                          child: Stack(
+                            children: [
+                              Text(
+                                "${post.postDesc}",
+                                style: CommonText.BodyM,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Positioned.fill(
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+                                  child: Container(
+                                    color: Colors.white.withOpacity(0.5),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-              ),
-            ), // 내용
-            SizedBox(height: 7.h),
-            Obx(() => signInController.checkLoggedIn().value == true
-                ? MajorAreaLogin(safeWidth: safeWidth)
-                : MajorAreaLogout(safeWidth: safeWidth)), // 학과, 이미지, 좋아요, 코멘트 수
-          ],
+                ),
+              ), // 내용
+              SizedBox(height: 7.h),
+              Obx(() => signInController.checkLoggedIn().value == true
+                  ? MajorAreaLogin(safeWidth: safeWidth)
+                  : MajorAreaLogout(safeWidth: safeWidth)), // 학과, 이미지, 좋아요, 코멘트 수
+            ],
+          ),
         ),
       ),
     );
@@ -353,9 +374,9 @@ class MajorAreaLogout extends StatelessWidget {
 }
 
 class PostTitleArea extends StatelessWidget {
-  const PostTitleArea({
-    Key? key,
-  }) : super(key: key);
+  PostTitleArea(this.title);
+
+  String title;
 
   @override
   Widget build(BuildContext context) {
@@ -365,7 +386,7 @@ class PostTitleArea extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            "예술체육계열 인기글",
+            "$title 인기글",
             style: CommonText.TitleS,
           ),
           SizedBox(width: 4.w),
@@ -591,83 +612,84 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     SignInController signInController = Get.find();
 
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AppBar(
-          elevation: 0,
-          centerTitle: false,
-          backgroundColor: Colors.white,
-          title: Text(
-            '와글리',
-            style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700, color: Colors.black),
-          ),
-          actions: <Widget>[
-            signInController.checkLoggedIn().value == true
-                ? InkWell(
-                    onTap: () {
-                      // 알림 페이지로 이동
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(right: 15.0.w, top: 7.0.h),
-                      width: 36.0.w,
-                      height: 36.0.h,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1.0, color: Palette.lightGray),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Stack(
-                        children: [
-                          Icon(
-                            Icons.notifications_none,
-                            color: Palette.gray,
-                            size: 18.w,
-                          ),
-                          Positioned(
-                            top: 1.6.h,
-                            left: 11.w,
-                            // right: -20,
-                            child: Container(
-                              width: 6.0.w,
-                              height: 6.0.h,
-                              decoration: BoxDecoration(
-                                border: Border.all(width: 0.5.w, color: Colors.white),
-                                color: Color(0xFFFF5F5F),
-                                shape: BoxShape.circle,
-                              ),
+        Obx(
+          () => AppBar(
+            elevation: 0,
+            centerTitle: false,
+            backgroundColor: Colors.white,
+            title: Text(
+              '와글리',
+              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700, color: Colors.black),
+            ),
+            actions: <Widget>[
+              signInController.checkLoggedIn().value == true
+                  ? InkWell(
+                      onTap: () {
+                        // 알림 페이지로 이동
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(right: 15.0.w, top: 7.0.h),
+                        width: 36.0.w,
+                        height: 36.0.h,
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 1.0, color: Palette.lightGray),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Stack(
+                          children: [
+                            Icon(
+                              Icons.notifications_none,
+                              color: Palette.gray,
+                              size: 18.w,
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Get.toNamed('/signInPage');
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(right: 16.0.w),
-                          alignment: Alignment.center,
-                          width: 60.0.w,
-                          height: 24.0.h,
-                          child: Text(
-                            "로그인",
-                            style: CommonText.LabelWhite,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Palette.main,
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
+                            Positioned(
+                              top: 1.6.h,
+                              left: 11.w,
+                              // right: -20,
+                              child: Container(
+                                width: 6.0.w,
+                                height: 6.0.h,
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 0.5.w, color: Colors.white),
+                                  color: Color(0xFFFF5F5F),
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                    ],
-                  )
-          ],
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed('/signInPage');
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right: 16.0.w),
+                            alignment: Alignment.center,
+                            width: 60.0.w,
+                            height: 24.0.h,
+                            child: Text(
+                              "로그인",
+                              style: CommonText.LabelWhite,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Palette.main,
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+            ],
+          ),
         ),
       ],
     );

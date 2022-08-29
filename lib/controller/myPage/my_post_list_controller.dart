@@ -16,6 +16,7 @@ class MyPostsListController extends GetxController {
   Future<void> getMyPosts() async {
     Response response = await _myPostsListProvider.getMyPosts();
     dynamic body = response.body;
+    print(response);
     List<dynamic> myPostsListJson = body['datas']['myPosts'];
     List<Data> convertMyPosts =
         myPostsListJson.map((e) => Data.fromJson(e)).toList();
