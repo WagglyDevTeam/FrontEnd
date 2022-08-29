@@ -24,9 +24,7 @@ class SignInController extends GetxController {
       User user = User.fromDto(wagglyResponseDto);
       user.jwtToken = response.headers!["authorization"];
       box.put('user', user);
-      print(box
-          .get('user')
-          ?.jwtToken);
+      print(box.get('user')?.jwtToken);
 
       return true;
     } else {
@@ -42,6 +40,7 @@ class SignInController extends GetxController {
 
   RxBool checkLoggedIn() {
     String? token = box.get('user')?.jwtToken;
+
     if (token == null) {
       WidgetsBinding.instance
           .addPostFrameCallback((_) => isLoggedIn.value = false);

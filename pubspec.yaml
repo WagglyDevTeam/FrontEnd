@@ -40,6 +40,7 @@ dependencies:
   material_symbols: ^0.0.0
   carousel_slider: ^4.1.1
   flutter_switch: ^0.3.2
+  flutter_svg_provider: ^1.0.3
 
   #로컬 스토리지 저장용
   flutter_secure_storage: ^6.0.0

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart' as svg_provider;
 
 class RequestScreen extends StatelessWidget {
   const RequestScreen({Key? key}) : super(key: key);
@@ -182,12 +183,13 @@ class requestList extends StatelessWidget {
                           'assets/icons/sendRequest.svg',
                           width: 12.w,
                           height: 12.h,
+                          color: requestStatus ? Colors.white : Palette.mdGray,
                         ),
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
                           primary: requestStatus ? Palette.main : Colors.white,
                           onPrimary:
-                              requestStatus ? Colors.white : Palette.gray,
+                              requestStatus ? Colors.white : Palette.mdGray,
                           side: BorderSide(
                             width: 0.5,
                             color: requestStatus ? Colors.white : Palette.light,
@@ -205,6 +207,7 @@ class requestList extends StatelessWidget {
                           'assets/icons/getRequest.svg',
                           width: 12.w,
                           height: 12.h,
+                          color: !requestStatus ? Colors.white : Palette.mdGray,
                         ),
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
