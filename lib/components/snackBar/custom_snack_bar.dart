@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomSnackBar {
-  static errorSnackbar(BuildContext context, String? message, EdgeInsets? margin) {
+  static messageSnackbar(BuildContext context, String? message, dynamic margin) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
         "$message",

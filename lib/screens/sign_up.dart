@@ -304,16 +304,17 @@ class _InputState extends State<Input> {
                 controller: _emailInput,
                 onclick: () async {
                   final String validResult = validateEmail(_emailInput.text);
-                  print(validResult);
                   if (validResult.isNotEmpty) {
-                    CustomSnackBar.errorSnackbar(
+                    CustomSnackBar.messageSnackbar(
                       context,
                       validResult,
                       EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
                     );
                   } else {
                     await _signUpController.sendEmailForVerify(_emailInput.text);
+                    CustomSnackBar.messageSnackbar(context, "Email로 인증번호가 발송되었습니다.", null);
                     _signUpController.startTimer();
+
                   }
                 },
               ),
@@ -420,7 +421,7 @@ class _ButtonsState extends State<Buttons> {
                     if (_signUpController.emailVerified == true) {
                       widget.setSteps(1);
                     } else {
-                      CustomSnackBar.errorSnackbar(
+                      CustomSnackBar.messageSnackbar(
                         context,
                         verifyResult.message,
                         EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
