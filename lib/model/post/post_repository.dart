@@ -8,12 +8,20 @@ import 'dtos/waggly_response_dto.dart';
 class PostRepository {
   final PostProvider _postProvider = PostProvider();
 
-  Future<WagglyResponseDto> getBoard() async {
+  Future<dynamic> getBoard() async {
     Response response = await _postProvider.getBoard();
+    if (response.bodyString == null) {
+      return null;
+    }
+
     dynamic body = response.body;
 
-    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
-    return wagglyResponseDto;
+    if (body.runtimeType == Map<String, dynamic>) {
+      WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+      return wagglyResponseDto;
+    } else {
+      return body;
+    }
   }
 
   Future<void> writeBoard(FormData data) async {

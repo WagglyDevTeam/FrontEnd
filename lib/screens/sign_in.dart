@@ -49,11 +49,12 @@ class _SignInState extends State<SignInScreen> {
           Button(
             text: '시작하기',
             onPress: () async {
-              // print(_emailController.text);
+              print(_emailController.text);
               var isSignIn = await _signInController.signIn(SignInRequestDto(
                   _emailController.text, _passwordController.text));
               if (isSignIn == true) {
-                Get.offAllNamed("/home");
+                print("asdasdasd");
+                Get.offAllNamed("/");
               } else {}
             },
             disabled: true,

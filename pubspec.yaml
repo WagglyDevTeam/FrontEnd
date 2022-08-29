@@ -46,6 +46,9 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
 
+  #validator
+  validators: ^3.0.0
+
   #state
   get: ^4.6.5
 
