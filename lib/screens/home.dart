@@ -94,7 +94,7 @@ class PostBoxArea extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(left: 20.w, right: 20.w),
         padding: EdgeInsets.fromLTRB(16.0.w, 12.0.h, 16.0.w, 12.0.h),
-        height: 113.5.h,
+        height: 115.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
           border: Border.all(
