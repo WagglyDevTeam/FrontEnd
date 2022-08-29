@@ -9,9 +9,6 @@ import 'package:waggly/widgets/index.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/utils/colors.dart';
 
-PageRouteWithAnimation requestPage =
-    PageRouteWithAnimation(const RequestScreen());
-
 class ActiveScreen extends StatelessWidget {
   const ActiveScreen({Key? key}) : super(key: key);
 
@@ -135,7 +132,7 @@ class _activeContentState extends State<activeContent> {
                       ],
                     )),
                 onTap: () {
-                  Navigator.of(context).push(requestPage.slideLeftToRight());
+                  Get.toNamed('/myRequestList');
                 },
               ),
               Divider(thickness: 0.5, height: 1, color: Palette.lightGray),
@@ -159,9 +156,9 @@ class _activeContentState extends State<activeContent> {
                       ],
                     )),
                 onTap: () async {
-                  Get.toNamed('/myPostsList');
                   await Get.put(MyPostsListController()).getMyPosts();
-                  await Get.put(MyCommentsListController()).getMyComments();
+                  Get.toNamed('/myPostsList');
+                  //await Get.put(MyCommentsListController()).getMyComments();
                 },
               ),
               Divider(thickness: 0.5, height: 1, color: Palette.lightGray),

@@ -8,6 +8,7 @@ import 'package:waggly/components/myPage/active/my_post_list.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:waggly/components/myPage/active/request_list.dart';
 import 'package:waggly/components/notification/notification.dart';
 import 'package:waggly/controller/home/home_controller.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
@@ -119,6 +120,10 @@ class HeroApp extends StatelessWidget {
             GetPage(
                 name: "/myPostsList",
                 page: () => MyPostListScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/myRequestList",
+                page: () => RequestScreen(),
                 transition: Transition.rightToLeft),
           ],
         );

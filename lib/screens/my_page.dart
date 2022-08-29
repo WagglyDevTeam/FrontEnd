@@ -16,6 +16,7 @@ import 'package:waggly/utils/colors.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 
 class MyPageScreen extends StatelessWidget {
   const MyPageScreen({Key? key}) : super(key: key);
@@ -93,6 +94,7 @@ class TopNav extends StatelessWidget implements PreferredSizeWidget {
 
 class myPage extends StatelessWidget {
   MyProfileController myProfileController = Get.put(MyProfileController());
+  SignInController signInController = Get.put(SignInController());
   final _nickname = TextEditingController();
 
   void buttonToggle() {

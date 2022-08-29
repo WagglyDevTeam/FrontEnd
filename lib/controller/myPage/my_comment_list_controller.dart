@@ -16,9 +16,9 @@ class MyCommentsListController extends GetxController {
   Future<void> getMyComments() async {
     Response response = await _myCommentsListProvider.getMyComments();
     dynamic body = response.body;
-    List<dynamic> myCommentsListJson = body['datas']['myComments'];
-    List<Data> convertMyComments =
-        myCommentsListJson.map((e) => Data.fromJson(e)).toList();
-    myComments.value = convertMyComments;
+    // List<dynamic> myCommentsListJson = body['datas']['myComments'];
+    // List<Data> convertMyComments =
+    //     myCommentsListJson.map((e) => Data.fromJson(e)).toList();
+    // myComments.value = convertMyComments;
   }
 }
