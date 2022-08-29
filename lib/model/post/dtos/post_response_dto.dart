@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class PostResponseDto {
   final int? postId;
@@ -11,15 +12,25 @@ class PostResponseDto {
   final bool? isBlind;
   final bool? isAnonymous;
 
-  PostResponseDto({this.postId, this.postTitle, this.postDesc, this.postCreatedAt, this.postImageCnt, this.postLikeCnt, this.isLikedByMe, this.isBlind,
+  PostResponseDto(
+      {this.postId,
+      this.postTitle,
+      this.postDesc,
+      this.postCreatedAt,
+      this.postImageCnt,
+      this.postLikeCnt,
+      this.isLikedByMe,
+      this.isBlind,
       this.isAnonymous});
 
   factory PostResponseDto.fromJson(Map<String, dynamic> json) {
+    final DateFormat formatter = DateFormat('MM/dd HH:mm');
+
     return PostResponseDto(
       postId: json["postId"],
       postTitle: json["postTitle"],
       postDesc: json["postDesc"],
-      postCreatedAt: json["postCreatedAt"],
+      postCreatedAt: formatter.format(DateTime.parse(json['postCreatedAt'])),
       postImageCnt: json["postImageCnt"],
       postLikeCnt: json["postLikeCnt"],
       isLikedByMe: json["isLikedByMe"],

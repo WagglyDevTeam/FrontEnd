@@ -41,19 +41,16 @@ class _SignInState extends State<SignInScreen> {
       body: Column(
         children: [
           SignInHeader(),
-          RenderTextFormField(
-              placeholder: '학교 이메일', controller: _emailController),
-          RenderTextFormField(
-              placeholder: '비밀번호', controller: _passwordController),
+          RenderTextFormField(placeholder: '학교 이메일', controller: _emailController),
+          RenderTextFormField(placeholder: '비밀번호', controller: _passwordController),
           CustomCheckbox(),
           Button(
             text: '시작하기',
             onPress: () async {
               print(_emailController.text);
-              var isSignIn = await _signInController.signIn(SignInRequestDto(
-                  _emailController.text, _passwordController.text));
+              var isSignIn =
+                  await _signInController.signIn(SignInRequestDto(_emailController.text, _passwordController.text));
               if (isSignIn == true) {
-                print("asdasdasd");
                 Get.offAllNamed("/");
               } else {}
             },
