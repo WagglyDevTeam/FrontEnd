@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waggly/components/snackBar/custom_snack_bar.dart';
+import 'package:waggly/controller/major/major_controller.dart';
 import 'package:waggly/controller/signUp/sign_up_controller.dart';
 import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
 import 'package:waggly/model/signUp/dtos/sign_up_request_dto.dart';
@@ -291,7 +292,11 @@ class Input extends StatefulWidget {
 class _InputState extends State<Input> {
   // final _formKey = GlobalKey<FormState>();
   final SignUpController _signUpController = Get.find();
+<<<<<<< Updated upstream
   // RxBool
+=======
+  final MajorController _majorController = Get.put(MajorController());
+>>>>>>> Stashed changes
 
   @override
   Widget build(BuildContext context) {
@@ -351,6 +356,14 @@ class _InputState extends State<Input> {
                     placeholder: '학과 검색',
                     buttonText: '검색하기',
                     controller: _majorInput,
+                    onclick: () async {
+                      // TODO:59 임시로 여기에 만들어놓음
+                      // await _majorController.getMajorListByUniversityName("서울대학교");
+                      // final majorList = _majorController.majorList;
+                      // for (var major in majorList) {
+                      //   print(major.majorName);
+                      // }
+                    },
                   ),
                 ],
               )
