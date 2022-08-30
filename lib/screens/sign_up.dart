@@ -292,11 +292,7 @@ class Input extends StatefulWidget {
 class _InputState extends State<Input> {
   // final _formKey = GlobalKey<FormState>();
   final SignUpController _signUpController = Get.find();
-<<<<<<< Updated upstream
-  // RxBool
-=======
   final MajorController _majorController = Get.put(MajorController());
->>>>>>> Stashed changes
 
   @override
   Widget build(BuildContext context) {
