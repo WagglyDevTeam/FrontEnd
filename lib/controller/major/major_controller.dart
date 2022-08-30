@@ -6,7 +6,7 @@ import '../../model/post/dtos/waggly_response_dto.dart';
 class MajorController extends GetxController {
   final _majorRepository = MajorRepository();
   final majorList = <Major>[].obs;
-  
+
   @override
   void onInit() async {
     super.onInit();

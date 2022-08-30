@@ -8,6 +8,7 @@ import 'package:waggly/controller/signUp/sign_up_controller.dart';
 import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
 import 'package:waggly/model/signUp/dtos/sign_up_request_dto.dart';
 import 'package:waggly/model/signUp/dtos/verify_email_request_dto.dart';
+import 'package:waggly/screens/major_search.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/input_validator.dart';
 import '../widgets/textFormField/text_form_field.dart';
@@ -41,7 +42,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Column(
         children: [
           TopBar(),
@@ -123,6 +124,7 @@ class Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        height: 23.h,
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.fromLTRB(18.w, 0.h, 0.w, 0.h),
         child: Text(
@@ -316,7 +318,11 @@ class _InputState extends State<Input> {
                     );
                   } else {
                     _signUpController.emailValidateSuccess.value = true;
-                    CustomSnackBar.messageSnackbar(context, "Email로 인증번호가 발송되었습니다.", null);
+                    CustomSnackBar.messageSnackbar(
+                      context,
+                      "Email로 인증번호가 발송되었습니다.",
+                      EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                    );
                     await _signUpController.sendEmailForVerify(_emailInput.text);
                     _signUpController.startTimer();
                   }
@@ -354,6 +360,15 @@ class _InputState extends State<Input> {
                     controller: _majorInput,
                     onclick: () async {
                       // TODO:59 임시로 여기에 만들어놓음
+                      await _majorController.getMajorListByUniversityName(_universityInput.text);
+                      final majorList = <String>[];
+                      for (var major in _majorController.majorList) {
+                        if (major.majorName != null) {
+                          majorList.add(major.majorName!);
+                        }
+                      }
+                      print(majorList);
+                      Get.to(() => MajorSearchScreen(majorList: majorList));
                       // await _majorController.getMajorListByUniversityName("서울대학교");
                       // final majorList = _majorController.majorList;
                       // for (var major in majorList) {
@@ -434,15 +449,27 @@ class _ButtonsState extends State<Buttons> {
                       ),
                     ),
                     onPressed: () async {
-                      if (_signUpController.emailVerified == true) {
+                      if (_signUpController.emailVerified == true &&
+                          _signUpController.emailValidateSuccess.value == true) {
+                        _universityInput.text = _signUpController.confirmedUniversityName;
                         widget.setSteps(1);
                       } else {
+                        final String validResult = validateEmail(_emailInput.text);
+                        if (validResult.isNotEmpty) {
+                          _signUpController.emailValidateSuccess.value = false;
+                          CustomSnackBar.messageSnackbar(
+                            context,
+                            validResult,
+                            EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                          );
+                          return;
+                        }
                         final WagglyResponseDto verifyResult = await _signUpController.verifyEmail(
                           VerifyEmailReqeustDto(_emailInput.text, _certiNumberInput.text),
                         );
                         if (_signUpController.emailVerified == true) {
                           _signUpController.certiNumValidateSuccess.value = true;
-                          print(_signUpController.confirmedUniversityName);
+                          _universityInput.text = _signUpController.confirmedUniversityName;
                           widget.setSteps(1);
                         } else {
                           _signUpController.certiNumValidateSuccess.value = false;
