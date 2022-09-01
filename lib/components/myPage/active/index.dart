@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:waggly/components/myPage/active/request_list.dart';
@@ -34,7 +35,7 @@ class _activeContentState extends State<activeContent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 20),
+      padding: EdgeInsets.only(top: 20.h),
       child: Stack(
         children: [
           Column(
@@ -42,8 +43,8 @@ class _activeContentState extends State<activeContent> {
               Row(
                 children: [
                   Container(
-                    width: 36,
-                    height: 36,
+                    width: 36.w,
+                    height: 36.h,
                     margin: EdgeInsets.only(top: 20, right: 10, left: 16),
                     decoration: BoxDecoration(
                       border: Border.all(width: 0.5, color: Palette.lightGray),
@@ -59,8 +60,8 @@ class _activeContentState extends State<activeContent> {
                     ),
                   ),
                   Container(
-                    width: 200,
-                    margin: EdgeInsets.only(top: 15),
+                    width: 200.w,
+                    margin: EdgeInsets.only(top: 15.h),
                     child: Text(
                       '활동',
                       style: CommonText.BodyL,
@@ -68,7 +69,7 @@ class _activeContentState extends State<activeContent> {
                   ),
                 ],
               ),
-              SizedBox(height: 15),
+              SizedBox(height: 15.h),
               Divider(thickness: 1, height: 1, color: Palette.lightGray),
               Container(
                   margin: EdgeInsets.only(top: 20, bottom: 20),
@@ -81,7 +82,7 @@ class _activeContentState extends State<activeContent> {
                             '매칭 활성화',
                             style: CommonText.TitleS,
                           ),
-                          SizedBox(width: 10),
+                          SizedBox(width: 10.w),
                           FlutterSwitch(
                             height: 20.0,
                             width: 40.0,
@@ -98,7 +99,7 @@ class _activeContentState extends State<activeContent> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 5),
+                      SizedBox(height: 5.h),
                       Container(
                         width: MediaQuery.of(context).size.width,
                         child: Text(
@@ -112,14 +113,14 @@ class _activeContentState extends State<activeContent> {
               Divider(thickness: 1, height: 1, color: Palette.lightGray),
               GestureDetector(
                 child: Container(
-                    height: 50,
+                    height: 50.h,
                     padding: EdgeInsets.only(
-                      left: 16,
+                      left: 16.w,
                     ),
                     child: Row(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(right: 10, top: 3),
+                          margin: EdgeInsets.only(right: 10.w, top: 3.h),
                           child: Icon(
                             Icons.account_circle,
                             color: Palette.gray,
@@ -138,12 +139,12 @@ class _activeContentState extends State<activeContent> {
               Divider(thickness: 0.5, height: 1, color: Palette.lightGray),
               InkWell(
                 child: Container(
-                    height: 50,
-                    padding: EdgeInsets.only(left: 16),
+                    height: 50.h,
+                    padding: EdgeInsets.only(left: 16.w),
                     child: Row(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(right: 10, top: 3),
+                          margin: EdgeInsets.only(right: 10.w, top: 3.h),
                           child: Icon(
                             Icons.article,
                             color: Palette.gray,

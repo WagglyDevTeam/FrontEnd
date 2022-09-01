@@ -17,13 +17,9 @@ class MyPostsListController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    //getMyPosts();
   }
 
   Future<void> getMyPosts() async {
-    //final token = signInController.getToken();
-    Hive.box<User>('user').get('user')?.jwtToken;
-    print(Hive.box<User>('user').get('user')?.jwtToken);
     WagglyResponseDto result = await _myPostsListRepository.getMyPosts();
     List<dynamic> myPostsListJson = result.datas['myPosts'];
     List<MyPost> convertMyPosts =
