@@ -149,7 +149,7 @@ class requestList extends StatelessWidget {
                       if (requestStatus)
                         Container(
                           width: 200.w,
-                          margin: EdgeInsets.only(top: 25),
+                          margin: EdgeInsets.only(top: 10.h),
                           child: Text(
                             '내가 보낸 요청',
                             style: CommonText.BodyL,
@@ -158,7 +158,7 @@ class requestList extends StatelessWidget {
                       if (!requestStatus)
                         Container(
                           width: 200.w,
-                          margin: EdgeInsets.only(top: 25),
+                          margin: EdgeInsets.only(top: 10.h),
                           child: Text(
                             '내가 받은 요청',
                             style: CommonText.BodyL,

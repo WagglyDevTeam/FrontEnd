@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:waggly/components/myPage/active/index.dart';
-import 'package:waggly/components/myPage/profileImg/profile_img.dart';
-import 'package:waggly/components/Notification/notification.dart';
 import 'package:waggly/controller/myPage/my_profile_controller.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/myPage/waggly_img_controller.dart';
 import 'package:waggly/utils/my_page_icons.dart';
-import 'package:waggly/widgets/index.dart';
 import 'package:waggly/model/myPage/waggly_img.dart';
 import 'package:waggly/widgets/Button/button.dart';
 import 'package:waggly/utils/text_frame.dart';
@@ -17,6 +13,8 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
+import 'package:waggly/model/myPage/my_profile_model.dart';
+import 'package:waggly/model/myPage/my_profile_introduction_model.dart';
 
 class MyPageScreen extends StatelessWidget {
   const MyPageScreen({Key? key}) : super(key: key);
@@ -96,6 +94,8 @@ class myPage extends StatelessWidget {
   MyProfileController myProfileController = Get.put(MyProfileController());
   SignInController signInController = Get.put(SignInController());
   final _nickname = TextEditingController();
+  final _introduction = TextEditingController();
+  var userName = '';
 
   void buttonToggle() {
     if (_nickname.text.isBlank == true) {
@@ -105,26 +105,16 @@ class myPage extends StatelessWidget {
     }
   }
 
-  Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-      if (image == null) return;
-
-      final imageTemp = File(image.path);
-      debugPrint('data: $imageTemp');
-
-      //setState(() => this.image = imageTemp);
-    } on PlatformException catch (e) {
-      print('failed to pick image: $e');
+  void bioButtonToggle() {
+    if (_introduction.text.isBlank == true) {
+      myProfileController.bioBtn.value = false;
+    } else {
+      myProfileController.bioBtn.value = true;
     }
   }
 
-  //FileImage(image!)
-  //"assets/images/defaultProfile.png";
   var profilePic = <ProfileImgModel>[].obs;
 
-  String userName = '와글바글신나';
   String savedbio = "";
   bool hasSubmitted = true;
   bool profilehasSubmitted = true;
@@ -167,7 +157,7 @@ class myPage extends StatelessWidget {
               Button(
                   text: '앨범',
                   onPress: () {
-                    pickImage();
+                    myProfileController.pickImage();
                   },
                   theme: 'small'),
               SizedBox(height: 25.h),
@@ -177,6 +167,22 @@ class myPage extends StatelessWidget {
       }),
     );
   }
+
+  // Future pickImage() async {
+  //   try {
+  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  //
+  //     if (image == null) return;
+  //
+  //     final imageTemp = File(image.path);
+  //     debugPrint('data: $imageTemp');
+  //
+  //     myProfileController.profilePic.value = imageTemp.toString();
+  //     //setState(() => this.image = imageTemp);
+  //   } on PlatformException catch (e) {
+  //     print('failed to pick image: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -200,16 +206,17 @@ class myPage extends StatelessWidget {
                         children: [
                           CircleAvatar(
                               radius: 20.0,
-                              backgroundImage: profilePic != null
-                                  ? NetworkImage(
-                                      'https://stickershop.line-scdn.net/stickershop/v1/product/855/LINEStorePC/main.png;compress=true')
-                                  : AssetImage(
-                                          "assets/images/defaultProfile.png")
-                                      as ImageProvider),
+                              backgroundImage:
+                                  myProfileController.profilePic.value != null
+                                      ? NetworkImage(
+                                          'https://stickershop.line-scdn.net/stickershop/v1/product/855/LINEStorePC/main.png;compress=true')
+                                      : AssetImage(
+                                              "assets/images/defaultProfile.png")
+                                          as ImageProvider),
                           if (myProfileController.nicknameBtn.value)
                             Positioned(
-                                bottom: 8.0.h,
-                                right: 8.0.w,
+                                bottom: 6.0.h,
+                                right: 6.0.w,
                                 child: InkWell(
                                     onTap: () {
                                       _showModalBottomSheet(context);
@@ -217,7 +224,7 @@ class myPage extends StatelessWidget {
                                     child: Icon(
                                       Icons.camera_alt,
                                       color: Palette.lightGray,
-                                      size: 20.0,
+                                      size: 20.0.r,
                                     ))),
                         ],
                       ),
@@ -226,88 +233,77 @@ class myPage extends StatelessWidget {
                     Container(
                         width: MediaQuery.of(context).size.width - 115.w,
                         padding: EdgeInsets.only(top: 8.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            !myProfileController.nicknameBtn.value
-                                ? Text(
-                                    userName,
-                                    style: CommonText.TitleS,
-                                  )
-                                : TextFormField(
-                                    controller: _nickname,
-                                    onSaved: (value) {
-                                      userName == value;
-                                    },
-                                    maxLines: 1,
-                                    maxLength: 10,
-                                    onChanged: (value) {
-                                      userName == value;
-                                    },
-                                    cursorColor: Palette.main,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      isDense: true,
-                                      contentPadding:
-                                          EdgeInsets.only(top: -2, bottom: -1),
-                                      counterText: '',
-                                      hintText: userName,
-                                      hintStyle: CommonText.TitleSmallGray,
+                        child: Obx(
+                          () => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              !myProfileController.nicknameBtn.value
+                                  ? Text(
+                                      myProfileController.nickname.value,
+                                      style: CommonText.TitleS,
+                                    )
+                                  : TextFormField(
+                                      controller: _nickname,
+                                      maxLines: 1,
+                                      maxLength: 10,
+                                      cursorColor: Palette.main,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.only(
+                                            top: -2, bottom: -1),
+                                        counterText: '',
+                                        hintText:
+                                            myProfileController.nickname.value,
+                                        hintStyle: CommonText.TitleSmallGray,
+                                      ),
                                     ),
-                                  ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text('와플대학교'),
-                                Text('/'),
-                                Text('누텔라딸기과')
-                              ],
-                            ),
-                          ],
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text('와플대학교'),
+                                  Text('/'),
+                                  Text('누텔라딸기과')
+                                ],
+                              ),
+                            ],
+                          ),
                         )),
-                    if (!myProfileController.nicknameBtn.value)
-                      SizedBox(
-                        width: 43.0.w,
-                        height: 19.0.h,
-                        child: ElevatedButton(
-                          child: Text(
-                            "수정",
-                            style: CommonText.BodyXS,
-                          ),
-                          onPressed: () =>
-                              {myProfileController.nicknameBtn.value = true},
-                          style: ElevatedButton.styleFrom(
-                            primary: Palette.candy,
-                            onPrimary: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32.0),
-                            ),
-                          ).copyWith(
-                              elevation: ButtonStyleButton.allOrNull(0.0)),
+                    SizedBox(
+                      width: 43.0.w,
+                      height: 19.0.h,
+                      child: ElevatedButton(
+                        child: Text(
+                          !myProfileController.nicknameBtn.value ? "수정" : "완료",
+                          style: !myProfileController.nicknameBtn.value
+                              ? CommonText.BodyXS
+                              : CommonText.BodyXSmallWhite,
                         ),
-                      ),
-                    if (myProfileController.nicknameBtn.value)
-                      SizedBox(
-                        width: 43.0.w,
-                        height: 19.0.h,
-                        child: ElevatedButton(
-                          child: Text(
-                            "완료",
-                            style: CommonText.BodyXSmallWhite,
+                        onPressed: () async {
+                          if (!myProfileController.nicknameBtn.value) {
+                            myProfileController.nicknameBtn.value = true;
+                          } else {
+                            await myProfileController.changeUserProfile(
+                              ProfileData(
+                                  profileImg: _nickname.text,
+                                  nickname: _nickname.text),
+                            );
+                            myProfileController.nicknameBtn.value = false;
+                            // myProfileController.nickname.value = _nickname.text;
+
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: !myProfileController.nicknameBtn.value
+                              ? Palette.candy
+                              : Palette.main,
+                          onPrimary: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32.0),
                           ),
-                          onPressed: () => {
-                            {myProfileController.nicknameBtn.value = false},
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: Palette.main,
-                            onPrimary: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32.0),
-                            ),
-                          ).copyWith(
-                              elevation: ButtonStyleButton.allOrNull(0.0)),
-                        ),
+                        ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                       ),
+                    ),
                   ],
                 ),
               ),
@@ -315,229 +311,74 @@ class myPage extends StatelessWidget {
             SizedBox(height: 15.h),
             Divider(thickness: 1, height: 1, color: Palette.paper),
             SizedBox(height: 15.h),
-
             //자기소개 button
-            // Container(
-            //   padding: EdgeInsets.only(left: 16, right: 16),
-            //   child: Form(
-            //     key: _formKey,
-            //     child: Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         //서버에서 받아오는 데이터가 있을 경우
-            //         if (savedbio.isNotEmpty)
-            //           Row(
-            //             children: [
-            //               if (hasSubmitted)
-            //                 Container(
-            //                   height: 60.h,
-            //                   width: MediaQuery.of(context).size.width - 70.w,
-            //                   padding: EdgeInsets.only(top: 2),
-            //                   child: Text(
-            //                     savedbio,
-            //                     style: CommonText.BodyS,
-            //                   ),
-            //                 ),
-            //               if (!hasSubmitted)
-            //                 Container(
-            //                   height: 60.h,
-            //                   width: MediaQuery.of(context).size.width - 72.w,
-            //                   child: TextFormField(
-            //                     key: ValueKey(1),
-            //                     validator: (value) {},
-            //                     onSaved: (value) {},
-            //                     maxLength: 100,
-            //                     maxLines: 2,
-            //                     onChanged: (value) {
-            //                       // setState(() {
-            //                       //   savedbio = value;
-            //                       // });
-            //                     },
-            //                     decoration: InputDecoration(
-            //                       border: InputBorder.none,
-            //                       isDense: true,
-            //                       counterText: '',
-            //                       contentPadding: EdgeInsets.only(top: 2),
-            //                       hintText: savedbio,
-            //                       hintStyle: CommonText.BodyS,
-            //                     ),
-            //                   ),
-            //                 ),
-            //               if (hasSubmitted)
-            //                 SizedBox(
-            //                   width: 43.0.w,
-            //                   height: 19.0.h,
-            //                   child: ElevatedButton(
-            //                     child: Text(
-            //                       "수정",
-            //                       style: CommonText.BodyXS,
-            //                     ),
-            //                     onPressed: () {
-            //                       // validating form
-            //                       if (!_formKey.currentState!.validate()) {
-            //                         return;
-            //                       }
-            //
-            //                       // saving form
-            //                       _formKey.currentState!.save();
-            //                       // updating hasSubmitted
-            //                       // setState(() {
-            //                       //   // updating hasSubmitted
-            //                       //   hasSubmitted = false;
-            //                       // });
-            //                     },
-            //                     style: ElevatedButton.styleFrom(
-            //                       primary: Palette.candy,
-            //                       onPrimary: Colors.black,
-            //                       shape: RoundedRectangleBorder(
-            //                         borderRadius: BorderRadius.circular(32.0),
-            //                       ),
-            //                     ).copyWith(
-            //                         elevation:
-            //                             ButtonStyleButton.allOrNull(0.0)),
-            //                   ),
-            //                 ),
-            //               if (!hasSubmitted)
-            //                 Container(
-            //                   width: 43.0.w,
-            //                   height: 19.0.h,
-            //                   margin: EdgeInsets.only(left: 5),
-            //                   child: ElevatedButton(
-            //                     child: Text(
-            //                       "완료",
-            //                       style: CommonText.BodyXSmallWhite,
-            //                     ),
-            //                     onPressed: () {
-            //                       // validating form
-            //                       if (!_formKey.currentState!.validate()) {
-            //                         return;
-            //                       }
-            //
-            //                       // saving form
-            //                       _formKey.currentState!.save();
-            //                       // updating hasSubmitted
-            //                       // setState(() {
-            //                       //   // updating hasSubmitted
-            //                       //   hasSubmitted = true;
-            //                       // });
-            //                     },
-            //                     style: ElevatedButton.styleFrom(
-            //                       primary: Palette.main,
-            //                       onPrimary: Colors.white,
-            //                       shape: RoundedRectangleBorder(
-            //                         borderRadius: BorderRadius.circular(32.0),
-            //                       ),
-            //                     ).copyWith(
-            //                         elevation:
-            //                             ButtonStyleButton.allOrNull(0.0)),
-            //                   ),
-            //                 ),
-            //             ],
-            //           ),
-            //         //서버에서 받아오는 데이터가 없을 경우
-            //         if (savedbio.isEmpty)
-            //           Row(
-            //             children: [
-            //               Container(
-            //                 height: 60.h,
-            //                 width: MediaQuery.of(context).size.width - 70.w,
-            //                 child: TextFormField(
-            //                   maxLength: 100,
-            //                   maxLines: 2,
-            //                   enabled: hasSubmitted ? false : true,
-            //                   key: ValueKey(1),
-            //                   validator: (value) {},
-            //                   onSaved: (value) {},
-            //                   onChanged: (value) {
-            //                     // setState(() {
-            //                     //   savedbio = value;
-            //                     // });
-            //                   },
-            //                   decoration: InputDecoration(
-            //                     border: InputBorder.none,
-            //                     isDense: true,
-            //                     // contentPadding: EdgeInsets.all(5),
-            //                     counterText: '',
-            //                     hintText: hasSubmitted
-            //                         ? '다른 친구들에게 자신을 소개해보세요'
-            //                         : savedbio,
-            //                     hintStyle: CommonText.BodyMediumGray,
-            //                   ),
-            //                 ),
-            //               ),
-            //               if (hasSubmitted)
-            //                 SizedBox(
-            //                   width: 43.0.w,
-            //                   height: 19.0.h,
-            //                   child: ElevatedButton(
-            //                     child: Text(
-            //                       "수정",
-            //                       style: CommonText.BodyXS,
-            //                     ),
-            //                     onPressed: () {
-            //                       // validating form
-            //                       if (!_formKey.currentState!.validate()) {
-            //                         return;
-            //                       }
-            //
-            //                       // saving form
-            //                       _formKey.currentState!.save();
-            //                       // updating hasSubmitted
-            //                       // setState(() {
-            //                       //   // updating hasSubmitted
-            //                       //   hasSubmitted = false;
-            //                       // });
-            //                     },
-            //                     style: ElevatedButton.styleFrom(
-            //                       primary: Palette.candy,
-            //                       onPrimary: Colors.black,
-            //                       shape: RoundedRectangleBorder(
-            //                         borderRadius: BorderRadius.circular(32.0),
-            //                       ),
-            //                     ).copyWith(
-            //                         elevation:
-            //                             ButtonStyleButton.allOrNull(0.0)),
-            //                   ),
-            //                 ),
-            //               if (!hasSubmitted)
-            //                 Container(
-            //                   width: 43.0.w,
-            //                   height: 19.0.h,
-            //                   child: ElevatedButton(
-            //                     child: Text(
-            //                       "완료",
-            //                       style: CommonText.BodyXSmallWhite,
-            //                     ),
-            //                     onPressed: () {
-            //                       // validating form
-            //                       if (!_formKey.currentState!.validate()) {
-            //                         return;
-            //                       }
-            //                       // saving form
-            //                       _formKey.currentState!.save();
-            //                       // updating hasSubmitted
-            //                       // setState(() {
-            //                       //   // updating hasSubmitted
-            //                       //   hasSubmitted = true;
-            //                       // });
-            //                     },
-            //                     style: ElevatedButton.styleFrom(
-            //                       primary: Palette.main,
-            //                       onPrimary: Colors.white,
-            //                       shape: RoundedRectangleBorder(
-            //                         borderRadius: BorderRadius.circular(32.0),
-            //                       ),
-            //                     ).copyWith(
-            //                         elevation:
-            //                             ButtonStyleButton.allOrNull(0.0)),
-            //                   ),
-            //                 ),
-            //             ],
-            //           ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
+            Container(
+              padding: EdgeInsets.only(left: 16.0.w, right: 16.0.w),
+              child: Obx(
+                () => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: 60.h,
+                      width: MediaQuery.of(context).size.width - 80.w,
+                      padding: EdgeInsets.only(top: 2),
+                      child: !myProfileController.bioBtn.value
+                          ? Text(
+                              myProfileController.bio.value,
+                              style: CommonText.BodyS,
+                            )
+                          : TextFormField(
+                              controller: _introduction,
+                              maxLength: 100,
+                              maxLines: 2,
+                              cursorColor: Palette.main,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                isDense: true,
+                                counterText: '',
+                                contentPadding: EdgeInsets.only(top: 2),
+                                hintText: myProfileController.bio.value != null
+                                    ? myProfileController.bio.value
+                                    : '다른 친구들에게 자신을 소개해보세요',
+                                hintStyle: CommonText.BodyMediumGray,
+                              ),
+                            ),
+                    ),
+                    SizedBox(
+                      width: 43.0.w,
+                      height: 19.0.h,
+                      child: ElevatedButton(
+                        child: Text(
+                          !myProfileController.bioBtn.value ? "수정" : "완료",
+                          style: !myProfileController.bioBtn.value
+                              ? CommonText.BodyXS
+                              : CommonText.BodyXSmallWhite,
+                        ),
+                        onPressed: () async {
+                          if (!myProfileController.bioBtn.value) {
+                            myProfileController.bioBtn.value = true;
+                          } else {
+                            print(_introduction.text);
+                            await myProfileController.changeUserIntroduction(
+                                Bio(userIntroduction: _introduction.text));
+                            myProfileController.bioBtn.value = false;
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: !myProfileController.bioBtn.value
+                              ? Palette.candy
+                              : Palette.main,
+                          onPrimary: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32.0),
+                          ),
+                        ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             //grid view list
             SizedBox(height: 15.h),
             Divider(thickness: 1, height: 1, color: Palette.paper),

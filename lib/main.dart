@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:waggly/components/myPage/active/request_list.dart';
 import 'package:waggly/components/notification/notification.dart';
 import 'package:waggly/controller/home/home_controller.dart';
+import 'package:waggly/controller/myPage/my_profile_controller.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/model/hive/search_history.dart';
@@ -90,7 +91,12 @@ class HeroApp extends StatelessWidget {
             GetPage(
                 name: "/myPage",
                 page: () => MyPageScreen(),
-                transition: Transition.rightToLeft),
+                transition: Transition.rightToLeft,
+                binding: BindingsBuilder<MyProfileController>(() {
+                  Get.put(() {
+                    return MyProfileController();
+                  });
+                })),
             GetPage(
                 name: "/chatEdit",
                 page: () => ChatEditScreen(),
