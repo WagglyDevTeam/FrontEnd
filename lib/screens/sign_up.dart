@@ -42,7 +42,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: [
           TopBar(),
@@ -105,14 +105,18 @@ class _SignUpInputState extends State<SignUpInput> {
     return Column(children: [
       Title(),
       Step(steps: widget.steps),
-      SizedBox(
-        height: 58.h,
-      ),
-      Input(steps: widget.steps),
-      SizedBox(
-        height: 48.w,
-      ),
-      Buttons(steps: widget.steps, setSteps: widget.setSteps)
+      Column(
+        children: [
+          SizedBox(
+            height: 58.h,
+          ),
+          Input(steps: widget.steps),
+          SizedBox(
+            height: 48.w,
+          ),
+          Buttons(steps: widget.steps, setSteps: widget.setSteps),
+        ],
+      )
     ]);
   }
 }
