@@ -16,6 +16,8 @@ class MyProfileController extends GetxController {
 
   var profilePic = [].obs;
   final nickname = "".obs;
+  var university = "".obs;
+  final major = "".obs;
   var bio = "".obs;
 
   @override
@@ -23,15 +25,18 @@ class MyProfileController extends GetxController {
     super.onInit();
     await getMyProfile();
     await getMyIntroduction();
+    print(nickname.value);
   }
 
   Future<void> getMyProfile() async {
-    var box = Hive.box<User>('user');
-    var name = box.get('user')?.nickName!;
+    var getBox = Hive.box<User>('user').get('user');
+    var name = getBox?.nickName!;
+    var university = getBox?.university!;
+    var major = getBox?.major;
     nickname.value = name!;
-    print(box.get('user')?.jwtToken);
-    var profilePic = box.get('user')?.profileImg!;
-    print(profilePic);
+    this.university.value = university!;
+    this.major.value = major!;
+    var profilePic = getBox?.profileImg!;
   }
 
   Future<void> getMyIntroduction() async {
@@ -44,6 +49,17 @@ class MyProfileController extends GetxController {
   }
 
   Future<void> changeUserProfile(ProfileData profileData) async {
+    var box = Hive.box<User>('user');
+    var user = box.get('user');
+
+    // Hive 에 저장된 User 객체안의 nickName을 변경후에 Controller에서 저장중인 nickName도 같이 변경해준다!
+    user?.editUserNickName(profileData.nickname);
+    box.put('user',user!);
+    var changeName = box.get('user')?.nickName!;
+    nickname.value = changeName!;
+    //
+
+    print(Hive.box<User>('user').get('user')?.nickName);
     FormData form = FormData(profileData.toJson());
     await _myProfileProvider.modifyProfile(form);
   }
