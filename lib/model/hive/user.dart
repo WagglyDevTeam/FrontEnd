@@ -17,7 +17,7 @@ class User {
   @HiveField(5)
   final String? gender;
   @HiveField(6)
-  final String? profileImg;
+  String? profileImg;
   @HiveField(7)
   final String? introduction;
   @HiveField(8)
@@ -74,5 +74,9 @@ class User {
 
   void editUserNickName(String nickName){
     this.nickName = nickName;
+  }
+
+  void editUserProfileImg(String profileImg){
+    this.profileImg = profileImg;
   }
 }

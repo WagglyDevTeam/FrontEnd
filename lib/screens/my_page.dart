@@ -209,9 +209,9 @@ class myPage extends StatelessWidget {
                           CircleAvatar(
                               radius: 20.0,
                               backgroundImage:
-                                  myProfileController.profilePic.value != null
+                                  myProfileController.profilePic.value != "기본이미지 Url"
                                       ? NetworkImage(
-                                          'https://stickershop.line-scdn.net/stickershop/v1/product/855/LINEStorePC/main.png;compress=true')
+                                              myProfileController.profilePic.value)
                                       : AssetImage(
                                               "assets/images/defaultProfile.png")
                                           as ImageProvider),
