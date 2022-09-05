@@ -318,47 +318,65 @@ class myPage extends StatelessWidget {
                 () => Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      height: 60.h,
-                      width: MediaQuery.of(context).size.width - 80.w,
-                      padding: EdgeInsets.only(top: 2),
-                      child: !myProfileController.bioBtn.value
-                          ? Text(
-                              myProfileController.bio.value,
-                              style: CommonText.BodyS,
-                            )
-                          : TextFormField(
-                              controller: _introduction,
-                              maxLength: 100,
-                              maxLines: 2,
-                              cursorColor: Palette.main,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                isDense: true,
-                                counterText: '',
-                                contentPadding: EdgeInsets.only(top: 2),
-                                hintText: myProfileController.bio.value != null
-                                    ? myProfileController.bio.value
-                                    : '다른 친구들에게 자신을 소개해보세요',
-                                hintStyle: CommonText.BodyMediumGray,
+                    Obx(
+                      () => Container(
+                        height: 60.h,
+                        width: MediaQuery.of(context).size.width - 80.w,
+                        padding: EdgeInsets.only(top: 2),
+                        child: !myProfileController.bioBtn.value
+                            ? Obx(
+                                () => myProfileController.bio.value != ''
+                                    ? Text(myProfileController.bio.value,
+                                        style: CommonText.BodyS)
+                                    : TextFormField(
+                                        enabled: false,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          isDense: true,
+                                          counterText: '',
+                                          contentPadding:
+                                              EdgeInsets.only(top: 2),
+                                          hintText: '다른 친구들에게 자신을 소개해보세요',
+                                          hintStyle: CommonText.BodyMediumGray,
+                                        ),
+                                      ),
+                              )
+                            : TextFormField(
+                                controller: _introduction,
+                                maxLength: 100,
+                                maxLines: 2,
+                                autofocus: true,
+                                cursorColor: Palette.main,
+                                style: CommonText.BodyS,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  isDense: true,
+                                  counterText: '',
+                                  contentPadding: EdgeInsets.only(top: 0),
+                                  hintText: myProfileController.bio.value != ''
+                                      ? myProfileController.bio.value
+                                      : '다른 친구들에게 자신을 소개해보세요',
+                                  hintStyle: CommonText.BodyMediumGray,
+                                ),
                               ),
-                            ),
+                      ),
                     ),
                     SizedBox(
                       width: 43.0.w,
                       height: 19.0.h,
                       child: ElevatedButton(
-                        child: Text(
-                          !myProfileController.bioBtn.value ? "수정" : "완료",
-                          style: !myProfileController.bioBtn.value
-                              ? CommonText.BodyXS
-                              : CommonText.BodyXSmallWhite,
+                        child: Obx(
+                          () => Text(
+                            !myProfileController.bioBtn.value ? "수정" : "완료",
+                            style: !myProfileController.bioBtn.value
+                                ? CommonText.BodyXS
+                                : CommonText.BodyXSmallWhite,
+                          ),
                         ),
                         onPressed: () async {
                           if (!myProfileController.bioBtn.value) {
                             myProfileController.bioBtn.value = true;
                           } else {
-                            print(_introduction.text);
                             await myProfileController.changeUserIntroduction(
                                 Bio(userIntroduction: _introduction.text));
                             myProfileController.bioBtn.value = false;
