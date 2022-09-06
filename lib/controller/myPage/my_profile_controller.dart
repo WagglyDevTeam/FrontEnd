@@ -2,13 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/model/hive/user.dart';
 import 'package:waggly/model/myPage/my_profile_introduction_model.dart';
 import 'package:waggly/model/myPage/my_profile_model.dart';
 import 'package:waggly/model/myPage/my_profile_provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:waggly/model/post/post_provider.dart';
 
 class MyProfileController extends GetxController {
+  final SignInController signInController = SignInController();
   final MyProfileProvider _myProfileProvider = MyProfileProvider();
   final nicknameBtn = false.obs;
   final bioBtn = false.obs;
@@ -29,17 +32,14 @@ class MyProfileController extends GetxController {
     var box = Hive.box<User>('user');
     var name = box.get('user')?.nickName!;
     nickname.value = name!;
-    print(box.get('user')?.jwtToken);
     var profilePic = box.get('user')?.profileImg!;
     print(profilePic);
   }
 
   Future<void> getMyIntroduction() async {
-    print('1');
     var box = Hive.box<User>('user');
-    print('2');
     var userIntroduction = box.get('user')?.introduction;
-    print(userIntroduction);
+    print(box.get('user')?.introduction!);
     bio.value = userIntroduction!;
   }
 
@@ -52,8 +52,19 @@ class MyProfileController extends GetxController {
     Response response = await _myProfileProvider.putIntroduction(bio.toJson());
     dynamic body = response.body;
     var box = Hive.box<User>('user');
-    box.add(body);
-    print(body);
+    User userData = User(
+        id: box.get('user')?.id,
+        nickName: box.get('user')?.nickName,
+        university: box.get('user')?.university,
+        classNumber: box.get('user')?.classNumber,
+        major: box.get('user')?.major,
+        gender: box.get('user')?.gender,
+        profileImg: box.get('user')?.profileImg,
+        jwtToken: box.get('user')?.jwtToken,
+        introduction: body['datas']['userIntroduction']);
+    print(userData);
+    await box.putAt(0, userData);
+    await getMyIntroduction();
   }
 
   Future pickImage() async {
