@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:searchfield/searchfield.dart';
-import 'package:textfield_search/textfield_search.dart';
 import 'package:waggly/controller/signUp/sign_up_controller.dart';
 import 'package:waggly/utils/colors.dart';
 
@@ -381,12 +380,30 @@ class RenderTextFormField extends StatelessWidget {
                   fontSize: 12.sp,
                   color: Colors.black.withOpacity(0.8),
                 ),
-                maxSuggestionsInViewPort: 5,
+                maxSuggestionsInViewPort: 10,
                 itemHeight: 35.h,
                 onSuggestionTap: (value) {
                   print(value.searchKey);
                   print(controller.text);
                 },
+
+                suggestionItemDecoration: BoxDecoration(
+                  border: Border.all(style: BorderStyle.none),
+                ),
+                suggestionsDecoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Palette.candy,
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                      blurStyle: BlurStyle.inner,
+                    ),
+                  ],
+                  border: Border.all(style: BorderStyle.none)
+                ),
+                offset: Offset(0, 2),
                 searchInputDecoration: InputDecoration(
                     isDense: true,
                     contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
