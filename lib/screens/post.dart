@@ -163,9 +163,9 @@ class PostScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     bool? on = false;
     bool? off = true;
-    PostCollegeData myCollegeData = myCollege as PostCollegeData;
+    PostCollegeData myCollegeData = myCollege;
     List<PostCollegeData>? otherCollegeData =
-    otherCollege as List<PostCollegeData>;
+    otherCollege ;
     String? myCollegeName = myCollegeData.postCollegeName;
     String? myCollegeId = myCollegeData.postColoegeId;
     List<PostListData>? myCollegepreview = myCollegeData.postList;

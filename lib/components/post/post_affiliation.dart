@@ -14,6 +14,7 @@ import './post_app_bar.dart';
 class PostAffiliation extends StatelessWidget {
   PostAffiliation({Key? key}) : super(key: key);
   final String postName = Lang().change("${Get.parameters['collegeName']}");
+
   final List<PostSpecificData> data = [
     PostSpecificData(
       postId: 12,

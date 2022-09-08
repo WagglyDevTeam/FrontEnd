@@ -5,11 +5,13 @@ import 'package:waggly/utils/text_frame.dart';
 
 class PostModal {
   BuildContext context;
-  PostModal({Key? key, required this.context});
+  Widget contents;
+  double height;
+  PostModal({Key? key, required this.context , required this.contents ,required this.height});
 
   ModalOn() {
     const double modalWidth = 360.0;
-    const double modalHeight = 163.0;
+
     showModalBottomSheet<void>(
       context: context,
       shape: RoundedRectangleBorder(
@@ -18,14 +20,13 @@ class PostModal {
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
         return Container(
-          height: modalHeight.h,
+          height: height.h,
           child: Column(
             children: <Widget>[
               Column(
                 children: [
                   Container(
-
-                      width: 360.w,
+                      width: modalWidth.w,
                       padding: EdgeInsets.symmetric(
                           vertical: 12.h, horizontal: 12.w),
                       decoration: BoxDecoration(
@@ -40,12 +41,7 @@ class PostModal {
                     color: Colors.white,
                     padding:
                     EdgeInsets.only(top: 16.h, left: 16.h, right: 16.h),
-                    child: Column(
-                      children: [
-                        ModalButton(title: '삭제하기', event: () {}),
-                        ModalButton(title: '수정하기', event: () {}),
-                      ],
-                    ),
+                    child: contents,
                   )
                 ],
               ),

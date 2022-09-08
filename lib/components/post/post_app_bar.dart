@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:waggly/components/post/post_modal.dart';
 import 'package:waggly/screens/post.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/index.dart';
@@ -200,16 +201,18 @@ class DetailBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double modalHeight = 163.0;
     void postDelete() {
       Navigator.pop(context);
     }
-
     void postFix() {
       Navigator.pop(context);
     }
-
+    PostModal modalOn = PostModal(context: context ,contents: Buttons() , height: modalHeight);
     return GestureDetector(
-      onTap: () => {},
+      onTap: () => {
+        modalOn.ModalOn()
+      },
       child: Container(
           padding: const EdgeInsets.all(10),
           child: SvgPicture.asset(
@@ -217,6 +220,14 @@ class DetailBtn extends StatelessWidget {
             fit: BoxFit.contain,
             width: 35.w,
           )),
+    );
+  }
+  Buttons(){
+    return Column(
+      children: [
+        ModalButton(title: '삭제하기', event: () {}),
+        ModalButton(title: '수정하기', event: () {}),
+      ],
     );
   }
 }
