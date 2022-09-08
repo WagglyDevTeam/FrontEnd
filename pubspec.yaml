@@ -74,6 +74,7 @@ dependencies:
   #search field
   textfield_search: ^0.10.0
   searchfield: ^0.7.0
+  flutter_typeahead: ^4.1.0
 
 dev_dependencies:
   flutter_test:

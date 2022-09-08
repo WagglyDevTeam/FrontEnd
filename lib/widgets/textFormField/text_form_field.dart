@@ -2,11 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:searchfield/searchfield.dart';
+import 'package:waggly/controller/major/major_controller.dart';
 import 'package:waggly/controller/signUp/sign_up_controller.dart';
+import 'package:waggly/model/major/major.dart';
 import 'package:waggly/utils/colors.dart';
+import 'package:waggly/utils/text_frame.dart';
 
 class RenderTextFormField extends StatelessWidget {
   const RenderTextFormField({
@@ -368,57 +372,59 @@ class RenderTextFormField extends StatelessWidget {
         child: Row(
           children: [
             Flexible(
-              child: SearchField(
-                autoCorrect: false,
-                controller: controller,
-                suggestions: searchList!.map((e) => SearchFieldListItem(e)).toList(),
-                suggestionState: Suggestion.expand,
-                textInputAction: TextInputAction.next,
-                hint: placeholder,
-                hasOverlay: false,
-                searchStyle: TextStyle(
-                  fontSize: 12.sp,
-                  color: Colors.black.withOpacity(0.8),
-                ),
-                maxSuggestionsInViewPort: 10,
-                itemHeight: 35.h,
-                onSuggestionTap: (value) {
-                  print(value.searchKey);
-                  print(controller.text);
-                },
-
-                suggestionItemDecoration: BoxDecoration(
-                  border: Border.all(style: BorderStyle.none),
-                ),
-                suggestionsDecoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Palette.candy,
-                      blurRadius: 10,
-                      spreadRadius: 2,
-                      blurStyle: BlurStyle.inner,
-                    ),
-                  ],
-                  border: Border.all(style: BorderStyle.none)
-                ),
-                offset: Offset(0, 2),
-                searchInputDecoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color.fromRGBO(218, 175, 254, 1),
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color.fromRGBO(218, 175, 254, 0.5),
+              child: SizedBox(
+                height: 45,
+                child: TypeAheadField(
+                  suggestionsBoxVerticalOffset: 3.0,
+                  suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                    elevation: 4.0,
+                    borderRadius: BorderRadius.circular(7),
+                    color: Colors.white,
+                    shadowColor: Color(0XFFDAAFFE),
+                  ),
+                  textFieldConfiguration: TextFieldConfiguration(
+                    controller: controller,
+                    // autofocus: true,
+                    style: CommonText.BodyS,
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Palette.main,
+                          size: 15,
                         ),
-                        borderRadius: BorderRadius.circular(4)),
-                    hintText: placeholder,
-                    hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
+                        isDense: true,
+                        contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(218, 175, 254, 1),
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromRGBO(218, 175, 254, 0.5),
+                            ),
+                            borderRadius: BorderRadius.circular(4)),
+                        hintText: placeholder,
+                        hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
+                  ),
+                  suggestionsCallback: (String pattern) {
+                    MajorController _majorController = Get.put(MajorController());
+                    return _majorController.getMajorListByUniversityName("서울대학교");
+                  },
+                  onSuggestionSelected: (Major suggestion) {
+                    print(suggestion.majorName!);
+                    controller.text = suggestion.majorName!;
+                  },
+                  itemBuilder: (BuildContext context, Major suggestion) {
+                    return ListTile(
+                      focusColor: Palette.main,
+                      title: Text(
+                        suggestion.majorName!,
+                        style: CommonText.BodyS,
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
             // Container(
@@ -510,3 +516,55 @@ class RenderTextFormField extends StatelessWidget {
 //
 //
 // }
+//
+// SearchField(
+// autoCorrect: false,
+// controller: controller,
+// suggestions: searchList!.map((e) => SearchFieldListItem(e)).toList(),
+// suggestionState: Suggestion.expand,
+// textInputAction: TextInputAction.next,
+// hint: placeholder,
+// hasOverlay: false,
+// searchStyle: TextStyle(
+// fontSize: 12.sp,
+// color: Colors.black.withOpacity(0.8),
+// ),
+// maxSuggestionsInViewPort: 6,
+// itemHeight: 35.h,
+// onSuggestionTap: (value) {
+// print(value.searchKey);
+// print(controller.text);
+// },
+// suggestionItemDecoration: BoxDecoration(
+// border: Border.all(style: BorderStyle.none),
+// ),
+// suggestionsDecoration: BoxDecoration(
+// color: Colors.white,
+// borderRadius: BorderRadius.circular(5),
+// boxShadow: [
+// BoxShadow(
+// offset: Offset(2, 2),
+// color: Palette.candy,
+// blurRadius: 5,
+// spreadRadius: 2,
+// blurStyle: BlurStyle.normal,
+// ),
+// ],
+// border: Border.all(style: BorderStyle.none)),
+// offset: Offset(0, 2),
+// searchInputDecoration: InputDecoration(
+// isDense: true,
+// contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
+// focusedBorder: OutlineInputBorder(
+// borderSide: BorderSide(
+// color: Color.fromRGBO(218, 175, 254, 1),
+// ),
+// ),
+// enabledBorder: OutlineInputBorder(
+// borderSide: BorderSide(
+// color: Color.fromRGBO(218, 175, 254, 0.5),
+// ),
+// borderRadius: BorderRadius.circular(4)),
+// hintText: placeholder,
+// hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
+// ),

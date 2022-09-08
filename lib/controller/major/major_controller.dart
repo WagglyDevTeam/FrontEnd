@@ -12,10 +12,12 @@ class MajorController extends GetxController {
     super.onInit();
   }
 
-  Future<void> getMajorListByUniversityName(String universityName) async {
+  Future<List<Major>> getMajorListByUniversityName(String universityName) async {
     WagglyResponseDto result = await _majorRepository.getMajorListByUniversityName(universityName);
     List<dynamic> majorListJson = result.datas;
     List<Major> convertedMajorList = majorListJson.map((e) => Major.fromJson(e)).toList();
     majorList.value = convertedMajorList;
+
+    return majorList;
   }
 }
