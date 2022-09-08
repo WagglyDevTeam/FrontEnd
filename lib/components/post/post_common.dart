@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:waggly/components/Post/post_data.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 
@@ -16,12 +16,12 @@ class PostDifferentList extends StatelessWidget {
         color: Colors.white,
         child: Container(
             child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: widgetList.length,
-          itemBuilder: (context, index) {
-            return widgetList[index];
-          },
-        )));
+              scrollDirection: Axis.horizontal,
+              itemCount: widgetList.length,
+              itemBuilder: (context, index) {
+                return widgetList[index];
+              },
+            )));
   }
 }
 
@@ -29,58 +29,70 @@ class CommentSide extends StatelessWidget {
   final int imgCnt;
   final int likeCnt;
   final int commentCnt;
+
   const CommentSide(
       {Key? key,
-      required this.imgCnt,
-      required this.likeCnt,
-      required this.commentCnt})
+        required this.imgCnt,
+        required this.likeCnt,
+        required this.commentCnt,
+      })
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 20,
-      child: Row(
+      child: Row(children: [
+        Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.image_outlined,
-              color: Palette.violet,
-              size: 13,
-            ),
-            SizedBox(
-              width: 3,
+            SvgPicture.asset(
+              'assets/icons/imgs.svg',
+              fit: BoxFit.scaleDown,
+              width: 16,
               height: 16,
             ),
             Text(imgCnt.toString(), style: CommonText.BodyEngMain11),
             SizedBox(
-              width: 3,
-              height: 16,
+              width: 5,
             ),
+          ],
+        ),
+
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
             SvgPicture.asset(
               'assets/icons/sentiment.svg',
               fit: BoxFit.scaleDown,
               width: 16,
               height: 16,
             ),
-            SizedBox(
-              width: 1,
-              height: 16,
-            ),
             Text(likeCnt.toString(), style: CommonText.BodyEngMain11),
-            SizedBox(
-              width: 3,
-              height: 16,
-            ),
+          ],
+        ),
+        SizedBox(
+          width: 5,
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
             SvgPicture.asset(
-              'assets/icons/comment.svg',
+              'assets/icons/commentRectangle.svg',
               fit: BoxFit.scaleDown,
               width: 16,
               height: 16,
             ),
             Text(commentCnt.toString(), style: CommonText.BodyEngMain11),
-          ]),
+          ],
+        ),
+        SizedBox(
+          width: 5,
+        ),
+        SizedBox(
+          width: 3,
+        ),
+      ]),
     );
   }
 }
@@ -88,19 +100,19 @@ class CommentSide extends StatelessWidget {
 enum Shape { posting, comment }
 
 class AuthorForm extends StatelessWidget {
-  final String image;
-  final String nickName;
-  final String major;
-  final Shape shape;
-  final bool isMaster;
+  final String? image;
+  final String? nickName;
+  final String? major;
+  final Shape? shape;
+  final bool? isMaster;
 
   AuthorForm(
       {Key? key,
-      required this.image,
-      required this.nickName,
-      required this.major,
-      required this.shape,
-      required this.isMaster})
+        required this.image,
+        required this.nickName,
+        required this.major,
+        required this.shape,
+        required this.isMaster})
       : super(key: key);
 
   @override
@@ -110,7 +122,7 @@ class AuthorForm extends StatelessWidget {
       children: [
         CircleAvatar(
             radius: shapePostion() ? 15 : 13,
-            backgroundImage: Withdrawal() ? null : NetworkImage(image),
+            backgroundImage: Withdrawal() ? null : NetworkImage(image!),
             backgroundColor: Palette.data),
         SizedBox(
           width: 8,
@@ -118,20 +130,20 @@ class AuthorForm extends StatelessWidget {
         Text(
             Withdrawal()
                 ? '(알수없음)'
-                : isMaster
-                    ? '글쓴이'
-                    : nickName,
+                : isMaster!
+                ? '글쓴이'
+                : nickName!,
             style: Withdrawal()
                 ? CommonText.BodyM
                 : shapePostion()
-                    ? CommonText.TitleS
-                    : isMaster
-                        ? CommonText.BodyMediumPurple
-                        : CommonText.BodyM),
+                ? CommonText.TitleS
+                : isMaster!
+                ? CommonText.BodyMediumPurple
+                : CommonText.BodyM),
         SizedBox(
           width: 6,
         ),
-        Text(major,
+        Text(major!,
             style: shapePostion()
                 ? CommonText.LabelGray
                 : CommonText.BodyXSmallGray),
@@ -158,55 +170,6 @@ class AuthorForm extends StatelessWidget {
 
 enum CommentShape { top, bottom }
 
-class CommentForm extends StatelessWidget {
-  final CommentData comment;
-  final int postingAuthorId;
-
-  CommentForm({Key? key, required this.comment, required this.postingAuthorId})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: Column(
-      children: [
-        CommentBox(
-            authorId: comment.authorId,
-            authorMajor: comment.authorMajor,
-            authorNickname: comment.authorNickname,
-            authorProfileImg: comment.authorProfileImg,
-            isBlind: comment.isBlind,
-            commentId: comment.commentId,
-            commentCreatedAt: comment.commentCreatedAt,
-            commentLikeCnt: comment.commentLikeCnt,
-            commentDesc: comment.commentDesc,
-            isLikedByMe: comment.isLikedByMe,
-            shape: CommentShape.top,
-            postingAuthorId: postingAuthorId),
-        Column(
-          children: [
-            for (var i = 0; i < comment.replies.length; i++)
-              CommentBox(
-                authorId: comment.replies[i].authorId,
-                authorMajor: comment.replies[i].authorMajor,
-                authorNickname: comment.replies[i].authorNickname,
-                authorProfileImg: comment.replies[i].authorProfileImg,
-                isBlind: comment.replies[i].isBlind,
-                commentId: comment.replies[i].replyId,
-                commentCreatedAt: comment.replies[i].replyCreatedAt,
-                commentLikeCnt: comment.replies[i].replyLikeCnt,
-                commentDesc: comment.replies[i].replyDesc,
-                isLikedByMe: comment.replies[i].isLikedByMe,
-                shape: CommentShape.bottom,
-                postingAuthorId: postingAuthorId,
-              )
-          ],
-        )
-      ],
-    ));
-  }
-}
-
 class CommentBox extends StatelessWidget {
   final int authorId;
   final String authorMajor;
@@ -222,25 +185,25 @@ class CommentBox extends StatelessWidget {
   final int postingAuthorId;
   CommentBox(
       {Key? key,
-      required this.authorId,
-      required this.authorMajor,
-      required this.authorNickname,
-      required this.authorProfileImg,
-      required this.isBlind,
-      required this.commentId,
-      required this.commentCreatedAt,
-      required this.commentLikeCnt,
-      required this.commentDesc,
-      required this.isLikedByMe,
-      required this.shape,
-      required this.postingAuthorId})
+        required this.authorId,
+        required this.authorMajor,
+        required this.authorNickname,
+        required this.authorProfileImg,
+        required this.isBlind,
+        required this.commentId,
+        required this.commentCreatedAt,
+        required this.commentLikeCnt,
+        required this.commentDesc,
+        required this.isLikedByMe,
+        required this.shape,
+        required this.postingAuthorId})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(top: 12, bottom: 12, left: 16, right: 16),
-        width: double.infinity,
+        padding: EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
+        width: 380.w,
         decoration: BoxDecoration(
             color: isShape() ? Palette.paperLow : Colors.white,
             border: Border(
@@ -253,8 +216,8 @@ class CommentBox extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (isShape())
-              Expanded(
-                  flex: 1,
+              Container(
+                  width:25.w,
                   child: Padding(
                     padding: EdgeInsets.only(top: 6, right: 3),
                     child: SvgPicture.asset(
@@ -265,8 +228,8 @@ class CommentBox extends StatelessWidget {
                       color: Palette.lightGray,
                     ),
                   )),
-            Expanded(
-                flex: 9,
+            Container(
+                width:isShape() ?300.w :  325.w,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -282,10 +245,11 @@ class CommentBox extends StatelessWidget {
                           isMaster: isMaster(),
                         ),
                         Container(
-                          width: 90,
+                          width: !isShape() ? 76.w : 50.w,
                           padding:
-                              EdgeInsets.symmetric(horizontal: 3, vertical: 1),
+                          EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                           decoration: BoxDecoration(
+                              color: Colors.white,
                               border: Border.all(
                                   width: 1.0, color: Palette.lightGray),
                               borderRadius: BorderRadius.circular(30)),
@@ -298,20 +262,22 @@ class CommentBox extends StatelessWidget {
                                   fit: BoxFit.scaleDown,
                                   width: 16,
                                   height: 16,
-                                  color: Palette.gray,
+                                  color: Palette.violet,
                                 ),
-                                Container(
-                                  width: 1,
-                                  height: 10,
-                                  color: Palette.lightGray,
-                                ),
-                                SvgPicture.asset(
-                                  'assets/icons/comment.svg',
-                                  fit: BoxFit.scaleDown,
-                                  width: 16,
-                                  height: 16,
-                                  color: Palette.gray,
-                                ),
+                                if (!isShape())
+                                  Container(
+                                    width: 1,
+                                    height: 10,
+                                    color: Palette.lightGray,
+                                  ),
+                                if (!isShape())
+                                  SvgPicture.asset(
+                                    'assets/icons/commentRectangle.svg',
+                                    fit: BoxFit.scaleDown,
+                                    width: 16,
+                                    height: 16,
+                                    color: Palette.violet,
+                                  ),
                                 Container(
                                   width: 1,
                                   height: 10,
@@ -320,14 +286,14 @@ class CommentBox extends StatelessWidget {
                                 Icon(
                                   Icons.more_horiz,
                                   size: 10,
-                                  color: Palette.gray,
+                                  color: Palette.violet,
                                 )
                               ]),
                         )
                       ],
                     ),
                     Padding(
-                        padding: EdgeInsets.only(top: 3, bottom: 6),
+                        padding: EdgeInsets.only(top: 3.h, bottom: 6.h ),
                         child: Text(
                           commentDesc,
                           style: CommonText.BodyM,
