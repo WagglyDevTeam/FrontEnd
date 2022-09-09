@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:waggly/components/post/post_modal.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
+import 'package:get/get.dart';
+
+import '../../controller/postDetail/post_detail_controller.dart';
 
 class PostDifferentList extends StatelessWidget {
   PostDifferentList({Key? key, required this.widgetList}) : super(key: key);
@@ -199,8 +203,70 @@ class CommentBox extends StatelessWidget {
         required this.postingAuthorId})
       : super(key: key);
 
+  /// 댓글 , 대댓글 구분
+  bool isShape() {
+    return shape == CommentShape.bottom ? true : false;
+  }
+  /// 댓글 작성자 확인
+  bool isMaster() {
+    return postingAuthorId == authorId ? true : false;
+  }
+
+  /// post detail getX
+  final PostDetailController _postDetailX = Get.put(PostDetailController());
+  
+  /// 댓글 or 대댓글 좋아요 이벤트
+  void commentLike(){
+    if(!isShape()){
+      _postDetailX.updateLikeBoardComment(commentId: commentId );
+    }else{
+      _postDetailX.updateLikeBoardCommentReply(commentId: commentId );
+    }
+  }
+
+  /// 댓글 or 대댓글 삭제 이벤트
+  void commentDelete(){
+    if(!isShape()){
+      _postDetailX.delectBoardComment(commnetId: commentId );
+    }else{
+      _postDetailX.delectBoardCommentReply(replycommnetId: commentId );
+    }
+
+  }
+
+  /// 댓글 or 대댓글 신고 이벤트
+  void commentReport(){
+    if(!isShape()){
+      print("$commentId , $authorId , 댓글 신고종류");
+    }else{
+      print("$commentId , $authorId , 대댓글 신고종류");
+    }
+  }
+  /// 대댓글 이벤트 on
+  void replyEventOn(){
+    _postDetailX.selectCommentReplyOn(commentId:commentId , name:authorNickname);
+  }
+
+
+  /// 대댓글 모달 버튼 리스트
+  Widget Buttons(){
+    return Column(
+      children: [
+        if(isMaster())
+          ModalButton(title: '삭제하기', event: commentDelete),
+        if(!isMaster())
+          ModalButton(title: '신고하기', event: commentReport),
+      ],
+    );
+  }
+
   @override
+
   Widget build(BuildContext context) {
+    const double modalHeight = 123.0;
+    const String title = '더보기';
+    PostModal modalOn = PostModal(context: context ,contents: Buttons() , height: modalHeight , title: title);
+
     return Container(
         padding: EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
         width: 380.w,
@@ -257,36 +323,63 @@ class CommentBox extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                SvgPicture.asset(
-                                  'assets/icons/sentiment.svg',
-                                  fit: BoxFit.scaleDown,
+                                //*좋아요 기능*/
+                                SizedBox(
                                   width: 16,
-                                  height: 16,
-                                  color: Palette.violet,
-                                ),
+                                  height:16,
+                                  child:  IconButton(
+                                    padding: EdgeInsets.all(0),
+                                    icon: SvgPicture.asset(
+                                      'assets/icons/sentiment.svg',
+                                      fit: BoxFit.scaleDown,
+                                      width: 10,
+                                      height: 10,
+                                      color: Palette.violet,
+                                    ), onPressed: commentLike,
+                                  )
+                                )
+                               ,
                                 if (!isShape())
                                   Container(
                                     width: 1,
                                     height: 10,
                                     color: Palette.lightGray,
                                   ),
+                                //*대댓글 기능*/
                                 if (!isShape())
-                                  SvgPicture.asset(
-                                    'assets/icons/commentRectangle.svg',
-                                    fit: BoxFit.scaleDown,
-                                    width: 16,
-                                    height: 16,
-                                    color: Palette.violet,
-                                  ),
+                                  SizedBox(
+                                      width: 16,
+                                      height:16,
+                                      child:  IconButton(
+                                        padding: EdgeInsets.all(0),
+                                        icon: SvgPicture.asset(
+                                          'assets/icons/commentRectangle.svg',
+                                          fit: BoxFit.scaleDown,
+                                          width: 10,
+                                          height: 10,
+                                          color: Palette.violet,
+                                        ), onPressed: replyEventOn,
+                                      )
+                                  )
+                                ,
                                 Container(
                                   width: 1,
                                   height: 10,
                                   color: Palette.lightGray,
                                 ),
-                                Icon(
-                                  Icons.more_horiz,
-                                  size: 10,
-                                  color: Palette.violet,
+                                //*댓글 more 기능*/
+                                SizedBox(
+                                  width:10,
+                                  height:10,
+                                  child: IconButton(
+                                    padding: EdgeInsets.all(0),
+                                    icon: Icon(Icons.more_horiz),
+                                    iconSize: 10,
+                                    color: Palette.violet,
+                                    onPressed: () {
+                                      modalOn.ModalOn();
+                                    },
+                                  ),
                                 )
                               ]),
                         )
@@ -333,19 +426,5 @@ class CommentBox extends StatelessWidget {
         ));
   }
 
-  isShape() {
-    if (shape == CommentShape.bottom) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
-  isMaster() {
-    if (postingAuthorId == authorId) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 }

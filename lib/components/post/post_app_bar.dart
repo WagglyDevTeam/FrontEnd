@@ -202,13 +202,14 @@ class DetailBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double modalHeight = 163.0;
+    const String title = '글 메뉴';
     void postDelete() {
       Navigator.pop(context);
     }
     void postFix() {
       Navigator.pop(context);
     }
-    PostModal modalOn = PostModal(context: context ,contents: Buttons() , height: modalHeight);
+    PostModal modalOn = PostModal(context: context ,contents: Buttons() , height: modalHeight , title:title);
     return GestureDetector(
       onTap: () => {
         modalOn.ModalOn()

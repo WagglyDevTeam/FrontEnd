@@ -50,6 +50,12 @@ class PostDetailController extends GetxController {
   final _postRepository = PostRepository();
   final postDetail = resetData.obs;
   final boardComment = resetcommentData.obs;
+  final selectCommentEvent = SelectComment(
+    commentId: 0,
+    name:'',
+    checkEvent: false,
+  ).obs;
+
 
   @override
   void onInit() async {
@@ -85,6 +91,7 @@ class PostDetailController extends GetxController {
       'https://cdn.pixabay.com/photo/2022/05/28/06/39/cat-7226671_960_720.jpg',
       "isBlind": false
     });
+
     ListCommentData boardCommentJson = ListCommentData.fromJson({
       "comments": [
         {
@@ -140,115 +147,9 @@ class PostDetailController extends GetxController {
               "isBlind": false
             },
           ]
-        },{
-          "commentId": 2,
-          "commentCreatedAt": "02.18 19:50",
-          "commentLikeCnt": 4,
-          "commentDesc": "ㅋㅋㅋㅋㅋㅋㅋ완전 웃겨ㅋ 사실 안웃겨",
-          "isLikedByMe": true,
-          "authorId": 4,
-          "authorMajor": "시각디자인학과",
-          "authorNickname": "익명",
-          "authorProfileImg":
-          "https://cdn.pixabay.com/photo/2017/09/25/13/12/cocker-spaniel-2785074_960_720.jpg",
-          "isBlind": false,
-          "replies": [
-            {
-              "replyId": 2,
-              "replyCreatedAt": "02.18 19:50",
-              "replyLikeCnt": 4,
-              "replyDesc": "어 나도 탑승할게 어 나도 탑승할게 어 나도 탑승할게 어 나도 탑승할게 어 나도 탑승할게 어 나도 탑승할게",
-              "isLikedByMe": true,
-              "authorId": 4,
-              "authorMajor": "시각디자인학과",
-              "authorNickname": "익명",
-              "authorProfileImg":
-              "https://cdn.pixabay.com/photo/2017/09/25/13/12/cocker-spaniel-2785074_960_720.jpg",
-              "isBlind": false
-            },
-            {
-              "replyId": 3,
-              "replyCreatedAt": "02.18 19:50",
-              "replyLikeCnt": 4,
-              "replyDesc": "너도..? 나두...",
-              "isLikedByMe": true,
-              "authorId": 6,
-              "authorMajor": "시각디자인학과",
-              "authorNickname": "포스팅라이트",
-              "authorProfileImg":
-              "https://cdn.pixabay.com/photo/2022/05/28/06/39/cat-7226671_960_720.jpg",
-              "isBlind": false
-            },
-            {
-              "replyId": 3,
-              "replyCreatedAt": "02.18 19:50",
-              "replyLikeCnt": 4,
-              "replyDesc": "너도..? 나두...",
-              "isLikedByMe": true,
-              "authorId": 3,
-              "authorMajor": "시각디자인학과",
-              "authorNickname": "탈퇴자",
-              "authorProfileImg":
-              "https://cdn.pixabay.com/photo/2022/05/28/06/39/cat-7226671_960_720.jpg",
-              "isBlind": false
-            },
-          ]
-        },{
-          "commentId": 2,
-          "commentCreatedAt": "02.18 19:50",
-          "commentLikeCnt": 4,
-          "commentDesc": "ㅋㅋㅋㅋㅋㅋㅋ완전 웃겨ㅋ 사실 안웃겨",
-          "isLikedByMe": true,
-          "authorId": 4,
-          "authorMajor": "시각디자인학과",
-          "authorNickname": "익명",
-          "authorProfileImg":
-          "https://cdn.pixabay.com/photo/2017/09/25/13/12/cocker-spaniel-2785074_960_720.jpg",
-          "isBlind": false,
-          "replies": [
-            {
-              "replyId": 2,
-              "replyCreatedAt": "02.18 19:50",
-              "replyLikeCnt": 4,
-              "replyDesc": "어 나도 탑승할게 어 나도 탑승할게 어 나도 탑승할게 어 나도 탑승할게 어 나도 탑승할게 어 나도 탑승할게",
-              "isLikedByMe": true,
-              "authorId": 4,
-              "authorMajor": "시각디자인학과",
-              "authorNickname": "익명",
-              "authorProfileImg":
-              "https://cdn.pixabay.com/photo/2017/09/25/13/12/cocker-spaniel-2785074_960_720.jpg",
-              "isBlind": false
-            },
-            {
-              "replyId": 3,
-              "replyCreatedAt": "02.18 19:50",
-              "replyLikeCnt": 4,
-              "replyDesc": "너도..? 나두...",
-              "isLikedByMe": true,
-              "authorId": 6,
-              "authorMajor": "시각디자인학과",
-              "authorNickname": "포스팅라이트",
-              "authorProfileImg":
-              "https://cdn.pixabay.com/photo/2022/05/28/06/39/cat-7226671_960_720.jpg",
-              "isBlind": false
-            },
-            {
-              "replyId": 3,
-              "replyCreatedAt": "02.18 19:50",
-              "replyLikeCnt": 4,
-              "replyDesc": "너도..? 나두...",
-              "isLikedByMe": true,
-              "authorId": 3,
-              "authorMajor": "시각디자인학과",
-              "authorNickname": "탈퇴자",
-              "authorProfileImg":
-              "https://cdn.pixabay.com/photo/2022/05/28/06/39/cat-7226671_960_720.jpg",
-              "isBlind": false
-            },
-          ]
         },
         {
-          "commentId": 2,
+          "commentId": 33,
           "commentCreatedAt": "02.18 19:50",
           "commentLikeCnt": 4,
           "commentDesc": "ㅋㅋㅋㅋㅋㅋㅋ완전 웃겨ㅋ 사실 안웃겨",
@@ -259,47 +160,33 @@ class PostDetailController extends GetxController {
           "authorProfileImg":
           "https://cdn.pixabay.com/photo/2017/09/25/13/12/cocker-spaniel-2785074_960_720.jpg",
           "isBlind": false,
-          "replies": [
-            {
-              "replyId": 2,
-              "replyCreatedAt": "02.18 19:50",
-              "replyLikeCnt": 4,
-              "replyDesc": "어 나도 탑승할게...",
-              "isLikedByMe": true,
-              "authorId": 4,
-              "authorMajor": "시각디자인학과",
-              "authorNickname": "익명",
-              "authorProfileImg":
-              "https://cdn.pixabay.com/photo/2017/09/25/13/12/cocker-spaniel-2785074_960_720.jpg",
-              "isBlind": false
-            },
-            {
-              "replyId": 3,
-              "replyCreatedAt": "02.18 19:50",
-              "replyLikeCnt": 4,
-              "replyDesc": "너도..? 나두...",
-              "isLikedByMe": true,
-              "authorId": 6,
-              "authorMajor": "시각디자인학과",
-              "authorNickname": "포스팅라이트",
-              "authorProfileImg":
-              "https://cdn.pixabay.com/photo/2022/05/28/06/39/cat-7226671_960_720.jpg",
-              "isBlind": false
-            },
-            {
-              "replyId": 3,
-              "replyCreatedAt": "02.18 19:50",
-              "replyLikeCnt": 4,
-              "replyDesc": "너도..? 나두...",
-              "isLikedByMe": true,
-              "authorId": 3,
-              "authorMajor": "시각디자인학과",
-              "authorNickname": "탈퇴자",
-              "authorProfileImg":
-              "https://cdn.pixabay.com/photo/2022/05/28/06/39/cat-7226671_960_720.jpg",
-              "isBlind": false
-            },
-          ]
+          "replies":[{
+            "replyId": 3,
+            "replyCreatedAt": "02.18 19:50",
+            "replyLikeCnt": 4,
+            "replyDesc": "너도..? 나두...",
+            "isLikedByMe": true,
+            "authorId": 3,
+            "authorMajor": "시각디자인학과",
+            "authorNickname": "탈퇴자",
+            "authorProfileImg":
+            "https://cdn.pixabay.com/photo/2022/05/28/06/39/cat-7226671_960_720.jpg",
+            "isBlind": false
+          }],
+        },
+        {
+          "commentId": 332,
+          "commentCreatedAt": "02.18 19:50",
+          "commentLikeCnt": 4,
+          "commentDesc": "ㅋㅋㅋㅋㅋㅋㅋ완전 웃겨ㅋ 사실 안웃겨",
+          "isLikedByMe": true,
+          "authorId": 4,
+          "authorMajor": "시각디자인학과",
+          "authorNickname": "장군이이이이",
+          "authorProfileImg":
+          "https://cdn.pixabay.com/photo/2017/09/25/13/12/cocker-spaniel-2785074_960_720.jpg",
+          "isBlind": false,
+          "replies":[],
         },
       ]
     });
@@ -322,12 +209,8 @@ class PostDetailController extends GetxController {
     update();
     postDetail.refresh();
   }
-  /// 게시판 상세 페이지 댓글 업데이트
-  Future<void> updateBoardComment({required String commentDesc , required int postId} ) async{
-    print("$commentDesc ,  $postId");
-    /// 클라이언트에서 수신할 요청 Map 데이터를 Json 형태로 치환
-    // final commentJson
-
+  /// 게시판 상세 페이지 댓글 작성
+  Future<void> postBoardComment({required String commentDesc , required int postId} ) async{
     /// 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
     final commentMap = CommentData.fromJson({
       "commentId": 22,
@@ -343,9 +226,67 @@ class PostDetailController extends GetxController {
       "isBlind": false,
       "replies": [],
     });
-    boardComment.value.insert(0, commentMap);
+    boardComment.insert(0 , commentMap);
     update();
     postDetail.refresh();
+  }
+  /// 게시판 상세 페이지 대댓글 작성
+  Future<void> postBoardCommentReply ({required String commentDesc ,required int commentId })async{
+    print(commentId);
+
+    /// 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
+    final commentMap = ReCommentData.fromJson({
+      "replyId": 2,
+      "replyCreatedAt": "02.18 19:50",
+      "replyLikeCnt": 4,
+      "replyDesc": commentDesc,
+      "isLikedByMe": true,
+      "authorId": 4,
+      "authorMajor": "시각디자인학과",
+      "authorNickname": "익명",
+      "authorProfileImg":
+      "https://cdn.pixabay.com/photo/2017/09/25/13/12/cocker-spaniel-2785074_960_720.jpg",
+      "isBlind": false
+    });
+
+    for (var item in boardComment) {
+      if(item.commentId == commentId){
+        item.replies.add(commentMap);
+      }
+    }
+    update();
+    postDetail.refresh();
+  }
+  /// 게시판 상세 페이지 댓글 좋아요
+  Future<void> updateLikeBoardComment({required int commentId})async{
+    print("$commentId");
+  }
+  /// 게시판 상세 페이지 대댓글 좋아요
+  Future<void> updateLikeBoardCommentReply({required int commentId})async{
+    print("$commentId");
+  }
+  /// 게시판 상세 페이지 댓글 삭제
+  Future<void> delectBoardComment({required int commnetId })async{
+      print("$commnetId comment");
+  }
+  /// 게시판 상세 페이지 대댓글 삭제
+  Future<void> delectBoardCommentReply({required int replycommnetId })async{
+    print("$replycommnetId reply");
+  }
+  /// 게시판 상세 페이지 대댓글 이벤트 off
+  Future<void> selectCommentReplyOff()async{
+    selectCommentEvent.value = SelectComment(
+      name: '',
+      commentId: 0,
+      checkEvent: false
+    );
+  }
+  /// 게시판 상세 페이지 대댓글 이벤트 on
+  Future<void> selectCommentReplyOn({required int commentId ,required String name })async {
+    print("$commentId $name");
+    selectCommentEvent.value = SelectComment(
+      name: name, checkEvent: true ,commentId:commentId
+    );
   }
 
 
@@ -354,5 +295,10 @@ class PostDetailController extends GetxController {
   void resetDetailBoard() {
     postDetail.value = resetData;
     boardComment.value = resetcommentData;
+    selectCommentEvent.value = SelectComment(
+      commentId: 0,
+      name:'',
+      checkEvent: false,
+    );
   }
 }

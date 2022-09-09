@@ -7,7 +7,8 @@ class PostModal {
   BuildContext context;
   Widget contents;
   double height;
-  PostModal({Key? key, required this.context , required this.contents ,required this.height});
+  String title;
+  PostModal({Key? key, required this.context , required this.contents ,required this.height ,required this.title});
 
   ModalOn() {
     const double modalWidth = 360.0;
@@ -34,7 +35,7 @@ class PostModal {
                               bottom: BorderSide(
                                   color: Palette.paper, width: 1.0))),
                       child: Center(
-                        child: Text('글 메뉴', style: CommonText.BodyM),
+                        child: Text(title, style: CommonText.BodyM),
                       )),
                   Container(
                     width: modalWidth.w,

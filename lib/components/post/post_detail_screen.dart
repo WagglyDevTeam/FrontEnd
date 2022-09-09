@@ -66,8 +66,6 @@ class DetailContext extends StatelessWidget {
         postId : _postDetailX.postDetail.value.postId,
       );
     }
-
-
     return SizedBox(
         width: contentsWidth.w,
         child:Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -211,7 +209,7 @@ class DetailContext extends StatelessWidget {
                               Obx(() => Column(
                                 children: [
                                   for (var i = 0; i <  _postDetailX.boardComment[commentInt].replies.length; i++)
-                                    CommentBox(
+                                    Obx(() =>   CommentBox(
                                       authorId:  _postDetailX.boardComment[commentInt].replies[i].authorId,
                                       authorMajor:  _postDetailX.boardComment[commentInt].replies[i].authorMajor,
                                       authorNickname:
@@ -227,7 +225,7 @@ class DetailContext extends StatelessWidget {
                                       isLikedByMe:  _postDetailX.boardComment[commentInt].replies[i].isLikedByMe,
                                       shape: CommentShape.bottom,
                                       postingAuthorId:  _postDetailX.postDetail.value.authorId,
-                                    )
+                                    ))
                                 ],
                               ))
                             ],
@@ -263,7 +261,12 @@ class PostDetailTextarea extends StatelessWidget{
     /// 게시판 상세페이지 댓글 업데이트 이벤트
     void onCommentUpdate() {
       if(_comment.text != ""){
-        _postDetailX.updateBoardComment(commentDesc : _comment.text , postId : postId);
+        if(_postDetailX.selectCommentEvent.value.checkEvent){
+          _postDetailX.postBoardCommentReply(commentDesc : _comment.text , commentId : _postDetailX.selectCommentEvent.value.commentId);
+          _postDetailX.selectCommentReplyOff();
+        }else{
+          _postDetailX.postBoardComment(commentDesc : _comment.text , postId : postId);
+        }
         _comment.clear();
       }
     }
@@ -278,18 +281,47 @@ class PostDetailTextarea extends StatelessWidget{
           Container(
             width: 284.w,
             height: 36.h,
-            padding: EdgeInsets.only(
-                top: 3, left: 15, right: 15, bottom: 3),
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               border: Border.all(width: 1, color: Color(0xFFE8E8E8)),
               color: Color(0xFFF8F8F8),
             ),
-            child: CustomTextFormField(
-              onChanged: onCommentUpdate,
-              controller: _comment,
-              hint: "",
-            ),
+            child:Obx(()=> Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children:
+              [
+                if(_postDetailX.selectCommentEvent.value.checkEvent)
+                   Obx(()=>
+                       SizedBox(
+                          width: 54,
+                          child: RichText(
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            strutStyle: StrutStyle(fontSize: 16.0),
+                            text:TextSpan(
+                              text: "@ ${_postDetailX.selectCommentEvent.value.name}" ,
+                              style:CommonText.BodyMediumGray,
+                            ) ,
+                          )),
+                        ),
+                if(_postDetailX.selectCommentEvent.value.checkEvent)
+                SizedBox(
+                  width:10.w
+                ),
+                SizedBox(
+                  width:_postDetailX.selectCommentEvent.value.checkEvent ? 200.w : 260.w,
+                  height: 36.h,
+                  child:CustomTextFormField(
+                    onChanged: onCommentUpdate,
+                    controller: _comment,
+                    hint: "",
+                  ) ,
+                )
+              ],
+            ))
+
+        ,
           ),
           SizedBox(
             width: 8.w,
@@ -299,12 +331,21 @@ class PostDetailTextarea extends StatelessWidget{
             child: Container(
                 width: 36.w,
                 height: 36.h,
+                padding: EdgeInsets.all(0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   border:
                   Border.all(width: 1, color: Color(0xFFE8E8E8)),
-                  color: Color(0xFFF8F8F8),
-                )),
+                  color: Palette.main,
+                ),
+                child:SvgPicture.asset(
+                'assets/icons/btn_comment.svg',
+                fit: BoxFit.scaleDown,
+                width: 36.w,
+                height: 36.w,
+                color: Colors.white,
+              )
+            ),
           )
         ],
       ),

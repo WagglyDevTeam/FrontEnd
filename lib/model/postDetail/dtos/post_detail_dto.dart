@@ -1,3 +1,5 @@
+import 'package:waggly/components/myPage/active/request_list.dart';
+
 class PostDetailData  {
   String authorMajor;
   String postTitle;
@@ -151,4 +153,21 @@ class ListCommentData {
       ListCommentData(
           comments: List<CommentData>.from(
               json['comments'].map((x) => CommentData.fromJson(x))));
+}
+
+class SelectComment {
+  String name;
+  int commentId;
+  bool checkEvent;
+  SelectComment({required this.name,required this.commentId, required this.checkEvent});
+  factory SelectComment.fromJson(Map<String , dynamic> json) => SelectComment(
+      name:json['name'] as String,
+      commentId : json['commentId'] as int,
+      checkEvent : json['checkEvent'] as bool,
+  );
+  Map<String, dynamic> toJson()=> {
+    "name": name,
+    "commentId" : commentId,
+    "checkEvent" : checkEvent,
+  };
 }
