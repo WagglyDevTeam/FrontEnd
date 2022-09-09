@@ -28,6 +28,9 @@ import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/myPage/active/index.dart';
 import 'package:waggly/components/myPage/active/my_post_list.dart';
 
+import 'components/Post/post_affiliation.dart';
+import 'components/Post/post_detail_screen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
@@ -84,6 +87,20 @@ class HeroApp extends StatelessWidget {
                 name: "/post",
                 page: () => PostScreen(),
                 transition: Transition.rightToLeft),
+            GetPage(
+              name: '/postCollege/:collegeName',
+              page: () => PostAffiliation(),
+              transition: Transition.rightToLeft,
+              transitionDuration: const Duration(milliseconds: 350),
+              curve: Curves.fastOutSlowIn,
+            ),
+            GetPage(
+              name: '/postDetail/:postId',
+              page: () => PostDetail(),
+              transition: Transition.rightToLeft,
+              transitionDuration: const Duration(milliseconds: 350),
+              curve: Curves.fastOutSlowIn,
+            ),
             GetPage(
                 name: "/chat",
                 page: () => ChatScreen(),

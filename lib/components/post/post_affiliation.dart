@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/components/Post/post_detail_screen.dart';
+import 'package:waggly/utils/lang.dart';
 import 'package:waggly/widgets/index.dart';
+import '../../model/postCollege/dtos/post_college_dto.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
 import './post_app_bar.dart';
-import './post_data.dart';
+
 
 class PostAffiliation extends StatelessWidget {
-  final String postName;
-  PostAffiliation({Key? key, required this.postName}) : super(key: key);
+  PostAffiliation({Key? key}) : super(key: key);
+  final String postName = Lang().change("${Get.parameters['collegeName']}");
 
   final List<PostSpecificData> data = [
     PostSpecificData(
@@ -41,7 +44,7 @@ class PostAffiliation extends StatelessWidget {
       postId: 16,
       postTitle: "다들 노트북 어떤 제품 많이 써?",
       postDesc:
-          "내 사촌동생이 이번에 미대 입학해서 노트북 궁금해하던데 추천 좀 해주라! 너네가 노트북을 추천해주면 내 사동의 대학 생활이 달라질거라 확신해 나를 위해 이 글을 누르고 댓글을 써주는 아량을 한번 베풀어 줄 누군가 있을까 여기..?",
+      "내 사촌동생이 이번에 미대 입학해서 노트북 궁금해하던데 추천 좀 해주라! 너네가 노트북을 추천해주면 내 사동의 대학 생활이 달라질거라 확신해 나를 위해 이 글을 누르고 댓글을 써주는 아량을 한번 베풀어 줄 누군가 있을까 여기..?",
       postCreatedAt: "02/18 19:50",
       authorMajor: "시각디자인학과",
       postImageCnt: 3,
@@ -88,6 +91,7 @@ class PostAffiliation extends StatelessWidget {
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
+              /**인기 글*/
               return Container(
                 padding: EdgeInsets.all(16),
                 child: Column(
@@ -139,9 +143,10 @@ class PostAffiliation extends StatelessWidget {
                 ),
               );
             } else {
+              /**일반 글*/
               return Container(
                 padding:
-                    EdgeInsets.only(top: 16, bottom: 16, left: 26, right: 26),
+                EdgeInsets.only(top: 16, bottom: 16, left: 26, right: 26),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border(
@@ -202,10 +207,8 @@ class PostContext extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PageRouteWithAnimation detail =
-        PageRouteWithAnimation(PostDetail(postId: postId, postName: postName));
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(detail.slideLeftToRight()),
+      onTap: () => Get.toNamed("/postDetail/$postId"),
       child: Column(
         children: [
           Row(
@@ -215,7 +218,7 @@ class PostContext extends StatelessWidget {
               Text(postCreatedAt, style: CommonText.BodyEngGray),
             ],
           ),
-          SizedBox(height: 6),
+          SizedBox(height: 10),
           Container(
             width: MediaQuery.of(context).size.width - 32,
             child: Text(postDesc, style: CommonText.BodyS),
