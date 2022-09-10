@@ -413,7 +413,7 @@ class CommentBox extends StatelessWidget {
                                 width: 3,
                               ),
                               Text(
-                                commentLikeCnt.toString(),
+                                "$commentLikeCnt",
                                 style: CommonText.BodyEngMain11,
                               )
                             ],

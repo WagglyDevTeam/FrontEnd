@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:get/get.dart';
 import 'package:waggly/model/postDetail/dtos/post_detail_dto.dart';
 import '../../model/hive/user.dart';
@@ -108,7 +110,7 @@ class PostDetailController extends GetxController {
           "isBlind": false,
           "replies": [
             {
-              "replyId": 2,
+              "replyId": 232,
               "replyCreatedAt": "02.18 19:50",
               "replyLikeCnt": 4,
               "replyDesc": "어 나도 탑승할게 어 나도 탑승할게 어 나도 탑승할게 어 나도 탑승할게 어 나도 탑승할게 어 나도 탑승할게",
@@ -121,7 +123,7 @@ class PostDetailController extends GetxController {
               "isBlind": false
             },
             {
-              "replyId": 3,
+              "replyId": 63,
               "replyCreatedAt": "02.18 19:50",
               "replyLikeCnt": 4,
               "replyDesc": "너도..? 나두...",
@@ -134,7 +136,7 @@ class PostDetailController extends GetxController {
               "isBlind": false
             },
             {
-              "replyId": 3,
+              "replyId": 37,
               "replyCreatedAt": "02.18 19:50",
               "replyLikeCnt": 4,
               "replyDesc": "너도..? 나두...",
@@ -217,8 +219,8 @@ class PostDetailController extends GetxController {
       "commentCreatedAt": "02.18 19:50",
       "commentLikeCnt": 4,
       "commentDesc": commentDesc,
-      "isLikedByMe": true,
-      "authorId": 4,
+      "isLikedByMe": false,
+      "authorId": 0,
       "authorMajor": "시각디자인학과",
       "authorNickname": "익명",
       "authorProfileImg":
@@ -228,7 +230,7 @@ class PostDetailController extends GetxController {
     });
     boardComment.insert(0 , commentMap);
     update();
-    postDetail.refresh();
+    boardComment.refresh();
   }
   /// 게시판 상세 페이지 대댓글 작성
   Future<void> postBoardCommentReply ({required String commentDesc ,required int commentId })async{
@@ -238,9 +240,9 @@ class PostDetailController extends GetxController {
     final commentMap = ReCommentData.fromJson({
       "replyId": 2,
       "replyCreatedAt": "02.18 19:50",
-      "replyLikeCnt": 4,
+      "replyLikeCnt": 0,
       "replyDesc": commentDesc,
-      "isLikedByMe": true,
+      "isLikedByMe": false,
       "authorId": 4,
       "authorMajor": "시각디자인학과",
       "authorNickname": "익명",
@@ -249,21 +251,29 @@ class PostDetailController extends GetxController {
       "isBlind": false
     });
 
-    for (var item in boardComment) {
-      if(item.commentId == commentId){
-        item.replies.add(commentMap);
+    for (var i = 0  ; i < boardComment.length  ; i++) {
+      if(boardComment[i].commentId == commentId){
+        boardComment[i].replies.add(commentMap);
+        update();
+        boardComment.refresh();
       }
     }
-    update();
-    postDetail.refresh();
+
   }
   /// 게시판 상세 페이지 댓글 좋아요
-  Future<void> updateLikeBoardComment({required int commentId})async{
-    print("$commentId");
+  Future<void> updateLikeBoardComment({required int commentId })async{
+    print("$commentId comment");
+    for (var i = 0  ; i < boardComment.length  ; i++) {
+      if(boardComment[i].commentId == commentId){
+        boardComment[i].commentLikeCnt+1;
+        update();
+        boardComment.refresh();
+      }
+    }
   }
   /// 게시판 상세 페이지 대댓글 좋아요
   Future<void> updateLikeBoardCommentReply({required int commentId})async{
-    print("$commentId");
+    print("$commentId reply");
   }
   /// 게시판 상세 페이지 댓글 삭제
   Future<void> delectBoardComment({required int commnetId })async{
@@ -283,7 +293,6 @@ class PostDetailController extends GetxController {
   }
   /// 게시판 상세 페이지 대댓글 이벤트 on
   Future<void> selectCommentReplyOn({required int commentId ,required String name })async {
-    print("$commentId $name");
     selectCommentEvent.value = SelectComment(
       name: name, checkEvent: true ,commentId:commentId
     );
