@@ -26,4 +26,11 @@ class SignUpRepository {
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
     return wagglyResponseDto;
   }
+
+  Future<WagglyResponseDto> checkDuplicateNickname(String nickname) async {
+    Response response = await _signUpProvider.checkDuplicateNickname({"nickname": nickname});
+    dynamic body = response.body;
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+    return wagglyResponseDto;
+  }
 }

@@ -14,10 +14,7 @@ class MajorRepository {
     }
 
     dynamic body = response.body;
-    print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
     return wagglyResponseDto;
-    }
   }
-
-
+}

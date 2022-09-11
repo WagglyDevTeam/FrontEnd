@@ -17,8 +17,19 @@ class SignUpController extends GetxController {
 
   RxBool emailInputEmpty = true.obs;
   RxBool certiNumberInputEmpty = true.obs;
+  RxBool majorInputEmpty = true.obs;
+  RxBool classNumberInputEmpty = true.obs;
+  RxBool passwordInputEmpty = true.obs;
+  RxBool passwordConfirmInputEmpty = true.obs;
+  RxBool nicknameInputEmpty = true.obs;
+
   RxBool emailValidateSuccess = true.obs;
   RxBool certiNumValidateSuccess = true.obs;
+  RxBool classNumberValidateSuccess = true.obs;
+  RxBool passwordValidateSuccess = true.obs;
+  RxBool passwordConfirmValidateSuccess = true.obs;
+  RxBool nicknameValidateSuccess = true.obs;
+  RxBool nicknameDuplicateCheckSuccess = false.obs;
 
   String confirmedUniversityName = '';
 
@@ -47,7 +58,7 @@ class SignUpController extends GetxController {
 
   Future<WagglyResponseDto> verifyEmail(VerifyEmailReqeustDto dto) async {
     final WagglyResponseDto verifyResult = await _signUpRepository.verifyEmail(dto);
-    print(verifyResult.datas);
+    // print(verifyResult.datas);
     if (verifyResult.code == 200) {
       emailVerified = true;
       confirmedUniversityName = verifyResult.datas['university'];
@@ -56,6 +67,16 @@ class SignUpController extends GetxController {
     }
 
     return verifyResult;
+  }
+
+  Future<void> checkDuplicateNickname(String nickname) async {
+    final WagglyResponseDto result = await _signUpRepository.checkDuplicateNickname(nickname);
+    print(result);
+    if (result.code == 200) {
+      nicknameDuplicateCheckSuccess.value = true;
+    } else {
+      emailVerified = false;
+    }
   }
 }
 

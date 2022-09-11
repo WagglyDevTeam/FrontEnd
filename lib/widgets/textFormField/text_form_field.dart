@@ -23,6 +23,7 @@ class RenderTextFormField extends StatelessWidget {
     this.onclick,
     this.inputDecoration,
     this.searchList,
+    this.universityName,
   }) : super(key: key);
   final mode;
   final placeholder;
@@ -32,6 +33,7 @@ class RenderTextFormField extends StatelessWidget {
   final onclick;
   final inputDecoration;
   final List<dynamic>? searchList;
+  final universityName;
 
   String parseTime(int time) {
     if (time % 60 < 10) {
@@ -133,6 +135,80 @@ class RenderTextFormField extends StatelessWidget {
           ),
         );
       } else if (label == '학과') {
+        return Container(
+          padding: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 0.h),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text(label, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp)),
+                ],
+              ),
+              SizedBox(
+                height: 4.h,
+              ),
+              SizedBox(
+                height: 34.h,
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: TextFormField(
+                        readOnly: true,
+                        autofocus: false,
+                        controller: controller,
+                        decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromRGBO(218, 175, 254, 1),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color.fromRGBO(218, 175, 254, 0.5),
+                                ),
+                                borderRadius: BorderRadius.circular(4)),
+                            hintText: placeholder,
+                            hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
+                        onChanged: (val) {},
+                        onSaved: (val) {},
+                      ),
+                    ),
+                    Container(
+                      width: 70.w,
+                      margin: EdgeInsets.fromLTRB(8.w, 0.h, 0.w, 0.h),
+                      padding: EdgeInsets.fromLTRB(0.w, 3.h, 0.w, 3.h),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(
+                          color: Palette.main,
+                        ),
+                      ),
+                      child: TextButton(
+                        child: Text(
+                          buttonText,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Palette.main,
+                          ),
+                        ),
+                        onPressed: () {
+                          onclick();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+            ],
+          ),
+        );
+      } else if (label == '닉네임') {
         return Container(
           padding: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 0.h),
           child: Column(
@@ -330,20 +406,32 @@ class RenderTextFormField extends StatelessWidget {
                     contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: _signUpController.certiNumValidateSuccess.value == true && label == '인증번호'
-                            ? Color.fromRGBO(218, 175, 254, 1)
-                            : label != '인증번호'
+                        color: label == '인증번호'
+                            ? _signUpController.certiNumValidateSuccess.value == true
                                 ? Color.fromRGBO(218, 175, 254, 1)
-                                : Colors.red,
+                                : Colors.red.shade200
+                            : label == '학번'
+                                ? _signUpController.classNumberValidateSuccess.value == true
+                                    ? Color.fromRGBO(218, 175, 254, 1)
+                                    : Colors.red.shade200
+                                : label == '학교' || label == '비밀번호' || label == '비밀번호 확인'
+                                    ? Color.fromRGBO(218, 175, 254, 1)
+                                    : Colors.red.shade200,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: _signUpController.certiNumValidateSuccess.value == true && label == '인증번호'
-                              ? Color.fromRGBO(218, 175, 254, 0.5)
-                              : label != '인증번호'
-                                  ? Color.fromRGBO(218, 175, 254, 0.5)
-                                  : Colors.red.shade200,
+                          color: label == '인증번호'
+                              ? _signUpController.certiNumValidateSuccess.value == true
+                                  ? Color.fromRGBO(218, 175, 254, 1)
+                                  : Colors.red.shade200
+                              : label == '학번'
+                                  ? _signUpController.classNumberValidateSuccess.value == true
+                                      ? Color.fromRGBO(218, 175, 254, 1)
+                                      : Colors.red.shade200
+                                  : label == '학교' || label == '비밀번호' || label == '비밀번호 확인'
+                                      ? Color.fromRGBO(218, 175, 254, 1)
+                                      : Colors.red.shade200,
                         ),
                         borderRadius: BorderRadius.circular(4)),
                     hintText: label == '학교' ? null : placeholder,
@@ -367,95 +455,82 @@ class RenderTextFormField extends StatelessWidget {
     }
 
     if (mode == 'searchBar') {
-      return Container(
-        padding: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 0.h),
-        child: Row(
-          children: [
-            Flexible(
-              child: SizedBox(
-                height: 45,
-                child: TypeAheadField(
-                  suggestionsBoxVerticalOffset: 3.0,
-                  suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                    elevation: 4.0,
-                    borderRadius: BorderRadius.circular(7),
-                    color: Colors.white,
-                    shadowColor: Color(0XFFDAAFFE),
-                  ),
-                  textFieldConfiguration: TextFieldConfiguration(
-                    controller: controller,
-                    // autofocus: true,
-                    style: CommonText.BodyS,
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Palette.main,
-                          size: 15,
-                        ),
-                        isDense: true,
-                        contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(218, 175, 254, 1),
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromRGBO(218, 175, 254, 0.5),
-                            ),
-                            borderRadius: BorderRadius.circular(4)),
-                        hintText: placeholder,
-                        hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
-                  ),
-                  suggestionsCallback: (String pattern) {
-                    MajorController _majorController = Get.put(MajorController());
-                    return _majorController.getMajorListByUniversityName("서울대학교");
-                  },
-                  onSuggestionSelected: (Major suggestion) {
-                    print(suggestion.majorName!);
-                    controller.text = suggestion.majorName!;
-                  },
-                  itemBuilder: (BuildContext context, Major suggestion) {
-                    return ListTile(
-                      focusColor: Palette.main,
-                      title: Text(
-                        suggestion.majorName!,
+      return Column(
+        children: [
+          Container(
+            alignment: Alignment.topLeft,
+            height: 200.h,
+            padding: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 0.h),
+            child: Row(
+              children: [
+                Flexible(
+                  child: SizedBox(
+                    height: 45,
+                    child: TypeAheadField(
+                      noItemsFoundBuilder: (context) => Center(
+                          child: Text(
+                        "학과 검색 결과가 존재하지 않습니다.",
                         style: CommonText.BodyS,
+                      )),
+                      suggestionsBoxVerticalOffset: 3.0,
+                      suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                        constraints: BoxConstraints(maxHeight: 200.h),
+                        elevation: 4.0,
+                        borderRadius: BorderRadius.circular(7),
+                        color: Colors.white,
+                        shadowColor: Color(0XFFDAAFFE),
                       ),
-                    );
-                  },
+                      textFieldConfiguration: TextFieldConfiguration(
+                        controller: controller,
+                        onChanged: (value) {
+                          if (value.isEmpty == true) {
+                            _signUpController.majorInputEmpty.value = true;
+                          }
+                        },
+                        style: CommonText.BodyS,
+                        decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromRGBO(218, 175, 254, 1),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color.fromRGBO(218, 175, 254, 0.5),
+                                ),
+                                borderRadius: BorderRadius.circular(4)),
+                            hintText: placeholder,
+                            hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
+                      ),
+                      suggestionsCallback: (String keyword) async {
+                        MajorController _majorController = Get.put(MajorController());
+                        return await _majorController.getMajorSearchResultList(universityName, keyword);
+                      },
+                      onSuggestionSelected: (Major suggestion) {
+                        controller.text = suggestion.majorName!;
+                        _signUpController.majorInputEmpty.value = false;
+                      },
+                      itemBuilder: (BuildContext context, Major suggestion) {
+                        return ListTile(
+                          focusColor: Palette.main,
+                          title: Text(
+                            suggestion.majorName!,
+                            style: CommonText.BodyS,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-            // Container(
-            //   height: 39.0.h,
-            //   width: 70.w,
-            //   margin: EdgeInsets.fromLTRB(8.w, 0.5.h, 0.w, 1.h),
-            //   padding: EdgeInsets.fromLTRB(0.w, 0.h, 0.w, 0.h),
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(4),
-            //     border: Border.all(
-            //         color: _signUpController.emailInputEmpty.value == false
-            //             ? Palette.main
-            //             : Color.fromRGBO(182, 182, 182, 1)),
-            //   ),
-            //   child: TextButton(
-            //     child: Text(
-            //       buttonText,
-            //       style: TextStyle(
-            //           fontSize: 12.sp,
-            //           fontWeight: FontWeight.w500,
-            //           color: _signUpController.emailInputEmpty.value == false
-            //               ? Palette.main
-            //               : Color.fromRGBO(182, 182, 182, 1)),
-            //     ),
-            //     onPressed: () {
-            //       onclick();
-            //     },
-            //   ),
-            // ),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: 100.0.h,
+          ),
+        ],
       );
     }
 
@@ -481,9 +556,7 @@ class RenderTextFormField extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4)),
                 hintText: placeholder,
                 hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.h)),
-            onChanged: (val) {
-              print(val);
-            },
+            onChanged: (val) {},
             onSaved: (val) {},
           ),
         ),
@@ -494,77 +567,3 @@ class RenderTextFormField extends StatelessWidget {
     );
   }
 }
-
-// class RenderTextFormField extends StatefulWidget {
-//   const RenderTextFormField(
-//       {Key? key, this.mode, this.placeholder, this.buttonText, this.label, this.controller})
-//       : super(key: key);
-//   final mode;
-//   final placeholder;
-//   final buttonText;
-//   final label;
-//   final controller;
-//
-//   @override
-//   State<RenderTextFormField> createState() => _RenderTextFormFieldState();
-// }
-//
-// class _RenderTextFormFieldState extends State<RenderTextFormField> {
-//   final formKey = GlobalKey<FormState>();
-//   final _counter = 10*1;
-//   late Timer _timer;
-//
-//
-// }
-//
-// SearchField(
-// autoCorrect: false,
-// controller: controller,
-// suggestions: searchList!.map((e) => SearchFieldListItem(e)).toList(),
-// suggestionState: Suggestion.expand,
-// textInputAction: TextInputAction.next,
-// hint: placeholder,
-// hasOverlay: false,
-// searchStyle: TextStyle(
-// fontSize: 12.sp,
-// color: Colors.black.withOpacity(0.8),
-// ),
-// maxSuggestionsInViewPort: 6,
-// itemHeight: 35.h,
-// onSuggestionTap: (value) {
-// print(value.searchKey);
-// print(controller.text);
-// },
-// suggestionItemDecoration: BoxDecoration(
-// border: Border.all(style: BorderStyle.none),
-// ),
-// suggestionsDecoration: BoxDecoration(
-// color: Colors.white,
-// borderRadius: BorderRadius.circular(5),
-// boxShadow: [
-// BoxShadow(
-// offset: Offset(2, 2),
-// color: Palette.candy,
-// blurRadius: 5,
-// spreadRadius: 2,
-// blurStyle: BlurStyle.normal,
-// ),
-// ],
-// border: Border.all(style: BorderStyle.none)),
-// offset: Offset(0, 2),
-// searchInputDecoration: InputDecoration(
-// isDense: true,
-// contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
-// focusedBorder: OutlineInputBorder(
-// borderSide: BorderSide(
-// color: Color.fromRGBO(218, 175, 254, 1),
-// ),
-// ),
-// enabledBorder: OutlineInputBorder(
-// borderSide: BorderSide(
-// color: Color.fromRGBO(218, 175, 254, 0.5),
-// ),
-// borderRadius: BorderRadius.circular(4)),
-// hintText: placeholder,
-// hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
-// ),

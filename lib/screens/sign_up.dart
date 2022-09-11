@@ -42,15 +42,17 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: [
-          TopBar(),
-          SignUpInput(
-            steps: steps,
-            setSteps: handleClick,
-          ),
-        ],
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            TopBar(),
+            SignUpInput(
+              steps: steps,
+              setSteps: handleClick,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -363,21 +365,7 @@ class _InputState extends State<Input> {
                     buttonText: '검색하기',
                     controller: _majorInput,
                     onclick: () async {
-                      // TODO:59 임시로 여기에 만들어놓음
-                      await _majorController.getMajorListByUniversityName(_universityInput.text);
-                      final majorList = <String>[];
-                      for (var major in _majorController.majorList) {
-                        if (major.majorName != null) {
-                          majorList.add(major.majorName!);
-                        }
-                      }
-                      print(majorList);
-                      Get.to(() => MajorSearchScreen(majorList: majorList));
-                      // await _majorController.getMajorListByUniversityName("서울대학교");
-                      // final majorList = _majorController.majorList;
-                      // for (var major in majorList) {
-                      //   print(major.majorName);
-                      // }
+                      Get.to(() => MajorSearchScreen(controller: _majorInput, universityName: _universityInput.text));
                     },
                   ),
                 ],
@@ -532,7 +520,24 @@ class _ButtonsState extends State<Buttons> {
                           ),
                         ),
                         onPressed: () {
-                          widget.setSteps(2);
+                          if (_classNumberInput.text.isNumericOnly == false) {
+                            _signUpController.classNumberValidateSuccess.value = false;
+                            CustomSnackBar.messageSnackbar(
+                              context,
+                              "학번은 숫자만 입력 가능합니다.",
+                              EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                            );
+                          } else if (_classNumberInput.text.length != 2) {
+                            _signUpController.classNumberValidateSuccess.value = false;
+                            CustomSnackBar.messageSnackbar(
+                              context,
+                              "학번은 두 자리로 입력해주세요. (2022학번 : '22')",
+                              EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                            );
+                          } else {
+                            _signUpController.classNumberValidateSuccess.value = true;
+                            widget.setSteps(2);
+                          }
                         },
                       ),
                     ),

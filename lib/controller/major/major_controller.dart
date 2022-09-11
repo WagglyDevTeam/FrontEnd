@@ -20,4 +20,29 @@ class MajorController extends GetxController {
 
     return majorList;
   }
+
+  Future<List<Major>> getMajorSearchResultList(String universityName, String keyword) async {
+    WagglyResponseDto result = await _majorRepository.getMajorListByUniversityName(universityName);
+    List<dynamic> majorListJson = result.datas;
+    List<Major> convertedMajorList = majorListJson
+        .map((e) => Major.fromJson(e))
+        .toList()
+        .where((element) => element.majorName!.contains(keyword))
+        .toList();
+    majorList.value = convertedMajorList;
+
+    return majorList;
+  }
+
+  bool checkMajorExist(String majorName) {
+    bool isExist = false;
+    if (majorList.isNotEmpty == true) {
+      for (final major in majorList) {
+        if (major.majorName == majorName) {
+          isExist = true;
+        }
+      }
+    }
+    return isExist;
+  }
 }
