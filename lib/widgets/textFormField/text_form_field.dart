@@ -226,27 +226,37 @@ class RenderTextFormField extends StatelessWidget {
                 child: Row(
                   children: [
                     Flexible(
-                      child: TextFormField(
-                        readOnly: true,
-                        autofocus: false,
-                        controller: controller,
-                        decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromRGBO(218, 175, 254, 1),
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
+                      child: Obx(
+                        () => TextFormField(
+                          autofocus: false,
+                          controller: controller,
+                          decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
+                              focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Color.fromRGBO(218, 175, 254, 0.5),
-                                ),
-                                borderRadius: BorderRadius.circular(4)),
-                            hintText: placeholder,
-                            hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
-                        onChanged: (val) {},
-                        onSaved: (val) {},
+                                    color: _signUpController.nicknameInputEmpty.value == false &&
+                                            _signUpController.nicknameValidateSuccess.value == true &&
+                                            _signUpController.nicknameDuplicateCheckSuccess.value == true
+                                        ? Color.fromRGBO(218, 175, 254, 1)
+                                        : Colors.red),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: _signUpController.emailValidateSuccess.value == true
+                                          ? Color.fromRGBO(218, 175, 254, 0.5)
+                                          : Colors.red),
+                                  borderRadius: BorderRadius.circular(4)),
+                              hintText: placeholder,
+                              hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
+                          onChanged: (val) {
+                            if (controller.text.isEmpty == true) {
+                              _signUpController.nicknameInputEmpty.value = true;
+                            } else if (controller.text.isEmpty == false) {
+                              _signUpController.nicknameInputEmpty.value = false;
+                            }
+                          },
+                        ),
                       ),
                     ),
                     Container(

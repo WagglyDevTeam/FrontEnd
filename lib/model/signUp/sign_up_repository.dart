@@ -31,6 +31,10 @@ class SignUpRepository {
     Response response = await _signUpProvider.checkDuplicateNickname({"nickname": nickname});
     dynamic body = response.body;
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+    print(wagglyResponseDto.code);
+    print(wagglyResponseDto.datas);
+    print(wagglyResponseDto.status);
+    print(wagglyResponseDto.message);
     return wagglyResponseDto;
   }
 }

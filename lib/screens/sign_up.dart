@@ -390,6 +390,53 @@ class _InputState extends State<Input> {
                     placeholder: '한글 또는 영문 6자 이하',
                     buttonText: '중복확인',
                     controller: _nicknameInput,
+                    onclick: () async {
+                      final nicknameRegExp = RegExp(r"^[A-Za-z0-9가-힣]{2,6}$");
+                      if (_nicknameInput.text.isEmpty == true) {
+                        _signUpController.nicknameValidateSuccess.value = false;
+                        CustomSnackBar.messageSnackbar(
+                          context,
+                          "닉네임을 입력해주세요.",
+                          EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                        );
+                      } else if (nicknameRegExp.hasMatch(_nicknameInput.text) == false) {
+                        _signUpController.nicknameValidateSuccess.value = false;
+                        CustomSnackBar.messageSnackbar(
+                          context,
+                          "한글, 숫자, 영문 6자 이하로 입력해주세요.",
+                          EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                        );
+                      } else {
+                        final result = await _signUpController.checkDuplicateNickname(_nicknameInput.text);
+                        if (result.code == 200) {
+                          _signUpController.nicknameValidateSuccess.value = true;
+                          _signUpController.nicknameDuplicateCheckSuccess.value = true;
+                          CustomSnackBar.messageSnackbar(
+                            context,
+                            "사용 가능한 닉네임입니다.",
+                            EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                          );
+                        } else {
+                          if (result.message == '닉네임이 중복되었습니다.') {
+                            _signUpController.nicknameValidateSuccess.value = true;
+                            _signUpController.nicknameDuplicateCheckSuccess.value = false;
+                            CustomSnackBar.messageSnackbar(
+                              context,
+                              "중복된 닉네임이 존재합니다.",
+                              EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                            );
+                          } else {
+                            _signUpController.nicknameValidateSuccess.value = true;
+                            _signUpController.nicknameDuplicateCheckSuccess.value = false;
+                            CustomSnackBar.messageSnackbar(
+                              context,
+                              result.message,
+                              EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                            );
+                          }
+                        }
+                      }
+                    },
                   ),
                 ],
               );

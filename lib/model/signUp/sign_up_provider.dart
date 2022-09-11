@@ -20,7 +20,7 @@ class SignUpProvider extends GetConnect {
       );
 
   Future<Response> checkDuplicateNickname(Map<String, dynamic> data) => post(
-        "$host/user/nickname/",
+        "$host/user/nickname",
         data,
       );
 }
