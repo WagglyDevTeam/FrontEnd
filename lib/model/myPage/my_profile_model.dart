@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 
 ProfileModel profileModelFromJson(String str) =>
     ProfileModel.fromJson(json.decode(str));
@@ -16,12 +16,12 @@ class ProfileModel {
 
   int code;
   bool success;
-  Datas datas;
+  ProfileData datas;
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
         code: json["code"],
         success: json["success"],
-        datas: Datas.fromJson(json["datas"]),
+        datas: ProfileData.fromJson(json["datas"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -31,8 +31,8 @@ class ProfileModel {
       };
 }
 
-class Datas {
-  Datas({
+class ProfileData {
+  ProfileData({
     required this.profileImg,
     required this.nickname,
   });
@@ -40,7 +40,7 @@ class Datas {
   String profileImg;
   String nickname;
 
-  factory Datas.fromJson(Map<String, dynamic> json) => Datas(
+  factory ProfileData.fromJson(Map<String, dynamic> json) => ProfileData(
         profileImg: json["profileImg"],
         nickname: json["nickname"],
       );

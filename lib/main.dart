@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:waggly/components/myPage/active/request_list.dart';
 import 'package:waggly/components/notification/notification.dart';
 import 'package:waggly/controller/home/home_controller.dart';
+import 'package:waggly/controller/myPage/my_profile_controller.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/model/hive/search_history.dart';
@@ -26,6 +27,9 @@ import 'package:waggly/screens/write.dart';
 import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/myPage/active/index.dart';
 import 'package:waggly/components/myPage/active/my_post_list.dart';
+
+import 'components/Post/post_affiliation.dart';
+import 'components/Post/post_detail_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,8 +78,30 @@ class HeroApp extends StatelessWidget {
                   });
                 })),
             GetPage(name: "/post", page: () => PostScreen(), transition: Transition.rightToLeft),
+            GetPage(
+              name: '/postCollege/:collegeName',
+              page: () => PostAffiliation(),
+              transition: Transition.rightToLeft,
+              transitionDuration: const Duration(milliseconds: 350),
+              curve: Curves.fastOutSlowIn,
+            ),
+            GetPage(
+              name: '/postDetail/:postId',
+              page: () => PostDetail(),
+              transition: Transition.rightToLeft,
+              transitionDuration: const Duration(milliseconds: 350),
+              curve: Curves.fastOutSlowIn,
+            ),
             GetPage(name: "/chat", page: () => ChatScreen(), transition: Transition.rightToLeft),
-            GetPage(name: "/myPage", page: () => MyPageScreen(), transition: Transition.rightToLeft),
+            GetPage(
+                name: "/myPage",
+                page: () => MyPageScreen(),
+                transition: Transition.rightToLeft,
+                binding: BindingsBuilder<MyProfileController>(() {
+                  Get.put(() {
+                    return MyProfileController();
+                  });
+                })),
             GetPage(name: "/chatEdit", page: () => ChatEditScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/signInPage", page: () => SignInScreen(), transition: Transition.rightToLeft),
             GetPage(

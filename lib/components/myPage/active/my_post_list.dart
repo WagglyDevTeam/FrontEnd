@@ -36,7 +36,7 @@ class MyPostList extends StatelessWidget {
     final double itemWidth = size.width / 2;
 
     return Container(
-      padding: EdgeInsets.only(top: 20),
+      padding: EdgeInsets.only(top: 20.h),
       child: Stack(children: [
         Column(children: [
           Stack(
@@ -48,7 +48,8 @@ class MyPostList extends StatelessWidget {
                     Container(
                       width: 36.w,
                       height: 36.h,
-                      margin: EdgeInsets.only(top: 20, right: 10, left: 16),
+                      margin:
+                          EdgeInsets.only(top: 20.h, right: 10.w, left: 16.w),
                       decoration: BoxDecoration(
                         border:
                             Border.all(width: 0.5, color: Palette.lightGray),
@@ -63,12 +64,14 @@ class MyPostList extends StatelessWidget {
                         },
                       ),
                     ),
-                    Container(
-                      width: 200,
-                      margin: EdgeInsets.only(top: 25),
-                      child: Text(
-                        controller.mine.value ? '내가 쓴 글' : '내가 쓴 댓글',
-                        style: CommonText.BodyL,
+                    Obx(
+                      () => Container(
+                        width: 200.w,
+                        margin: EdgeInsets.only(top: 10.h),
+                        child: Text(
+                          controller.mine.value ? '내가 쓴 글' : '내가 쓴 댓글',
+                          style: CommonText.BodyL,
+                        ),
                       ),
                     ),
                   ],
@@ -87,7 +90,7 @@ class MyPostList extends StatelessWidget {
                 mainAxisSpacing: 10,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(left: 5),
+                    margin: EdgeInsets.only(left: 5.w),
                     child: ElevatedButton(
                       child: Icon(
                         Icons.subject,
@@ -114,7 +117,7 @@ class MyPostList extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 5),
+                    margin: EdgeInsets.only(left: 5.w),
                     child: ElevatedButton(
                       child: Icon(
                         Icons.chat_bubble_outline,
@@ -158,7 +161,10 @@ class MyPostList extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return Container(
                               padding: EdgeInsets.only(
-                                  top: 16, bottom: 16, left: 26, right: 26),
+                                  top: 16.h,
+                                  bottom: 16.h,
+                                  left: 26.w,
+                                  right: 26.w),
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   border: Border(
@@ -197,7 +203,10 @@ class MyPostList extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return Container(
                                 padding: EdgeInsets.only(
-                                    top: 16, bottom: 16, left: 26, right: 26),
+                                    top: 16.h,
+                                    bottom: 16.h,
+                                    left: 26.w,
+                                    right: 26.w),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     border: Border(
