@@ -4,7 +4,7 @@ class SignUpRequestDto {
   final String nickname;
   final String university;
   final String classNumber;
-  final String major;
+  final int major;
   final String gender;
   //
   SignUpRequestDto(
@@ -23,7 +23,7 @@ class SignUpRequestDto {
         "nickname": nickname,
         "university": university,
         "classNumber": int.parse(classNumber),
-        "major": int.parse(major),
+        "major": major,
         "gender": gender,
       };
 }
