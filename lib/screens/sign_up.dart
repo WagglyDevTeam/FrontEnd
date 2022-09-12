@@ -661,7 +661,6 @@ class _ButtonsState extends State<Buttons> {
                                   _signUpController.passwordConfirmValidateSuccess.value = true;
                                   final nicknameValidateResult = await nicknameValidateCheck(context, true);
                                   if (nicknameValidateResult == true) {
-                                    print('here');
                                     final result = await _signUpController.signUp(
                                       SignUpRequestDto(
                                           _emailInput.text,
@@ -672,12 +671,8 @@ class _ButtonsState extends State<Buttons> {
                                           _signUpController.selectedMajor.id!,
                                           'male'),
                                     );
-                                    print(result.code);
-                                    print(result.message);
-
                                     if (result.code == 201) {
                                       // 성공 시
-                                      print('0');
                                       _signUpController.signUpSuccess.value = true;
                                       _signUpController.passwordInputValue.value = '';
                                       _signUpController.passwordConfirmInputValue.value = '';
@@ -686,12 +681,9 @@ class _ButtonsState extends State<Buttons> {
                                         "회원 가입에 성공했습니다.",
                                         EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
                                       );
-                                      print('1');
                                       await Future.delayed(const Duration(seconds: 2), () {
-                                        print('2');
+                                        Get.offAllNamed('/signInPage');
                                       });
-                                      Get.offAllNamed('/signInPage');
-                                      print('3');
                                     } else {
                                       _signUpController.signUpSuccess.value = true;
                                       CustomSnackBar.messageSnackbar(
