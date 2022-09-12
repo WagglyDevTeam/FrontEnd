@@ -37,37 +37,39 @@ class _SignInState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: [
-          SignInHeader(),
-          RenderTextFormField(placeholder: '학교 이메일', controller: _emailController),
-          RenderTextFormField(placeholder: '비밀번호', controller: _passwordController),
-          CustomCheckbox(),
-          Button(
-            text: '시작하기',
-            onPress: () async {
-              print(_emailController.text);
-              var isSignIn =
-                  await _signInController.signIn(SignInRequestDto(_emailController.text, _passwordController.text));
-              if (isSignIn == true) {
-                Get.offAllNamed("/");
-              } else {}
-            },
-            disabled: true,
-          ),
-          Button(
-            text: '둘러보기',
-            onPress: () {
-              Navigator.of(context).push(home.slideRitghtToLeft());
-            },
-            theme: 'abled',
-          ),
-          SizedBox(
-            height: 18,
-          ),
-          BottomTextButton()
-        ],
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SignInHeader(),
+            RenderTextFormField(placeholder: '학교 이메일', controller: _emailController),
+            RenderTextFormField(placeholder: '비밀번호', controller: _passwordController),
+            CustomCheckbox(),
+            Button(
+              text: '시작하기',
+              onPress: () async {
+                print(_emailController.text);
+                var isSignIn =
+                    await _signInController.signIn(SignInRequestDto(_emailController.text, _passwordController.text));
+                if (isSignIn == true) {
+                  Get.offAllNamed("/");
+                } else {}
+              },
+              disabled: true,
+            ),
+            Button(
+              text: '둘러보기',
+              onPress: () {
+                Navigator.of(context).push(home.slideRitghtToLeft());
+              },
+              theme: 'abled',
+            ),
+            SizedBox(
+              height: 18,
+            ),
+            BottomTextButton()
+          ],
+        ),
       ),
     );
   }

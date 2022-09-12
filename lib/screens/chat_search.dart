@@ -88,7 +88,8 @@ class ChatSearchScreen extends StatelessWidget {
                     chatSearchController.searchHistoryBox.value
                         .add(SearchHistory(id: id, userId: userId, keyword: _searchKeyword.text));
                     chatSearchController.toList(userId);
-                    print(chatSearchController.historyList);
+
+                    _searchKeyword.text = '';
                   },
                   child: Container(
                     alignment: Alignment.center,
@@ -119,7 +120,6 @@ class ChatSearchScreen extends StatelessWidget {
           ), // 최근 검색어
           SizedBox(height: 24.0.h),
           SizedBox(
-            height: 110.h,
             child: GroupChatBoxArea(
               text: "신규 채팅방을 확인해보세요!",
               itemList: groupChatItem,
@@ -261,7 +261,7 @@ class GroupChatBoxArea extends StatelessWidget {
           height: 72.h,
           child: ListView.separated(
               separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(width: 7.0.h);
+                return SizedBox(width: 7.0.w);
               },
               scrollDirection: Axis.horizontal,
               itemCount: itemList.length,
@@ -274,10 +274,9 @@ class GroupChatBoxArea extends StatelessWidget {
                       width: 217.0.w,
                       padding: EdgeInsets.fromLTRB(12.5.w, 12.5.h, 12.5.w, 12.5.h),
                       decoration: BoxDecoration(
-                        // color: Colors.red,
                         borderRadius: BorderRadius.circular(20.0),
                         border: Border.all(
-                          width: 0.7,
+                          width: 0.7.w,
                           color: Palette.lavender,
                         ),
                       ),
@@ -369,7 +368,6 @@ class GroupChatBoxArea extends StatelessWidget {
                 );
               }),
         ),
-        SizedBox(height: 10.0.h),
       ],
     );
   }
