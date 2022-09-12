@@ -10,10 +10,12 @@ import '../post/dtos/waggly_response_dto.dart';
 class SignUpRepository {
   final SignUpProvider _signUpProvider = SignUpProvider();
 
-  Future<void> signUp(SignUpRequestDto data) async {
+  Future<WagglyResponseDto> signUp(SignUpRequestDto data) async {
     Response response = await _signUpProvider.signUp(data.toJson());
     dynamic body = response.body;
-    print(body);
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+
+    return wagglyResponseDto;
   }
 
   Future<void> sendEmailForVerify(String email) async {
@@ -31,10 +33,6 @@ class SignUpRepository {
     Response response = await _signUpProvider.checkDuplicateNickname({"nickname": nickname});
     dynamic body = response.body;
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
-    print(wagglyResponseDto.code);
-    print(wagglyResponseDto.datas);
-    print(wagglyResponseDto.status);
-    print(wagglyResponseDto.message);
     return wagglyResponseDto;
   }
 }

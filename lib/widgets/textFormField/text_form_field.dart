@@ -13,7 +13,7 @@ import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 
 class RenderTextFormField extends StatelessWidget {
-  const RenderTextFormField({
+  RenderTextFormField({
     Key? key,
     this.mode,
     this.placeholder,
@@ -24,6 +24,7 @@ class RenderTextFormField extends StatelessWidget {
     this.inputDecoration,
     this.searchList,
     this.universityName,
+    this.password,
   }) : super(key: key);
   final mode;
   final placeholder;
@@ -34,6 +35,7 @@ class RenderTextFormField extends StatelessWidget {
   final inputDecoration;
   final List<dynamic>? searchList;
   final universityName;
+  late String? password;
 
   String parseTime(int time) {
     if (time % 60 < 10) {
@@ -235,17 +237,17 @@ class RenderTextFormField extends StatelessWidget {
                               contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: _signUpController.nicknameInputEmpty.value == false &&
-                                            _signUpController.nicknameValidateSuccess.value == true &&
+                                    color: _signUpController.nicknameValidateSuccess.value == true &&
                                             _signUpController.nicknameDuplicateCheckSuccess.value == true
                                         ? Color.fromRGBO(218, 175, 254, 1)
                                         : Colors.red),
                               ),
                               enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: _signUpController.emailValidateSuccess.value == true
+                                      color: _signUpController.nicknameValidateSuccess.value == true &&
+                                              _signUpController.nicknameDuplicateCheckSuccess.value == true
                                           ? Color.fromRGBO(218, 175, 254, 0.5)
-                                          : Colors.red),
+                                          : Colors.red.shade200),
                                   borderRadius: BorderRadius.circular(4)),
                               hintText: placeholder,
                               hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
@@ -374,6 +376,10 @@ class RenderTextFormField extends StatelessWidget {
     }
 
     if (mode == 'withLabel') {
+      if (label == '비밀번호') {
+        _signUpController.focus = FocusNode();
+        _signUpController.focus.requestFocus();
+      }
       return Padding(
         padding: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 0.h),
         child: Column(children: [
@@ -403,11 +409,8 @@ class RenderTextFormField extends StatelessWidget {
             height: 34.h,
             child: Obx(
               () => TextFormField(
-                autofocus: label == '학교' || label == '비밀번호'
-                    ? true
-                    : label == '학번' || label == '비밀번호 확인'
-                        ? false
-                        : false,
+                focusNode: label == '비밀번호' ? _signUpController.focus : null,
+                autofocus: label == '비밀번호' || label == '학번' ? true : false,
                 readOnly: label == '학교' ? true : false,
                 controller: controller,
                 obscureText: placeholder == '비밀번호' || label == '비밀번호' || label == '비밀번호 확인' ? true : false,
@@ -416,18 +419,27 @@ class RenderTextFormField extends StatelessWidget {
                     contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: label == '인증번호'
-                            ? _signUpController.certiNumValidateSuccess.value == true
-                                ? Color.fromRGBO(218, 175, 254, 1)
-                                : Colors.red.shade200
-                            : label == '학번'
-                                ? _signUpController.classNumberValidateSuccess.value == true
-                                    ? Color.fromRGBO(218, 175, 254, 1)
-                                    : Colors.red.shade200
-                                : label == '학교' || label == '비밀번호' || label == '비밀번호 확인'
-                                    ? Color.fromRGBO(218, 175, 254, 1)
-                                    : Colors.red.shade200,
-                      ),
+                          color: label == '인증번호'
+                              ? _signUpController.certiNumValidateSuccess.value == true
+                                  ? Color.fromRGBO(218, 175, 254, 1)
+                                  : Colors.red
+                              : label == '학번'
+                                  ? _signUpController.classNumberValidateSuccess.value == true
+                                      ? Color.fromRGBO(218, 175, 254, 1)
+                                      : Colors.red
+                                  : label == '비밀번호'
+                                      ? _signUpController.passwordValidateSuccess.value == true
+                                          ? Color.fromRGBO(218, 175, 254, 1)
+                                          : Colors.red
+                                      : label == '비밀번호 확인'
+                                          ? _signUpController.passwordConfirmValidateSuccess.value == true
+                                              ? Color.fromRGBO(218, 175, 254, 1)
+                                              : Colors.red
+                                          : label == '학교'
+                                              ? _signUpController.universityInputEmpty.value == false
+                                                  ? Color.fromRGBO(218, 175, 254, 1)
+                                                  : Colors.red
+                                              : Color.fromRGBO(218, 175, 254, 1)),
                     ),
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
@@ -439,21 +451,65 @@ class RenderTextFormField extends StatelessWidget {
                                   ? _signUpController.classNumberValidateSuccess.value == true
                                       ? Color.fromRGBO(218, 175, 254, 1)
                                       : Colors.red.shade200
-                                  : label == '학교' || label == '비밀번호' || label == '비밀번호 확인'
-                                      ? Color.fromRGBO(218, 175, 254, 1)
-                                      : Colors.red.shade200,
+                                  : label == '비밀번호'
+                                      ? _signUpController.passwordValidateSuccess.value == true
+                                          ? Color.fromRGBO(218, 175, 254, 1)
+                                          : Colors.red.shade200
+                                      : label == '비밀번호 확인'
+                                          ? _signUpController.passwordConfirmValidateSuccess.value == true
+                                              ? Color.fromRGBO(218, 175, 254, 1)
+                                              : Colors.red.shade200
+                                          : label == '학교'
+                                              ? Color.fromRGBO(218, 175, 254, 1)
+                                              : Colors.red.shade200,
                         ),
                         borderRadius: BorderRadius.circular(4)),
                     hintText: label == '학교' ? null : placeholder,
                     hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
-                onChanged: (val) {
-                  if (label == '인증번호' && controller.text.isEmpty == true) {
-                    _signUpController.certiNumberInputEmpty.value = true;
-                  } else if (label == '인증번호' && controller.text.isEmpty == false) {
-                    _signUpController.certiNumberInputEmpty.value = false;
+                onTap: () {
+                  if (label == '비밀번호 확인') {
+                    if (_signUpController.passwordConfirmInputValue.value !=
+                        _signUpController.passwordInputValue.value) {
+                      _signUpController.passwordConfirmValidateSuccess.value = false;
+                    } else {
+                      _signUpController.passwordConfirmValidateSuccess.value = true;
+                    }
                   }
                 },
-                onSaved: (val) {},
+                onChanged: (val) {
+                  if (label == '인증번호') {
+                    if (controller.text.isEmpty == true) {
+                      _signUpController.certiNumberInputEmpty.value = true;
+                    } else {
+                      _signUpController.certiNumberInputEmpty.value = false;
+                    }
+                  } else if (label == '비밀번호') {
+                    if (val.isEmpty == true) {
+                      _signUpController.passwordInputEmpty.value = true;
+                    } else {
+                      _signUpController.passwordInputEmpty.value = false;
+                      _signUpController.passwordInputValue.value = val;
+                    }
+                  } else if (label == '비밀번호 확인') {
+                    if (val.isEmpty == true) {
+                      _signUpController.passwordConfirmInputEmpty.value = true;
+                    } else {
+                      _signUpController.passwordConfirmInputEmpty.value = false;
+                      _signUpController.passwordConfirmInputValue.value = val;
+                      if (val != _signUpController.passwordInputValue.value) {
+                        _signUpController.passwordConfirmValidateSuccess.value = false;
+                      } else if (val == _signUpController.passwordInputValue.value) {
+                        _signUpController.passwordConfirmValidateSuccess.value = true;
+                      }
+                    }
+                  } else if (label == '학번') {
+                    if (controller.text.isEmpty == true) {
+                      _signUpController.classNumberInputEmpty.value = true;
+                    } else {
+                      _signUpController.classNumberInputEmpty.value = false;
+                    }
+                  }
+                },
               ),
             ),
           ),
@@ -520,6 +576,7 @@ class RenderTextFormField extends StatelessWidget {
                       },
                       onSuggestionSelected: (Major suggestion) {
                         controller.text = suggestion.majorName!;
+                        _signUpController.selectedMajor = suggestion;
                         _signUpController.majorInputEmpty.value = false;
                       },
                       itemBuilder: (BuildContext context, Major suggestion) {
@@ -549,11 +606,7 @@ class RenderTextFormField extends StatelessWidget {
         Padding(
           padding: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 0.h),
           child: TextFormField(
-            autofocus: label == '학교' || label == '비밀번호'
-                ? true
-                : label == '학번' || label == '비밀번호 확인'
-                    ? false
-                    : false,
+            autofocus: label == '학교' || label == '비밀번호' ? true : false,
             controller: controller,
             decoration: InputDecoration(
                 isDense: true,
@@ -566,8 +619,6 @@ class RenderTextFormField extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4)),
                 hintText: placeholder,
                 hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.h)),
-            onChanged: (val) {},
-            onSaved: (val) {},
           ),
         ),
         SizedBox(

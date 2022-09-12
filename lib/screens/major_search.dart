@@ -69,6 +69,7 @@ class MajorSearchScreen extends StatelessWidget {
                           EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
                         );
                       } else {
+                        _signUpController.majorInputEmpty.value = false;
                         Get.back();
                       }
                     },

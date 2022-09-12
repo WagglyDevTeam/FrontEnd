@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:waggly/model/major/major.dart';
 import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
 import 'package:waggly/model/signUp/dtos/sign_up_request_dto.dart';
 import 'package:waggly/model/signUp/dtos/verify_email_request_dto.dart';
@@ -11,12 +13,16 @@ class SignUpController extends GetxController {
   final _signUpRepository = SignUpRepository();
 
   final count = (60 * 1).obs;
+  late FocusNode focus;
+
   Timer _timer = Timer(Duration(milliseconds: 1), () {});
   bool isStart = false;
   bool emailVerified = false;
+  Major selectedMajor = Major();
 
   RxBool emailInputEmpty = true.obs;
   RxBool certiNumberInputEmpty = true.obs;
+  RxBool universityInputEmpty = true.obs;
   RxBool majorInputEmpty = true.obs;
   RxBool classNumberInputEmpty = true.obs;
   RxBool passwordInputEmpty = true.obs;
@@ -29,8 +35,11 @@ class SignUpController extends GetxController {
   RxBool passwordValidateSuccess = true.obs;
   RxBool passwordConfirmValidateSuccess = true.obs;
   RxBool nicknameValidateSuccess = true.obs;
-  RxBool nicknameDuplicateCheckSuccess = false.obs;
+  RxBool nicknameDuplicateCheckSuccess = true.obs;
 
+  RxString passwordInputValue = ''.obs;
+  RxString passwordConfirmInputValue = ''.obs;
+  RxBool signUpSuccess = false.obs;
   String confirmedUniversityName = '';
 
   void startTimer() {
@@ -48,8 +57,8 @@ class SignUpController extends GetxController {
     });
   }
 
-  Future<void> signUp(SignUpRequestDto dto) async {
-    await _signUpRepository.signUp(dto);
+  Future<WagglyResponseDto> signUp(SignUpRequestDto dto) async {
+    return await _signUpRepository.signUp(dto);
   }
 
   Future<void> sendEmailForVerify(String email) async {
