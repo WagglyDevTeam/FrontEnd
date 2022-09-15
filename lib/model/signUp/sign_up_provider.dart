@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 // const host = "http://54.180.108.210:8080";
-const host = "http://192.168.10.16:8080";
+const host = "http://172.30.1.94:8080";
 
 class SignUpProvider extends GetConnect {
   Future<Response> signUp(Map<String, dynamic> data) => post(
@@ -18,5 +18,9 @@ class SignUpProvider extends GetConnect {
         "$host/user/email/certification",
         data,
       );
-}
 
+  Future<Response> checkDuplicateNickname(Map<String, dynamic> data) => post(
+        "$host/user/nickname",
+        data,
+      );
+}
