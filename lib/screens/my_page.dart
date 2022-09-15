@@ -335,7 +335,8 @@ class myPage extends StatelessWidget {
                               )
                             : Obx(
                                 () => TextFormField(
-                                  controller: _introduction,
+                                  controller: _introduction
+                                    ..text = myProfileController.bio.value,
                                   maxLength: 100,
                                   maxLines: 2,
                                   autofocus: true,
