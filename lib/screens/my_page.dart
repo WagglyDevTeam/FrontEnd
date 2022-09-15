@@ -105,14 +105,6 @@ class myPage extends StatelessWidget {
     }
   }
 
-  void bioButtonToggle() {
-    if (_introduction.text.isBlank == true) {
-      myProfileController.bioBtn.value = false;
-    } else {
-      myProfileController.bioBtn.value = true;
-    }
-  }
-
   var profilePic = <ProfileImgModel>[].obs;
 
   String savedbio = "";
@@ -341,22 +333,26 @@ class myPage extends StatelessWidget {
                                         ),
                                       ),
                               )
-                            : TextFormField(
-                                controller: _introduction,
-                                maxLength: 100,
-                                maxLines: 2,
-                                autofocus: true,
-                                cursorColor: Palette.main,
-                                style: CommonText.BodyS,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  isDense: true,
-                                  counterText: '',
-                                  contentPadding: EdgeInsets.only(top: 0),
-                                  hintText: myProfileController.bio.value != ''
-                                      ? myProfileController.bio.value
-                                      : '다른 친구들에게 자신을 소개해보세요',
-                                  hintStyle: CommonText.BodyMediumGray,
+                            : Obx(
+                                () => TextFormField(
+                                  controller: _introduction
+                                    ..text = myProfileController.bio.value,
+                                  maxLength: 100,
+                                  maxLines: 2,
+                                  autofocus: true,
+                                  cursorColor: Palette.main,
+                                  style: CommonText.BodyS,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                    counterText: '',
+                                    contentPadding: EdgeInsets.only(top: 0),
+                                    hintText:
+                                        myProfileController.bio.value != ''
+                                            ? myProfileController.bio.value
+                                            : '다른 친구들에게 자신을 소개해보세요',
+                                    hintStyle: CommonText.BodyMediumGray,
+                                  ),
                                 ),
                               ),
                       ),
@@ -367,7 +363,9 @@ class myPage extends StatelessWidget {
                       child: ElevatedButton(
                         child: Obx(
                           () => Text(
-                            !myProfileController.bioBtn.value ? "수정" : "완료",
+                            myProfileController.bioBtn.value == false
+                                ? "수정"
+                                : "완료",
                             style: !myProfileController.bioBtn.value
                                 ? CommonText.BodyXS
                                 : CommonText.BodyXSmallWhite,
@@ -377,8 +375,10 @@ class myPage extends StatelessWidget {
                           if (!myProfileController.bioBtn.value) {
                             myProfileController.bioBtn.value = true;
                           } else {
-                            await myProfileController.changeUserIntroduction(
-                                Bio(userIntroduction: _introduction.text));
+                            if (_introduction.text.isNotEmpty) {
+                              await myProfileController.changeUserIntroduction(
+                                  Bio(userIntroduction: _introduction.text));
+                            }
                             myProfileController.bioBtn.value = false;
                           }
                         },
