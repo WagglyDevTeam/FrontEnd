@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -18,6 +19,7 @@ import 'package:waggly/model/hive/search_history.dart';
 import 'package:waggly/model/hive/user.dart';
 import 'package:waggly/screens/chat.dart';
 import 'package:waggly/screens/chat_edit.dart';
+import 'package:waggly/screens/find_password.dart';
 import 'package:waggly/screens/group_chat_create.dart';
 import 'package:waggly/screens/index.dart';
 import 'package:waggly/screens/my_page.dart';
@@ -33,6 +35,7 @@ import 'components/Post/post_detail_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await Hive.initFlutter();
 
   const FlutterSecureStorage secureStorage = FlutterSecureStorage();
@@ -115,6 +118,7 @@ class HeroApp extends StatelessWidget {
             GetPage(name: "/notification", page: () => NotificationScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/myPostsList", page: () => MyPostListScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/myRequestList", page: () => RequestScreen(), transition: Transition.rightToLeft),
+            GetPage(name: "/findPassword", page: () => FindPasswordScreen(), transition: Transition.rightToLeft)
           ],
         );
       },

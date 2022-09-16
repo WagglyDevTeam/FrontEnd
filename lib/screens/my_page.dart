@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:waggly/controller/myPage/my_profile_controller.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/myPage/waggly_img_controller.dart';
@@ -15,6 +16,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/model/myPage/my_profile_model.dart';
 import 'package:waggly/model/myPage/my_profile_introduction_model.dart';
+
+import '../model/hive/user.dart';
 
 class MyPageScreen extends StatelessWidget {
   const MyPageScreen({Key? key}) : super(key: key);
@@ -95,21 +98,12 @@ class myPage extends StatelessWidget {
   SignInController signInController = Get.put(SignInController());
   final _nickname = TextEditingController();
   final _introduction = TextEditingController();
-  var userName = '';
 
   void buttonToggle() {
     if (_nickname.text.isBlank == true) {
       myProfileController.nicknameBtn.value = false;
     } else {
       myProfileController.nicknameBtn.value = true;
-    }
-  }
-
-  void bioButtonToggle() {
-    if (_introduction.text.isBlank == true) {
-      myProfileController.bioBtn.value = false;
-    } else {
-      myProfileController.bioBtn.value = true;
     }
   }
 
@@ -207,9 +201,9 @@ class myPage extends StatelessWidget {
                           CircleAvatar(
                               radius: 20.0,
                               backgroundImage:
-                                  myProfileController.profilePic.value != null
+                                  myProfileController.profilePic.value != "기본이미지 Url"
                                       ? NetworkImage(
-                                          'https://stickershop.line-scdn.net/stickershop/v1/product/855/LINEStorePC/main.png;compress=true')
+                                              myProfileController.profilePic.value)
                                       : AssetImage(
                                               "assets/images/defaultProfile.png")
                                           as ImageProvider),
@@ -261,9 +255,9 @@ class myPage extends StatelessWidget {
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text('와플대학교'),
+                                  Text(myProfileController.university.value),
                                   Text('/'),
-                                  Text('누텔라딸기과')
+                                  Text(myProfileController.major.value)
                                 ],
                               ),
                             ],
@@ -341,22 +335,26 @@ class myPage extends StatelessWidget {
                                         ),
                                       ),
                               )
-                            : TextFormField(
-                                controller: _introduction,
-                                maxLength: 100,
-                                maxLines: 2,
-                                autofocus: true,
-                                cursorColor: Palette.main,
-                                style: CommonText.BodyS,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  isDense: true,
-                                  counterText: '',
-                                  contentPadding: EdgeInsets.only(top: 0),
-                                  hintText: myProfileController.bio.value != ''
-                                      ? myProfileController.bio.value
-                                      : '다른 친구들에게 자신을 소개해보세요',
-                                  hintStyle: CommonText.BodyMediumGray,
+                            : Obx(
+                                () => TextFormField(
+                                  controller: _introduction
+                                    ..text = myProfileController.bio.value,
+                                  maxLength: 100,
+                                  maxLines: 2,
+                                  autofocus: true,
+                                  cursorColor: Palette.main,
+                                  style: CommonText.BodyS,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                    counterText: '',
+                                    contentPadding: EdgeInsets.only(top: 0),
+                                    hintText:
+                                        myProfileController.bio.value != ''
+                                            ? myProfileController.bio.value
+                                            : '다른 친구들에게 자신을 소개해보세요',
+                                    hintStyle: CommonText.BodyMediumGray,
+                                  ),
                                 ),
                               ),
                       ),
@@ -367,7 +365,9 @@ class myPage extends StatelessWidget {
                       child: ElevatedButton(
                         child: Obx(
                           () => Text(
-                            !myProfileController.bioBtn.value ? "수정" : "완료",
+                            myProfileController.bioBtn.value == false
+                                ? "수정"
+                                : "완료",
                             style: !myProfileController.bioBtn.value
                                 ? CommonText.BodyXS
                                 : CommonText.BodyXSmallWhite,
@@ -377,8 +377,10 @@ class myPage extends StatelessWidget {
                           if (!myProfileController.bioBtn.value) {
                             myProfileController.bioBtn.value = true;
                           } else {
-                            await myProfileController.changeUserIntroduction(
-                                Bio(userIntroduction: _introduction.text));
+                            if (_introduction.text.isNotEmpty) {
+                              await myProfileController.changeUserIntroduction(
+                                  Bio(userIntroduction: _introduction.text));
+                            }
                             myProfileController.bioBtn.value = false;
                           }
                         },

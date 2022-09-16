@@ -15,6 +15,7 @@ import 'package:waggly/widgets/index.dart';
 import 'package:waggly/controller/post/post_controller.dart';
 import 'package:waggly/model/post/post.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 PageRouteWithAnimation sign = PageRouteWithAnimation(SignInScreen());
 List<dynamic> groupChatItem = [
@@ -622,7 +623,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
             backgroundColor: Colors.white,
             title: Text(
               '와글리',
-              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700, color: Colors.black),
+              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w800, color: Colors.black),
             ),
             actions: <Widget>[
               signInController.checkLoggedIn().value == true

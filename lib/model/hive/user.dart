@@ -7,7 +7,7 @@ class User {
   @HiveField(0)
   final int? id;
   @HiveField(1)
-  final String? nickName;
+  String? nickName;
   @HiveField(2)
   final String? university;
   @HiveField(3)
@@ -17,7 +17,7 @@ class User {
   @HiveField(5)
   final String? gender;
   @HiveField(6)
-  final String? profileImg;
+  String? profileImg;
   @HiveField(7)
   final String? introduction;
   @HiveField(8)
@@ -70,5 +70,13 @@ class User {
       profileImg: dto.datas['profileImg'],
       introduction: dto.datas['introduction'],
     );
+  }
+
+  void editUserNickName(String nickName){
+    this.nickName = nickName;
+  }
+
+  void editUserProfileImg(String profileImg){
+    this.profileImg = profileImg;
   }
 }

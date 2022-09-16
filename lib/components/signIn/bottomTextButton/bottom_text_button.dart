@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:waggly/screens/sign_up.dart';
 import 'package:waggly/screens/password.dart';
 import 'package:waggly/widgets/index.dart';
@@ -39,7 +40,7 @@ class _BottomTextButtonState extends State<BottomTextButton> {
         ),
         TextButton(
             onPressed: () {
-              Navigator.of(context).push(password.slideRitghtToLeft());
+              Get.toNamed('/findPassword');
             },
             child: Text(
               '비밀번호 찾기',
