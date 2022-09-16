@@ -1,22 +1,24 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-
-// const host = "http://54.180.108.210:8080";
-const host = "http://192.168.10.16:8080";
 
 class SignUpProvider extends GetConnect {
   Future<Response> signUp(Map<String, dynamic> data) => post(
-        "$host/user/signup",
+        "${dotenv.get('BASE_URL')}/user/signup",
         data,
       );
 
   Future<Response> sendEmailForVerify(Map<String, dynamic> data) => post(
-        "$host/user/email",
+        "${dotenv.get('BASE_URL')}/user/email",
         data,
       );
 
   Future<Response> verifyEmail(Map<String, dynamic> data) => post(
-        "$host/user/email/certification",
+        "${dotenv.get('BASE_URL')}/user/email/certification",
+        data,
+      );
+
+  Future<Response> checkDuplicateNickname(Map<String, dynamic> data) => post(
+        "${dotenv.get('BASE_URL')}/user/nickname",
         data,
       );
 }
-

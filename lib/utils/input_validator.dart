@@ -11,3 +11,13 @@ String validateEmail(String? value) {
     return "";
   }
 }
+
+String validateClassNumber(String? value) {
+  if (value!.isEmpty) {
+    return "학번을 입력해주세요.";
+  } else if (!matches(value, r'[0-9]{2,2}$')) {
+    return "학번을 두 자리로 입력해주세요.(2022학번 = 22)";
+  } else {
+    return "";
+  }
+}

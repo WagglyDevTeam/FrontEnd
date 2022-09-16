@@ -3,6 +3,7 @@ import 'package:waggly/components/Post/post_detail_screen.dart';
 import 'package:waggly/widgets/index.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
+import 'package:get/get.dart';
 
 class CommentContext extends StatelessWidget {
   final postId;
@@ -23,10 +24,8 @@ class CommentContext extends StatelessWidget {
   }) : super(key: key);
 
   Widget build(BuildContext context) {
-    PageRouteWithAnimation detail =
-        PageRouteWithAnimation(PostDetail(postId: postId));
     return GestureDetector(
-        onTap: () => Navigator.of(context).push(detail.slideLeftToRight()),
+        onTap: () => Get.toNamed("/postDetail/$postId"),
         child: Column(
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
