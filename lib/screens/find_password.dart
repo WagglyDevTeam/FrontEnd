@@ -23,14 +23,14 @@ TextEditingController _passwordInput = TextEditingController();
 TextEditingController _passwordConfirmInput = TextEditingController();
 TextEditingController _nicknameInput = TextEditingController();
 
-class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+class FindPasswordScreen extends StatefulWidget {
+  const FindPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<FindPasswordScreen> createState() => _FindPasswordScreenState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _FindPasswordScreenState extends State<FindPasswordScreen> {
   var steps = 0;
 
   handleClick(x) {
@@ -41,9 +41,7 @@ class _SignUpState extends State<SignUp> {
 
   @override
   initState() {
-    super.initState();
     Get.put(SignUpController());
-    Get.put(MajorController());
     _emailInput.text = '';
     _certiNumberInput.text = '';
     _universityInput.text = '';
@@ -52,12 +50,12 @@ class _SignUpState extends State<SignUp> {
     _passwordInput.text = '';
     _passwordConfirmInput.text = '';
     _nicknameInput.text = '';
+    super.initState();
   }
 
   @override
   void dispose() {
     Get.delete<SignUpController>();
-    Get.delete<MajorController>();
     super.dispose();
   }
 
@@ -156,7 +154,7 @@ class Title extends StatelessWidget {
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.fromLTRB(18.w, 0.h, 0.w, 0.h),
         child: Text(
-          '회원가입',
+          '비밀번호 찾기',
           style: TextStyle(color: Color(0xff000000), fontWeight: FontWeight.w700, fontSize: 20.sp),
         ));
   }
@@ -208,7 +206,7 @@ class _StepState extends State<Step> {
                   height: 22.h,
                   margin: EdgeInsets.fromLTRB(18.w, 8.h, 0.w, 0.h),
                   child: Text(
-                    '학교 인증',
+                    '아이디 입력',
                     style: TextStyle(
                       fontSize: widget.steps == 0 ? 16.sp : 10.sp,
                       fontWeight: widget.steps == 0 ? FontWeight.w700 : FontWeight.w400,
@@ -218,7 +216,7 @@ class _StepState extends State<Step> {
                 ),
               ],
             ),
-            flex: widget.steps == 0 ? 6 : 2,
+            flex: widget.steps == 0 ? 6 : 4,
           ),
           Flexible(
             child: Column(
@@ -250,7 +248,7 @@ class _StepState extends State<Step> {
                   height: 22.h,
                   margin: EdgeInsets.fromLTRB(0.w, 8.h, 0.w, 0.h),
                   child: Text(
-                    '학교 정보',
+                    '새로운 비밀번호 입력',
                     style: TextStyle(
                       fontSize: widget.steps == 1 ? 16.sp : 10.sp,
                       fontWeight: widget.steps == 1 ? FontWeight.w700 : FontWeight.w400,
@@ -260,49 +258,7 @@ class _StepState extends State<Step> {
                 ),
               ],
             ),
-            flex: widget.steps == 1 ? 6 : 2,
-          ),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.fromLTRB(2.w, 0.h, 18.w, 0.h),
-                    padding: EdgeInsets.fromLTRB(0.w, 8.h, 0.w, 8.h),
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                      color: widget.steps == 2 ? Color(0xffB863FB) : Color(0xffE8E8E8),
-                      width: 2.w,
-                    ))),
-                    child: Container(
-                        alignment: Alignment.center,
-                        width: 16.w,
-                        height: 16.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: widget.steps == 2 ? Color(0xffB863FB) : Color(0xffE8E8E8),
-                        ),
-                        child: Text(
-                          '3',
-                          style: TextStyle(color: widget.steps == 2 ? Color(0xffFFFFFF) : Color(0xff959595)),
-                        ))),
-                Container(
-                  height: 22.h,
-                  margin: EdgeInsets.fromLTRB(0.w, 8.h, 0.w, 0.h),
-                  child: Text(
-                    '아이디 생성',
-                    style: TextStyle(
-                      fontSize: widget.steps == 2 ? 16.sp : 10.sp,
-                      fontWeight: widget.steps == 2 ? FontWeight.w700 : FontWeight.w400,
-                      color: widget.steps == 2 ? Color(0xff2B173B) : Color(0xff959595),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            flex: widget.steps == 2 ? 6 : 2,
+            flex: widget.steps == 1 ? 6 : 4,
           ),
         ],
       ),
@@ -369,33 +325,7 @@ class _InputState extends State<Input> {
                 children: [
                   RenderTextFormField(
                     mode: 'withLabel',
-                    label: '학교',
-                    placeholder: '학교 입력',
-                    controller: _universityInput,
-                  ),
-                  RenderTextFormField(
-                    mode: 'withLabel',
-                    label: '학번',
-                    placeholder: '학번 입력',
-                    controller: _classNumberInput,
-                  ),
-                  RenderTextFormField(
-                    mode: 'withButtonAndLabel',
-                    label: '학과',
-                    placeholder: '학과 검색',
-                    buttonText: '검색하기',
-                    controller: _majorInput,
-                    onclick: () async {
-                      Get.to(() => MajorSearchScreen(controller: _majorInput, universityName: _universityInput.text));
-                    },
-                  ),
-                ],
-              )
-            : Column(
-                children: [
-                  RenderTextFormField(
-                    mode: 'withLabel',
-                    label: '비밀번호',
+                    label: '새로운 비밀번호',
                     placeholder: '영문, 숫자 포함 8자 이상',
                     controller: _passwordInput,
                   ),
@@ -406,18 +336,9 @@ class _InputState extends State<Input> {
                     password: _passwordInput.text,
                     controller: _passwordConfirmInput,
                   ),
-                  RenderTextFormField(
-                    mode: 'withButtonAndLabel',
-                    label: '닉네임',
-                    placeholder: '한글 또는 영문 6자 이하',
-                    buttonText: '중복확인',
-                    controller: _nicknameInput,
-                    onclick: () async {
-                      await nicknameValidateCheck(context, false);
-                    },
-                  ),
                 ],
-              );
+              )
+            : SizedBox();
   }
 }
 
@@ -449,16 +370,14 @@ class _ButtonsState extends State<Buttons> {
                 height: 36.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(26),
-                    color: _signUpController.emailInputEmpty.value == false &&
-                            _signUpController.certiNumberInputEmpty.value == false
+                    color: _signUpController.emailInputEmpty.value == false && _signUpController.certiNumberInputEmpty.value == false
                         ? Color(0xffB863FB)
                         : Color(0xffE8E8E8)),
                 child: TextButton(
                   child: Text(
                     '다음',
                     style: TextStyle(
-                      color: _signUpController.emailInputEmpty.value == false &&
-                              _signUpController.certiNumberInputEmpty.value == false
+                      color: _signUpController.emailInputEmpty.value == false && _signUpController.certiNumberInputEmpty.value == false
                           ? Color(0xffFFFFFF)
                           : Palette.mdGray,
                       fontSize: 12.sp,
@@ -466,8 +385,7 @@ class _ButtonsState extends State<Buttons> {
                     ),
                   ),
                   onPressed: () async {
-                    if (_signUpController.emailVerified == true &&
-                        _signUpController.emailValidateSuccess.value == true) {
+                    if (_signUpController.emailVerified == true && _signUpController.emailValidateSuccess.value == true) {
                       _signUpController.universityInputEmpty.value = false;
                       _universityInput.text = _signUpController.confirmedUniversityName;
                       widget.setSteps(1);
@@ -510,11 +428,10 @@ class _ButtonsState extends State<Buttons> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: 155.h,
-                    height: 36.w,
+                    width: 155.w,
+                    height: 36.h,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(26), color: Color.fromRGBO(218, 175, 254, 0.2)),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(26), color: Color.fromRGBO(218, 175, 254, 0.2)),
                     child: TextButton(
                       child: Text(
                         '이전',
@@ -536,84 +453,6 @@ class _ButtonsState extends State<Buttons> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(26),
-                        color: _signUpController.universityInputEmpty.value == false &&
-                                _signUpController.classNumberInputEmpty.value == false &&
-                                _signUpController.majorInputEmpty.value == false
-                            ? Color(0xffB863FB)
-                            : Color(0xffE8E8E8),
-                      ),
-                      child: TextButton(
-                        child: Text(
-                          '다음',
-                          style: TextStyle(
-                            color: _signUpController.universityInputEmpty.value == false &&
-                                    _signUpController.classNumberInputEmpty.value == false &&
-                                    _signUpController.majorInputEmpty.value == false
-                                ? Color(0xffFFFFFF)
-                                : Palette.mdGray,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        onPressed: () {
-                          if (_classNumberInput.text.isNumericOnly == false) {
-                            _signUpController.classNumberValidateSuccess.value = false;
-                            CustomSnackBar.messageSnackbar(
-                              context,
-                              "학번은 숫자만 입력 가능합니다.",
-                              EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
-                            );
-                          } else if (_classNumberInput.text.length != 2) {
-                            _signUpController.classNumberValidateSuccess.value = false;
-                            CustomSnackBar.messageSnackbar(
-                              context,
-                              "학번은 두 자리로 입력해주세요. (2022학번 : '22')",
-                              EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
-                            );
-                          } else {
-                            _signUpController.classNumberValidateSuccess.value = true;
-                            widget.setSteps(2);
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          if (widget.steps == 2)
-            SizedBox(
-              width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 155.w,
-                    height: 36.h,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(26), color: Color.fromRGBO(218, 175, 254, 0.2)),
-                    child: TextButton(
-                      child: Text(
-                        '이전',
-                        style: TextStyle(
-                          color: Color(0xffA558E0),
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      onPressed: () {
-                        widget.setSteps(1);
-                      },
-                    ),
-                  ),
-                  Obx(
-                    () => Container(
-                      width: 155.w,
-                      height: 36.h,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(26),
                         color: _signUpController.signUpSuccess.value == false
                             ? _signUpController.passwordInputEmpty.value == false &&
                                     _signUpController.passwordConfirmInputEmpty.value == false &&
@@ -624,7 +463,7 @@ class _ButtonsState extends State<Buttons> {
                       ),
                       child: TextButton(
                         child: Text(
-                          '완료',
+                          '변경하기',
                           style: TextStyle(
                             color: _signUpController.signUpSuccess.value == false
                                 ? _signUpController.passwordInputEmpty.value == false &&
@@ -669,14 +508,8 @@ class _ButtonsState extends State<Buttons> {
                                   final nicknameValidateResult = await nicknameValidateCheck(context, true);
                                   if (nicknameValidateResult == true) {
                                     final result = await _signUpController.signUp(
-                                      SignUpRequestDto(
-                                          _emailInput.text,
-                                          _passwordInput.text,
-                                          _nicknameInput.text,
-                                          _universityInput.text,
-                                          _classNumberInput.text,
-                                          _signUpController.selectedMajor.id!,
-                                          'male'),
+                                      SignUpRequestDto(_emailInput.text, _passwordInput.text, _nicknameInput.text, _universityInput.text,
+                                          _classNumberInput.text, _signUpController.selectedMajor.id!, 'male'),
                                     );
                                     if (result.code == 201) {
                                       // 성공 시

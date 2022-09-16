@@ -1,14 +1,14 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/oh/Documents/flutter
-FLUTTER_APPLICATION_PATH=/Users/oh/Documents/Programming/frontend
+FLUTTER_ROOT=/Users/nine/Documents/Private/flutter
+FLUTTER_APPLICATION_PATH=/Users/nine/Documents/Private/flutter_study/frontend
 COCOAPODS_PARALLEL_CODE_SIGN=true
-FLUTTER_TARGET=/Users/oh/Documents/Programming/frontend/lib/main.dart
+FLUTTER_TARGET=/Users/nine/Documents/Private/flutter_study/frontend/lib/main.dart
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0
 FLUTTER_BUILD_NUMBER=1
-EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386 arm64
+EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386
 DART_DEFINES=Zmx1dHRlci5pbnNwZWN0b3Iuc3RydWN0dXJlZEVycm9ycz10cnVl,RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ==
 DART_OBFUSCATION=false
 TRACK_WIDGET_CREATION=true
 TREE_SHAKE_ICONS=false
-PACKAGE_CONFIG=/Users/oh/Documents/Programming/frontend/.dart_tool/package_config.json
+PACKAGE_CONFIG=/Users/nine/Documents/Private/flutter_study/frontend/.dart_tool/package_config.json
