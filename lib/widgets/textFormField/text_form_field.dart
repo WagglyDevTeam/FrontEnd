@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:searchfield/searchfield.dart';
 import 'package:waggly/controller/major/major_controller.dart';
 import 'package:waggly/controller/signUp/sign_up_controller.dart';
 import 'package:waggly/model/major/major.dart';
@@ -66,35 +65,33 @@ class RenderTextFormField extends StatelessWidget {
                 child: Row(
                   children: [
                     Flexible(
-                      child: TextFormField(
-                        readOnly: false,
-                        autofocus: true,
-                        controller: controller,
-                        decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: _signUpController.emailValidateSuccess.value == true
-                                      ? Color.fromRGBO(218, 175, 254, 1)
-                                      : Colors.red),
-                            ),
-                            enabledBorder: OutlineInputBorder(
+                      child: Obx(
+                        () => TextFormField(
+                          readOnly: false,
+                          autofocus: true,
+                          controller: controller,
+                          decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
+                              focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: _signUpController.emailValidateSuccess.value == true
-                                        ? Color.fromRGBO(218, 175, 254, 0.5)
-                                        : Colors.red),
-                                borderRadius: BorderRadius.circular(4)),
-                            hintText: placeholder,
-                            hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
-                        onChanged: (val) {
-                          if (controller.text.isEmpty == true) {
-                            _signUpController.emailInputEmpty.value = true;
-                          } else if (controller.text.isEmpty == false) {
-                            _signUpController.emailInputEmpty.value = false;
-                          }
-                        },
-                        onSaved: (val) {},
+                                    color: _signUpController.emailValidateSuccess.value == true ? Color.fromRGBO(218, 175, 254, 1) : Colors.red),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: _signUpController.emailValidateSuccess.value == true ? Color.fromRGBO(218, 175, 254, 0.5) : Colors.red),
+                                  borderRadius: BorderRadius.circular(4)),
+                              hintText: placeholder,
+                              hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
+                          onChanged: (val) {
+                            if (controller.text.isEmpty == true) {
+                              _signUpController.emailInputEmpty.value = true;
+                            } else if (controller.text.isEmpty == false) {
+                              _signUpController.emailInputEmpty.value = false;
+                            }
+                          },
+                          onSaved: (val) {},
+                        ),
                       ),
                     ),
                     Obx(
@@ -104,10 +101,8 @@ class RenderTextFormField extends StatelessWidget {
                         padding: EdgeInsets.fromLTRB(0.w, 3.h, 0.w, 3.h),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          border: Border.all(
-                              color: _signUpController.emailInputEmpty.value == false
-                                  ? Palette.main
-                                  : Color.fromRGBO(182, 182, 182, 1)),
+                          border:
+                              Border.all(color: _signUpController.emailInputEmpty.value == false ? Palette.main : Color.fromRGBO(182, 182, 182, 1)),
                         ),
                         child: Obx(
                           () => TextButton(
@@ -116,9 +111,7 @@ class RenderTextFormField extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w500,
-                                  color: _signUpController.emailInputEmpty.value == false
-                                      ? Palette.main
-                                      : Color.fromRGBO(182, 182, 182, 1)),
+                                  color: _signUpController.emailInputEmpty.value == false ? Palette.main : Color.fromRGBO(182, 182, 182, 1)),
                             ),
                             onPressed: () {
                               onclick();
@@ -316,15 +309,11 @@ class RenderTextFormField extends StatelessWidget {
                           contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: _signUpController.emailValidateSuccess.value == true
-                                    ? Color.fromRGBO(218, 175, 254, 1)
-                                    : Colors.red),
+                                color: _signUpController.emailValidateSuccess.value == true ? Color.fromRGBO(218, 175, 254, 1) : Colors.red),
                           ),
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color: _signUpController.emailValidateSuccess.value == true
-                                      ? Color.fromRGBO(218, 175, 254, 0.5)
-                                      : Colors.red),
+                                  color: _signUpController.emailValidateSuccess.value == true ? Color.fromRGBO(218, 175, 254, 0.5) : Colors.red),
                               borderRadius: BorderRadius.circular(4)),
                           hintText: placeholder,
                           hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
@@ -344,10 +333,7 @@ class RenderTextFormField extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(0.w, 3.h, 0.w, 3.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
-                      border: Border.all(
-                          color: _signUpController.emailInputEmpty.value == false
-                              ? Palette.main
-                              : Color.fromRGBO(182, 182, 182, 1)),
+                      border: Border.all(color: _signUpController.emailInputEmpty.value == false ? Palette.main : Color.fromRGBO(182, 182, 182, 1)),
                     ),
                     child: TextButton(
                       child: Text(
@@ -355,9 +341,7 @@ class RenderTextFormField extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w500,
-                            color: _signUpController.emailInputEmpty.value == false
-                                ? Palette.main
-                                : Color.fromRGBO(182, 182, 182, 1)),
+                            color: _signUpController.emailInputEmpty.value == false ? Palette.main : Color.fromRGBO(182, 182, 182, 1)),
                       ),
                       onPressed: () {
                         onclick();
@@ -376,7 +360,7 @@ class RenderTextFormField extends StatelessWidget {
     }
 
     if (mode == 'withLabel') {
-      if (label == '비밀번호') {
+      if (label == '비밀번호' || label == '새로운 비밀번호') {
         _signUpController.focus = FocusNode();
         _signUpController.focus.requestFocus();
       }
@@ -394,10 +378,8 @@ class RenderTextFormField extends StatelessWidget {
               ),
               Obx(
                 () => _signUpController.count.value != 60 && _signUpController.count.value > 0 && label == '인증번호'
-                    ? Text(
-                        "${(_signUpController.count.value / 60).floor()}:${parseTime(_signUpController.count.value)}",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 12.sp, color: Color.fromRGBO(149, 149, 149, 1)))
+                    ? Text("${(_signUpController.count.value / 60).floor()}:${parseTime(_signUpController.count.value)}",
+                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.sp, color: Color.fromRGBO(149, 149, 149, 1)))
                     : SizedBox(width: 0),
               ),
             ],
@@ -409,11 +391,11 @@ class RenderTextFormField extends StatelessWidget {
             height: 34.h,
             child: Obx(
               () => TextFormField(
-                focusNode: label == '비밀번호' ? _signUpController.focus : null,
-                autofocus: label == '비밀번호' || label == '학번' ? true : false,
+                focusNode: label == '비밀번호' || label == '새로운 비밀번호' ? _signUpController.focus : null,
+                autofocus: label == '비밀번호' || label == '학번' || label == '새로운 비밀번호' ? true : false,
                 readOnly: label == '학교' ? true : false,
                 controller: controller,
-                obscureText: placeholder == '비밀번호' || label == '비밀번호' || label == '비밀번호 확인' ? true : false,
+                obscureText: placeholder == '비밀번호' || label == '비밀번호' || label == '새로운 비밀번호' || label == '비밀번호 확인' ? true : false,
                 decoration: InputDecoration(
                     isDense: true,
                     contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
@@ -431,15 +413,19 @@ class RenderTextFormField extends StatelessWidget {
                                       ? _signUpController.passwordValidateSuccess.value == true
                                           ? Color.fromRGBO(218, 175, 254, 1)
                                           : Colors.red
-                                      : label == '비밀번호 확인'
-                                          ? _signUpController.passwordConfirmValidateSuccess.value == true
+                                      : label == '새로운 비밀번호'
+                                          ? _signUpController.passwordValidateSuccess.value == true
                                               ? Color.fromRGBO(218, 175, 254, 1)
                                               : Colors.red
-                                          : label == '학교'
-                                              ? _signUpController.universityInputEmpty.value == false
+                                          : label == '비밀번호 확인'
+                                              ? _signUpController.passwordConfirmValidateSuccess.value == true
                                                   ? Color.fromRGBO(218, 175, 254, 1)
                                                   : Colors.red
-                                              : Color.fromRGBO(218, 175, 254, 1)),
+                                              : label == '학교'
+                                                  ? _signUpController.universityInputEmpty.value == false
+                                                      ? Color.fromRGBO(218, 175, 254, 1)
+                                                      : Colors.red
+                                                  : Color.fromRGBO(218, 175, 254, 1)),
                     ),
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
@@ -455,21 +441,24 @@ class RenderTextFormField extends StatelessWidget {
                                       ? _signUpController.passwordValidateSuccess.value == true
                                           ? Color.fromRGBO(218, 175, 254, 1)
                                           : Colors.red.shade200
-                                      : label == '비밀번호 확인'
-                                          ? _signUpController.passwordConfirmValidateSuccess.value == true
+                                      : label == '새로운 비밀번호'
+                                          ? _signUpController.passwordValidateSuccess.value == true
                                               ? Color.fromRGBO(218, 175, 254, 1)
                                               : Colors.red.shade200
-                                          : label == '학교'
-                                              ? Color.fromRGBO(218, 175, 254, 1)
-                                              : Colors.red.shade200,
+                                          : label == '비밀번호 확인'
+                                              ? _signUpController.passwordConfirmValidateSuccess.value == true
+                                                  ? Color.fromRGBO(218, 175, 254, 1)
+                                                  : Colors.red.shade200
+                                              : label == '학교'
+                                                  ? Color.fromRGBO(218, 175, 254, 1)
+                                                  : Colors.red.shade200,
                         ),
                         borderRadius: BorderRadius.circular(4)),
                     hintText: label == '학교' ? null : placeholder,
                     hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
                 onTap: () {
                   if (label == '비밀번호 확인') {
-                    if (_signUpController.passwordConfirmInputValue.value !=
-                        _signUpController.passwordInputValue.value) {
+                    if (_signUpController.passwordConfirmInputValue.value != _signUpController.passwordInputValue.value) {
                       _signUpController.passwordConfirmValidateSuccess.value = false;
                     } else {
                       _signUpController.passwordConfirmValidateSuccess.value = true;
@@ -483,7 +472,7 @@ class RenderTextFormField extends StatelessWidget {
                     } else {
                       _signUpController.certiNumberInputEmpty.value = false;
                     }
-                  } else if (label == '비밀번호') {
+                  } else if (label == '비밀번호' || label == '새로운 비밀번호') {
                     if (val.isEmpty == true) {
                       _signUpController.passwordInputEmpty.value = true;
                     } else {

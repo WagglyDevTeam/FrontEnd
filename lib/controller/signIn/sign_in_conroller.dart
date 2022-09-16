@@ -16,6 +16,7 @@ class SignInController extends GetxController {
 
   Future<bool> signIn(SignInRequestDto signInRequestDto) async {
     Response response = await _signInProvider.signIn(signInRequestDto);
+    print(response.body);
 
     if (response.statusCode == 200) {
       dynamic body = response.body;
@@ -42,19 +43,16 @@ class SignInController extends GetxController {
     String? token = box.get('user')?.jwtToken;
 
     if (token == null) {
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => isLoggedIn.value = false);
+      WidgetsBinding.instance.addPostFrameCallback((_) => isLoggedIn.value = false);
     } else {
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => isLoggedIn.value = true);
+      WidgetsBinding.instance.addPostFrameCallback((_) => isLoggedIn.value = true);
     }
     return isLoggedIn;
   }
 
   String? getToken() {
     String? token;
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) async => token = box.get('user')?.jwtToken);
+    WidgetsBinding.instance.addPostFrameCallback((_) async => token = box.get('user')?.jwtToken);
 
     return token;
   }
