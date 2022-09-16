@@ -104,15 +104,15 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
-			remoteInfo = Flutter;
+			remoteGlobalIDString = 0F87638CDABF68BA05567B371A176C3A;
+			remoteInfo = path_provider_ios;
 		};
 		F4CE28C45C23DEF78DA5EE2F24591042 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
-			remoteInfo = Flutter;
+			remoteGlobalIDString = 15490FE8E4E35B20C7777FA3316A00AA;
+			remoteInfo = flutter_secure_storage;
 		};
 		FEC24E828BF5A1EE225DA3E3A0D7DEB2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -380,8 +380,8 @@
 			children = (
 				A710BD981A0855DDF4E47FC304519B4A /* plugins */,
 			);
-			name = .symlinks;
-			path = .symlinks;
+			name = frontend;
+			path = frontend;
 			sourceTree = "<group>";
 		};
 		2E53985C1D7310EB7088FED9B8FBCBDB /* flutter_keyboard_visibility */ = {
@@ -426,8 +426,7 @@
 			children = (
 				2C97492087B60CA503C79FE05FD6BDF3 /* .symlinks */,
 			);
-			name = ios;
-			path = ios;
+			name = Pod;
 			sourceTree = "<group>";
 		};
 		3688A718BC17CA2700BE4985C6D688B3 /* ios */ = {
@@ -758,8 +757,8 @@
 				2E13679C9497CF9F76F7BC23404972FD /* FlutterKeyboardVisibilityPlugin.h */,
 				D24F6102407EE24C03BD3A1A2B2BD69E /* FlutterKeyboardVisibilityPlugin.m */,
 			);
-			name = Classes;
-			path = Classes;
+			name = ..;
+			path = "../../../../../../../development/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_ios-0.8.5+6/ios";
 			sourceTree = "<group>";
 		};
 		A9E2EEF4D967278CDE3E0AC8C66D4A0E /* flutter_secure_storage */ = {
@@ -882,7 +881,7 @@
 			path = flutter_study;
 			sourceTree = "<group>";
 		};
-		CF1408CF629C7361332E53B88F7BD30C = {
+		B7214ECB30EF23AE3C4D9CE0156BB6E0 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
@@ -891,6 +890,8 @@
 				6B8EFCEA0D8F03EF14A85C80623E31C6 /* Products */,
 				791C6E4B424AF06279F8918FA67B8ED6 /* Targets Support Files */,
 			);
+			name = Classes;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		CF6F8D8B34AF6A0CFD66ACB5D74C0F35 /* .. */ = {
@@ -929,8 +930,8 @@
 				0CCC7F13ECF8D1C218C9FA61F3239C56 /* messages.g.h */,
 				1016825B1F0976BF4D63FD54ACF4CFDD /* messages.g.m */,
 			);
-			name = Classes;
-			path = Classes;
+			name = ios;
+			path = ios;
 			sourceTree = "<group>";
 		};
 		D18759CE74E3F64E5F5388896BD0BF46 /* .. */ = {
@@ -1068,7 +1069,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B166AA1364864FBA5FDA443CD5ADAE7 /* flutter_secure_storage-umbrella.h in Headers */,
-				ECFD51800AA3C39BE8452BC8976DDC67 /* FlutterSecureStoragePlugin.h in Headers */,
+				C2C34FC3553818A4A85273E56EB95FC3 /* FlutterSecureStoragePlugin.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1099,8 +1100,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7A0F538B6A0D591E8840BAB6C7D1717 /* FLTPathProviderPlugin.h in Headers */,
-				BD8EB7E162BC6CB7412629D44F777942 /* messages.g.h in Headers */,
+				5EC7F78627F9EC66C14E9B1276B5BFE9 /* FLTPathProviderPlugin.h in Headers */,
+				8FEAC807F92F45E7144F9AA13381764C /* messages.g.h in Headers */,
 				6EB060B4ED587D9677E83D1CCC6CB6ED /* path_provider_ios-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1213,8 +1214,8 @@
 		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastSwiftUpdateCheck = 1300;
+				LastUpgradeCheck = 1300;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 10.0";
@@ -1297,7 +1298,7 @@
 				222CFD3900E37F86E2EC432966C96CDA /* FLTImagePickerPlugin.m in Sources */,
 				80281E41C4092717001C660A1F70CE52 /* FLTPHPickerSaveImageToPathOperation.m in Sources */,
 				1E8769B3BC3B94CF3D1688BA96CF6FBC /* image_picker_ios-dummy.m in Sources */,
-				41B7704900494ED7CDF3966F1EC4CAE6 /* messages.g.m in Sources */,
+				41B7704900494ED7CDF3966F1EC4CAE6 /* messages.g.m in Sources */
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1314,7 +1315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57018FC850E003F9F09B9503C3AA7A06 /* flutter_secure_storage-dummy.m in Sources */,
-				57D5EB511A2DA32B621EDFD2BC129094 /* FlutterSecureStoragePlugin.m in Sources */,
+				18F7C78C331C1BD6E3D0033FF0BC27D7 /* FlutterSecureStoragePlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1322,8 +1323,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC25820B90960F094EBB88EF95299634 /* FLTPathProviderPlugin.m in Sources */,
-				FFD8EA4B4953285B255FE26413B9DDCE /* messages.g.m in Sources */,
+				827EA1961FB984E3E02293EA1B2F1548 /* FLTPathProviderPlugin.m in Sources */,
+				382439B088AA2962E60150A3FC2A1A56 /* messages.g.m in Sources */,
 				836B80C6856835B9D8D040D43713FEA9 /* path_provider_ios-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
