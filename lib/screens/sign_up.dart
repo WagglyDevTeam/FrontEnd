@@ -65,15 +65,25 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TopBar(),
-            SignUpInput(
-              steps: steps,
-              setSteps: handleClick,
+      body: GestureDetector(
+        onTap: () {
+          FocusNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                TopBar(),
+                SignUpInput(
+                  steps: steps,
+                  setSteps: handleClick,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

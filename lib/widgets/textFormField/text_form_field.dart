@@ -75,11 +75,15 @@ class RenderTextFormField extends StatelessWidget {
                               contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: _signUpController.emailValidateSuccess.value == true ? Color.fromRGBO(218, 175, 254, 1) : Colors.red),
+                                    color: _signUpController.emailValidateSuccess.value == true
+                                        ? Color.fromRGBO(218, 175, 254, 1)
+                                        : Colors.red),
                               ),
                               enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: _signUpController.emailValidateSuccess.value == true ? Color.fromRGBO(218, 175, 254, 0.5) : Colors.red),
+                                      color: _signUpController.emailValidateSuccess.value == true
+                                          ? Color.fromRGBO(218, 175, 254, 0.5)
+                                          : Colors.red),
                                   borderRadius: BorderRadius.circular(4)),
                               hintText: placeholder,
                               hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
@@ -101,8 +105,10 @@ class RenderTextFormField extends StatelessWidget {
                         padding: EdgeInsets.fromLTRB(0.w, 3.h, 0.w, 3.h),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          border:
-                              Border.all(color: _signUpController.emailInputEmpty.value == false ? Palette.main : Color.fromRGBO(182, 182, 182, 1)),
+                          border: Border.all(
+                              color: _signUpController.emailInputEmpty.value == false
+                                  ? Palette.main
+                                  : Color.fromRGBO(182, 182, 182, 1)),
                         ),
                         child: Obx(
                           () => TextButton(
@@ -111,7 +117,9 @@ class RenderTextFormField extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w500,
-                                  color: _signUpController.emailInputEmpty.value == false ? Palette.main : Color.fromRGBO(182, 182, 182, 1)),
+                                  color: _signUpController.emailInputEmpty.value == false
+                                      ? Palette.main
+                                      : Color.fromRGBO(182, 182, 182, 1)),
                             ),
                             onPressed: () {
                               onclick();
@@ -309,11 +317,15 @@ class RenderTextFormField extends StatelessWidget {
                           contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: _signUpController.emailValidateSuccess.value == true ? Color.fromRGBO(218, 175, 254, 1) : Colors.red),
+                                color: _signUpController.emailValidateSuccess.value == true
+                                    ? Color.fromRGBO(218, 175, 254, 1)
+                                    : Colors.red),
                           ),
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color: _signUpController.emailValidateSuccess.value == true ? Color.fromRGBO(218, 175, 254, 0.5) : Colors.red),
+                                  color: _signUpController.emailValidateSuccess.value == true
+                                      ? Color.fromRGBO(218, 175, 254, 0.5)
+                                      : Colors.red),
                               borderRadius: BorderRadius.circular(4)),
                           hintText: placeholder,
                           hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
@@ -333,7 +345,10 @@ class RenderTextFormField extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(0.w, 3.h, 0.w, 3.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: _signUpController.emailInputEmpty.value == false ? Palette.main : Color.fromRGBO(182, 182, 182, 1)),
+                      border: Border.all(
+                          color: _signUpController.emailInputEmpty.value == false
+                              ? Palette.main
+                              : Color.fromRGBO(182, 182, 182, 1)),
                     ),
                     child: TextButton(
                       child: Text(
@@ -341,7 +356,9 @@ class RenderTextFormField extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w500,
-                            color: _signUpController.emailInputEmpty.value == false ? Palette.main : Color.fromRGBO(182, 182, 182, 1)),
+                            color: _signUpController.emailInputEmpty.value == false
+                                ? Palette.main
+                                : Color.fromRGBO(182, 182, 182, 1)),
                       ),
                       onPressed: () {
                         onclick();
@@ -378,8 +395,10 @@ class RenderTextFormField extends StatelessWidget {
               ),
               Obx(
                 () => _signUpController.count.value != 60 && _signUpController.count.value > 0 && label == '인증번호'
-                    ? Text("${(_signUpController.count.value / 60).floor()}:${parseTime(_signUpController.count.value)}",
-                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.sp, color: Color.fromRGBO(149, 149, 149, 1)))
+                    ? Text(
+                        "${(_signUpController.count.value / 60).floor()}:${parseTime(_signUpController.count.value)}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 12.sp, color: Color.fromRGBO(149, 149, 149, 1)))
                     : SizedBox(width: 0),
               ),
             ],
@@ -395,7 +414,9 @@ class RenderTextFormField extends StatelessWidget {
                 autofocus: label == '비밀번호' || label == '학번' || label == '새로운 비밀번호' ? true : false,
                 readOnly: label == '학교' ? true : false,
                 controller: controller,
-                obscureText: placeholder == '비밀번호' || label == '비밀번호' || label == '새로운 비밀번호' || label == '비밀번호 확인' ? true : false,
+                obscureText: placeholder == '비밀번호' || label == '비밀번호' || label == '새로운 비밀번호' || label == '비밀번호 확인'
+                    ? true
+                    : false,
                 decoration: InputDecoration(
                     isDense: true,
                     contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
@@ -458,7 +479,8 @@ class RenderTextFormField extends StatelessWidget {
                     hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
                 onTap: () {
                   if (label == '비밀번호 확인') {
-                    if (_signUpController.passwordConfirmInputValue.value != _signUpController.passwordInputValue.value) {
+                    if (_signUpController.passwordConfirmInputValue.value !=
+                        _signUpController.passwordInputValue.value) {
                       _signUpController.passwordConfirmValidateSuccess.value = false;
                     } else {
                       _signUpController.passwordConfirmValidateSuccess.value = true;
@@ -595,6 +617,7 @@ class RenderTextFormField extends StatelessWidget {
         Padding(
           padding: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 0.h),
           child: TextFormField(
+            obscureText: placeholder == '비밀번호' ? true : false,
             autofocus: label == '학교' || label == '비밀번호' ? true : false,
             controller: controller,
             decoration: InputDecoration(
