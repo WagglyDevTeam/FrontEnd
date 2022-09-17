@@ -2,175 +2,27 @@ import "dart:ui";
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:skeletons/skeletons.dart';
 import 'package:waggly/components/Post/post_app_bar.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/utils/text_frame.dart';
+import '../controller/post/post_home.dart';
+import '../controller/signIn/sign_in_conroller.dart';
 import '../model/postCollege/dtos/post_college_dto.dart';
 import '../utils/colors.dart';
 
 class PostScreen extends StatelessWidget {
   PostScreen({Key? key}) : super(key: key);
 
-  PostCollegeData myCollege = PostCollegeData.fromJson({
-    "postCollegeName": "예술계열",
-    "postColoegeId": "art",
-    "postList": [
-      {
-        "authorMajor": "스포츠레저학과",
-        "postTitle": "전공 수업 질문 안녕하아아 아아아아아아",
-        "postCreatedAt": "20210101",
-        "postId": 563
-      },
-      {
-        "authorMajor": "시각디자인과",
-        "postTitle": "다들 노트북 어떤 제품 많이 써?",
-        "postCreatedAt": "20210101",
-        "postId": 12
-      },
-      {
-        "authorMajor": "기악과",
-        "postTitle": "악기 브랜드 뭐써?",
-        "postCreatedAt": "20220301",
-        "postId": 6
-      },
-      {
-        "authorMajor": "서양화과",
-        "postTitle": "다들 학교 커리큘럼",
-        "postCreatedAt": "20220303",
-        "postId": 36
-      },
-      {
-        "authorMajor": "공업디자인과",
-        "postTitle": "아와 과제 개 많아",
-        "postCreatedAt": "20220320",
-        "postId": 1556
-      }
-    ]
-  });
-
-  List<PostCollegeData> otherCollege = [
-    PostCollegeData.fromJson({
-      "postCollegeName": "자연계열",
-      "postColoegeId": "nature_science",
-      "postList": [
-        {
-          "authorMajor": "스포츠레저학과1",
-          "postTitle": "전공 수업 질문 안녕하아아 아아아아아아",
-          "postCreatedAt": "20210101",
-          "postId": 563
-        },
-        {
-          "authorMajor": "시각디자인과1",
-          "postTitle": "다들 노트북 어떤 제품 많이 써?",
-          "postCreatedAt": "20210101",
-          "postId": 12
-        },
-        {
-          "authorMajor": "기악과1",
-          "postTitle": "악기 브랜드 뭐써?",
-          "postCreatedAt": "20220301",
-          "postId": 6
-        },
-        {
-          "authorMajor": "서양화과1",
-          "postTitle": "다들 학교 커리큘럼",
-          "postCreatedAt": "20220303",
-          "postId": 36
-        },
-        {
-          "authorMajor": "공업디자인과1",
-          "postTitle": "아와 과제 개 많아",
-          "postCreatedAt": "20220320",
-          "postId": 1556
-        }
-      ]
-    }),
-    PostCollegeData.fromJson({
-      "postCollegeName": "공과계열",
-      "postColoegeId": "engineering_science",
-      "postList": [
-        {
-          "authorMajor": "스포츠레저학과2",
-          "postTitle": "전공 수업 질문 안녕하아아 아아아아아아",
-          "postCreatedAt": "20210101",
-          "postId": 563
-        },
-        {
-          "authorMajor": "시각디자인과2",
-          "postTitle": "다들 노트북 어떤 제품 많이 써?",
-          "postCreatedAt": "20210101",
-          "postId": 12
-        },
-        {
-          "authorMajor": "기악과3",
-          "postTitle": "악기 브랜드 뭐써?",
-          "postCreatedAt": "20220301",
-          "postId": 6
-        },
-        {
-          "authorMajor": "서양화과1",
-          "postTitle": "다들 학교 커리큘럼",
-          "postCreatedAt": "20220303",
-          "postId": 36
-        },
-        {
-          "authorMajor": "공업디자인과1",
-          "postTitle": "아와 과제 개 많아",
-          "postCreatedAt": "20220320",
-          "postId": 1556
-        }
-      ]
-    }),
-    PostCollegeData.fromJson({
-      "postCollegeName": "인문계열",
-      "postColoegeId": "social",
-      "postList": [
-        {
-          "authorMajor": "스포츠레저학과1s",
-          "postTitle": "전공 수업 질문 안녕하아아 아아아아아아",
-          "postCreatedAt": "20210101",
-          "postId": 563
-        },
-        {
-          "authorMajor": "시각디자인과1s",
-          "postTitle": "다들 노트북 어떤 제품 많이 써?",
-          "postCreatedAt": "20210101",
-          "postId": 12
-        },
-        {
-          "authorMajor": "기악과1s",
-          "postTitle": "악기 브랜드 뭐써?",
-          "postCreatedAt": "20220301",
-          "postId": 6
-        },
-        {
-          "authorMajor": "서양화과1",
-          "postTitle": "다들 학교 커리큘럼",
-          "postCreatedAt": "20220303",
-          "postId": 36
-        },
-        {
-          "authorMajor": "공업디자인과1",
-          "postTitle": "아와 과제 개 많아",
-          "postCreatedAt": "20220320",
-          "postId": 1556
-        }
-      ]
-    })
-  ];
-
   @override
   Widget build(BuildContext context) {
     bool? on = false;
     bool? off = true;
-    PostCollegeData myCollegeData = myCollege;
-    List<PostCollegeData>? otherCollegeData =
-    otherCollege ;
-    String? myCollegeName = myCollegeData.postCollegeName;
-    String? myCollegeId = myCollegeData.postColoegeId;
-    List<PostListData>? myCollegepreview = myCollegeData.postList;
-    Status? page = Status.main;
+    Status? page = Status.login;
     String? postName = "게시판";
+
+    /// getx controller
+    final PostHomeController _postDetailX = Get.put(PostHomeController());
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -180,7 +32,7 @@ class PostScreen extends StatelessWidget {
         ),
         body: Container(
           padding:
-          EdgeInsets.only(left: 16.w, right: 16.w, top: 6.h, bottom: 6.h),
+              EdgeInsets.only(left: 16.w, right: 16.w, top: 6.h, bottom: 6.h),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
@@ -188,19 +40,20 @@ class PostScreen extends StatelessWidget {
                 SizedBox(height: 10.h),
                 Row(
                   children: [
-                    Text(myCollegeName, style: CommonText.TitleS),
+                    Text("내 계열 페이지", style: CommonText.TitleS),
                     SizedBox(width: 6.w),
                     Icon(Icons.auto_awesome, color: Palette.main, size: 17),
                   ],
                 ),
                 SizedBox(height: 10.h),
-                PostCard(
-                  datas: myCollegepreview,
-                  postName: myCollegeName,
-                  collegeId: myCollegeId,
-                  on: on,
-                  page: page,
-                ),
+                Obx(() => PostCard(
+                      postList: _postDetailX.userCollegeData.value.posts,
+                      postName:
+                          _postDetailX.userCollegeData.value.collegeTypeName,
+                      collegeId: _postDetailX.userCollegeData.value.collegeType,
+                      on: on,
+                      page: page,
+                    )),
                 SizedBox(height: 20.h),
                 Row(
                   children: [
@@ -211,21 +64,26 @@ class PostScreen extends StatelessWidget {
                 SizedBox(height: 5.h),
                 SizedBox(
                   height: 220.h,
-                  child: PostDifferentList(widgetList: [
-                    for (var i = 0; i < otherCollegeData.length; i++)
-                      Row(
-                        children: [
-                          PostCard(
-                            datas: otherCollegeData[i].postList,
-                            postName: otherCollegeData[i].postCollegeName,
-                            collegeId: otherCollegeData[i].postColoegeId,
-                            on: off,
-                            page: page,
-                          ),
-                          SizedBox(width: 20.w)
-                        ],
-                      )
-                  ]),
+                  child: Obx(() => PostDifferentList(widgetList: [
+                        for (var i = 0;
+                            i < _postDetailX.otherCollegeData.value.length;
+                            i++)
+                          Row(
+                            children: [
+                              Obx(() => PostCard(
+                                    postList: _postDetailX
+                                        .otherCollegeData.value[i].posts,
+                                    postName: _postDetailX.otherCollegeData
+                                        .value[i].collegeTypeName,
+                                    collegeId: _postDetailX
+                                        .otherCollegeData.value[i].collegeType,
+                                    on: off,
+                                    page: page,
+                                  )),
+                              SizedBox(width: 20.w)
+                            ],
+                          )
+                      ])),
                 )
               ]),
         ));
@@ -233,14 +91,16 @@ class PostScreen extends StatelessWidget {
 }
 
 class PostCard extends StatelessWidget {
-  List<PostListData>? datas;
+  SignInController signInController = Get.put(SignInController());
+  double bottomAppbarHeight = 55.0;
+  List<PostListData>? postList;
   String? postName;
   Status? page;
   String? collegeId;
   final on;
   PostCard({
     Key? key,
-    @required this.datas,
+    @required this.postList,
     @required this.postName,
     @required this.on,
     @required this.page,
@@ -251,17 +111,35 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          if (page == 'login') {
-            Get.toNamed("/postCollege/$collegeId");
-          } else {
-            Get.toNamed("/postCollege/$collegeId");
-          }
+          signInController.checkLoggedIn().value == true
+              ? ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      "로그인이 필요합니다.",
+                      textAlign: TextAlign.center,
+                    ),
+                    duration: Duration(milliseconds: 1000),
+                    behavior: SnackBarBehavior.floating,
+                    margin: EdgeInsets.only(
+                        bottom: bottomAppbarHeight + 20,
+                        left: 50.w,
+                        right: 50.w),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)),
+                  ),
+                )
+              // : Get.toNamed("/postCollege", arguments: {
+              //     "collegeId": "$collegeId",
+              //     "collegeName": "$postName"
+              //   });
+              : Get.toNamed(
+                  "/postCollege/param?collegeId=$collegeId&collegeName=$postName");
         },
         child: Container(
           height: 220.h,
           width: 250.w,
           padding:
-          EdgeInsets.only(left: 15.w, top: 12.h, right: 15.h, bottom: 12.w),
+              EdgeInsets.only(left: 15.w, top: 12.h, right: 15.h, bottom: 12.w),
           decoration: BoxDecoration(
               color: on ? Palette.paper : Colors.white,
               borderRadius: BorderRadius.circular(30.0),
@@ -279,16 +157,15 @@ class PostCard extends StatelessWidget {
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   padding: const EdgeInsets.all(5),
-                  itemCount: datas?.length,
+                  itemCount: postList?.length,
                   itemBuilder: (BuildContext context, int index) {
                     if (page == "login") {
                       return Stack(
                         children: [
                           ListItem(
-                              category: datas?[index].authorMajor,
-                              title: datas?[index].postTitle,
-                              date: datas?[index].postCreatedAt,
-                              id: datas?[index].postId),
+                              category: postList?[index].majorName,
+                              title: postList?[index].postTitle,
+                              id: postList?[index].postId),
                           Positioned(
                               top: 1,
                               left: 1,
@@ -297,7 +174,7 @@ class PostCard extends StatelessWidget {
                                 width: 200,
                                 child: BackdropFilter(
                                   filter:
-                                  ImageFilter.blur(sigmaX: 3, sigmaY: 2),
+                                      ImageFilter.blur(sigmaX: 3, sigmaY: 2),
                                   child: Container(
                                       color: Colors.white.withOpacity(0.1)),
                                 ),
@@ -311,10 +188,9 @@ class PostCard extends StatelessWidget {
                       );
                     } else {
                       return ListItem(
-                          category: datas?[index].authorMajor,
-                          title: datas?[index].postTitle,
-                          date: datas?[index].postCreatedAt,
-                          id: datas?[index].postId);
+                          category: postList?[index].majorName,
+                          title: postList?[index].postTitle,
+                          id: postList?[index].postId);
                     }
                   },
                 ),
@@ -332,8 +208,8 @@ class PostCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: 100,
-                        width: 120,
+                        height: 100.h,
+                        width: 120.w,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -367,7 +243,7 @@ class PostCard extends StatelessWidget {
                         child: Icon(
                           Icons.play_arrow_rounded,
                           color: Palette.main,
-                          size: 40,
+                          size: 40.w,
                         ),
                       )
                     ]),
@@ -379,37 +255,39 @@ class PostCard extends StatelessWidget {
 }
 
 class ListItem extends StatelessWidget {
+  SignInController signInController = Get.put(SignInController());
   ListItem(
       {Key? key,
-        @required this.category,
-        @required this.title,
-        @required this.date,
-        @required this.id})
+      @required this.category,
+      @required this.title,
+      @required this.id})
       : super(key: key);
   final category;
   final title;
-  final date;
   final id;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 23.h,
-      padding: EdgeInsets.only(bottom: 3.h),
-      child: Row(children: [
-        Text(category, style: CommonText.BodyB),
-        SizedBox(width: 8.w),
-        Expanded(
-            flex: 2,
-            child: RichText(
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              strutStyle: StrutStyle(fontSize: 12.0.sp),
-              text: TextSpan(text: title, style: CommonText.BodyS),
-            )),
-        NewItem(),
-      ]),
-    );
+    return Skeleton(
+        isLoading: signInController.checkLoggedIn().value ? true : false,
+        skeleton: SkeletonParagraph(),
+        child: Container(
+          height: 23.h,
+          padding: EdgeInsets.only(bottom: 3.h),
+          child: Row(children: [
+            Text(category, style: CommonText.BodyB),
+            SizedBox(width: 8.w),
+            Expanded(
+                flex: 2,
+                child: RichText(
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  strutStyle: StrutStyle(fontSize: 12.0.sp),
+                  text: TextSpan(text: title, style: CommonText.BodyS),
+                )),
+            NewItem(),
+          ]),
+        ));
   }
 }
 
@@ -440,8 +318,8 @@ class NewItem extends StatelessWidget {
               ),
             ),
             Positioned(
-                left: 3,
-                top: 5,
+                left: 3.w,
+                top: 5.h,
                 child: Text("N",
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
