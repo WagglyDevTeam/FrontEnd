@@ -24,4 +24,8 @@ class PostProvider extends GetConnect {
         "${dotenv.get('BASE_URL')}/home",
         headers: authHeaders,
       );
+  Future<Response> getBoardHome() => get(
+    "${dotenv.get('BASE_URL')}/board/home",
+    headers: authHeaders,
+  );
 }

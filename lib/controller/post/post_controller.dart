@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../../model/post/dtos/post_request_dto.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
 import '../../model/post/post.dart';

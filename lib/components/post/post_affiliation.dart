@@ -10,10 +10,10 @@ import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
 import './post_app_bar.dart';
 
-
 class PostAffiliation extends StatelessWidget {
   PostAffiliation({Key? key}) : super(key: key);
-  final String postName = Lang().change("${Get.parameters['collegeName']}");
+  // final String postName = Lang().change("${collegeName}");
+  final String postName = Get.parameters['collegeName'] ?? "";
 
   final List<PostSpecificData> data = [
     PostSpecificData(
@@ -44,7 +44,7 @@ class PostAffiliation extends StatelessWidget {
       postId: 16,
       postTitle: "다들 노트북 어떤 제품 많이 써?",
       postDesc:
-      "내 사촌동생이 이번에 미대 입학해서 노트북 궁금해하던데 추천 좀 해주라! 너네가 노트북을 추천해주면 내 사동의 대학 생활이 달라질거라 확신해 나를 위해 이 글을 누르고 댓글을 써주는 아량을 한번 베풀어 줄 누군가 있을까 여기..?",
+          "내 사촌동생이 이번에 미대 입학해서 노트북 궁금해하던데 추천 좀 해주라! 너네가 노트북을 추천해주면 내 사동의 대학 생활이 달라질거라 확신해 나를 위해 이 글을 누르고 댓글을 써주는 아량을 한번 베풀어 줄 누군가 있을까 여기..?",
       postCreatedAt: "02/18 19:50",
       authorMajor: "시각디자인학과",
       postImageCnt: 3,
@@ -146,7 +146,7 @@ class PostAffiliation extends StatelessWidget {
               /**일반 글*/
               return Container(
                 padding:
-                EdgeInsets.only(top: 16, bottom: 16, left: 26, right: 26),
+                    EdgeInsets.only(top: 16, bottom: 16, left: 26, right: 26),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border(

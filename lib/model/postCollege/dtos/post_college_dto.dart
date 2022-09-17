@@ -1,80 +1,75 @@
+import '../../post/dtos/waggly_response_dto.dart';
+
 class PostListData {
-  String authorMajor;
+  String majorName;
   String postTitle;
-  String postCreatedAt;
   int postId;
 
   PostListData(
-      {required this.authorMajor,
-        required this.postTitle,
-        required this.postCreatedAt,
-        required this.postId});
+      {required this.majorName, required this.postTitle, required this.postId});
 
   factory PostListData.fromJson(Map<String, dynamic> json) => PostListData(
-    authorMajor: json["authorMajor"],
-    postTitle: json["postTitle"],
-    postCreatedAt: json["postCreatedAt"],
-    postId: json["postId"],
-  );
+        majorName: json["majorName"],
+        postTitle: json["postTitle"],
+        postId: json["postId"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "authorMajor": authorMajor,
-    "postTitle": postTitle,
-    "postCreatedAt": postCreatedAt,
-    "postId": postId,
-  };
+        "majorName": majorName,
+        "postTitle": postTitle,
+        "postId": postId,
+      };
 
   static fromMap(Map<String, Object> map) {}
 }
 
 class PostCollegeData {
-  List<PostListData> postList;
-  String postCollegeName;
-  String postColoegeId;
+  List<PostListData> posts;
+  String collegeType;
+  String collegeTypeName;
 
   PostCollegeData({
-    required this.postList,
-    required this.postCollegeName,
-    required this.postColoegeId,
+    required this.posts,
+    required this.collegeType,
+    required this.collegeTypeName,
   });
 
   factory PostCollegeData.fromJson(Map<String, dynamic> json) =>
       PostCollegeData(
-        postList: List<PostListData>.from(
-            json["postList"].map((x) => PostListData.fromJson(x))),
-        postCollegeName: json["postCollegeName"],
-        postColoegeId: json["postColoegeId"],
+        posts: List<PostListData>.from(
+            json["posts"].map((x) => PostListData.fromJson(x))),
+        collegeType: json["collegeType"],
+        collegeTypeName: json["collegeTypeName"],
       );
 
   Map<String, dynamic> toJson() => {
-    "postList": List<dynamic>.from(postList.map((x) => x.toJson())),
-    "postCollegeName": postCollegeName,
-    "postColoegeId": postColoegeId,
-  };
+        "posts": List<dynamic>.from(posts.map((x) => x.toJson())),
+        "collegeType": collegeType,
+        "collegeTypeName": collegeTypeName,
+      };
 }
 
-class PostSpecificData extends PostListData {
+class PostSpecificData {
   String postDesc;
   int postImageCnt;
   int postLikeCnt;
   int postCommentCnt;
   bool isLikedByMe;
   bool isBlind;
+  String authorMajor;
+  String postTitle;
+  String postCreatedAt;
+  int postId;
 
   PostSpecificData(
       {required this.postDesc,
-        required this.postImageCnt,
-        required this.postLikeCnt,
-        required this.postCommentCnt,
-        required this.isLikedByMe,
-        required this.isBlind,
-        required String authorMajor,
-        required String postTitle,
-        required String postCreatedAt,
-        required int postId})
-      : super(
-      authorMajor: authorMajor,
-      postTitle: postTitle,
-      postCreatedAt: postCreatedAt,
-      postId: postId);
+      required this.postImageCnt,
+      required this.postLikeCnt,
+      required this.postCommentCnt,
+      required this.isLikedByMe,
+      required this.isBlind,
+      required this.authorMajor,
+      required this.postTitle,
+      required this.postCreatedAt,
+      required this.postId});
 }
