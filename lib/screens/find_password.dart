@@ -1,14 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waggly/components/snackBar/custom_snack_bar.dart';
-import 'package:waggly/controller/major/major_controller.dart';
 import 'package:waggly/controller/signUp/sign_up_controller.dart';
 import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
-import 'package:waggly/model/signUp/dtos/sign_up_request_dto.dart';
 import 'package:waggly/model/signUp/dtos/verify_email_request_dto.dart';
-import 'package:waggly/screens/major_search.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/input_validator.dart';
 import '../widgets/textFormField/text_form_field.dart';
