@@ -21,4 +21,10 @@ class SignUpProvider extends GetConnect {
         "${dotenv.get('BASE_URL')}/user/nickname",
         data,
       );
+
+  Future<Response> resetPassword(String token, String newPassword) => put(
+        "${dotenv.get('BASE_URL')}/user/reset/password",
+        {"password": newPassword},
+        headers: {"Authorization": 'Bearer $token'},
+      );
 }

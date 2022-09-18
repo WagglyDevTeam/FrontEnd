@@ -72,17 +72,15 @@ class _SignUpState extends State<SignUp> {
             currentFocus.unfocus();
           }
         },
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                TopBar(),
-                SignUpInput(
-                  steps: steps,
-                  setSteps: handleClick,
-                ),
-              ],
-            ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TopBar(),
+              SignUpInput(
+                steps: steps,
+                setSteps: handleClick,
+              ),
+            ],
           ),
         ),
       ),
@@ -702,7 +700,7 @@ class _ButtonsState extends State<Buttons> {
                                         Get.offAllNamed('/signInPage');
                                       });
                                     } else {
-                                      _signUpController.signUpSuccess.value = true;
+                                      _signUpController.signUpSuccess.value = false;
                                       CustomSnackBar.messageSnackbar(
                                         context,
                                         result.message,

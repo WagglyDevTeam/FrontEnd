@@ -63,15 +63,23 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TopBar(),
-            SignUpInput(
-              steps: steps,
-              setSteps: handleClick,
-            ),
-          ],
+      body: GestureDetector(
+        onTap: () {
+          FocusNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TopBar(),
+              SignUpInput(
+                steps: steps,
+                setSteps: handleClick,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -370,14 +378,16 @@ class _ButtonsState extends State<Buttons> {
                 height: 36.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(26),
-                    color: _signUpController.emailInputEmpty.value == false && _signUpController.certiNumberInputEmpty.value == false
+                    color: _signUpController.emailInputEmpty.value == false &&
+                            _signUpController.certiNumberInputEmpty.value == false
                         ? Color(0xffB863FB)
                         : Color(0xffE8E8E8)),
                 child: TextButton(
                   child: Text(
                     '다음',
                     style: TextStyle(
-                      color: _signUpController.emailInputEmpty.value == false && _signUpController.certiNumberInputEmpty.value == false
+                      color: _signUpController.emailInputEmpty.value == false &&
+                              _signUpController.certiNumberInputEmpty.value == false
                           ? Color(0xffFFFFFF)
                           : Palette.mdGray,
                       fontSize: 12.sp,
@@ -385,7 +395,8 @@ class _ButtonsState extends State<Buttons> {
                     ),
                   ),
                   onPressed: () async {
-                    if (_signUpController.emailVerified == true && _signUpController.emailValidateSuccess.value == true) {
+                    if (_signUpController.emailVerified == true &&
+                        _signUpController.emailValidateSuccess.value == true) {
                       _signUpController.universityInputEmpty.value = false;
                       _universityInput.text = _signUpController.confirmedUniversityName;
                       widget.setSteps(1);
@@ -404,6 +415,7 @@ class _ButtonsState extends State<Buttons> {
                         VerifyEmailReqeustDto(_emailInput.text, _certiNumberInput.text),
                       );
                       if (_signUpController.emailVerified == true) {
+                        _signUpController.tempToken = verifyResult.datas['token'];
                         _signUpController.certiNumValidateSuccess.value = true;
                         _universityInput.text = _signUpController.confirmedUniversityName;
                         _signUpController.universityInputEmpty.value = false;
@@ -431,7 +443,8 @@ class _ButtonsState extends State<Buttons> {
                     width: 155.w,
                     height: 36.h,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(26), color: Color.fromRGBO(218, 175, 254, 0.2)),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(26), color: Color.fromRGBO(218, 175, 254, 0.2)),
                     child: TextButton(
                       child: Text(
                         '이전',
@@ -452,32 +465,27 @@ class _ButtonsState extends State<Buttons> {
                       height: 36.h,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(26),
-                        color: _signUpController.signUpSuccess.value == false
-                            ? _signUpController.passwordInputEmpty.value == false &&
-                                    _signUpController.passwordConfirmInputEmpty.value == false &&
-                                    _signUpController.nicknameInputEmpty.value == false
-                                ? Color(0xffB863FB)
-                                : Color(0xffE8E8E8)
-                            : Color(0xffE8E8E8),
-                      ),
+                          borderRadius: BorderRadius.circular(26),
+                          color: _signUpController.passwordInputEmpty.value == false &&
+                                  _signUpController.passwordConfirmInputEmpty.value == false
+                              ? Color(0xffB863FB)
+                              : Color(0xffE8E8E8)),
                       child: TextButton(
                         child: Text(
                           '변경하기',
                           style: TextStyle(
-                            color: _signUpController.signUpSuccess.value == false
-                                ? _signUpController.passwordInputEmpty.value == false &&
-                                        _signUpController.passwordConfirmInputEmpty.value == false &&
-                                        _signUpController.nicknameInputEmpty.value == false
-                                    ? Color(0xffFFFFFF)
-                                    : Palette.mdGray
+                            color: _signUpController.passwordInputEmpty.value == false &&
+                                    _signUpController.passwordConfirmInputEmpty.value == false &&
+                                    _signUpController.emailVerified == true
+                                ? Color(0xffFFFFFF)
                                 : Palette.mdGray,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         onPressed: () async {
-                          if (_signUpController.signUpSuccess.value == false) {
+                          if (_signUpController.passwordInputEmpty.value == false &&
+                              _signUpController.passwordConfirmInputEmpty.value == false) {
                             final passwordRegExp = RegExp(r"((?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,16})");
                             if (_passwordInput.text.isEmpty == true) {
                               CustomSnackBar.messageSnackbar(
@@ -505,33 +513,27 @@ class _ButtonsState extends State<Buttons> {
                                   );
                                 } else {
                                   _signUpController.passwordConfirmValidateSuccess.value = true;
-                                  final nicknameValidateResult = await nicknameValidateCheck(context, true);
-                                  if (nicknameValidateResult == true) {
-                                    final result = await _signUpController.signUp(
-                                      SignUpRequestDto(_emailInput.text, _passwordInput.text, _nicknameInput.text, _universityInput.text,
-                                          _classNumberInput.text, _signUpController.selectedMajor.id!, 'male'),
+                                  final result = await _signUpController.resetPassword(
+                                      _signUpController.tempToken, _passwordConfirmInput.text);
+                                  if (result.code == 200) {
+                                    // 성공 시
+                                    _signUpController.passwordInputValue.value = '';
+                                    _signUpController.passwordConfirmInputValue.value = '';
+                                    CustomSnackBar.messageSnackbar(
+                                      context,
+                                      "비밀번호가 변경되었습니다.",
+                                      EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
                                     );
-                                    if (result.code == 201) {
-                                      // 성공 시
-                                      _signUpController.signUpSuccess.value = true;
-                                      _signUpController.passwordInputValue.value = '';
-                                      _signUpController.passwordConfirmInputValue.value = '';
-                                      CustomSnackBar.messageSnackbar(
-                                        context,
-                                        "회원 가입에 성공했습니다.",
-                                        EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
-                                      );
-                                      await Future.delayed(const Duration(seconds: 2), () {
-                                        Get.offAllNamed('/signInPage');
-                                      });
-                                    } else {
-                                      _signUpController.signUpSuccess.value = true;
-                                      CustomSnackBar.messageSnackbar(
-                                        context,
-                                        result.message,
-                                        EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
-                                      );
-                                    }
+                                    await Future.delayed(const Duration(seconds: 2), () {
+                                      Get.offAllNamed('/signInPage');
+                                    });
+                                  } else {
+                                    _signUpController.signUpSuccess.value = true;
+                                    CustomSnackBar.messageSnackbar(
+                                      context,
+                                      result.message,
+                                      EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                                    );
                                   }
                                 }
                               }

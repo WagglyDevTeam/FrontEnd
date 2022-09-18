@@ -35,4 +35,12 @@ class SignUpRepository {
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
     return wagglyResponseDto;
   }
+
+  Future<WagglyResponseDto> resetPassword(String token, String newPassword) async {
+    Response response = await _signUpProvider.resetPassword(token, newPassword);
+    dynamic body = response.body;
+    print('1$body');
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+    return wagglyResponseDto;
+  }
 }

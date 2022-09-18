@@ -10,6 +10,8 @@ import '../../model/signIn/sign_in_provider.dart';
 
 class SignInController extends GetxController {
   final SignInProvider _signInProvider = SignInProvider();
+  final SignInRepository _signInRepository = SignInRepository();
+  String tempToken = '';
   final box = Hive.box<User>('user');
   final user = User().obs;
   RxBool isLoggedIn = false.obs;
