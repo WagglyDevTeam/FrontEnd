@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:waggly/model/post/post_provider.dart';
 
+import '../postCollege/dtos/post_college_dto.dart';
 import 'dtos/waggly_response_dto.dart';
 
 class PostRepository {
@@ -42,5 +43,15 @@ class PostRepository {
     dynamic body = response.body;
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
     return wagglyResponseDto;
+  }
+
+  Future<String> getBoardCollege(PostCollegeDto props) async {
+    Response response = await _postProvider.getBoardCollege(
+        props.college!, props.page!, props.size!);
+    dynamic body = response.body;
+    print(body);
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+
+    return "wagglyResponseDto";
   }
 }

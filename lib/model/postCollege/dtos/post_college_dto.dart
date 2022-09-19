@@ -50,26 +50,50 @@ class PostCollegeData {
 }
 
 class PostSpecificData {
-  String postDesc;
-  int postImageCnt;
-  int postLikeCnt;
-  int postCommentCnt;
-  bool isLikedByMe;
-  bool isBlind;
-  String authorMajor;
-  String postTitle;
-  String postCreatedAt;
-  int postId;
+  String? postDesc;
+  int? postImageCnt;
+  int? postLikeCnt;
+  int? postCommentCnt;
+  bool? isLikedByMe;
+  bool? isBlind;
+  String? authorMajor;
+  String? postTitle;
+  String? postCreatedAt;
+  int? postId;
 
   PostSpecificData(
-      {required this.postDesc,
-      required this.postImageCnt,
-      required this.postLikeCnt,
-      required this.postCommentCnt,
-      required this.isLikedByMe,
-      required this.isBlind,
-      required this.authorMajor,
-      required this.postTitle,
-      required this.postCreatedAt,
-      required this.postId});
+      {this.postDesc,
+      this.postImageCnt,
+      this.postLikeCnt,
+      this.postCommentCnt,
+      this.isLikedByMe,
+      this.isBlind,
+      this.authorMajor,
+      this.postTitle,
+      this.postCreatedAt,
+      this.postId});
+
+  factory PostSpecificData.fromJson(Map<String, dynamic> json) =>
+      PostSpecificData(
+          postDesc: json["postDesc"],
+          postImageCnt: json["postImageCnt"],
+          postLikeCnt: json["postLikeCnt"],
+          postCommentCnt: json["postCommentCnt"],
+          isLikedByMe: json["isLikedByMe"],
+          isBlind: json["isBlind"],
+          authorMajor: json["authorMajor"],
+          postTitle: json["postTitle"],
+          postCreatedAt: json["postCreatedAt"],
+          postId: json["postId"]);
+}
+
+class PostCollegeDto {
+  String? college;
+  int? page;
+  int? size;
+  PostCollegeDto({this.college, this.page, this.size});
+  factory PostCollegeDto.fromJson(Map<String, dynamic> json) => PostCollegeDto(
+      college: json["college"], page: json["page"], size: json["size"]);
+  Map<String, dynamic> toJson() =>
+      {"college": college, "page": page, "size": size};
 }

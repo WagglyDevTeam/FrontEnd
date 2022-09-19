@@ -1,34 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:waggly/components/Post/post_common.dart';
-import 'package:waggly/components/Post/post_detail_screen.dart';
-import 'package:waggly/utils/lang.dart';
-import 'package:waggly/widgets/index.dart';
+import '../../controller/post/post_home.dart';
 import '../../model/postCollege/dtos/post_college_dto.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
 import './post_app_bar.dart';
 
-class PostAffiliation extends StatelessWidget {
-  PostAffiliation({Key? key}) : super(key: key);
-  // final String postName = Lang().change("${collegeName}");
-  final String postName = Get.parameters['collegeName'] ?? "";
+class PostAffiliation extends StatefulWidget {
+  const PostAffiliation({Key? key}) : super(key: key);
 
-  final List<PostSpecificData> data = [
-    PostSpecificData(
-      postId: 12,
-      postTitle: "누가 교수님 좀 기절시켜줘",
-      postDesc: "얘들아 오늘 날씨가 너무 좋은데 난 과제를 하고 있어 교수님이 3일만 기절했다 일어나시면 좋겠어 ",
-      postCreatedAt: "02/18 19:50",
-      authorMajor: "시각디자인학과",
-      postImageCnt: 3,
-      postLikeCnt: 6,
-      postCommentCnt: 4,
-      isLikedByMe: true,
-      isBlind: false,
-    ),
-  ];
+  @override
+  _PostAffiliation createState() => _PostAffiliation();
+}
+
+class _PostAffiliation extends State<PostAffiliation> {
+  _PostAffiliation({Key? key});
+  final String postName = Get.parameters['collegeName'] ?? "";
+  final PostHomeController _postDetailX = Get.put(PostHomeController());
+  final dto =
+      PostCollegeDto(college: Get.parameters['collegeId'], page: 0, size: 0);
+  @override
+  initState() {
+    _postDetailX.getBoardCollege(dto);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +35,7 @@ class PostAffiliation extends StatelessWidget {
         decoration: BoxDecoration(color: Colors.white),
         child: ListView.builder(
           scrollDirection: Axis.vertical,
-          itemCount: data.length,
+          itemCount: _postDetailX.postCollegeData.value.length,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
               /**인기 글*/
@@ -77,16 +73,24 @@ class PostAffiliation extends StatelessWidget {
                               style: BorderStyle.solid,
                               width: 1)),
                       child: PostContext(
-                        postId: data[index].postId,
-                        postTitle: data[index].postTitle,
-                        postDesc: data[index].postDesc,
-                        postCreatedAt: data[index].postCreatedAt,
-                        authorMajor: data[index].authorMajor,
-                        postImageCnt: data[index].postImageCnt,
-                        postLikeCnt: data[index].postLikeCnt,
-                        postCommentCnt: data[index].postCommentCnt,
-                        isLikedByMe: data[index].isLikedByMe,
-                        isBlind: data[index].isBlind,
+                        postId: _postDetailX.bestPostCollegeData.value.postId,
+                        postTitle:
+                            _postDetailX.bestPostCollegeData.value.postTitle,
+                        postDesc:
+                            _postDetailX.bestPostCollegeData.value.postDesc,
+                        postCreatedAt: _postDetailX
+                            .bestPostCollegeData.value.postCreatedAt,
+                        authorMajor:
+                            _postDetailX.bestPostCollegeData.value.authorMajor,
+                        postImageCnt:
+                            _postDetailX.bestPostCollegeData.value.postImageCnt,
+                        postLikeCnt:
+                            _postDetailX.bestPostCollegeData.value.postLikeCnt,
+                        postCommentCnt: _postDetailX
+                            .bestPostCollegeData.value.postCommentCnt,
+                        isLikedByMe:
+                            _postDetailX.bestPostCollegeData.value.isLikedByMe,
+                        isBlind: _postDetailX.bestPostCollegeData.value.isBlind,
                         postName: postName,
                       ),
                     )
@@ -107,16 +111,23 @@ class PostAffiliation extends StatelessWidget {
                           width: 1),
                     )),
                 child: PostContext(
-                  postId: data[index].postId,
-                  postTitle: data[index].postTitle,
-                  postDesc: data[index].postDesc,
-                  postCreatedAt: data[index].postCreatedAt,
-                  authorMajor: data[index].authorMajor,
-                  postImageCnt: data[index].postImageCnt,
-                  postLikeCnt: data[index].postLikeCnt,
-                  postCommentCnt: data[index].postCommentCnt,
-                  isLikedByMe: data[index].isLikedByMe,
-                  isBlind: data[index].isBlind,
+                  postId: _postDetailX.postCollegeData.value[index].postId,
+                  postTitle:
+                      _postDetailX.postCollegeData.value[index].postTitle,
+                  postDesc: _postDetailX.postCollegeData.value[index].postDesc,
+                  postCreatedAt:
+                      _postDetailX.postCollegeData.value[index].postCreatedAt,
+                  authorMajor:
+                      _postDetailX.postCollegeData.value[index].authorMajor,
+                  postImageCnt:
+                      _postDetailX.postCollegeData.value[index].postImageCnt,
+                  postLikeCnt:
+                      _postDetailX.postCollegeData.value[index].postLikeCnt,
+                  postCommentCnt:
+                      _postDetailX.postCollegeData.value[index].postCommentCnt,
+                  isLikedByMe:
+                      _postDetailX.postCollegeData.value[index].isLikedByMe,
+                  isBlind: _postDetailX.postCollegeData.value[index].isBlind,
                   postName: postName,
                 ),
               );

@@ -111,7 +111,7 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          signInController.checkLoggedIn().value == true
+          signInController.checkLoggedIn().value == false
               ? ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
@@ -269,7 +269,7 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Skeleton(
-        isLoading: signInController.checkLoggedIn().value ? true : false,
+        isLoading: signInController.checkLoggedIn().value ? false : true,
         skeleton: SkeletonParagraph(),
         child: Container(
           height: 23.h,

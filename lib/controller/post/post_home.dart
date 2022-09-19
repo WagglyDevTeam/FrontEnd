@@ -11,14 +11,17 @@ class PostHomeController extends GetxController {
       PostCollegeData(collegeTypeName: '', collegeType: '', posts: []).obs;
   final otherCollegeData =
       [PostCollegeData(collegeTypeName: '', collegeType: '', posts: [])].obs;
-
+  final bestPostCollegeData = PostSpecificData().obs;
+  final postCollegeData = [PostSpecificData()].obs;
+  final dto =
+      PostCollegeDto(college: Get.parameters['collegeId'], page: 0, size: 0);
   @override
   void onInit() async {
     super.onInit();
     await getHomeBoard();
   }
 
-  /// 게시판 홈 post data get
+  /// 게시판 홈 post data get d
   Future<void> getHomeBoard() async {
     WagglyResponseDto result = await _postRepository.getBoardHome();
     dynamic userCollegeJson = result.datas["userCollegePosts"];
@@ -28,5 +31,20 @@ class PostHomeController extends GetxController {
         otherCollegeJson.map((x) => PostCollegeData.fromJson(x)).toList());
     otherCollegeData.value = otherCollegeMap;
     userCollegeData.value = userCollegeMap;
+  }
+
+  /// 게시판 특정학과 페이지 post data get
+  Future<void> getBoardCollege(PostCollegeDto college) async {
+    print('ssssssadasd');
+    String result = await _postRepository.getBoardCollege(college);
+    // print(result);
+    // dynamic bestJson = result.datas["bestPost"];
+    // dynamic postJson = result.datas["posts"];
+    //
+    // PostSpecificData bestPostData = PostSpecificData.fromJson(bestJson);
+    // List<PostSpecificData> postData = List<PostSpecificData>.from(
+    //     postJson.map((x) => PostSpecificData.fromJson(x)).toList());
+    // bestPostCollegeData.value = bestPostData;
+    // postCollegeData.value = postData;
   }
 }
