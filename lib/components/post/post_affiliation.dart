@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import '../../controller/post/post_home.dart';
@@ -6,6 +7,7 @@ import '../../model/postCollege/dtos/post_college_dto.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
 import './post_app_bar.dart';
+import 'package:skeletons/skeletons.dart';
 
 class PostAffiliation extends StatefulWidget {
   const PostAffiliation({Key? key}) : super(key: key);
@@ -19,7 +21,7 @@ class _PostAffiliation extends State<PostAffiliation> {
   final String postName = Get.parameters['collegeName'] ?? "";
   final PostHomeController _postDetailX = Get.put(PostHomeController());
   final dto =
-      PostCollegeDto(college: Get.parameters['collegeId'], page: 0, size: 0);
+      PostCollegeDto(college: Get.parameters['collegeId'], page: 0, size: 10);
   @override
   initState() {
     _postDetailX.getBoardCollege(dto);
@@ -30,112 +32,171 @@ class _PostAffiliation extends State<PostAffiliation> {
   Widget build(BuildContext context) {
     var page = Status.home;
     return Scaffold(
-      appBar: PostAppbar(postName: postName, page: page),
-      body: Container(
-        decoration: BoxDecoration(color: Colors.white),
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: _postDetailX.postCollegeData.value.length,
-          itemBuilder: (BuildContext context, int index) {
-            if (index == 0) {
-              /**인기 글*/
-              return Container(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+        appBar: PostAppbar(
+            postName: _postDetailX.postCollegeData.value.isNotEmpty
+                ? "로딩 중"
+                : postName,
+            page: page),
+        body: Skeleton(
+          isLoading: _postDetailX.postCollegeData.value.isNotEmpty,
+          skeleton: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 16.w),
+            child: Column(
+              children: [
+                SkeletonAvatar(
+                  style: SkeletonAvatarStyle(
+                      width: double.infinity, height: 100.h),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                SkeletonAvatar(
+                  style: SkeletonAvatarStyle(
+                      width: double.infinity, height: 100.h),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                SkeletonAvatar(
+                  style: SkeletonAvatarStyle(
+                      width: double.infinity, height: 100.h),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                SkeletonAvatar(
+                  style: SkeletonAvatarStyle(
+                      width: double.infinity, height: 100.h),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                SkeletonAvatar(
+                  style: SkeletonAvatarStyle(
+                      width: double.infinity, height: 100.h),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                SkeletonAvatar(
+                  style: SkeletonAvatarStyle(
+                      width: double.infinity, height: 100.h),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+              ],
+            ),
+          ),
+          child: Container(
+            decoration: BoxDecoration(color: Colors.white),
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: _postDetailX.postCollegeData.value.length,
+              itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  /**인기 글*/
+                  return Container(
+                    padding: EdgeInsets.all(16.w),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '인기글',
-                          style: CommonText.BodyL,
+                        Row(
+                          children: [
+                            Text(
+                              '인기글',
+                              style: CommonText.BodyL,
+                            ),
+                            SizedBox(width: 6.w),
+                            Icon(
+                              Icons.auto_awesome,
+                              color: Palette.main,
+                              size: 17.w,
+                            )
+                          ],
                         ),
-                        SizedBox(width: 6),
-                        Icon(
-                          Icons.auto_awesome,
-                          color: Palette.main,
-                          size: 17,
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(
+                              top: 14, bottom: 14, left: 10, right: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15.0),
+                              border: Border.all(
+                                  color: Palette.light,
+                                  style: BorderStyle.solid,
+                                  width: 1)),
+                          child: PostContext(
+                            postId:
+                                _postDetailX.bestPostCollegeData.value.postId,
+                            postTitle: _postDetailX
+                                .bestPostCollegeData.value.postTitle,
+                            postDesc:
+                                _postDetailX.bestPostCollegeData.value.postDesc,
+                            postCreatedAt: _postDetailX
+                                .bestPostCollegeData.value.postCreatedAt,
+                            authorMajor: _postDetailX
+                                .bestPostCollegeData.value.authorMajor,
+                            postImageCnt: _postDetailX
+                                .bestPostCollegeData.value.postImageCnt,
+                            postLikeCnt: _postDetailX
+                                .bestPostCollegeData.value.postLikeCnt,
+                            postCommentCnt: _postDetailX
+                                .bestPostCollegeData.value.postCommentCnt,
+                            isLikedByMe: _postDetailX
+                                .bestPostCollegeData.value.isLikedByMe,
+                            isBlind:
+                                _postDetailX.bestPostCollegeData.value.isBlind,
+                            postName: postName,
+                          ),
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 6,
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(
-                          top: 14, bottom: 14, left: 10, right: 10),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15.0),
-                          border: Border.all(
-                              color: Palette.light,
+                  );
+                } else {
+                  /**일반 글*/
+                  return Container(
+                    padding: EdgeInsets.only(
+                        top: 16, bottom: 16, left: 26, right: 26),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border(
+                          top: BorderSide(
+                              color: Palette.paper,
                               style: BorderStyle.solid,
-                              width: 1)),
-                      child: PostContext(
-                        postId: _postDetailX.bestPostCollegeData.value.postId,
-                        postTitle:
-                            _postDetailX.bestPostCollegeData.value.postTitle,
-                        postDesc:
-                            _postDetailX.bestPostCollegeData.value.postDesc,
-                        postCreatedAt: _postDetailX
-                            .bestPostCollegeData.value.postCreatedAt,
-                        authorMajor:
-                            _postDetailX.bestPostCollegeData.value.authorMajor,
-                        postImageCnt:
-                            _postDetailX.bestPostCollegeData.value.postImageCnt,
-                        postLikeCnt:
-                            _postDetailX.bestPostCollegeData.value.postLikeCnt,
-                        postCommentCnt: _postDetailX
-                            .bestPostCollegeData.value.postCommentCnt,
-                        isLikedByMe:
-                            _postDetailX.bestPostCollegeData.value.isLikedByMe,
-                        isBlind: _postDetailX.bestPostCollegeData.value.isBlind,
-                        postName: postName,
-                      ),
-                    )
-                  ],
-                ),
-              );
-            } else {
-              /**일반 글*/
-              return Container(
-                padding:
-                    EdgeInsets.only(top: 16, bottom: 16, left: 26, right: 26),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      top: BorderSide(
-                          color: Palette.paper,
-                          style: BorderStyle.solid,
-                          width: 1),
-                    )),
-                child: PostContext(
-                  postId: _postDetailX.postCollegeData.value[index].postId,
-                  postTitle:
-                      _postDetailX.postCollegeData.value[index].postTitle,
-                  postDesc: _postDetailX.postCollegeData.value[index].postDesc,
-                  postCreatedAt:
-                      _postDetailX.postCollegeData.value[index].postCreatedAt,
-                  authorMajor:
-                      _postDetailX.postCollegeData.value[index].authorMajor,
-                  postImageCnt:
-                      _postDetailX.postCollegeData.value[index].postImageCnt,
-                  postLikeCnt:
-                      _postDetailX.postCollegeData.value[index].postLikeCnt,
-                  postCommentCnt:
-                      _postDetailX.postCollegeData.value[index].postCommentCnt,
-                  isLikedByMe:
-                      _postDetailX.postCollegeData.value[index].isLikedByMe,
-                  isBlind: _postDetailX.postCollegeData.value[index].isBlind,
-                  postName: postName,
-                ),
-              );
-            }
-          },
-        ),
-      ),
-    );
+                              width: 1),
+                        )),
+                    child: PostContext(
+                      postId: _postDetailX.postCollegeData.value[index].postId,
+                      postTitle:
+                          _postDetailX.postCollegeData.value[index].postTitle,
+                      postDesc:
+                          _postDetailX.postCollegeData.value[index].postDesc,
+                      postCreatedAt: _postDetailX
+                          .postCollegeData.value[index].postCreatedAt,
+                      authorMajor:
+                          _postDetailX.postCollegeData.value[index].authorMajor,
+                      postImageCnt: _postDetailX
+                          .postCollegeData.value[index].postImageCnt,
+                      postLikeCnt:
+                          _postDetailX.postCollegeData.value[index].postLikeCnt,
+                      postCommentCnt: _postDetailX
+                          .postCollegeData.value[index].postCommentCnt,
+                      isLikedByMe:
+                          _postDetailX.postCollegeData.value[index].isLikedByMe,
+                      isBlind:
+                          _postDetailX.postCollegeData.value[index].isBlind,
+                      postName: postName,
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+        ));
   }
 }
 
@@ -180,12 +241,12 @@ class PostContext extends StatelessWidget {
               Text(postCreatedAt, style: CommonText.BodyEngGray),
             ],
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 10.h),
           Container(
-            width: MediaQuery.of(context).size.width - 32,
+            width: MediaQuery.of(context).size.width - 32.w,
             child: Text(postDesc, style: CommonText.BodyS),
           ),
-          SizedBox(height: 6),
+          SizedBox(height: 6.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

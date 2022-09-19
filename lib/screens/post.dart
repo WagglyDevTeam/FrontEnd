@@ -19,11 +19,10 @@ class PostScreen extends StatelessWidget {
     bool? on = false;
     bool? off = true;
     Status? page = Status.login;
-    String? postName = "게시판";
 
     /// getx controller
     final PostHomeController _postDetailX = Get.put(PostHomeController());
-
+    String? postName = "게시판";
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: PostAppbar(
@@ -40,7 +39,9 @@ class PostScreen extends StatelessWidget {
                 SizedBox(height: 10.h),
                 Row(
                   children: [
-                    Text("내 계열 페이지", style: CommonText.TitleS),
+                    Obx(() => Text(
+                        _postDetailX.userCollegeData.value.collegeTypeName,
+                        style: CommonText.TitleS)),
                     SizedBox(width: 6.w),
                     Icon(Icons.auto_awesome, color: Palette.main, size: 17),
                   ],

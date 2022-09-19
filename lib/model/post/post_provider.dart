@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 
+import '../hive/user.dart';
 import '../postCollege/dtos/post_college_dto.dart';
 
 final SignInController _signInController = Get.put(SignInController());
-final _token = _signInController.getToken();
+final _token = Hive.box<User>('user').get('user')?.jwtToken;
 
 class PostProvider extends GetConnect {
   final Map<String, String> authHeaders =
