@@ -79,6 +79,12 @@ class SignUpController extends GetxController {
     return verifyResult;
   }
 
+  Future<WagglyResponseDto> checkDuplicateEmail(String email) async {
+    final WagglyResponseDto result = await _signUpRepository.checkDuplicateEmail(email);
+
+    return result;
+  }
+
   Future<WagglyResponseDto> checkDuplicateNickname(String nickname) async {
     final WagglyResponseDto result = await _signUpRepository.checkDuplicateNickname(nickname);
     if (result.code == 200) {
