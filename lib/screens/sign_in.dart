@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/model/signIn/dtos/sign_in_reqeust_dto.dart';
+import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/Button/button.dart';
 import 'package:waggly/components/SignIn/Checkbox/checkbox.dart';
 import 'package:waggly/components/SignIn/BottomTextButton/bottom_text_button.dart';
 import 'package:waggly/screens/home.dart';
 import 'package:waggly/widgets/index.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../widgets/textFormField/text_form_field.dart';
 
@@ -24,7 +25,6 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInState extends State<SignInScreen> {
   bool isChecked = false;
-  final _signInController = SignInController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -36,6 +36,7 @@ class _SignInState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _signInController = Get.put(SignInController());
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: GestureDetector(
@@ -53,17 +54,40 @@ class _SignInState extends State<SignInScreen> {
                 RenderTextFormField(placeholder: '학교 이메일', controller: _emailController),
                 RenderTextFormField(placeholder: '비밀번호', controller: _passwordController),
                 CustomCheckbox(),
-                Button(
-                  text: '시작하기',
-                  onPress: () async {
-                    print(_emailController.text);
-                    var isSignIn = await _signInController
-                        .signIn(SignInRequestDto(_emailController.text, _passwordController.text));
-                    if (isSignIn == true) {
-                      Get.offAllNamed("/");
-                    } else {}
-                  },
-                  disabled: true,
+                Padding(
+                  padding: EdgeInsets.fromLTRB(18, 8, 18, 0),
+                  child: Obx(
+                    () => Container(
+                      width: double.infinity,
+                      height: 36.h,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(26),
+                          color: _signInController.emailInputEmpty.value == false &&
+                                  _signInController.passwordInputEmpty.value == false
+                              ? Color(0xffB863FB)
+                              : Color(0xffE8E8E8)),
+                      child: TextButton(
+                        child: Text(
+                          '시작하기',
+                          style: TextStyle(
+                            color: _signInController.emailInputEmpty.value == false &&
+                                    _signInController.passwordInputEmpty.value == false
+                                ? Color(0xffFFFFFF)
+                                : Palette.mdGray,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        onPressed: () async {
+                          final result = await _signInController
+                              .signIn(SignInRequestDto(_emailController.text, _passwordController.text));
+                          if (result.code == '200') {
+                            Get.offAllNamed("/");
+                          } else {}
+                        },
+                      ),
+                    ),
+                  ),
                 ),
                 Button(
                   text: '둘러보기',

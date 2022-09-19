@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:hive/hive.dart';
 import 'package:waggly/model/hive/user.dart';
 import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
@@ -10,28 +9,29 @@ import '../../model/signIn/sign_in_provider.dart';
 
 class SignInController extends GetxController {
   final SignInProvider _signInProvider = SignInProvider();
-  final SignInRepository _signInRepository = SignInRepository();
   String tempToken = '';
   final box = Hive.box<User>('user');
   final user = User().obs;
   RxBool isLoggedIn = false.obs;
+  RxBool emailInputEmpty = true.obs;
+  RxBool passwordInputEmpty = true.obs;
 
-  Future<bool> signIn(SignInRequestDto signInRequestDto) async {
+  Future<WagglyResponseDto> signIn(SignInRequestDto signInRequestDto) async {
     Response response = await _signInProvider.signIn(signInRequestDto);
-    print(response.body);
+    dynamic body = response.body;
 
-    if (response.statusCode == 200) {
-      dynamic body = response.body;
-
+    if (body.runtimeType == String) {
+      WagglyResponseDto wagglyResponseDto =
+          WagglyResponseDto(code: 401, message: "비밀번호를 확인해주세요.", status: 401, datas: null);
+      return wagglyResponseDto;
+    } else {
       WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+
       User user = User.fromDto(wagglyResponseDto);
       user.jwtToken = response.headers!["authorization"];
       box.put('user', user);
-      print(box.get('user')?.jwtToken);
 
-      return true;
-    } else {
-      return false;
+      return wagglyResponseDto;
     }
   }
 
