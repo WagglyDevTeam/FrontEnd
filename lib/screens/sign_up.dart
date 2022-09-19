@@ -357,14 +357,14 @@ class _InputState extends State<Input> {
                       _signUpController.emailValidateSuccess.value = false;
                       CustomSnackBar.messageSnackbar(
                         context,
-                        "이미 가입된 Email이 존재합니다.",
+                        "이미 가입된 이메일이 존재합니다.",
                         EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
                       );
                     } else {
                       _signUpController.emailValidateSuccess.value = true;
                       CustomSnackBar.messageSnackbar(
                         context,
-                        "Email로 인증번호가 발송되었습니다.",
+                        "이메일로 인증번호가 발송되었습니다.",
                         EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
                       );
                       _signUpController.startTimer();

@@ -303,14 +303,24 @@ class _InputState extends State<Input> {
                       EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
                     );
                   } else {
-                    _signUpController.emailValidateSuccess.value = true;
-                    CustomSnackBar.messageSnackbar(
-                      context,
-                      "Email로 인증번호가 발송되었습니다.",
-                      EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
-                    );
-                    await _signUpController.sendEmailForVerify(_emailInput.text);
-                    _signUpController.startTimer();
+                    final WagglyResponseDto result = await _signUpController.checkDuplicateEmail(_emailInput.text);
+                    if (result.status == '200') {
+                      _signUpController.emailValidateSuccess.value = true;
+                      CustomSnackBar.messageSnackbar(
+                        context,
+                        "이메일로 인증번호가 발송되었습니다.",
+                        EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                      );
+                      await _signUpController.sendEmailForVerify(_emailInput.text);
+                      _signUpController.startTimer();
+                    } else {
+                      _signUpController.emailValidateSuccess.value = false;
+                      CustomSnackBar.messageSnackbar(
+                        context,
+                        "가입된 이메일을 찾을 수 없습니다.",
+                        EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                      );
+                    }
                   }
                 },
               ),
