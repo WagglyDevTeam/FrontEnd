@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:waggly/components/snackBar/custom_snack_bar.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/model/signIn/dtos/sign_in_reqeust_dto.dart';
 import 'package:waggly/utils/colors.dart';
+import 'package:waggly/utils/input_validator.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/Button/button.dart';
 import 'package:waggly/components/SignIn/Checkbox/checkbox.dart';
@@ -62,16 +64,14 @@ class _SignInState extends State<SignInScreen> {
                       height: 36.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(26),
-                          color: _signInController.emailInputEmpty.value == false &&
-                                  _signInController.passwordInputEmpty.value == false
+                          color: _signInController.emailInputEmpty.value == false && _signInController.passwordInputEmpty.value == false
                               ? Color(0xffB863FB)
                               : Color(0xffE8E8E8)),
                       child: TextButton(
                         child: Text(
                           '시작하기',
                           style: TextStyle(
-                            color: _signInController.emailInputEmpty.value == false &&
-                                    _signInController.passwordInputEmpty.value == false
+                            color: _signInController.emailInputEmpty.value == false && _signInController.passwordInputEmpty.value == false
                                 ? Color(0xffFFFFFF)
                                 : Palette.mdGray,
                             fontSize: 12.sp,
@@ -79,11 +79,26 @@ class _SignInState extends State<SignInScreen> {
                           ),
                         ),
                         onPressed: () async {
-                          final result = await _signInController
-                              .signIn(SignInRequestDto(_emailController.text, _passwordController.text));
-                          if (result.code == '200') {
-                            Get.offAllNamed("/");
-                          } else {}
+                          final String validResult = validateEmail(_emailController.text);
+                          if (validResult.isNotEmpty) {
+                            _signInController.emailValidateSuccess.value = false;
+                            CustomSnackBar.messageSnackbar(
+                              context,
+                              validResult,
+                              EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                            );
+                          } else {
+                            final result = await _signInController.signIn(SignInRequestDto(_emailController.text, _passwordController.text));
+                            if (result.code == 200) {
+                              Get.offAllNamed("/");
+                            } else {
+                              CustomSnackBar.messageSnackbar(
+                                context,
+                                result.message,
+                                EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                              );
+                            }
+                          }
                         },
                       ),
                     ),
