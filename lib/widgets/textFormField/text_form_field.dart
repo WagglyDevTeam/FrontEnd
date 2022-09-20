@@ -6,6 +6,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:waggly/controller/major/major_controller.dart';
+import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/controller/signUp/sign_up_controller.dart';
 import 'package:waggly/model/major/major.dart';
 import 'package:waggly/utils/colors.dart';
@@ -46,6 +47,7 @@ class RenderTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SignUpController _signUpController = Get.put(SignUpController());
+    SignInController _signInController = Get.put(SignInController());
     if (mode == 'withButtonAndLabel') {
       if (label == '학교 이메일') {
         return Container(
@@ -620,6 +622,25 @@ class RenderTextFormField extends StatelessWidget {
             obscureText: placeholder == '비밀번호' ? true : false,
             autofocus: label == '학교' || label == '비밀번호' ? true : false,
             controller: controller,
+            onChanged: (value) {
+              if (placeholder == '학교 이메일') {
+                if (controller.text.isEmpty == true) {
+                  _signInController.emailInputEmpty.value = true;
+                  print(_signInController.emailInputEmpty.value);
+                } else if (controller.text.isEmpty == false) {
+                  _signInController.emailInputEmpty.value = false;
+                  print(_signInController.emailInputEmpty.value);
+                }
+              } else if (placeholder == '비밀번호') {
+                if (controller.text.isEmpty == true) {
+                  _signInController.passwordInputEmpty.value = true;
+                  print(_signInController.passwordInputEmpty.value);
+                } else if (controller.text.isEmpty == false) {
+                  _signInController.passwordInputEmpty.value = false;
+                  print(_signInController.passwordInputEmpty.value);
+                }
+              }
+            },
             decoration: InputDecoration(
                 isDense: true,
                 contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
