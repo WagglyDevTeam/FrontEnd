@@ -18,15 +18,11 @@ const double contentsPadding = 18.0;
 
 /// 게시판 상세 페이지 레이아웃
 class PostDetail extends StatelessWidget {
-  /// 게시판 상세 페이지 Id
-  final String postId = "${Get.parameters['collegeName']}";
-
   PostDetail({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     const postId = "아이디";
-    const postName = "예술계열";
+    late String postName = "${Get.parameters['collegeName']}";
     var page = Status.detail;
     return Scaffold(
       appBar: PostAppbar(postName: postName, page: page),
@@ -42,15 +38,28 @@ class PostDetail extends StatelessWidget {
   }
 }
 
+class DetailContext extends StatefulWidget {
+  const DetailContext({Key? key}) : super(key: key);
+
+  @override
+  _DetailContext createState() => _DetailContext();
+}
+
 /// 게시판 상세 페이지 ui
-class DetailContext extends StatelessWidget {
-  DetailContext({Key? key}) : super(key: key);
+class _DetailContext extends State<DetailContext> {
+  _DetailContext({Key? key});
+
+  /// 게시판 상세 페이지 GetX 데이터
+  final PostDetailController _postDetailX = Get.put(PostDetailController());
+  late String postId = "${Get.parameters['postId']}";
+  @override
+  initState() {
+    _postDetailX.getDetailBoard(postId);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    /// 게시판 상세 페이지 GetX 데이터
-    final PostDetailController _postDetailX = Get.put(PostDetailController());
-
     /// 게시판 상세 페이지 GetX 좋아요 이벤트
     onLikedByMe() {
       _postDetailX.updateDetailBoardLike(
@@ -106,8 +115,10 @@ class DetailContext extends StatelessWidget {
                                             CrossAxisAlignment.center,
                                         children: [
                                           Obx(() => AuthorForm(
-                                                image: _postDetailX.postDetail
-                                                    .value.authorProfileImg,
+                                                // image: _postDetailX.postDetail
+                                                //     .value.authorProfileImg,
+                                                image:
+                                                    "https://cdn.pixabay.com/photo/2021/11/24/11/01/autumn-6820879_960_720.jpg",
                                                 nickName: _postDetailX
                                                     .postDetail
                                                     .value
@@ -173,33 +184,39 @@ class DetailContext extends StatelessWidget {
                                                   i++)
                                                 Row(
                                                   children: [
-                                                    Container(
-                                                      width: _postDetailX
-                                                              .postDetail
-                                                              .value
-                                                              .postImages!
-                                                              .isEmpty
-                                                          ? 0
-                                                          : imageBoxSize,
-                                                      height: _postDetailX
-                                                              .postDetail
-                                                              .value
-                                                              .postImages!
-                                                              .isEmpty
-                                                          ? 0
-                                                          : imageBoxSize,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(20),
-                                                          image: DecorationImage(
-                                                              image: NetworkImage(
-                                                                  _postDetailX
-                                                                      .postDetail
-                                                                      .value
-                                                                      .postImages![i]),
-                                                              fit: BoxFit.cover)),
-                                                    ),
+                                                    if (_postDetailX
+                                                        .postDetail
+                                                        .value
+                                                        .postImages!
+                                                        .isEmpty)
+                                                      Container(
+                                                        width: _postDetailX
+                                                                .postDetail
+                                                                .value
+                                                                .postImages!
+                                                                .isEmpty
+                                                            ? 0
+                                                            : imageBoxSize,
+                                                        height: _postDetailX
+                                                                .postDetail
+                                                                .value
+                                                                .postImages!
+                                                                .isEmpty
+                                                            ? 0
+                                                            : imageBoxSize,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                            image: DecorationImage(
+                                                                image: NetworkImage(
+                                                                    _postDetailX
+                                                                        .postDetail
+                                                                        .value
+                                                                        .postImages![i]!),
+                                                                fit: BoxFit.cover)),
+                                                      ),
                                                     SizedBox(
                                                         width: i ==
                                                                 _postDetailX

@@ -29,13 +29,21 @@ class PostProvider extends GetConnect {
         headers: authHeaders,
       );
 
+  /// GET 게시판 홈 API
   Future<Response> getBoardHome() => get(
         "${dotenv.get('BASE_URL')}/board/home",
         headers: authHeaders,
       );
 
+  /// GET 특정 학과 페이지 API
   Future<Response> getBoardCollege(String college, int page, int size) => get(
         "${dotenv.get('BASE_URL')}/board?college=$college&page=$page&size=$size",
+        headers: authHeaders,
+      );
+
+  /// GET 상세페이지 API
+  Future<Response> getDetailBoard(String boardId) => get(
+        "${dotenv.get('BASE_URL')}/board/$boardId",
         headers: authHeaders,
       );
 }

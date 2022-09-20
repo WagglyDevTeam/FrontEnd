@@ -6,44 +6,49 @@ class PostDetailData {
   String? postCreatedAt;
   int? postId;
   String? postDesc;
-  List<String>? postImages;
+  List<dynamic>? postImages;
   int? postLikeCnt;
   int? postCommentCnt;
   bool? isLikedByMe;
   bool? isBlind;
   int? authorId;
   String? authorNickname;
-  String? authorProfileImg;
-  PostDetailData({
-    this.postImages,
-    this.postDesc,
-    this.postLikeCnt,
-    this.postCommentCnt,
-    this.isLikedByMe,
-    this.isBlind,
-    this.authorNickname,
-    this.authorId,
-    this.authorProfileImg,
-    this.authorMajor,
-    this.postTitle,
-    this.postCreatedAt,
-    this.postId,
-  }) : super();
+  bool? isAnonymous;
+  // String? authorProfileImg;
+  PostDetailData(
+      {this.postId,
+      this.postTitle,
+      this.postDesc,
+      this.postCreatedAt,
+      this.postImages,
+      this.postLikeCnt,
+      this.postCommentCnt,
+      this.isLikedByMe,
+      this.authorId,
+      this.authorMajor,
+      this.authorNickname,
+      this.isBlind,
+      this.isAnonymous
+      // this.authorProfileImg,
+      })
+      : super();
 
   factory PostDetailData.fromJson(Map<String, dynamic> json) => PostDetailData(
-      postImages: json["postImages"] as List<String>,
-      postDesc: json["postDesc"] as String,
-      postLikeCnt: json["postLikeCnt"] as int,
-      postCommentCnt: json["postCommentCnt"] as int,
-      isLikedByMe: json["isLikedByMe"] as bool,
-      isBlind: json["isBlind"] as bool,
-      authorNickname: json["authorNickname"] as String,
-      authorId: json["authorId"] as int,
-      authorProfileImg: json["authorProfileImg"] as String,
-      authorMajor: json["authorMajor"] as String,
-      postTitle: json["postTitle"] as String,
-      postCreatedAt: json["postCreatedAt"] as String,
-      postId: json["postId"] as int);
+        postId: json["postId"] as int,
+        postTitle: json["postTitle"] as String,
+        postDesc: json["postDesc"] as String,
+        postCreatedAt: json["postCreatedAt"] as String,
+        postImages: json["postImages"] as List<dynamic>,
+        postLikeCnt: json["postLikeCnt"] as int,
+        postCommentCnt: json["postCommentCnt"] as int,
+        isLikedByMe: json["isLikedByMe"] as bool,
+        authorId: json["authorId"] as int,
+        authorMajor: json["authorMajor"] as String,
+        authorNickname: json["authorNickname"] as String,
+        isBlind: json["isBlind"] as bool,
+        isAnonymous: json["isAnonymous"] as bool,
+        // authorProfileImg: json["authorProfileImg"] as String,
+      );
 
   @override
   Map<String, dynamic> toJson() => {
@@ -55,7 +60,8 @@ class PostDetailData {
         "isBlind": isBlind,
         "authorNickname": authorNickname,
         "authorId": authorId,
-        "authorProfileImg": authorProfileImg,
+        // "authorProfileImg": authorProfileImg,
+        "isAnonymous": isAnonymous,
         "authorMajor": authorMajor,
         "postTitle": postTitle,
         "postCreatedAt": postCreatedAt,

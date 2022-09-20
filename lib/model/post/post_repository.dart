@@ -45,13 +45,20 @@ class PostRepository {
     return wagglyResponseDto;
   }
 
-  Future<String> getBoardCollege(PostCollegeDto props) async {
+  Future<WagglyResponseDto> getBoardCollege(PostCollegeDto props) async {
     Response response = await _postProvider.getBoardCollege(
         props.college!, props.page!, props.size!);
     dynamic body = response.body;
-    print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
 
-    return "wagglyResponseDto";
+    return wagglyResponseDto;
+  }
+
+  Future<WagglyResponseDto> getDetailBoard(String boardId) async {
+    Response response = await _postProvider.getDetailBoard(boardId);
+    dynamic body = response.body;
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+
+    return wagglyResponseDto;
   }
 }

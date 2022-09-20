@@ -35,7 +35,7 @@ class PostHomeController extends GetxController {
 
   /// 게시판 특정학과 페이지 post data get
   Future<void> getBoardCollege(PostCollegeDto college) async {
-    String result = await _postRepository.getBoardCollege(college);
+    WagglyResponseDto result = await _postRepository.getBoardCollege(college);
     // print(result);
     // dynamic bestJson = result.datas["bestPost"];
     // dynamic postJson = result.datas["posts"];
