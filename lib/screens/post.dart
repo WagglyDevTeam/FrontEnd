@@ -2,9 +2,9 @@ import "dart:ui";
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:waggly/components/Post/post_app_bar.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/utils/text_frame.dart';
+import 'package:waggly/widgets/header/page_appbar.dart';
 import '../model/postCollege/dtos/post_college_dto.dart';
 import '../utils/colors.dart';
 
@@ -164,23 +164,19 @@ class PostScreen extends StatelessWidget {
     bool? on = false;
     bool? off = true;
     PostCollegeData myCollegeData = myCollege;
-    List<PostCollegeData>? otherCollegeData =
-    otherCollege ;
+    List<PostCollegeData>? otherCollegeData = otherCollege;
     String? myCollegeName = myCollegeData.postCollegeName;
     String? myCollegeId = myCollegeData.postColoegeId;
     List<PostListData>? myCollegepreview = myCollegeData.postList;
-    Status? page = Status.main;
+    Status? page = Status.home;
     String? postName = "게시판";
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: PostAppbar(
-          page: page,
-          postName: postName,
-        ),
+        appBar: PageAppbar(page: page, pageTitle: postName),
         body: Container(
           padding:
-          EdgeInsets.only(left: 16.w, right: 16.w, top: 6.h, bottom: 6.h),
+              EdgeInsets.only(left: 16.w, right: 16.w, top: 6.h, bottom: 6.h),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
@@ -261,7 +257,7 @@ class PostCard extends StatelessWidget {
           height: 220.h,
           width: 250.w,
           padding:
-          EdgeInsets.only(left: 15.w, top: 12.h, right: 15.h, bottom: 12.w),
+              EdgeInsets.only(left: 15.w, top: 12.h, right: 15.h, bottom: 12.w),
           decoration: BoxDecoration(
               color: on ? Palette.paper : Colors.white,
               borderRadius: BorderRadius.circular(30.0),
@@ -297,7 +293,7 @@ class PostCard extends StatelessWidget {
                                 width: 200,
                                 child: BackdropFilter(
                                   filter:
-                                  ImageFilter.blur(sigmaX: 3, sigmaY: 2),
+                                      ImageFilter.blur(sigmaX: 3, sigmaY: 2),
                                   child: Container(
                                       color: Colors.white.withOpacity(0.1)),
                                 ),
@@ -381,10 +377,10 @@ class PostCard extends StatelessWidget {
 class ListItem extends StatelessWidget {
   ListItem(
       {Key? key,
-        @required this.category,
-        @required this.title,
-        @required this.date,
-        @required this.id})
+      @required this.category,
+      @required this.title,
+      @required this.date,
+      @required this.id})
       : super(key: key);
   final category;
   final title;

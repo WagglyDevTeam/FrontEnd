@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:waggly/controller/myPage/my_profile_controller.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
@@ -9,8 +8,7 @@ import 'package:waggly/model/myPage/waggly_img.dart';
 import 'package:waggly/widgets/Button/button.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/utils/colors.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
+import 'package:waggly/widgets/header/page_appbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/model/myPage/my_profile_model.dart';
@@ -18,74 +16,16 @@ import 'package:waggly/model/myPage/my_profile_introduction_model.dart';
 
 class MyPageScreen extends StatelessWidget {
   const MyPageScreen({Key? key}) : super(key: key);
+  final String _pageTitle = "내정보";
+  final Status _page = Status.editAlarmOnly;
 
   @override
   Widget build(BuildContext context) {
+    double appbarHeight = 68.0.h;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-          preferredSize: Size(MediaQuery.of(context).size.width, 68),
-          child: Column(children: [
-            const TopNav(),
-          ])),
+      appBar: PageAppbar(page: _page, pageTitle: _pageTitle),
       body: myPage(),
-    );
-  }
-}
-
-class TopNav extends StatelessWidget implements PreferredSizeWidget {
-  @override
-  Size get preferredSize => const Size.fromHeight(50);
-
-  const TopNav({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      elevation: 0,
-      centerTitle: false,
-      backgroundColor: Colors.white,
-      title: Container(
-        margin: EdgeInsets.only(top: 15),
-        child: Text(
-          '내 정보',
-          style: CommonText.TitleM,
-        ),
-      ),
-      actions: <Widget>[
-        Container(
-          width: 36.w,
-          height: 36.h,
-          margin: EdgeInsets.only(top: 20.h, right: 16.w, bottom: 0),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius:
-                  const BorderRadius.all(Radius.circular(40.0) // POINT
-                      ),
-              border: Border.all(width: 1.0, color: const Color(0xFFE8E8E8)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 주 축 기준 중앙
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                IconButton(
-                    icon: const Icon(
-                      Icons.notifications_none,
-                    ),
-                    splashRadius: 50,
-                    iconSize: 20,
-                    padding: EdgeInsets.zero,
-                    constraints: BoxConstraints(),
-                    color: Palette.gray,
-                    onPressed: () async {
-                      await Get.put(NotificationController()).getNotification();
-                      Get.toNamed('/notification');
-                    })
-              ],
-            ),
-          ),
-        )
-      ],
     );
   }
 }
@@ -223,7 +163,7 @@ class myPage extends StatelessWidget {
                     ),
                     SizedBox(width: 10.w),
                     Container(
-                        width: MediaQuery.of(context).size.width - 115.w,
+                        width: MediaQuery.of(context).size.width - 119.w,
                         padding: EdgeInsets.only(top: 8.h),
                         child: Obx(
                           () => Column(
@@ -262,8 +202,8 @@ class myPage extends StatelessWidget {
                           ),
                         )),
                     SizedBox(
-                      width: 43.0.w,
-                      height: 19.0.h,
+                      width: 45.0.w,
+                      height: 20.0.h,
                       child: ElevatedButton(
                         child: Text(
                           !myProfileController.nicknameBtn.value ? "수정" : "완료",
@@ -358,8 +298,8 @@ class myPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: 43.0.w,
-                      height: 19.0.h,
+                      width: 45.0.w,
+                      height: 20.0.h,
                       child: ElevatedButton(
                         child: Obx(
                           () => Text(
