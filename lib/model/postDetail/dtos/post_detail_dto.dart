@@ -6,7 +6,7 @@ class PostDetailData {
   String? postCreatedAt;
   int? postId;
   String? postDesc;
-  List<String>? postImages;
+  List<dynamic>? postImages;
   int? postLikeCnt;
   int? postCommentCnt;
   bool? isLikedByMe;
@@ -31,7 +31,7 @@ class PostDetailData {
   }) : super();
 
   factory PostDetailData.fromJson(Map<String, dynamic> json) => PostDetailData(
-      postImages: json["postImages"] as List<String>,
+      postImages: json["postImages"] as List<dynamic>,
       postDesc: json["postDesc"] as String,
       postLikeCnt: json["postLikeCnt"] as int,
       postCommentCnt: json["postCommentCnt"] as int,
@@ -44,6 +44,21 @@ class PostDetailData {
       postTitle: json["postTitle"] as String,
       postCreatedAt: json["postCreatedAt"] as String,
       postId: json["postId"] as int);
+
+  factory PostDetailData.fromClass(PostDetailData postDetailData) => PostDetailData(
+      postImages: postDetailData.postImages,
+      postDesc: postDetailData.postDesc,
+      postLikeCnt: postDetailData.postLikeCnt,
+      postCommentCnt: postDetailData.postCommentCnt,
+      isLikedByMe: postDetailData.isLikedByMe,
+      isBlind: postDetailData.isBlind,
+      authorNickname: postDetailData.authorNickname,
+      authorId: postDetailData.authorId,
+      authorProfileImg: postDetailData.authorProfileImg,
+      authorMajor: postDetailData.authorMajor,
+      postTitle: postDetailData.postTitle,
+      postCreatedAt: postDetailData.postCreatedAt,
+      postId: postDetailData.postId);
 
   @override
   Map<String, dynamic> toJson() => {

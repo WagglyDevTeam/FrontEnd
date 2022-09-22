@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waggly/components/myPage/profileImg/img_tile.dart';
 import 'package:waggly/widgets/Button/button.dart';
-import 'package:waggly/widgets/PageNav/page_nav.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/model/myPage/waggly_img.dart';
 import 'package:waggly/controller/myPage/waggly_img_controller.dart';
+import 'package:waggly/widgets/header/page_appbar.dart';
 
 class ProfileImgScreen extends StatelessWidget {
   @override
@@ -20,7 +20,8 @@ class ProfileImgList extends StatelessWidget {
   bool focus = false;
   int checkedImg = 100;
   String imgUrl = '';
-
+  var page = Status.setting;
+  var pageTitle = '와글리 이미지';
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,9 +30,9 @@ class ProfileImgList extends StatelessWidget {
         children: [
           Column(
             children: [
-              PageNav(
-                pageTitle: '와글리 이미지',
-                noBorder: false,
+              PageAppbar(
+                pageTitle: pageTitle,
+                page: page,
               ),
               Expanded(
                 child: Obx(

@@ -127,9 +127,15 @@ class HeroApp extends StatelessWidget {
                 transition: Transition.rightToLeft),
             GetPage(
                 name: "/writePage",
-                // page: () => WritePage(),
+                page: () => WritePage("write"),
                 // 그룹채팅방 만들기 페이지가 갈 곳이 없어서 임시로 여기에 라우팅 해둠
-                page: () => GroupChatCreatePage(),
+                // page: () => GroupChatCreatePage(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/editPage",
+                page: () => WritePage("edit"),
+                // 그룹채팅방 만들기 페이지가 갈 곳이 없어서 임시로 여기에 라우팅 해둠
+                // page: () => GroupChatCreatePage(),
                 transition: Transition.rightToLeft),
             GetPage(
                 name: "/profileImg",

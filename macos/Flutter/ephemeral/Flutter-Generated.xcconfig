@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=D:\programming\flutter_windows_2.10.4-stable\flutter
-FLUTTER_APPLICATION_PATH=D:\programming\Waggly
+FLUTTER_ROOT=/Users/jeong-yeongbin/development/flutter
+FLUTTER_APPLICATION_PATH=/Users/jeong-yeongbin/Desktop/frontend
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0

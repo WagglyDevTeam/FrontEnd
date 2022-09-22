@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Button extends StatefulWidget {
   const Button({
@@ -25,13 +26,13 @@ class _ButtonState extends State<Button> {
     if (widget.mode == 'double') {
       return Container(
         width: double.infinity,
-        padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
+        padding: EdgeInsets.fromLTRB(18.h, 0, 18.h, 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              width: 155,
-              height: 36,
+              width: 155.w,
+              height: 36.h,
               alignment: Alignment.center,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(26),
@@ -120,7 +121,7 @@ class _ButtonState extends State<Button> {
       padding: const EdgeInsets.fromLTRB(18, 8, 18, 0),
       child: Container(
         width: double.infinity,
-        height: 36,
+        height: 36.h,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(26),
             color: widget.disabled ? Color(0xffE8E8E8) : Color(0xffB863FB)),

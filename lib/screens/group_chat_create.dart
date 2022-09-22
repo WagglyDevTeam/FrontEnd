@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:hashtagable/hashtagable.dart';
 import 'package:waggly/components/button/rules_button.dart';
 import 'package:waggly/components/inputField/input_hashtag_field.dart';
-import 'package:waggly/components/post/post_app_bar.dart';
 import 'package:waggly/controller/group_chat_controller.dart';
 import 'package:waggly/controller/post/post_controller.dart';
 import 'package:waggly/components/inputField/input_title_field.dart';
@@ -13,6 +12,7 @@ import 'package:waggly/components/button/bottom_long_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
+import 'package:waggly/widgets/header/page_appbar.dart';
 
 final List<String> categoryList = [
   "취업",
@@ -60,9 +60,9 @@ class GroupChatCreatePage extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: PostAppbar(
+      appBar: PageAppbar(
         page: page,
-        postName: postName,
+        pageTitle: postName,
       ),
       backgroundColor: Colors.white,
       body: GestureDetector(
@@ -156,8 +156,7 @@ class GroupChatCreatePage extends StatelessWidget {
                   controller: groupChatController,
                   text: "채팅방 생성하기",
                   height: buttonAreaHeight.h,
-                  onPressed: () {
-                  },
+                  onPressed: () {},
                 ),
               ), // 채팅방 생성하기 버튼
             ],
@@ -174,7 +173,8 @@ class SelectAreaBox extends StatelessWidget {
     required this.controller,
     required this.text,
     required this.itemList,
-    required this.flagIndex, this.onTap,
+    required this.flagIndex,
+    this.onTap,
   }) : super(key: key);
 
   final String text;
@@ -215,7 +215,8 @@ class SelectButton extends StatelessWidget {
     Key? key,
     required this.controller,
     required this.flagIndex,
-    this.itemList, this.onTap,
+    this.itemList,
+    this.onTap,
   }) : super(key: key);
 
   final itemList;
@@ -245,26 +246,23 @@ class SelectButton extends StatelessWidget {
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      padding:
-                          EdgeInsets.only(left: 15.w, right: 15.w),
+                      padding: EdgeInsets.only(left: 15.w, right: 15.w),
                       decoration: BoxDecoration(
                         color: flagIndex.value == index
                             ? Palette.main
                             : Palette.paper,
                         borderRadius: BorderRadius.circular(25.0),
                       ),
-                      child: Text(
-                        itemList[index].toString(),
-                        style: CommonText.BodyM.copyWith(
-                          color: flagIndex.value == index
-                              ? Colors.white
-                              : Palette.data,
-                        )
-                      ),
+                      child: Text(itemList[index].toString(),
+                          style: CommonText.BodyM.copyWith(
+                            color: flagIndex.value == index
+                                ? Colors.white
+                                : Palette.data,
+                          )),
                     ),
                   ),
                 ),
-                if (index == itemList.length-1) SizedBox(width: 20.0.w),
+                if (index == itemList.length - 1) SizedBox(width: 20.0.w),
               ],
             );
           }),

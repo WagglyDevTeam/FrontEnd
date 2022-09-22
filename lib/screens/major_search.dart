@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:waggly/components/post/post_app_bar.dart';
+import 'package:waggly/widgets/header/page_appbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/components/snackBar/custom_snack_bar.dart';
 import 'package:waggly/controller/major/major_controller.dart';
@@ -24,8 +24,8 @@ class MajorSearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: PostAppbar(
-          postName: _postName,
+        appBar: PageAppbar(
+          pageTitle: _postName,
           page: _page,
         ),
         body: Column(
@@ -48,7 +48,9 @@ class MajorSearchScreen extends StatelessWidget {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(26),
-                    color: _signUpController.majorInputEmpty.value == true ? Color(0xffE8E8E8) : Color(0xffB863FB),
+                    color: _signUpController.majorInputEmpty.value == true
+                        ? Color(0xffE8E8E8)
+                        : Color(0xffB863FB),
                   ),
                   child: TextButton(
                     child: Text(
@@ -61,7 +63,8 @@ class MajorSearchScreen extends StatelessWidget {
                     ),
                     onPressed: () async {
                       // input 값이 major 리스트 안에 존재하는지 다시 확인
-                      if (_majorController.checkMajorExist(controller.text) == false ||
+                      if (_majorController.checkMajorExist(controller.text) ==
+                              false ||
                           controller.text.isEmpty == true) {
                         CustomSnackBar.messageSnackbar(
                           context,

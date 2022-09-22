@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:waggly/components/Post/post_common.dart';
-import 'package:waggly/components/Post/post_detail_screen.dart';
 import 'package:waggly/utils/lang.dart';
-import 'package:waggly/widgets/index.dart';
 import '../../model/postCollege/dtos/post_college_dto.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
-import './post_app_bar.dart';
+import 'package:waggly/widgets/header/page_appbar.dart';
+
 
 class PostAffiliation extends StatelessWidget {
   PostAffiliation({Key? key}) : super(key: key);
+  final String postName = Lang().change("${Get.parameters['collegeName']}");
+  var page = Status.boardTitle;
   // final String postName = Lang().change("${collegeName}");
-  final String postName = Get.parameters['collegeName'] ?? "";
+  //final String postName = Get.parameters['collegeName'] ?? "";
 
   final List<PostSpecificData> data = [
     PostSpecificData(
@@ -32,9 +33,9 @@ class PostAffiliation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var page = Status.home;
     return Scaffold(
-      appBar: PostAppbar(postName: postName, page: page),
+      backgroundColor: Colors.white,
+      appBar: PageAppbar(pageTitle: postName, page: page),
       body: Container(
         decoration: BoxDecoration(color: Colors.white),
         child: ListView.builder(
