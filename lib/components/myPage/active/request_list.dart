@@ -4,10 +4,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as svg_provider;
+import 'package:waggly/widgets/header/page_appbar.dart';
 
 class RequestScreen extends StatelessWidget {
   const RequestScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,6 +109,8 @@ class requestList extends StatelessWidget {
       },
     },
   ];
+  double appbarHeight = 68.0.h;
+  Size get preferredSize => Size.fromHeight(appbarHeight);
 
   @override
   Widget build(BuildContext context) {
@@ -118,344 +120,328 @@ class requestList extends StatelessWidget {
     final double itemHeight = 28.h;
     final double itemWidth = size.width / 2;
 
-    return Container(
-      padding: EdgeInsets.only(top: 20),
-      child: Stack(
-        children: [
-          Column(
-            children: [
-              Stack(
+    return Stack(
+      children: [
+        Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 20.h, left: 16.w),
+              height: appbarHeight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 36.w,
-                        height: 36.h,
-                        margin: EdgeInsets.only(top: 20, right: 10, left: 16),
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(width: 0.5, color: Palette.lightGray),
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: IconButton(
-                          icon: Icon(Icons.arrow_back),
-                          color: Palette.gray,
-                          iconSize: 20.0,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1.0, color: Palette.lightGray),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      color: Palette.gray,
+                      iconSize: 20.0.sp,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8.w,
+                  ),
+                  if (requestStatus)
+                    Container(
+                      width: 200.w,
+                      margin: EdgeInsets.only(bottom: 3.h),
+                      child: Text(
+                        '내가 보낸 요청',
+                        style: CommonText.BodyL,
                       ),
-                      if (requestStatus)
-                        Container(
-                          width: 200.w,
-                          margin: EdgeInsets.only(top: 10.h),
-                          child: Text(
-                            '내가 보낸 요청',
-                            style: CommonText.BodyL,
-                          ),
+                    ),
+                  if (!requestStatus)
+                    Container(
+                      width: 200.w,
+                      margin: EdgeInsets.only(bottom: 3.h),
+                      child: Text(
+                        '내가 받은 요청',
+                        style: CommonText.BodyL,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: GridView.count(
+                padding: EdgeInsets.all(5),
+                crossAxisCount: 2,
+                childAspectRatio: (itemWidth / itemHeight),
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 5.w),
+                    child: ElevatedButton(
+                      child: SvgPicture.asset(
+                        'assets/icons/sendRequest.svg',
+                        width: 12.w,
+                        height: 12.h,
+                        color: requestStatus ? Colors.white : Palette.mdGray,
+                      ),
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        primary: requestStatus ? Palette.main : Colors.white,
+                        onPrimary:
+                            requestStatus ? Colors.white : Palette.mdGray,
+                        side: BorderSide(
+                          width: 0.5,
+                          color: requestStatus ? Colors.white : Palette.light,
                         ),
-                      if (!requestStatus)
-                        Container(
-                          width: 200.w,
-                          margin: EdgeInsets.only(top: 10.h),
-                          child: Text(
-                            '내가 받은 요청',
-                            style: CommonText.BodyL,
-                          ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32.0),
                         ),
-                    ],
+                      ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 5),
+                    child: ElevatedButton(
+                      child: SvgPicture.asset(
+                        'assets/icons/getRequest.svg',
+                        width: 12.w,
+                        height: 12.h,
+                        color: !requestStatus ? Colors.white : Palette.mdGray,
+                      ),
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        primary: !requestStatus ? Palette.main : Colors.white,
+                        onPrimary: !requestStatus ? Colors.white : Palette.gray,
+                        side: BorderSide(
+                          width: 0.5,
+                          color: !requestStatus ? Colors.white : Palette.light,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                        ),
+                      ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                    ),
                   ),
                 ],
               ),
-              Expanded(
-                child: GridView.count(
-                  padding: const EdgeInsets.all(16),
-                  crossAxisCount: 2,
-                  childAspectRatio: (itemWidth / itemHeight),
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: ElevatedButton(
-                        child: SvgPicture.asset(
-                          'assets/icons/sendRequest.svg',
-                          width: 12.w,
-                          height: 12.h,
-                          color: requestStatus ? Colors.white : Palette.mdGray,
-                        ),
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          primary: requestStatus ? Palette.main : Colors.white,
-                          onPrimary:
-                              requestStatus ? Colors.white : Palette.mdGray,
-                          side: BorderSide(
-                            width: 0.5,
-                            color: requestStatus ? Colors.white : Palette.light,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32.0),
-                          ),
-                        ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: ElevatedButton(
-                        child: SvgPicture.asset(
-                          'assets/icons/getRequest.svg',
-                          width: 12.w,
-                          height: 12.h,
-                          color: !requestStatus ? Colors.white : Palette.mdGray,
-                        ),
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          primary: !requestStatus ? Palette.main : Colors.white,
-                          onPrimary:
-                              !requestStatus ? Colors.white : Palette.gray,
-                          side: BorderSide(
-                            width: 0.5,
-                            color:
-                                !requestStatus ? Colors.white : Palette.light,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32.0),
-                          ),
-                        ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              if (requestStatus)
-                SizedBox(
-                  height: MediaQuery.of(context).size.height - 110.h,
-                  child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: requestedList.length,
-                      itemBuilder: (context, index) {
-                        return Column(children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.only(left: 16.w),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: 22.h,
-                                      width: 22.w,
-                                      margin: EdgeInsets.only(
-                                          right: 10.w, top: 5.h),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(50.0),
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              'https://stickershop.line-scdn.net/stickershop/v1/product/855/LINEStorePC/main.png;compress=true'),
-                                          fit: BoxFit.fill,
-                                        ),
+            ),
+            if (requestStatus)
+              SizedBox(
+                height: MediaQuery.of(context).size.height - 120.h,
+                child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: requestedList.length,
+                    itemBuilder: (context, index) {
+                      return Column(children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(left: 16.w),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 22.h,
+                                    width: 22.w,
+                                    margin:
+                                        EdgeInsets.only(right: 10.w, top: 5.h),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            'https://stickershop.line-scdn.net/stickershop/v1/product/855/LINEStorePC/main.png;compress=true'),
+                                        fit: BoxFit.fill,
                                       ),
                                     ),
-                                    Text(
-                                      '${requestedList[index]['requestUser']['nickname']}',
+                                  ),
+                                  Text(
+                                    '${requestedList[index]['requestUser']['nickname']}',
+                                    textAlign: TextAlign.center,
+                                    style: CommonText.BodyB,
+                                  ),
+                                  SizedBox(width: 5.w),
+                                  Icon(
+                                    Icons.female,
+                                    size: 12.r,
+                                    color: Palette.mdGray,
+                                  ),
+                                  SizedBox(width: 5.w),
+                                  Container(
+                                    padding: EdgeInsets.only(top: 5),
+                                    child: Text(
+                                      '${requestedList[index]['requestUser']['major']}',
                                       textAlign: TextAlign.center,
-                                      style: CommonText.BodyB,
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    Icon(
-                                      Icons.female,
-                                      size: 12.r,
-                                      color: Palette.mdGray,
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    Container(
-                                      padding: EdgeInsets.only(top: 5),
-                                      child: Text(
-                                        '${requestedList[index]['requestUser']['major']}',
-                                        textAlign: TextAlign.center,
-                                        style: CommonText.BodyEngGray,
-                                      ),
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    Container(
-                                      padding: EdgeInsets.only(top: 3),
-                                      child: Text(
-                                        '18 학번',
-                                        textAlign: TextAlign.center,
-                                        style: CommonText.BodyEngGray,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 15.h),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.only(right: 16.w, left: 16.w),
-                            padding: EdgeInsets.only(
-                                top: 12.h,
-                                bottom: 12.h,
-                                left: 10.w,
-                                right: 10.w),
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(width: 1, color: Palette.light),
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: Text(
-                              '${requestedList[index]['requestPurpose']}',
-                              style: CommonText.BodyS,
-                            ),
-                          ),
-                          SizedBox(height: 15.h),
-                          Divider(height: 1, color: Palette.lightGray),
-                          SizedBox(height: 10.h),
-                        ]);
-                      }),
-                ),
-              if (!requestStatus)
-                SizedBox(
-                  height: MediaQuery.of(context).size.height - 100.h,
-                  child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: getRequestList.length,
-                      itemBuilder: (context, index) {
-                        return Column(children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.only(left: 16.w),
-                            width: MediaQuery.of(context).size.width,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      height: 22.h,
-                                      width: 22.w,
-                                      margin: EdgeInsets.only(
-                                          right: 10.w, top: 5.h),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(50.0),
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              "https://t1.daumcdn.net/cfile/tistory/9925993E5C8CE8FB05"),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      '${getRequestList[index]['requestUser']['nickname']}',
-                                      style: CommonText.BodyB,
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    Icon(
-                                      Icons.female,
-                                      size: 12.r,
-                                      color: Palette.mdGray,
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    Text(
-                                      '${getRequestList[index]['requestUser']['major']}',
                                       style: CommonText.BodyEngGray,
                                     ),
-                                    SizedBox(width: 5.w),
-                                    Text(
+                                  ),
+                                  SizedBox(width: 5.w),
+                                  Container(
+                                    padding: EdgeInsets.only(top: 3),
+                                    child: Text(
                                       '18 학번',
+                                      textAlign: TextAlign.center,
                                       style: CommonText.BodyEngGray,
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      width: 70.0.w,
-                                      height: 24.0.h,
-                                      margin: EdgeInsets.only(right: 10.w),
-                                      child: ElevatedButton(
-                                        child: Text(
-                                          "수락하기",
-                                          style: CommonText.BodyXS,
-                                        ),
-                                        onPressed: () => print("it's pressed"),
-                                        style: ElevatedButton.styleFrom(
-                                          primary: Palette.candy,
-                                          onPrimary: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(32.0),
-                                          ),
-                                        ).copyWith(
-                                            elevation:
-                                                ButtonStyleButton.allOrNull(
-                                                    0.0)),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 15.h),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.only(right: 16.w, left: 16.w),
+                          padding: EdgeInsets.only(
+                              top: 12.h, bottom: 12.h, left: 10.w, right: 10.w),
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Palette.light),
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          child: Text(
+                            '${requestedList[index]['requestPurpose']}',
+                            style: CommonText.BodyS,
+                          ),
+                        ),
+                        SizedBox(height: 15.h),
+                        Divider(height: 1, color: Palette.lightGray),
+                        SizedBox(height: 10.h),
+                      ]);
+                    }),
+              ),
+            if (!requestStatus)
+              SizedBox(
+                height: MediaQuery.of(context).size.height - 120.h,
+                child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: getRequestList.length,
+                    itemBuilder: (context, index) {
+                      return Column(children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(left: 16.w),
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 22.h,
+                                    width: 22.w,
+                                    margin:
+                                        EdgeInsets.only(right: 10.w, top: 5.h),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            "https://t1.daumcdn.net/cfile/tistory/9925993E5C8CE8FB05"),
+                                        fit: BoxFit.fill,
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: 70.0.w,
-                                      height: 24.0.h,
-                                      child: ElevatedButton(
-                                        child: Text(
-                                          "거절하기",
-                                          style: CommonText.BodyXS,
-                                        ),
-                                        onPressed: () => print("it's pressed"),
-                                        style: ElevatedButton.styleFrom(
-                                          primary: Palette.candy,
-                                          onPrimary: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(32.0),
-                                          ),
-                                        ).copyWith(
-                                            elevation:
-                                                ButtonStyleButton.allOrNull(
-                                                    0.0)),
+                                  ),
+                                  Text(
+                                    '${getRequestList[index]['requestUser']['nickname']}',
+                                    style: CommonText.BodyB,
+                                  ),
+                                  SizedBox(width: 5.w),
+                                  Icon(
+                                    Icons.female,
+                                    size: 12.r,
+                                    color: Palette.mdGray,
+                                  ),
+                                  SizedBox(width: 5.w),
+                                  Text(
+                                    '${getRequestList[index]['requestUser']['major']}',
+                                    style: CommonText.BodyEngGray,
+                                  ),
+                                  SizedBox(width: 5.w),
+                                  Text(
+                                    '18 학번',
+                                    style: CommonText.BodyEngGray,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                    width: 70.0.w,
+                                    height: 24.0.h,
+                                    margin: EdgeInsets.only(right: 10.w),
+                                    child: ElevatedButton(
+                                      child: Text(
+                                        "수락하기",
+                                        style: CommonText.BodyXS,
                                       ),
+                                      onPressed: () => print("it's pressed"),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Palette.candy,
+                                        onPrimary: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(32.0),
+                                        ),
+                                      ).copyWith(
+                                          elevation:
+                                              ButtonStyleButton.allOrNull(0.0)),
                                     ),
-                                    SizedBox(width: 18.w),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                  SizedBox(
+                                    width: 70.0.w,
+                                    height: 24.0.h,
+                                    child: ElevatedButton(
+                                      child: Text(
+                                        "거절하기",
+                                        style: CommonText.BodyXS,
+                                      ),
+                                      onPressed: () => print("it's pressed"),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Palette.candy,
+                                        onPrimary: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(32.0),
+                                        ),
+                                      ).copyWith(
+                                          elevation:
+                                              ButtonStyleButton.allOrNull(0.0)),
+                                    ),
+                                  ),
+                                  SizedBox(width: 18.w),
+                                ],
+                              ),
+                            ],
                           ),
-                          SizedBox(height: 15.h),
-                          Container(
-                            margin: EdgeInsets.only(right: 16.w, left: 16.w),
-                            padding: EdgeInsets.only(
-                                top: 12.h,
-                                bottom: 12.h,
-                                left: 10.w,
-                                right: 10.w),
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(width: 1, color: Palette.light),
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: Text(
-                              '${getRequestList[index]['requestText']}',
-                              style: CommonText.BodyM,
-                            ),
+                        ),
+                        SizedBox(height: 15.h),
+                        Container(
+                          margin: EdgeInsets.only(right: 16.w, left: 16.w),
+                          padding: EdgeInsets.only(
+                              top: 12.h, bottom: 12.h, left: 10.w, right: 10.w),
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Palette.light),
+                            borderRadius: BorderRadius.circular(20.0),
                           ),
-                          SizedBox(height: 15.h),
-                          Divider(height: 1, color: Palette.lightGray),
-                          SizedBox(height: 10.h),
-                        ]);
-                      }),
-                ),
-            ],
-          ),
-        ],
-      ),
+                          child: Text(
+                            '${getRequestList[index]['requestText']}',
+                            style: CommonText.BodyM,
+                          ),
+                        ),
+                        SizedBox(height: 15.h),
+                        Divider(height: 1, color: Palette.lightGray),
+                        SizedBox(height: 10.h),
+                      ]);
+                    }),
+              ),
+          ],
+        ),
+      ],
     );
   }
 }
