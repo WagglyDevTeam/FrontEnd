@@ -6,7 +6,7 @@ import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:get/get.dart';
 
-import '../../controller/post/post_detail_controller.dart';
+import '../../controller/postDetail/post_detail_controller.dart';
 
 class PostDifferentList extends StatelessWidget {
   PostDifferentList({Key? key, required this.widgetList}) : super(key: key);
