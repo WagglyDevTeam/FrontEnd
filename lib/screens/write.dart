@@ -44,9 +44,9 @@ class WritePage extends StatelessWidget {
   WritePage(this.type, {Key? key}) : super(key: key);
 
   void buttonActivateCheck() {
-    if (_title.text.isBlank == true ||
+    if (_title!.text.isBlank == true ||
         extractHashTags(_hashtag.text).isEmpty ||
-        _content.text.isBlank == true) {
+        _content!.text.isBlank == true) {
       _postController.isButtonActivate.value = false;
     } else {
       _postController.isButtonActivate.value = true;
