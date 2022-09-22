@@ -11,6 +11,7 @@ import 'package:waggly/model/post/dtos/post_response_dto.dart';
 import 'package:waggly/screens/sign_in.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
+import 'package:waggly/widgets/header/page_appbar.dart';
 import 'package:waggly/widgets/index.dart';
 import 'package:waggly/controller/post/post_controller.dart';
 import 'package:waggly/model/post/post.dart';
@@ -29,9 +30,12 @@ List<dynamic> groupChatItem = [
 HomeController _homeController = Get.find();
 SignInController signInController = Get.find();
 double bottomAppbarHeight = 55.0;
+double appbarHeight = 68.0.h;
 
 class HomeScreen extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
+  final String _pageTitle = "와글리";
+  final Status _page = Status.home;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +44,7 @@ class HomeScreen extends StatelessWidget {
       //TODO: HomeAppbar와 Body 사이에 약간의 공간이 있는데 뭐지?
       //TODO: 아이폰 하단바 높이 조절해야함
       //TODO: SVG 이미지 배너 왜 안나옴
-      appBar: HomeAppbar(),
+      appBar: PageAppbar(page: _page, pageTitle: _pageTitle),
       body: RefreshIndicator(
         key: refreshKey,
         onRefresh: () async {
@@ -609,107 +613,6 @@ class AdvertisementArea extends StatelessWidget {
         color: Color(0xFFF3F3F3),
         child: Image.asset("assets/images/main_banner.png"),
       ),
-    );
-  }
-}
-
-class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
-  double appbarHeight = 68.0.h;
-
-  @override
-  Size get preferredSize => Size.fromHeight(appbarHeight);
-
-  HomeAppbar({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    SignInController signInController = Get.find();
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Obx(
-          () => AppBar(
-            elevation: 0,
-            centerTitle: false,
-            backgroundColor: Colors.white,
-            title: Text(
-              '와글리',
-              style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.black),
-            ),
-            actions: <Widget>[
-              signInController.checkLoggedIn().value == true
-                  ? InkWell(
-                      onTap: () {
-                        // 알림 페이지로 이동
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(right: 15.0.w, top: 7.0.h),
-                        width: 36.0.w,
-                        height: 36.0.h,
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(width: 1.0, color: Palette.lightGray),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Stack(
-                          children: [
-                            Icon(
-                              Icons.notifications_none,
-                              color: Palette.gray,
-                              size: 18.w,
-                            ),
-                            Positioned(
-                              top: 1.6.h,
-                              left: 11.w,
-                              // right: -20,
-                              child: Container(
-                                width: 6.0.w,
-                                height: 6.0.h,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 0.5.w, color: Colors.white),
-                                  color: Color(0xFFFF5F5F),
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Get.toNamed('/signInPage');
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(right: 16.0.w),
-                            alignment: Alignment.center,
-                            width: 60.0.w,
-                            height: 24.0.h,
-                            child: Text(
-                              "로그인",
-                              style: CommonText.LabelWhite,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Palette.main,
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

@@ -1,14 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
-import 'package:waggly/components/post/post_modal.dart';
-import 'package:waggly/screens/post.dart';
-import 'package:waggly/utils/text_frame.dart';
-import 'package:waggly/widgets/index.dart';
-import 'package:waggly/widgets/sign_in.dart';
-import '../../utils/colors.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 enum Status { home, main, detail, edit, login, alarm, editAlarmOnly }
 
 class PostAppbar extends StatelessWidget implements PreferredSizeWidget {

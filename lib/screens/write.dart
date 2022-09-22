@@ -12,7 +12,7 @@ import 'package:waggly/components/inputField/input_hashtag_field.dart';
 import 'package:waggly/components/inputField/input_title_field.dart';
 import 'package:waggly/model/post/dtos/post_edit_request_dto.dart';
 import '../components/post/custom_text_form_field.dart';
-import '../components/post/post_app_bar.dart';
+import 'package:waggly/widgets/header/page_appbar.dart';
 import '../controller/post/image_controller.dart';
 import '../controller/post/post_controller.dart';
 import '../controller/postDetail/post_edit_controller.dart';
@@ -44,12 +44,13 @@ class WritePage extends StatelessWidget {
   WritePage(this.type, {Key? key}) : super(key: key);
 
   void buttonActivateCheck() {
-    // if (_title!.text.isBlank == true || extractHashTags(_hashtag.text).isEmpty || _content!.text.isBlank == true) {
-    //   _postController.isButtonActivate.value = false;
-    // } else {
-    //   _postController.isButtonActivate.value = true;
-    // }
-    _postController.isButtonActivate.value = true;
+    if (_title.text.isBlank == true ||
+        extractHashTags(_hashtag.text).isEmpty ||
+        _content.text.isBlank == true) {
+      _postController.isButtonActivate.value = false;
+    } else {
+      _postController.isButtonActivate.value = true;
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -69,9 +70,9 @@ class WritePage extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: PostAppbar(
+      appBar: PageAppbar(
         page: _page,
-        postName: _postName,
+        pageTitle: _postName,
       ),
       backgroundColor: Colors.white,
       body: GestureDetector(
@@ -274,7 +275,9 @@ class PhotoWidget extends StatelessWidget {
             height: _imageThumbnailAreaHeight.h,
             child: ListView.separated(
               separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(width: 4.0.w,);
+                return SizedBox(
+                  width: 4.0.w,
+                );
               },
               scrollDirection: Axis.horizontal,
               itemCount: imageUrlLength + imagesLength,

@@ -34,134 +34,170 @@ class MyPostList extends StatelessWidget {
     /*24 is for notification bar on Android*/
     final double itemHeight = 28.h;
     final double itemWidth = size.width / 2;
+    double appbarHeight = 68.0.h;
 
-    return Container(
-      padding: EdgeInsets.only(top: 20.h),
-      child: Stack(children: [
-        Column(children: [
-          Stack(
+    return Stack(children: [
+      Column(children: [
+        Container(
+          margin: EdgeInsets.only(top: 20.h, left: 16.w),
+          height: appbarHeight,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1.0, color: Palette.lightGray),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  color: Palette.gray,
+                  iconSize: 20.0.sp,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
               SizedBox(
-                height: 70.h,
-                child: Row(
-                  children: [
-                    Container(
-                      width: 36.w,
-                      height: 36.h,
-                      margin:
-                          EdgeInsets.only(top: 20.h, right: 10.w, left: 16.w),
-                      decoration: BoxDecoration(
-                        border:
-                            Border.all(width: 0.5, color: Palette.lightGray),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        color: Palette.gray,
-                        iconSize: 20.0,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                    Obx(
-                      () => Container(
-                        width: 200.w,
-                        margin: EdgeInsets.only(top: 10.h),
-                        child: Text(
-                          controller.mine.value ? '내가 쓴 글' : '내가 쓴 댓글',
-                          style: CommonText.BodyL,
-                        ),
-                      ),
-                    ),
-                  ],
+                width: 8.w,
+              ),
+              Obx(
+                () => Container(
+                  width: 200.w,
+                  margin: EdgeInsets.only(bottom: 3.h),
+                  child: Text(
+                    controller.mine.value ? '내가 쓴 글' : '내가 쓴 댓글',
+                    style: CommonText.BodyL,
+                  ),
                 ),
               ),
             ],
           ),
-          //아이콘 버튼
-          Obx(
-            () => Expanded(
-              child: GridView.count(
-                padding: const EdgeInsets.all(16),
-                crossAxisCount: 2,
-                childAspectRatio: (itemWidth / itemHeight),
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 5.w),
-                    child: ElevatedButton(
-                      child: Icon(
-                        Icons.subject,
-                        size: 16.0,
-                      ),
-                      onPressed: () {
-                        controller.mine.value = true;
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary:
-                            controller.mine.value ? Palette.main : Colors.white,
-                        onPrimary:
-                            controller.mine.value ? Colors.white : Palette.gray,
-                        side: BorderSide(
-                          width: 0.5,
-                          color: controller.mine.value
-                              ? Colors.white
-                              : Palette.light,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                        ),
-                      ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+        ),
+        //아이콘 버튼
+        Obx(
+          () => Expanded(
+            child: GridView.count(
+              padding: EdgeInsets.all(5),
+              crossAxisCount: 2,
+              childAspectRatio: (itemWidth / itemHeight),
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 5.w),
+                  child: ElevatedButton(
+                    child: Icon(
+                      Icons.subject,
+                      size: 16.0,
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 5.w),
-                    child: ElevatedButton(
-                      child: Icon(
-                        Icons.chat_bubble_outline,
-                        size: 16.0,
-                      ),
-                      onPressed: () {
-                        controller.mine.value = false;
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: !controller.mine.value
-                            ? Palette.main
-                            : Colors.white,
-                        onPrimary: !controller.mine.value
+                    onPressed: () {
+                      controller.mine.value = true;
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary:
+                          controller.mine.value ? Palette.main : Colors.white,
+                      onPrimary:
+                          controller.mine.value ? Colors.white : Palette.gray,
+                      side: BorderSide(
+                        width: 0.5,
+                        color: controller.mine.value
                             ? Colors.white
-                            : Palette.gray,
-                        side: BorderSide(
-                          width: 0.5,
-                          color: !controller.mine.value
-                              ? Colors.white
-                              : Palette.light,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                        ),
-                      ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                    ),
+                            : Palette.light,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
+                    ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 5.w),
+                  child: ElevatedButton(
+                    child: Icon(
+                      Icons.chat_bubble_outline,
+                      size: 16.0,
+                    ),
+                    onPressed: () {
+                      controller.mine.value = false;
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary:
+                          !controller.mine.value ? Palette.main : Colors.white,
+                      onPrimary:
+                          !controller.mine.value ? Colors.white : Palette.gray,
+                      side: BorderSide(
+                        width: 0.5,
+                        color: !controller.mine.value
+                            ? Colors.white
+                            : Palette.light,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
+                    ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                  ),
+                ),
+              ],
             ),
           ),
-          //리스트
-          Obx(
-            () => controller.mine.value
-                ? SizedBox(
-                    height: MediaQuery.of(context).size.height - 130.h,
-                    child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: controller.myPosts.length,
-                        itemBuilder: (context, index) {
-                          return Container(
+        ),
+        //리스트
+        Obx(
+          () => controller.mine.value
+              ? SizedBox(
+                  height: MediaQuery.of(context).size.height - 120.h,
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: controller.myPosts.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                            padding: EdgeInsets.only(
+                                top: 8.h,
+                                bottom: 16.h,
+                                left: 26.w,
+                                right: 26.w),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border(
+                                  bottom: BorderSide(
+                                      color: Palette.paper,
+                                      style: BorderStyle.solid,
+                                      width: 1),
+                                )),
+                            child: PostContext(
+                              postId: controller.myPosts[index].postId,
+                              postTitle: controller.myPosts[index].postTitle,
+                              postDesc: controller.myPosts[index].postDesc,
+                              postCreatedAt: DateFormat('MM/dd HH:mm').format(
+                                  controller.myPosts[index].postCreatedAt!),
+                              authorMajor:
+                                  controller.myPosts[index].authorMajor,
+                              postImageCnt:
+                                  controller.myPosts[index].postImageCnt,
+                              postLikeCnt:
+                                  controller.myPosts[index].postLikeCnt,
+                              postCommentCnt:
+                                  controller.myPosts[index].postCommentCnt,
+                              isLikedByMe:
+                                  controller.myPosts[index].isLikedByMe,
+                              isBlind: controller.myPosts[index].authorMajor,
+                              postName: controller.myPosts[index].postTitle,
+                            ));
+                      }))
+              : Obx(
+                  () => SizedBox(
+                      height: MediaQuery.of(context).size.height - 120.h,
+                      child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: commentController.myComments.length,
+                          itemBuilder: (context, index) {
+                            return Container(
                               padding: EdgeInsets.only(
-                                  top: 16.h,
+                                  top: 8.h,
                                   bottom: 16.h,
                                   left: 26.w,
                                   right: 26.w),
@@ -173,68 +209,25 @@ class MyPostList extends StatelessWidget {
                                         style: BorderStyle.solid,
                                         width: 1),
                                   )),
-                              child: PostContext(
-                                postId: controller.myPosts[index].postId,
-                                postTitle: controller.myPosts[index].postTitle,
-                                postDesc: controller.myPosts[index].postDesc,
-                                postCreatedAt: DateFormat('MM/dd HH:mm').format(
-                                    controller.myPosts[index].postCreatedAt!),
-                                authorMajor:
-                                    controller.myPosts[index].authorMajor,
-                                postImageCnt:
-                                    controller.myPosts[index].postImageCnt,
-                                postLikeCnt:
-                                    controller.myPosts[index].postLikeCnt,
-                                postCommentCnt:
-                                    controller.myPosts[index].postCommentCnt,
-                                isLikedByMe:
-                                    controller.myPosts[index].isLikedByMe,
-                                isBlind: controller.myPosts[index].authorMajor,
-                                postName: controller.myPosts[index].postTitle,
-                              ));
-                        }))
-                : Obx(
-                    () => SizedBox(
-                        height: MediaQuery.of(context).size.height - 140.h,
-                        child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: commentController.myComments.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                padding: EdgeInsets.only(
-                                    top: 16.h,
-                                    bottom: 16.h,
-                                    left: 26.w,
-                                    right: 26.w),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border(
-                                      bottom: BorderSide(
-                                          color: Palette.paper,
-                                          style: BorderStyle.solid,
-                                          width: 1),
-                                    )),
-                                child: CommentContext(
-                                  postId: commentController
-                                      .myComments[index].postId,
-                                  postTitle: commentController
-                                      .myComments[index].postId,
-                                  boardType: commentController
-                                      .myComments[index].postId,
-                                  commentCreatedAt: commentController
-                                      .myComments[index].postId,
-                                  commentId: commentController
-                                      .myComments[index].postId,
-                                  commentDesc: commentController
-                                      .myComments[index].postId,
-                                ),
-                              );
-                            })),
-                  ),
-          ),
-        ])
-      ]),
-    );
+                              child: CommentContext(
+                                postId:
+                                    commentController.myComments[index].postId,
+                                postTitle:
+                                    commentController.myComments[index].postId,
+                                boardType:
+                                    commentController.myComments[index].postId,
+                                commentCreatedAt:
+                                    commentController.myComments[index].postId,
+                                commentId:
+                                    commentController.myComments[index].postId,
+                                commentDesc:
+                                    commentController.myComments[index].postId,
+                              ),
+                            );
+                          })),
+                ),
+        ),
+      ])
+    ]);
   }
 }
