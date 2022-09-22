@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 
 class ImageController extends GetxController {
   List<XFile>? images = <XFile>[].obs;
-
+  final imagesUrl = [].obs;
+  final showImages = [].obs;
+  final deleteImages = [].obs;
   @override
   onInit() {
     super.onInit();
@@ -29,6 +31,23 @@ class ImageController extends GetxController {
         }
       }
     }
+    showImages.add(images);
+    print(showImages);
+  }
+
+  void getImagesUrl(imageUrl){
+    if(imageUrl != null){
+      imagesUrl.value = imageUrl;
+      showImages.add(imageUrl);
+    }
+  }
+
+  List<String> parseToStringList(){
+    List<String> list = [];
+    for(var url in deleteImages){
+      list.add(url);
+    }
+    return list;
   }
 }
 

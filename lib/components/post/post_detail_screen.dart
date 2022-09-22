@@ -11,6 +11,8 @@ import 'package:waggly/controller/postDetail/post_detail_controller.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 
+import '../../controller/postDetail/post_edit_controller.dart';
+
 const double contentsHeight = 665.0;
 const double contentsWidth = 360.0;
 const double imageBoxSize = 100.0;
