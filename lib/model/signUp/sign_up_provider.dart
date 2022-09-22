@@ -17,8 +17,19 @@ class SignUpProvider extends GetConnect {
         data,
       );
 
+  Future<Response> checkDuplicateEmail(Map<String, dynamic> data) => post(
+    "${dotenv.get('BASE_URL')}/user/check/email",
+    data,
+  );
+
   Future<Response> checkDuplicateNickname(Map<String, dynamic> data) => post(
         "${dotenv.get('BASE_URL')}/user/nickname",
         data,
+      );
+
+  Future<Response> resetPassword(String token, String newPassword) => put(
+        "${dotenv.get('BASE_URL')}/user/reset/password",
+        {"password": newPassword},
+        headers: {"Authorization": 'Bearer $token'},
       );
 }

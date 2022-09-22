@@ -60,7 +60,7 @@ class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => postName == '채팅 검색' ? print("임시 위치로, 뒤로가기를 수행하지 않습니다.") : Navigator.of(context).pop(),
               child: SvgPicture.asset(
                 'assets/icons/btn_back_default.svg',
                 fit: BoxFit.contain,

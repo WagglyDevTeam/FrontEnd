@@ -19,6 +19,7 @@ class SignUpController extends GetxController {
   bool isStart = false;
   bool emailVerified = false;
   Major selectedMajor = Major();
+  String tempToken = '';
 
   RxBool emailInputEmpty = true.obs;
   RxBool certiNumberInputEmpty = true.obs;
@@ -78,6 +79,12 @@ class SignUpController extends GetxController {
     return verifyResult;
   }
 
+  Future<WagglyResponseDto> checkDuplicateEmail(String email) async {
+    final WagglyResponseDto result = await _signUpRepository.checkDuplicateEmail(email);
+
+    return result;
+  }
+
   Future<WagglyResponseDto> checkDuplicateNickname(String nickname) async {
     final WagglyResponseDto result = await _signUpRepository.checkDuplicateNickname(nickname);
     if (result.code == 200) {
@@ -85,12 +92,15 @@ class SignUpController extends GetxController {
     } else {
       nicknameDuplicateCheckSuccess.value = false;
     }
-    print(result);
+    // print(result);
+    return result;
+  }
+
+  Future<WagglyResponseDto> resetPassword(String token, String newPassword) async {
+    WagglyResponseDto result = await _signUpRepository.resetPassword(token, newPassword);
     return result;
   }
 }
 
-// waggle04@waggly.com
-// test1234!
-// 창원대학교
-// 컴퓨터공학과
+// waggly_test@korea.ac.kr
+// R6d9Ke

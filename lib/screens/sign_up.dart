@@ -72,17 +72,15 @@ class _SignUpState extends State<SignUp> {
             currentFocus.unfocus();
           }
         },
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                TopBar(),
-                SignUpInput(
-                  steps: steps,
-                  setSteps: handleClick,
-                ),
-              ],
-            ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TopBar(),
+              SignUpInput(
+                steps: steps,
+                setSteps: handleClick,
+              ),
+            ],
           ),
         ),
       ),
@@ -354,14 +352,24 @@ class _InputState extends State<Input> {
                       EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
                     );
                   } else {
-                    _signUpController.emailValidateSuccess.value = true;
-                    CustomSnackBar.messageSnackbar(
-                      context,
-                      "Email로 인증번호가 발송되었습니다.",
-                      EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
-                    );
-                    await _signUpController.sendEmailForVerify(_emailInput.text);
-                    _signUpController.startTimer();
+                    final WagglyResponseDto result = await _signUpController.checkDuplicateEmail(_emailInput.text);
+                    if (result.status == '200') {
+                      _signUpController.emailValidateSuccess.value = false;
+                      CustomSnackBar.messageSnackbar(
+                        context,
+                        "이미 가입된 이메일이 존재합니다.",
+                        EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                      );
+                    } else {
+                      _signUpController.emailValidateSuccess.value = true;
+                      CustomSnackBar.messageSnackbar(
+                        context,
+                        "이메일로 인증번호가 발송되었습니다.",
+                        EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                      );
+                      _signUpController.startTimer();
+                      await _signUpController.sendEmailForVerify(_emailInput.text);
+                    }
                   }
                 },
               ),
@@ -702,7 +710,7 @@ class _ButtonsState extends State<Buttons> {
                                         Get.offAllNamed('/signInPage');
                                       });
                                     } else {
-                                      _signUpController.signUpSuccess.value = true;
+                                      _signUpController.signUpSuccess.value = false;
                                       CustomSnackBar.messageSnackbar(
                                         context,
                                         result.message,
