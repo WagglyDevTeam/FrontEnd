@@ -5,10 +5,10 @@ import 'package:get/get.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/utils/text_frame.dart';
+import '../controller/post/post_home_controller.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
-import '../controller/post/post_home.dart';
 import '../controller/signIn/sign_in_conroller.dart';
-import '../model/postCollege/dtos/post_college_dto.dart';
+import '../model/post/dtos/post_college_dto.dart';
 import '../utils/colors.dart';
 
 class PostScreen extends StatelessWidget {
@@ -19,11 +19,10 @@ class PostScreen extends StatelessWidget {
     bool? on = false;
     bool? off = true;
     Status? page = Status.login;
-    String? postName = "게시판";
 
     /// getx controller
     final PostHomeController _postDetailX = Get.put(PostHomeController());
-
+    String? postName = "게시판";
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: PageAppbar(page: page, pageTitle: postName),
@@ -37,7 +36,9 @@ class PostScreen extends StatelessWidget {
                 SizedBox(height: 10.h),
                 Row(
                   children: [
-                    Text("내 계열 페이지", style: CommonText.TitleS),
+                    Obx(() => Text(
+                        _postDetailX.userCollegeData.value.collegeTypeName,
+                        style: CommonText.TitleS)),
                     SizedBox(width: 6.w),
                     Icon(Icons.auto_awesome, color: Palette.main, size: 17),
                   ],
@@ -266,7 +267,7 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Skeleton(
-        isLoading: signInController.checkLoggedIn().value ? true : false,
+        isLoading: signInController.checkLoggedIn().value ? false : true,
         skeleton: SkeletonParagraph(),
         child: Container(
           height: 23.h,
