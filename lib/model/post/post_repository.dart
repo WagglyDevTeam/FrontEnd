@@ -66,4 +66,14 @@ class PostRepository {
 
     return wagglyResponseDto;
   }
+
+  // Future<WagglyResponseDto> postBoardComment(
+  //     String commentId, String commentDesc, bool anonymous) async {
+  //   Response response =
+  //       await _postProvider.postBoardComment(commentId, commentDesc, anonymous);
+  //   dynamic body = response.body;
+  //   WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+  //
+  //   return wagglyResponseDto;
+  // }
 }

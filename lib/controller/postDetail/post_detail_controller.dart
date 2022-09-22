@@ -29,7 +29,7 @@ class PostDetailController extends GetxController {
 
   ///  게시판 상세 페이지 데이터 불러오기
   Future<void> getDetailBoard(String postId) async {
-    print(postId);
+    print("sss $postId");
     WagglyResponseDto result = await _postRepository.getDetailBoard(postId);
     dynamic postJson = result.datas["post"];
     dynamic commentsJson = result.datas["comments"];
@@ -87,8 +87,6 @@ class PostDetailController extends GetxController {
   /// 게시판 상세 페이지 대댓글 작성
   Future<void> postBoardCommentReply(
       {required String commentDesc, required int commentId}) async {
-    print(commentId);
-
     /// 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
     final commentMap = ReCommentData.fromJson({
       "replyId": 2,

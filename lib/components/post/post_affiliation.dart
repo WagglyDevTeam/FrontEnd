@@ -92,8 +92,9 @@ class _PostAffiliation extends State<PostAffiliation> {
             decoration: BoxDecoration(color: Colors.white),
             child: Obx(() => ListView.builder(
                   scrollDirection: Axis.vertical,
-                  itemCount: _postDetailX.postCollegeData.length,
+                  itemCount: _postDetailX.postCollegeData.length + 1,
                   itemBuilder: (BuildContext context, int index) {
+                    int postInt = index - 1;
                     if (index == 0) {
                       /**인기 글*/
                       return Container(
@@ -192,36 +193,37 @@ class _PostAffiliation extends State<PostAffiliation> {
                                   width: 1),
                             )),
                         child: Obx(() => PostContext(
-                              postId:
-                                  _postDetailX.postCollegeData[index].postId ??
-                                      0,
+                              postId: _postDetailX
+                                      .postCollegeData[postInt].postId ??
+                                  0,
                               postTitle: _postDetailX
-                                      .postCollegeData[index].postTitle ??
+                                      .postCollegeData[postInt].postTitle ??
                                   '',
                               postDesc: _postDetailX
-                                      .postCollegeData[index].postDesc ??
+                                      .postCollegeData[postInt].postDesc ??
                                   '',
                               postCreatedAt: _postDetailX
-                                      .postCollegeData[index].postCreatedAt ??
+                                      .postCollegeData[postInt].postCreatedAt ??
                                   '',
                               authorMajor: _postDetailX
-                                      .postCollegeData[index].authorMajor ??
+                                      .postCollegeData[postInt].authorMajor ??
                                   '',
                               postImageCnt: _postDetailX
-                                      .postCollegeData[index].postImageCnt ??
+                                      .postCollegeData[postInt].postImageCnt ??
                                   0,
                               postLikeCnt: _postDetailX
-                                      .postCollegeData[index].postLikeCnt ??
+                                      .postCollegeData[postInt].postLikeCnt ??
                                   0,
                               postCommentCnt: _postDetailX
-                                      .postCollegeData[index].postCommentCnt ??
+                                      .postCollegeData[postInt]
+                                      .postCommentCnt ??
                                   0,
                               isLikedByMe: _postDetailX
-                                      .postCollegeData[index].isLikedByMe ??
+                                      .postCollegeData[postInt].isLikedByMe ??
                                   false,
-                              isBlind:
-                                  _postDetailX.postCollegeData[index].isBlind ??
-                                      false,
+                              isBlind: _postDetailX
+                                      .postCollegeData[postInt].isBlind ??
+                                  false,
                               postName: postName,
                             )),
                       );
@@ -265,7 +267,8 @@ class PostContext extends StatelessWidget {
   Widget build(BuildContext context) {
     print(postId);
     return GestureDetector(
-      onTap: () => Get.toNamed("/postDetail/${postId!}"),
+      onTap: () =>
+          Get.toNamed("/postDetail/param?postId=$postId&collegeName=인문계열"),
       child: Column(
         children: [
           Row(

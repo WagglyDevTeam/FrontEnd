@@ -2,7 +2,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
-
 import '../hive/user.dart';
 import 'dtos/post_college_dto.dart';
 

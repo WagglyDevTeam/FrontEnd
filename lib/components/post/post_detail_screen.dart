@@ -54,7 +54,10 @@ class _DetailContext extends State<DetailContext> {
   late String postId = "${Get.parameters['postId']}";
   @override
   initState() {
-    _postDetailX.getDetailBoard(postId);
+    if (postId != null) {
+      _postDetailX.getDetailBoard(postId);
+    }
+
     super.initState();
   }
 
@@ -63,19 +66,19 @@ class _DetailContext extends State<DetailContext> {
     /// 게시판 상세 페이지 GetX 좋아요 이벤트
     onLikedByMe() {
       _postDetailX.updateDetailBoardLike(
-        isLikedByMe: _postDetailX.postDetail.value.isLikedByMe!,
-        postLikeCnt: _postDetailX.postDetail.value.isLikedByMe!
-            ? _postDetailX.postDetail.value.postLikeCnt! - 1
-            : _postDetailX.postDetail.value.postLikeCnt! + 1,
-        postId: _postDetailX.postDetail.value.postId!,
+        isLikedByMe: _postDetailX.postDetail.value.isLikedByMe ?? false,
+        postLikeCnt: _postDetailX.postDetail.value.isLikedByMe ?? false
+            ? _postDetailX.postDetail.value.postLikeCnt ?? 0 - 1
+            : _postDetailX.postDetail.value.postLikeCnt ?? 0 + 1,
+        postId: _postDetailX.postDetail.value.postId ?? 0,
       );
     }
 
     ///게시판 상세 페이지 GetX 즐겨찾기 이벤트
     onBookMarkByMe() {
       _postDetailX.updateDetailBoardBookmark(
-        isBlind: !_postDetailX.postDetail.value.isBlind!,
-        postId: _postDetailX.postDetail.value.postId!,
+        isBlind: _postDetailX.postDetail.value.isBlind ?? false,
+        postId: _postDetailX.postDetail.value.postId ?? 0,
       );
     }
 
@@ -120,17 +123,20 @@ class _DetailContext extends State<DetailContext> {
                                                 image:
                                                     "https://cdn.pixabay.com/photo/2021/11/24/11/01/autumn-6820879_960_720.jpg",
                                                 nickName: _postDetailX
-                                                    .postDetail
-                                                    .value
-                                                    .authorNickname,
+                                                        .postDetail
+                                                        .value
+                                                        .authorNickname ??
+                                                    '',
                                                 major: _postDetailX.postDetail
-                                                    .value.authorMajor,
+                                                        .value.authorMajor ??
+                                                    '',
                                                 shape: Shape.posting,
                                                 isMaster: false,
                                               )),
                                           Obx(() => Text(
                                               _postDetailX.postDetail.value
-                                                  .postCreatedAt!,
+                                                      .postCreatedAt ??
+                                                  '',
                                               style: CommonText.BodyEngGray)),
                                         ],
                                       ),
@@ -149,14 +155,16 @@ class _DetailContext extends State<DetailContext> {
                                           children: [
                                             Obx(() => Text(
                                                 _postDetailX.postDetail.value
-                                                    .postTitle!,
+                                                        .postTitle ??
+                                                    '',
                                                 style: CommonText.BodyL)),
                                             SizedBox(
                                               height: 5,
                                             ),
                                             Obx(() => Text(
-                                                _postDetailX
-                                                    .postDetail.value.postDesc!,
+                                                _postDetailX.postDetail.value
+                                                        .postDesc ??
+                                                    '',
                                                 style: CommonText.BodyM)),
                                           ]),
                                     ),
@@ -167,7 +175,8 @@ class _DetailContext extends State<DetailContext> {
                                     /// 게시판 상세 페이지 이미지리스트
                                     Obx(() => Container(
                                           height: _postDetailX.postDetail.value
-                                                  .postImages!.isEmpty
+                                                      .postImages?.isEmpty ??
+                                                  false
                                               ? 0
                                               : imageBoxSize,
                                           padding: EdgeInsets.only(
@@ -212,9 +221,10 @@ class _DetailContext extends State<DetailContext> {
                                                             image: DecorationImage(
                                                                 image: NetworkImage(
                                                                     _postDetailX
-                                                                        .postDetail
-                                                                        .value
-                                                                        .postImages![i]!),
+                                                                            .postDetail
+                                                                            .value
+                                                                            .postImages![i] ??
+                                                                        ''),
                                                                 fit: BoxFit.cover)),
                                                       ),
                                                     SizedBox(
@@ -257,9 +267,10 @@ class _DetailContext extends State<DetailContext> {
                                                         'assets/icons/sentiment.svg',
                                                     onTap: onLikedByMe,
                                                     active: _postDetailX
-                                                        .postDetail
-                                                        .value
-                                                        .isLikedByMe!,
+                                                            .postDetail
+                                                            .value
+                                                            .isLikedByMe ??
+                                                        false,
                                                   )),
                                             ],
                                           ),
@@ -267,11 +278,13 @@ class _DetailContext extends State<DetailContext> {
                                                 imgCnt: _postDetailX.postDetail
                                                     .value.postImages!.length,
                                                 likeCnt: _postDetailX.postDetail
-                                                    .value.postLikeCnt!,
+                                                        .value.postLikeCnt ??
+                                                    0,
                                                 commentCnt: _postDetailX
-                                                    .postDetail
-                                                    .value
-                                                    .postCommentCnt!,
+                                                        .postDetail
+                                                        .value
+                                                        .postCommentCnt ??
+                                                    0,
                                               ))
                                         ],
                                       ),
@@ -288,35 +301,32 @@ class _DetailContext extends State<DetailContext> {
                                 children: [
                                   Obx(() => CommentBox(
                                       authorId: _postDetailX
-                                          .boardComment[commentInt].authorId!,
+                                              .boardComment[commentInt]
+                                              .authorId ??
+                                          0,
                                       authorMajor: _postDetailX
-                                          .boardComment[commentInt]
-                                          .authorMajor!,
+                                              .boardComment[commentInt]
+                                              .authorMajor ??
+                                          '',
                                       authorNickname: _postDetailX
-                                          .boardComment[commentInt]
-                                          .authorNickname!,
+                                              .boardComment[commentInt]
+                                              .authorNickname ??
+                                          '',
                                       authorProfileImg: _postDetailX
-                                          .boardComment[commentInt]
-                                          .authorProfileImg!,
+                                              .boardComment[commentInt]
+                                              .authorProfileImg ??
+                                          '',
                                       isBlind: _postDetailX
-                                          .boardComment[commentInt].isBlind!,
-                                      commentId: _postDetailX
-                                          .boardComment[commentInt].commentId!,
-                                      commentCreatedAt: _postDetailX
-                                          .boardComment[commentInt]
-                                          .commentCreatedAt!,
-                                      commentLikeCnt: _postDetailX
-                                          .boardComment[commentInt]
-                                          .commentLikeCnt!,
-                                      commentDesc: _postDetailX
-                                          .boardComment[commentInt]
-                                          .commentDesc!,
-                                      isLikedByMe: _postDetailX
-                                          .boardComment[commentInt]
-                                          .isLikedByMe!,
+                                              .boardComment[commentInt]
+                                              .isBlind ??
+                                          false,
+                                      commentId: _postDetailX.boardComment[commentInt].commentId ?? 0,
+                                      commentCreatedAt: _postDetailX.boardComment[commentInt].commentCreatedAt ?? '',
+                                      commentLikeCnt: _postDetailX.boardComment[commentInt].commentLikeCnt ?? 0,
+                                      commentDesc: _postDetailX.boardComment[commentInt].commentDesc ?? '',
+                                      isLikedByMe: _postDetailX.boardComment[commentInt].isLikedByMe ?? false,
                                       shape: CommentShape.top,
-                                      postingAuthorId: _postDetailX
-                                          .postDetail.value.authorId!)),
+                                      postingAuthorId: _postDetailX.postDetail.value.authorId ?? 0)),
                                   Obx(() => Column(
                                         children: [
                                           for (var i = 0;
@@ -328,50 +338,71 @@ class _DetailContext extends State<DetailContext> {
                                               i++)
                                             Obx(() => CommentBox(
                                                   authorId: _postDetailX
-                                                      .boardComment[commentInt]
-                                                      .replies![i]
-                                                      .authorId!,
+                                                          .boardComment[
+                                                              commentInt]
+                                                          .replies![i]
+                                                          .authorId ??
+                                                      0,
                                                   authorMajor: _postDetailX
-                                                      .boardComment[commentInt]
-                                                      .replies![i]
-                                                      .authorMajor!,
+                                                          .boardComment[
+                                                              commentInt]
+                                                          .replies![i]
+                                                          .authorMajor ??
+                                                      '',
                                                   authorNickname: _postDetailX
-                                                      .boardComment[commentInt]
-                                                      .replies![i]
-                                                      .authorNickname!,
+                                                          .boardComment[
+                                                              commentInt]
+                                                          .replies![i]
+                                                          .authorNickname ??
+                                                      '',
                                                   authorProfileImg: _postDetailX
-                                                      .boardComment[commentInt]
-                                                      .replies![i]
-                                                      .authorProfileImg!,
+                                                          .boardComment[
+                                                              commentInt]
+                                                          .replies![i]
+                                                          .authorProfileImg ??
+                                                      '',
                                                   isBlind: _postDetailX
-                                                      .boardComment[commentInt]
-                                                      .replies![i]
-                                                      .isBlind!,
+                                                          .boardComment[
+                                                              commentInt]
+                                                          .replies![i]
+                                                          .isBlind ??
+                                                      false,
                                                   commentId: _postDetailX
-                                                      .boardComment[commentInt]
-                                                      .replies![i]
-                                                      .replyId!,
+                                                          .boardComment[
+                                                              commentInt]
+                                                          .replies![i]
+                                                          .replyId ??
+                                                      0,
                                                   commentCreatedAt: _postDetailX
-                                                      .boardComment[commentInt]
-                                                      .replies![i]
-                                                      .replyCreatedAt!,
+                                                          .boardComment[
+                                                              commentInt]
+                                                          .replies![i]
+                                                          .replyCreatedAt ??
+                                                      '',
                                                   commentLikeCnt: _postDetailX
-                                                      .boardComment[commentInt]
-                                                      .replies![i]
-                                                      .replyLikeCnt!,
+                                                          .boardComment[
+                                                              commentInt]
+                                                          .replies![i]
+                                                          .replyLikeCnt ??
+                                                      0,
                                                   commentDesc: _postDetailX
-                                                      .boardComment[commentInt]
-                                                      .replies![i]
-                                                      .replyDesc!,
+                                                          .boardComment[
+                                                              commentInt]
+                                                          .replies![i]
+                                                          .replyDesc ??
+                                                      '',
                                                   isLikedByMe: _postDetailX
-                                                      .boardComment[commentInt]
-                                                      .replies![i]
-                                                      .isLikedByMe!,
+                                                          .boardComment[
+                                                              commentInt]
+                                                          .replies![i]
+                                                          .isLikedByMe ??
+                                                      false,
                                                   shape: CommentShape.bottom,
                                                   postingAuthorId: _postDetailX
-                                                      .postDetail
-                                                      .value
-                                                      .authorId!,
+                                                          .postDetail
+                                                          .value
+                                                          .authorId ??
+                                                      0,
                                                 ))
                                         ],
                                       ))
@@ -387,7 +418,7 @@ class _DetailContext extends State<DetailContext> {
                   bottom: 0,
                   left: 0,
                   child: PostDetailTextarea(
-                    postId: _postDetailX.postDetail.value.postId,
+                    postId: _postDetailX.postDetail.value.postId ?? 0,
                   )),
             ],
           ),
@@ -395,12 +426,21 @@ class _DetailContext extends State<DetailContext> {
   }
 }
 
+class PostDetailTextarea extends StatefulWidget {
+  final postId;
+  PostDetailTextarea({Key? key, @required this.postId}) : super(key: key);
+  @override
+  _PostDetailTextarea createState() => _PostDetailTextarea(postId: postId);
+}
+
 /// 댓글 Textarea
-class PostDetailTextarea extends StatelessWidget {
+class _PostDetailTextarea extends State<PostDetailTextarea> {
   /// 댓글 값 컨트롤러 */
   final _comment = TextEditingController();
   final postId;
-  PostDetailTextarea({Key? key, @required this.postId}) : super(key: key);
+
+  _PostDetailTextarea({Key? key, @required this.postId});
+
   @override
   Widget build(BuildContext context) {
     final PostDetailController _postDetailX = Get.put(PostDetailController());
@@ -408,19 +448,25 @@ class PostDetailTextarea extends StatelessWidget {
     /// 게시판 상세페이지 댓글 업데이트 이벤트
     void onCommentUpdate() {
       if (_comment.text != "") {
+        print(1);
         if (_postDetailX.selectCommentEvent.value.checkEvent!) {
+          print(2);
           _postDetailX.postBoardCommentReply(
               commentDesc: _comment.text,
               commentId: _postDetailX.selectCommentEvent.value.commentId!);
           _postDetailX.selectCommentReplyOff();
+          _comment.clear();
         } else {
+          print(_comment.text);
+          print(postId);
           _postDetailX.postBoardComment(
               commentDesc: _comment.text, postId: postId);
+          _comment.clear();
         }
-        _comment.clear();
       }
     }
 
+    bool _isChecked = false;
     return Container(
       width: 360.w,
       height: 75.h,
@@ -429,48 +475,47 @@ class PostDetailTextarea extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 284.w,
-            height: 36.h,
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(width: 1, color: Color(0xFFE8E8E8)),
-              color: Color(0xFFF8F8F8),
-            ),
-            child: Obx(() => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (_postDetailX.selectCommentEvent.value.checkEvent!)
-                      Obx(
-                        () => SizedBox(
-                            width: 54,
-                            child: RichText(
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              strutStyle: StrutStyle(fontSize: 16.0),
-                              text: TextSpan(
-                                text:
-                                    "@ ${_postDetailX.selectCommentEvent.value.name}",
-                                style: CommonText.BodyMediumGray,
-                              ),
-                            )),
-                      ),
-                    if (_postDetailX.selectCommentEvent.value.checkEvent!)
-                      SizedBox(width: 10.w),
-                    SizedBox(
-                      width: _postDetailX.selectCommentEvent.value.checkEvent!
-                          ? 200.w
-                          : 260.w,
-                      height: 36.h,
-                      child: CustomTextFormField(
-                        onChanged: onCommentUpdate,
-                        controller: _comment,
-                        hint: "",
-                      ),
-                    )
-                  ],
-                )),
-          ),
+              width: 284.w,
+              height: 36.h,
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(width: 1, color: Color(0xFFE8E8E8)),
+                color: Color(0xFFF8F8F8),
+              ),
+              child: Obx(() => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (_postDetailX.selectCommentEvent.value.checkEvent!)
+                        Obx(
+                          () => SizedBox(
+                              width: 54,
+                              child: RichText(
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                strutStyle: StrutStyle(fontSize: 16.0),
+                                text: TextSpan(
+                                  text:
+                                      "@ ${_postDetailX.selectCommentEvent.value.name}",
+                                  style: CommonText.BodyMediumGray,
+                                ),
+                              )),
+                        ),
+                      if (_postDetailX.selectCommentEvent.value.checkEvent!)
+                        SizedBox(width: 10.w),
+                      SizedBox(
+                        width: _postDetailX.selectCommentEvent.value.checkEvent!
+                            ? 200.w
+                            : 260.w,
+                        height: 36.h,
+                        child: CustomTextFormField(
+                          onChanged: onCommentUpdate,
+                          controller: _comment,
+                          hint: "",
+                        ),
+                      )
+                    ],
+                  ))),
           SizedBox(
             width: 8.w,
           ),
