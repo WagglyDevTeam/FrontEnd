@@ -9,7 +9,7 @@
 .history
 .svn/
 .env
-
+/ios/
 # IntelliJ related
 *.iml
 *.ipr

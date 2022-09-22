@@ -8,7 +8,6 @@ import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
 
-import './post_app_bar.dart';
 
 class PostAffiliation extends StatelessWidget {
   PostAffiliation({Key? key}) : super(key: key);
