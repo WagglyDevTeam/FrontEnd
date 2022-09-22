@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
 import '../../model/post/post_repository.dart';
-import '../../model/postCollege/dtos/post_college_dto.dart';
+import '../../model/post/dtos/post_college_dto.dart';
 
 class PostHomeController extends GetxController {
   final PostRepository _postRepository = PostRepository();
