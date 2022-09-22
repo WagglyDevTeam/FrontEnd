@@ -161,4 +161,8 @@ class PostDetailController extends GetxController {
       checkEvent: false,
     );
   }
+
+  PostDetailData getPostDetailData() {
+    return postDetail.value;
+  }
 }

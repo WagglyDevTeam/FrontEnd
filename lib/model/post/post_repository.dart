@@ -29,6 +29,7 @@ class PostRepository {
   Future<void> writeBoard(FormData data) async {
     Response response = await _postProvider.writeBoard(data);
     dynamic body = response.body;
+    print(body);
   }
 
   /// 메인 홈 Response
@@ -76,4 +77,13 @@ class PostRepository {
   //
   //   return wagglyResponseDto;
   // }
+
+  Future<void> editBoard(FormData data) async {
+    Response response = await _postProvider.editBoard(data);
+    dynamic body = response.body;
+    print(body);
+    // WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+    // print(jsonEncode(wagglyResponseDto));
+    // return wagglyResponseDto;
+  }
 }

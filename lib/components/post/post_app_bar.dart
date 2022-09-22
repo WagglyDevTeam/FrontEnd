@@ -1,13 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:waggly/components/post/post_modal.dart';
-import 'package:waggly/screens/post.dart';
-import 'package:waggly/utils/text_frame.dart';
-import 'package:waggly/widgets/index.dart';
-import 'package:waggly/widgets/sign_in.dart';
+
 import '../../utils/colors.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../utils/text_frame.dart';
+import '../../widgets/index.dart';
+import '../../widgets/sign_in.dart';
 
 enum Status { home, main, detail, edit, login, alarm, editAlarmOnly }
 
@@ -60,7 +62,7 @@ class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => postName == '채팅 검색' ? print("임시 위치로, 뒤로가기를 수행하지 않습니다.") : Navigator.of(context).pop(),
               child: SvgPicture.asset(
                 'assets/icons/btn_back_default.svg',
                 fit: BoxFit.contain,
@@ -227,7 +229,7 @@ class DetailBtn extends StatelessWidget {
     return Column(
       children: [
         ModalButton(title: '삭제하기', event: () {}),
-        ModalButton(title: '수정하기', event: () {}),
+        ModalButton(title: '수정하기', event: () {Get.toNamed("/editPage");}),
       ],
     );
   }

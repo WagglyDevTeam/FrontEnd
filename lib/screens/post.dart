@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:waggly/components/Post/post_app_bar.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/utils/text_frame.dart';
 import '../controller/post/post_home_controller.dart';
+import 'package:waggly/widgets/header/page_appbar.dart';
 import '../controller/signIn/sign_in_conroller.dart';
 import '../model/post/dtos/post_college_dto.dart';
 import '../utils/colors.dart';
@@ -25,10 +25,7 @@ class PostScreen extends StatelessWidget {
     String? postName = "게시판";
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: PostAppbar(
-          page: page,
-          postName: postName,
-        ),
+        appBar: PageAppbar(page: page, pageTitle: postName),
         body: Container(
           padding:
               EdgeInsets.only(left: 16.w, right: 16.w, top: 6.h, bottom: 6.h),

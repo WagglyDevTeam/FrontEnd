@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:waggly/components/Post/post_app_bar.dart';
+import 'package:waggly/widgets/header/page_appbar.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/components/post/custom_text_form_field.dart';
 import 'package:waggly/controller/postDetail/post_detail_controller.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
+
+import '../../controller/postDetail/post_edit_controller.dart';
 
 const double contentsHeight = 665.0;
 const double contentsWidth = 360.0;
@@ -22,10 +24,12 @@ class PostDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const postId = "아이디";
-    late String postName = "${Get.parameters['collegeName']}";
-    var page = Status.detail;
+
+    late String _pageTitle = "${Get.parameters['collegeName']}";
+    var _page = Status.boardDetail;
     return Scaffold(
-      appBar: PostAppbar(postName: postName, page: page),
+      backgroundColor: Colors.white,
+      appBar: PageAppbar(page: _page, pageTitle: _pageTitle),
       body: Container(
           color: Colors.white,
           child: SingleChildScrollView(

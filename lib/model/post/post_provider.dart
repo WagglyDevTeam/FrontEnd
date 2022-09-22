@@ -1,9 +1,12 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import '../hive/user.dart';
 import 'dtos/post_college_dto.dart';
+
+import '../hive/user.dart';
 
 final SignInController _signInController = Get.put(SignInController());
 final _token = Hive.box<User>('user').get('user')?.jwtToken;
@@ -17,11 +20,15 @@ class PostProvider extends GetConnect {
         headers: authHeaders,
       );
 
-  Future<Response> writeBoard(FormData data) => post(
-        "${dotenv.get('BASE_URL')}/board",
-        data,
-        headers: authHeaders,
-      );
+  Future<Response> writeBoard(FormData data) {
+    final box = Hive.box<User>('user');
+    var token = box.get('user')?.jwtToken;
+    return post(
+      "${dotenv.get('BASE_URL')}/board",
+      data,
+      headers: {"Authorization": token!},
+    );
+  }
 
   Future<Response> getHome() => get(
         "${dotenv.get('BASE_URL')}/home",
@@ -35,14 +42,34 @@ class PostProvider extends GetConnect {
       );
 
   /// GET 특정 학과 페이지 API
-  Future<Response> getBoardCollege(String college, int page, int size) => get(
-        "${dotenv.get('BASE_URL')}/board?college=$college&page=$page&size=$size",
-        headers: authHeaders,
-      );
+  Future<Response> getBoardCollege(String college, int page, int size) {
+    final box = Hive.box<User>('user');
+    var token = box.get('user')?.jwtToken;
+    return get(
+      "${dotenv.get('BASE_URL')}/board?college=$college&page=$page&size=$size",
+      headers: {"Authorization": token!},
+    );
+  }
 
   /// GET 상세페이지 API
-  Future<Response> getDetailBoard(String boardId) => get(
-        "${dotenv.get('BASE_URL')}/board/$boardId",
-        headers: authHeaders,
-      );
+  Future<Response> getDetailBoard(String boardId) {
+    final box = Hive.box<User>('user');
+    var token = box.get('user')?.jwtToken;
+    return get(
+      "${dotenv.get('BASE_URL')}/board/$boardId",
+      headers: {"Authorization": token!},
+    );
+  }
+
+  Future<Response> editBoard(FormData data) {
+    final box = Hive.box<User>('user');
+    var token = box.get('user')?.jwtToken;
+    print("여기임");
+    print(authHeaders);
+    return put(
+      "${dotenv.get('BASE_URL')}/board/4",
+      data,
+      headers: {"Authorization": token!},
+    );
+  }
 }
