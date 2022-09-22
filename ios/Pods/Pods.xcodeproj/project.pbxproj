@@ -58,68 +58,68 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0D24EE90DFC5E890B99F60E11093FF5F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B51E4F66CC7B565B582B2DD8C9C86AC3;
-			remoteInfo = flutter_keyboard_visibility;
-		};
-		1F0C8790966899F4AE532ED3D6B371B0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 845DF30C6C93A1F35C6DCEBAFECA8F8A;
-			remoteInfo = image_picker_ios;
-		};
-		628E252A49E37C7E19C94F98A62313D4 /* PBXContainerItemProxy */ = {
+		1FA638C7D1C2B64E7D7C55CFB705E56E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
 			remoteInfo = Flutter;
 		};
-		6472BA865D684B2632D4057984B9C8DE /* PBXContainerItemProxy */ = {
+		673BCEF656FD97AEDC6CE6055D4D06B1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
 			remoteInfo = Flutter;
 		};
-		ACD7180913C98D87919AAA638485094C /* PBXContainerItemProxy */ = {
+		7BED97EF0DC3E25460EF5C71846C18F8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
 			remoteInfo = Flutter;
 		};
-		B92A2A889E4251B8E6E2B8F396762C7C /* PBXContainerItemProxy */ = {
+		9276775BD4EF3AD1E09E2846C4109E61 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
+			remoteInfo = Flutter;
+		};
+		9C9547E7855F1266FF808858D2B8AB97 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 15490FE8E4E35B20C7777FA3316A00AA;
 			remoteInfo = flutter_secure_storage;
 		};
-		E8DDDB3D185DCDD7C964E7FFAB7662EC /* PBXContainerItemProxy */ = {
+		C40441523376A63EA94EDB13C61C9A07 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
 			remoteInfo = Flutter;
 		};
-		F4CE28C45C23DEF78DA5EE2F24591042 /* PBXContainerItemProxy */ = {
+		E52762A918E72A98777C250AEC953641 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
-			remoteInfo = Flutter;
+			remoteGlobalIDString = 845DF30C6C93A1F35C6DCEBAFECA8F8A;
+			remoteInfo = image_picker_ios;
 		};
-		FEC24E828BF5A1EE225DA3E3A0D7DEB2 /* PBXContainerItemProxy */ = {
+		EE7EB547A84E36C01FC2B23146671A42 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 0F87638CDABF68BA05567B371A176C3A;
 			remoteInfo = path_provider_ios;
+		};
+		F87750430D9C384359BAB9659863B85A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B51E4F66CC7B565B582B2DD8C9C86AC3;
+			remoteInfo = flutter_keyboard_visibility;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -156,6 +156,9 @@
 		7130FED2A9977F4F6627BD14EBA61611 /* path_provider_ios.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = path_provider_ios.modulemap; sourceTree = "<group>"; };
 		72BAEDE446F9F5589A19EA6A27AF4CC7 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = "../../../../../../../flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_ios-0.8.6/LICENSE"; sourceTree = "<group>"; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		730FBA5E3B4B0266261FE22D22BCA9EE /* path_provider_ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = path_provider_ios.debug.xcconfig; sourceTree = "<group>"; };
+		738683B3FCFBAC8D46ABC3E4F416F90C /* flutter_secure_storage-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "flutter_secure_storage-umbrella.h"; sourceTree = "<group>"; };
+		75D8F537C7369AA7196E4AD33E5509E7 /* path_provider_ios-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "path_provider_ios-Info.plist"; sourceTree = "<group>"; };
 		768975E636D1D2FB85622FB67DB04E5A /* image_picker_ios */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = image_picker_ios; path = image_picker_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B3C932BD54DBB963102A89E0F9E3948 /* Pods-Runner-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Runner-dummy.m"; sourceTree = "<group>"; };
 		811B6214ACF2DADE071C3524DF0CBBE2 /* path_provider_ios.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = path_provider_ios.podspec; path = "../../../../../../../flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.11/ios/path_provider_ios.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -309,8 +312,8 @@
 			children = (
 				AC93B422E862D648B97BDC025BDFDA0B /* .. */,
 			);
-			name = ..;
-			path = ..;
+			name = ios;
+			path = ios;
 			sourceTree = "<group>";
 		};
 		2278CDB750226B1C810FA6DEABA2B0DF /* .. */ = {
@@ -380,8 +383,8 @@
 			children = (
 				A710BD981A0855DDF4E47FC304519B4A /* plugins */,
 			);
-			name = .symlinks;
-			path = .symlinks;
+			name = ..;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		2E53985C1D7310EB7088FED9B8FBCBDB /* flutter_keyboard_visibility */ = {
@@ -444,8 +447,8 @@
 			children = (
 				9212F52CFA3605888E8BA20791E38441 /* image_picker_ios */,
 			);
-			name = plugins;
-			path = plugins;
+			name = flutter_keyboard_visibility;
+			path = ../.symlinks/plugins/flutter_keyboard_visibility/ios;
 			sourceTree = "<group>";
 		};
 		3847226396579DA9CC79B3603F1E8823 /* .. */ = {
@@ -463,7 +466,7 @@
 				DD7DD438501BCA094142D9190B246F7F /* .. */,
 			);
 			name = ..;
-			path = ..;
+			path = "../../../../../../../development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_secure_storage-6.0.0/ios";
 			sourceTree = "<group>";
 		};
 		3F25D17FE098B7C5B417A89E1BB00589 /* frontend */ = {
@@ -594,14 +597,15 @@
 			path = flutter_secure_storage;
 			sourceTree = "<group>";
 		};
-		712A94037353235FBBEA516CB15EA6D7 /* Support Files */ = {
+		753BBAA9E416E9326CE91FFEF6054B49 /* flutter_secure_storage */ = {
 			isa = PBXGroup;
 			children = (
-				DC33C51C0A2C14332C5CD48E41AFBC56 /* Flutter.debug.xcconfig */,
-				A760029AF871E5C5B4207546B98575C0 /* Flutter.release.xcconfig */,
+				3E9423997AF528AB14FDCDB91EF1A331 /* .. */,
+				CE260584DC428CF1264BCA2FEE40B24F /* Pod */,
+				2EC5685C2807A8A05017A0F21740172C /* Support Files */,
 			);
-			name = "Support Files";
-			path = "../Pods/Target Support Files/Flutter";
+			name = flutter_secure_storage;
+			path = ../.symlinks/plugins/flutter_secure_storage/ios;
 			sourceTree = "<group>";
 		};
 		791C6E4B424AF06279F8918FA67B8ED6 /* Targets Support Files */ = {
@@ -712,8 +716,23 @@
 			children = (
 				FF47E6696D71528AD7F42AFCB389A7FF /* Classes */,
 			);
-			name = ios;
-			path = ios;
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		9C7E59A020580AFB2D3B43BB95C4470B /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				9BA671CEEFD58BCE228604F461EA7280 /* path_provider_ios.modulemap */,
+				7CF1AFD2FE58A42B5283D036A7908C47 /* path_provider_ios-dummy.m */,
+				75D8F537C7369AA7196E4AD33E5509E7 /* path_provider_ios-Info.plist */,
+				256F5018F288AFE0CFD5C6C61973A427 /* path_provider_ios-prefix.pch */,
+				A8386D07E88BC4ACFAE07485F0D118AD /* path_provider_ios-umbrella.h */,
+				730FBA5E3B4B0266261FE22D22BCA9EE /* path_provider_ios.debug.xcconfig */,
+				AB93C4F953812F720106796DE8C37253 /* path_provider_ios.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../../../../Pods/Target Support Files/path_provider_ios";
 			sourceTree = "<group>";
 		};
 		9CEC51734A736B88933DC1B844E46C5C /* .. */ = {
@@ -730,8 +749,8 @@
 			children = (
 				89BF0AEF67CBA9C60BF14E0427CE2A12 /* ios */,
 			);
-			name = frontend;
-			path = frontend;
+			name = flutter_keyboard_visibility;
+			path = flutter_keyboard_visibility;
 			sourceTree = "<group>";
 		};
 		A6FCBB4B65E45A2528C095F1504BFB0F /* .. */ = {
@@ -748,8 +767,8 @@
 			children = (
 				2E53985C1D7310EB7088FED9B8FBCBDB /* flutter_keyboard_visibility */,
 			);
-			name = plugins;
-			path = plugins;
+			name = Desktop;
+			path = Desktop;
 			sourceTree = "<group>";
 		};
 		A9D2BD81010A4D7A6D47E5520614C0A5 /* Classes */ = {
@@ -758,8 +777,8 @@
 				2E13679C9497CF9F76F7BC23404972FD /* FlutterKeyboardVisibilityPlugin.h */,
 				D24F6102407EE24C03BD3A1A2B2BD69E /* FlutterKeyboardVisibilityPlugin.m */,
 			);
-			name = Classes;
-			path = Classes;
+			name = ..;
+			path = "../../../../../../../development/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_ios-0.8.6/ios";
 			sourceTree = "<group>";
 		};
 		A9E2EEF4D967278CDE3E0AC8C66D4A0E /* flutter_secure_storage */ = {
@@ -1120,7 +1139,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				8A5E814DC0887742DA6C398382152CFC /* PBXTargetDependency */,
+				64B4E96475368AD0876F754F63E96783 /* PBXTargetDependency */,
 			);
 			name = path_provider_ios;
 			productName = path_provider_ios;
@@ -1139,7 +1158,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				3E9EF38632BDB222EB3EF479E5B78AE1 /* PBXTargetDependency */,
+				6CA47C28CD35906A59C923B077FAF762 /* PBXTargetDependency */,
 			);
 			name = flutter_secure_storage;
 			productName = flutter_secure_storage;
@@ -1158,7 +1177,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				62DAD91EEEA59BE41E4BFFCD3F819E5A /* PBXTargetDependency */,
+				8FEB6639708F7877ECA7F3A9713F61CB /* PBXTargetDependency */,
 			);
 			name = image_picker_ios;
 			productName = image_picker_ios;
@@ -1177,11 +1196,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				1B0AAEFD5C2D8E95E78616C10F0E7B0A /* PBXTargetDependency */,
-				E46EAC9B06A514B6AC2A2AAFF33014F2 /* PBXTargetDependency */,
-				EB3664F91D91D2C0167050AEE3631AB6 /* PBXTargetDependency */,
-				D5EB4A350610529C9707B3066E7483BF /* PBXTargetDependency */,
-				62B9A387DE3A3F600EEA598EF616450C /* PBXTargetDependency */,
+				4771004CD8BCD40F41B2746754FCC3DB /* PBXTargetDependency */,
+				E6E6C7950D54A7939702B5A91061793A /* PBXTargetDependency */,
+				11D1DFE0663ED6F1BF13D5D6A2F112F4 /* PBXTargetDependency */,
+				0285DF913D8D8D23BCAFF53101070341 /* PBXTargetDependency */,
+				74D1655638216D24692E851B9BCDDBE5 /* PBXTargetDependency */,
 			);
 			name = "Pods-Runner";
 			productName = Pods_Runner;
@@ -1200,7 +1219,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				52F1074E8F0C5B1AE0615F6176CE8E19 /* PBXTargetDependency */,
+				AAADCF813C8EA6275DC5FDF2FFD843AA /* PBXTargetDependency */,
 			);
 			name = flutter_keyboard_visibility;
 			productName = flutter_keyboard_visibility;
@@ -1331,59 +1350,59 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		1B0AAEFD5C2D8E95E78616C10F0E7B0A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Flutter;
-			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
-			targetProxy = E8DDDB3D185DCDD7C964E7FFAB7662EC /* PBXContainerItemProxy */;
-		};
-		3E9EF38632BDB222EB3EF479E5B78AE1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Flutter;
-			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
-			targetProxy = 628E252A49E37C7E19C94F98A62313D4 /* PBXContainerItemProxy */;
-		};
-		52F1074E8F0C5B1AE0615F6176CE8E19 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Flutter;
-			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
-			targetProxy = 6472BA865D684B2632D4057984B9C8DE /* PBXContainerItemProxy */;
-		};
-		62B9A387DE3A3F600EEA598EF616450C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = path_provider_ios;
-			target = 0F87638CDABF68BA05567B371A176C3A /* path_provider_ios */;
-			targetProxy = FEC24E828BF5A1EE225DA3E3A0D7DEB2 /* PBXContainerItemProxy */;
-		};
-		62DAD91EEEA59BE41E4BFFCD3F819E5A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Flutter;
-			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
-			targetProxy = F4CE28C45C23DEF78DA5EE2F24591042 /* PBXContainerItemProxy */;
-		};
-		8A5E814DC0887742DA6C398382152CFC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Flutter;
-			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
-			targetProxy = ACD7180913C98D87919AAA638485094C /* PBXContainerItemProxy */;
-		};
-		D5EB4A350610529C9707B3066E7483BF /* PBXTargetDependency */ = {
+		0285DF913D8D8D23BCAFF53101070341 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = image_picker_ios;
 			target = 845DF30C6C93A1F35C6DCEBAFECA8F8A /* image_picker_ios */;
-			targetProxy = 1F0C8790966899F4AE532ED3D6B371B0 /* PBXContainerItemProxy */;
+			targetProxy = E52762A918E72A98777C250AEC953641 /* PBXContainerItemProxy */;
 		};
-		E46EAC9B06A514B6AC2A2AAFF33014F2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = flutter_keyboard_visibility;
-			target = B51E4F66CC7B565B582B2DD8C9C86AC3 /* flutter_keyboard_visibility */;
-			targetProxy = 0D24EE90DFC5E890B99F60E11093FF5F /* PBXContainerItemProxy */;
-		};
-		EB3664F91D91D2C0167050AEE3631AB6 /* PBXTargetDependency */ = {
+		11D1DFE0663ED6F1BF13D5D6A2F112F4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = flutter_secure_storage;
 			target = 15490FE8E4E35B20C7777FA3316A00AA /* flutter_secure_storage */;
-			targetProxy = B92A2A889E4251B8E6E2B8F396762C7C /* PBXContainerItemProxy */;
+			targetProxy = 9C9547E7855F1266FF808858D2B8AB97 /* PBXContainerItemProxy */;
+		};
+		4771004CD8BCD40F41B2746754FCC3DB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Flutter;
+			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
+			targetProxy = 9276775BD4EF3AD1E09E2846C4109E61 /* PBXContainerItemProxy */;
+		};
+		64B4E96475368AD0876F754F63E96783 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Flutter;
+			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
+			targetProxy = 673BCEF656FD97AEDC6CE6055D4D06B1 /* PBXContainerItemProxy */;
+		};
+		6CA47C28CD35906A59C923B077FAF762 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Flutter;
+			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
+			targetProxy = 7BED97EF0DC3E25460EF5C71846C18F8 /* PBXContainerItemProxy */;
+		};
+		74D1655638216D24692E851B9BCDDBE5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = path_provider_ios;
+			target = 0F87638CDABF68BA05567B371A176C3A /* path_provider_ios */;
+			targetProxy = EE7EB547A84E36C01FC2B23146671A42 /* PBXContainerItemProxy */;
+		};
+		8FEB6639708F7877ECA7F3A9713F61CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Flutter;
+			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
+			targetProxy = C40441523376A63EA94EDB13C61C9A07 /* PBXContainerItemProxy */;
+		};
+		AAADCF813C8EA6275DC5FDF2FFD843AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Flutter;
+			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
+			targetProxy = 1FA638C7D1C2B64E7D7C55CFB705E56E /* PBXContainerItemProxy */;
+		};
+		E6E6C7950D54A7939702B5A91061793A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = flutter_keyboard_visibility;
+			target = B51E4F66CC7B565B582B2DD8C9C86AC3 /* flutter_keyboard_visibility */;
+			targetProxy = F87750430D9C384359BAB9659863B85A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

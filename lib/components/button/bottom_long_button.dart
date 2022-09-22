@@ -30,9 +30,12 @@ class BottomLongButton extends StatelessWidget {
           color: controller!.isButtonActivate.value == true ? Palette.main : Palette.data,
           borderRadius: BorderRadius.circular(40),
         ),
-        child: Text(
-          text,
-          style: CommonText.BodyBoldWhite,
+        child: TextButton(
+             onPressed: () {onPressed;},
+          child: Text(
+            text,
+            style: CommonText.BodyBoldWhite,
+          ),
         ),
       ),
     );

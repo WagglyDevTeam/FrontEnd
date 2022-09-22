@@ -18,8 +18,8 @@ class PostDetailController extends GetxController {
 
   @override
   void onInit() async {
-    super.onInit();
     await getDetailBoard();
+    super.onInit();
   }
 
   @override
@@ -37,11 +37,7 @@ class PostDetailController extends GetxController {
           "얘들아 오늘 날씨가 너무 좋은데 난 과제를 하고 있어 교수님이 3일만 기절했다 일어나시면 좋겠어 얘들아 오늘 날씨가 너무 좋은데 난 과제를 하고 있어 교수님이 3일만 기절했다 일어나시면 좋겠어 얘들아 오늘 날씨가 너무 좋은데 난 과제를 하고 있어 교수님이 3일만 기절했다 일어나시면 좋겠어 얘들아 오늘 날씨가 너무 좋은데 난 과제를 하고 있어 교수님이 3일만 기절했다 일어나시면 좋겠어 얘들아 오늘 날씨가 너무 좋은데 난 과제를 하고 있어 교수님이 3일만 기절했다 일어나시면 좋겠어 얘들아 오늘 날씨가 너무 좋은데 난 과제를 하고 있어 교수님이 3일만 기절했다 일어나시면 좋겠어 얘들아 오늘 날씨가 너무 좋은데 난 과제를 하고 있어 교수님이 3일만 기절했다 일어나시면 좋겠어",
       "postCreatedAt": "02/18 19:50",
       "postImages": [
-        'https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg',
-        'https://cdn.pixabay.com/photo/2017/07/25/01/22/cat-2536662_960_720.jpg',
-        'https://cdn.pixabay.com/photo/2017/12/11/15/34/lion-3012515__340.jpg',
-        "https://cdn.pixabay.com/photo/2013/01/25/13/03/cat-76116_960_720.jpg",
-        "https://cdn.pixabay.com/photo/2013/01/25/13/03/cat-76116_960_720.jpg",
+
       ],
       "postLikeCnt": 6,
       "postCommentCnt": 4,
@@ -282,5 +278,9 @@ class PostDetailController extends GetxController {
       name: '',
       checkEvent: false,
     );
+  }
+
+  PostDetailData getPostDetailData(){
+    return postDetail.value;
   }
 }

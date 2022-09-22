@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:waggly/model/post/dtos/post_edit_request_dto.dart';
 import '../../model/post/dtos/post_request_dto.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
 import '../../model/post/post.dart';
@@ -27,5 +28,10 @@ class PostController extends GetxController {
   Future<void> writeBoard(PostRequestDto postRequestDto) async {
     FormData form = FormData(postRequestDto.toJson());
     await _postRepository.writeBoard(form);
+  }
+
+  Future<void> editBoard(PostEditRequestDto postEditRequestDto) async {
+    FormData form = FormData(postEditRequestDto.toJson());
+    await _postRepository.editBoard(form);
   }
 }

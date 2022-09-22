@@ -108,7 +108,7 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          signInController.checkLoggedIn().value == true
+          signInController.checkLoggedIn().value == false
               ? ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(

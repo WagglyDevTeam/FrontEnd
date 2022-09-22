@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -9,12 +10,17 @@ import 'package:waggly/components/button/bottom_long_button.dart';
 import 'package:waggly/components/button/rules_button.dart';
 import 'package:waggly/components/inputField/input_hashtag_field.dart';
 import 'package:waggly/components/inputField/input_title_field.dart';
+import 'package:waggly/model/post/dtos/post_edit_request_dto.dart';
 import '../components/post/custom_text_form_field.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
 import '../controller/post/image_controller.dart';
 import '../controller/post/post_controller.dart';
+import '../controller/postDetail/post_edit_controller.dart';
 import '../model/post/dtos/post_request_dto.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../utils/colors.dart';
+import '../utils/text_frame.dart';
 
 const double _dividerHeight = 18.0;
 const double _titleAreaHeight = 40.0;
@@ -29,9 +35,13 @@ const double _bottomButtonPaddingBottom = 15.0;
 class WritePage extends StatelessWidget {
   final ImageController _imageController = Get.put(ImageController());
   final PostController _postController = Get.put(PostController());
-  final _title = TextEditingController();
+  final PostEditController postEditController = Get.put(PostEditController());
   final _hashtag = SocialTextEditingController();
-  final _content = TextEditingController();
+  TextEditingController? _content;
+  TextEditingController? _title;
+  var type;
+
+  WritePage(this.type, {Key? key}) : super(key: key);
 
   void buttonActivateCheck() {
     if (_title.text.isBlank == true ||
@@ -42,12 +52,21 @@ class WritePage extends StatelessWidget {
       _postController.isButtonActivate.value = true;
     }
   }
-
   @override
   Widget build(BuildContext context) {
     var _page = Status.edit;
     var _os = Platform.operatingSystem;
     const _postName = "게시글 작성";
+    if(type == "edit"){
+      postEditController.updatePostEditData();
+      _imageController.getImagesUrl(postEditController.postEditData.value.postImages);
+      _title = TextEditingController(text: postEditController.postEditData.value.postTitle);
+      _content = TextEditingController(text: postEditController.postEditData.value.postDesc);
+    }else{
+      _imageController.getImagesUrl([]);
+      _title = TextEditingController();
+      _content = TextEditingController();
+    }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -74,7 +93,7 @@ class WritePage extends StatelessWidget {
                   height: _titleAreaHeight.h,
                   child: InputTitleField(
                     onEditingComplete: buttonActivateCheck,
-                    controller: _title,
+                    controller: _title!,
                     hintText: "제목을 입력하세요.",
                     // height: titleAreaHeight,
                   ),
@@ -105,11 +124,11 @@ class WritePage extends StatelessWidget {
                   ),
                 ),
               ), // 내용 영역
-              Obx(
-                () => PhotoWidget(
-                    imageController: _imageController,
-                    length: _imageController.images!.length),
-              ), // 선택된 이미지 표시 영역
+              Obx(() => PhotoWidget(imageController: _imageController,imageUrlLength: _imageController.imagesUrl.length,imagesLength:_imageController.images!.length, length: _imageController.showImages.length, type: "write"),),
+              // Obx(
+              //   () =>
+              //     PhotoWidget(imageController: _imageController, length: _imageController.images!.length, type: "write")
+              // ), // 선택된 이미지 표시 영역
               Padding(
                 padding: EdgeInsets.only(left: 10.0.w, right: 20.0.w),
                 child: SizedBox(
@@ -156,25 +175,45 @@ class WritePage extends StatelessWidget {
                 ),
                 child: SizedBox(
                   height: _buttonAreaHeight.h,
-                  child: BottomLongButton(
-                    controller: _postController,
-                    text: "게시글 작성하기",
-                    height: _bottomButtonHeight.h,
-                    onPressed: () async {
-                      List<MultipartFile> file = imageToMultipartFile();
-                      List<String> hashtags = extractHashTags(_hashtag.text);
-                      await _postController.writeBoard(
-                        PostRequestDto(
-                          _title.text,
-                          _content.text,
-                          "SOCIAL",
-                          false,
-                          hashtags,
-                          file,
+                  child: Container(
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      height: _bottomButtonHeight.h,
+                      decoration: BoxDecoration(
+                        color: Palette.main,
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: TextButton(
+                        onPressed: () async {type == "edit" ? await editPost(_title!.text, _content!.text, "SOCIAL") : await writePost();},
+                        child: Text(
+                          "게시글 작성하기",
+                          style: CommonText.BodyBoldWhite,
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                  // child: BottomLongButton(
+                  //   controller: _postController,
+                  //   text: "게시글 작성하기",
+                  //   height: _bottomButtonHeight.h,
+                  //   onPressed: () async {
+                  //     print("object");
+                  //     // await editPost(_title!.text, _content!.text, "SOCIAL");
+                  //     // List<MultipartFile> file = imageToMultipartFile();
+                  //     // await _postController.editBoard(PostEditRequestDto(_title!.text, _content!.text, "SOCIAL", file, _imageController.parseToStringList()));
+                  //     // List<MultipartFile> file = imageToMultipartFile();
+                  //     // List<String> hashtags = extractHashTags(_hashtag.text);
+                  //     // await _postController.writeBoard(
+                  //     //   PostRequestDto(
+                  //     //     _title!.text,
+                  //     //     _content!.text,
+                  //     //     "SOCIAL",
+                  //     //     false,
+                  //     //     hashtags,
+                  //     //     file,
+                  //     //   ),
+                  //     // );
+                  //   },
+                  // ),
                 ),
               ), // 게시글 작성하기 버튼
             ],
@@ -191,18 +230,44 @@ class WritePage extends StatelessWidget {
     }
     return file;
   }
+
+  Future<void> editPost(title, description, college) async {
+    List<MultipartFile> file = imageToMultipartFile();
+    await _postController.editBoard(PostEditRequestDto(title, description, college, file, _imageController.parseToStringList()));
+  }
+
+  Future<void> writePost() async {
+    print(_content!.text);
+        List<MultipartFile> file = imageToMultipartFile();
+        List<String> hashtags = extractHashTags(_hashtag.text);
+        await _postController.writeBoard(
+          PostRequestDto(
+            _title!.text,
+            _content!.text,
+            "SOCIAL",
+            false,
+            hashtags,
+            file,
+          ),
+        );
+  }
 }
 
 class PhotoWidget extends StatelessWidget {
   const PhotoWidget({
     Key? key,
     required this.imageController,
+    required this.imagesLength,
+    required this.imageUrlLength,
     required this.length,
+    required this.type
   }) : super(key: key);
 
   final int length;
+  final int imagesLength;
+  final int imageUrlLength;
   final ImageController imageController;
-
+  final String type;
   @override
   Widget build(BuildContext context) {
     return length > 0
@@ -215,46 +280,86 @@ class PhotoWidget extends StatelessWidget {
                 );
               },
               scrollDirection: Axis.horizontal,
-              itemCount: imageController.images!.length,
+              itemCount: imageUrlLength + imagesLength,
               itemBuilder: (ctx, index) {
-                return Row(
-                  children: [
-                    if (index == 0) SizedBox(width: 20.0.w),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 10.0.w),
-                      height: 100.0.h,
-                      width: 100.0.w,
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(18.0),
-                            child: Image.file(
-                              File(imageController.images![index].path),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          Positioned(
-                            top: 6.h,
-                            left: _imageThumbnailAreaHeight - 27.w,
-                            child: InkWell(
-                              onTap: () {
-                                imageController.images!.removeAt(index);
-                              },
-                              child: SvgPicture.asset(
-                                "assets/icons/cancel.svg",
-                                width: 14.0.w,
-                                height: 14.0.h,
+                print(index);
+                if(index < imageUrlLength){
+                  return Row(
+                    children: [
+                      if (index == 0) SizedBox(width: 20.0.w),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10.0.w),
+                        height: 100.0.h,
+                        width: 100.0.w,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(18.0),
+                              child: Image.network(
+                                imageController.imagesUrl[index],
+                                fit: BoxFit.fill,
                               ),
                             ),
-                          ),
-                        ],
+                            Positioned(
+                              top: 6.h,
+                              left: _imageThumbnailAreaHeight - 27.w,
+                              child: InkWell(
+                                onTap: () {
+                                  imageController.deleteImages.add(imageController.imagesUrl[index]);
+                                  imageController.imagesUrl.removeAt(index);
+                                },
+                                child: SvgPicture.asset(
+                                  "assets/icons/cancel.svg",
+                                  width: 14.0.w,
+                                  height: 14.0.h,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    if (index == imageController.images!.length - 1)
-                      SizedBox(width: 20.0.w),
-                  ],
-                );
+                    ],
+                  );
+                }else{
+                  return Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10.0.w),
+                        height: 100.0.h,
+                        width: 100.0.w,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(18.0),
+                              child: Image.file(
+                                File(imageController.images![index-imageUrlLength].path),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                            Positioned(
+                              top: 6.h,
+                              left: _imageThumbnailAreaHeight - 27.w,
+                              child: InkWell(
+                                onTap: () {
+                                  var list = imageController.showImages[1];
+                                  imageController.showImages[1].removeAt(index-imageUrlLength);
+                                },
+                                child: SvgPicture.asset(
+                                  "assets/icons/cancel.svg",
+                                  width: 14.0.w,
+                                  height: 14.0.h,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (index == imagesLength-1) SizedBox(width: 20.0.w),
+                    ],
+                  );
+                }
               },
             ),
           )
