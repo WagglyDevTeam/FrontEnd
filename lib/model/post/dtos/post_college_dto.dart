@@ -1,4 +1,6 @@
-import '../../post/dtos/waggly_response_dto.dart';
+import 'package:flutter/material.dart';
+
+import 'waggly_response_dto.dart';
 
 class PostListData {
   String majorName;

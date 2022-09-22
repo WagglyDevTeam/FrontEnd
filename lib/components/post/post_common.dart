@@ -6,7 +6,7 @@ import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:get/get.dart';
 
-import '../../controller/postDetail/post_detail_controller.dart';
+import '../../controller/post/post_detail_controller.dart';
 
 class PostDifferentList extends StatelessWidget {
   PostDifferentList({Key? key, required this.widgetList}) : super(key: key);
@@ -20,27 +20,26 @@ class PostDifferentList extends StatelessWidget {
         color: Colors.white,
         child: Container(
             child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: widgetList.length,
-              itemBuilder: (context, index) {
-                return widgetList[index];
-              },
-            )));
+          scrollDirection: Axis.horizontal,
+          itemCount: widgetList.length,
+          itemBuilder: (context, index) {
+            return widgetList[index];
+          },
+        )));
   }
 }
 
 class CommentSide extends StatelessWidget {
-  final int imgCnt;
-  final int likeCnt;
-  final int commentCnt;
+  int? imgCnt;
+  int? likeCnt;
+  int? commentCnt;
 
-  const CommentSide(
-      {Key? key,
-        required this.imgCnt,
-        required this.likeCnt,
-        required this.commentCnt,
-      })
-      : super(key: key);
+  CommentSide({
+    Key? key,
+    this.imgCnt,
+    this.likeCnt,
+    this.commentCnt,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +55,12 @@ class CommentSide extends StatelessWidget {
               width: 16,
               height: 16,
             ),
-            Text(imgCnt.toString(), style: CommonText.BodyEngMain11),
+            Text(imgCnt?.toString() ?? '', style: CommonText.BodyEngMain11),
             SizedBox(
               width: 5,
             ),
           ],
         ),
-
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -72,7 +70,7 @@ class CommentSide extends StatelessWidget {
               width: 16,
               height: 16,
             ),
-            Text(likeCnt.toString(), style: CommonText.BodyEngMain11),
+            Text(likeCnt?.toString() ?? '', style: CommonText.BodyEngMain11),
           ],
         ),
         SizedBox(
@@ -87,7 +85,7 @@ class CommentSide extends StatelessWidget {
               width: 16,
               height: 16,
             ),
-            Text(commentCnt.toString(), style: CommonText.BodyEngMain11),
+            Text(commentCnt?.toString() ?? '', style: CommonText.BodyEngMain11),
           ],
         ),
         SizedBox(
@@ -112,11 +110,11 @@ class AuthorForm extends StatelessWidget {
 
   AuthorForm(
       {Key? key,
-        required this.image,
-        required this.nickName,
-        required this.major,
-        required this.shape,
-        required this.isMaster})
+      required this.image,
+      required this.nickName,
+      required this.major,
+      required this.shape,
+      required this.isMaster})
       : super(key: key);
 
   @override
@@ -135,15 +133,15 @@ class AuthorForm extends StatelessWidget {
             Withdrawal()
                 ? '(알수없음)'
                 : isMaster!
-                ? '글쓴이'
-                : nickName!,
+                    ? '글쓴이'
+                    : nickName!,
             style: Withdrawal()
                 ? CommonText.BodyM
                 : shapePostion()
-                ? CommonText.TitleS
-                : isMaster!
-                ? CommonText.BodyMediumPurple
-                : CommonText.BodyM),
+                    ? CommonText.TitleS
+                    : isMaster!
+                        ? CommonText.BodyMediumPurple
+                        : CommonText.BodyM),
         SizedBox(
           width: 6,
         ),
@@ -189,24 +187,25 @@ class CommentBox extends StatelessWidget {
   final int postingAuthorId;
   CommentBox(
       {Key? key,
-        required this.authorId,
-        required this.authorMajor,
-        required this.authorNickname,
-        required this.authorProfileImg,
-        required this.isBlind,
-        required this.commentId,
-        required this.commentCreatedAt,
-        required this.commentLikeCnt,
-        required this.commentDesc,
-        required this.isLikedByMe,
-        required this.shape,
-        required this.postingAuthorId})
+      required this.authorId,
+      required this.authorMajor,
+      required this.authorNickname,
+      required this.authorProfileImg,
+      required this.isBlind,
+      required this.commentId,
+      required this.commentCreatedAt,
+      required this.commentLikeCnt,
+      required this.commentDesc,
+      required this.isLikedByMe,
+      required this.shape,
+      required this.postingAuthorId})
       : super(key: key);
 
   /// 댓글 , 대댓글 구분
   bool isShape() {
     return shape == CommentShape.bottom ? true : false;
   }
+
   /// 댓글 작성자 확인
   bool isMaster() {
     return postingAuthorId == authorId ? true : false;
@@ -214,61 +213,63 @@ class CommentBox extends StatelessWidget {
 
   /// post detail getX
   final PostDetailController _postDetailX = Get.put(PostDetailController());
-  
+
   /// 댓글 or 대댓글 좋아요 이벤트
-  void commentLike(){
-    if(!isShape()){
-      _postDetailX.updateLikeBoardComment(commentId: commentId );
-    }else{
-      _postDetailX.updateLikeBoardCommentReply(commentId: commentId );
+  void commentLike() {
+    if (!isShape()) {
+      _postDetailX.updateLikeBoardComment(commentId: commentId);
+    } else {
+      _postDetailX.updateLikeBoardCommentReply(commentId: commentId);
     }
   }
 
   /// 댓글 or 대댓글 삭제 이벤트
-  void commentDelete(){
-    if(!isShape()){
-      _postDetailX.delectBoardComment(commnetId: commentId );
-    }else{
-      _postDetailX.delectBoardCommentReply(replycommnetId: commentId );
+  void commentDelete() {
+    if (!isShape()) {
+      _postDetailX.delectBoardComment(commnetId: commentId);
+    } else {
+      _postDetailX.delectBoardCommentReply(replycommnetId: commentId);
     }
-
   }
 
   /// 댓글 or 대댓글 신고 이벤트
-  void commentReport(){
-    if(!isShape()){
+  void commentReport() {
+    if (!isShape()) {
       print("$commentId , $authorId , 댓글 신고종류");
-    }else{
+    } else {
       print("$commentId , $authorId , 대댓글 신고종류");
     }
   }
+
   /// 대댓글 이벤트 on
-  void replyEventOn(){
-    _postDetailX.selectCommentReplyOn(commentId:commentId , name:authorNickname);
+  void replyEventOn() {
+    _postDetailX.selectCommentReplyOn(
+        commentId: commentId, name: authorNickname);
   }
 
-
   /// 대댓글 모달 버튼 리스트
-  Widget Buttons(){
+  Widget Buttons() {
     return Column(
       children: [
-        if(isMaster())
-          ModalButton(title: '삭제하기', event: commentDelete),
-        if(!isMaster())
-          ModalButton(title: '신고하기', event: commentReport),
+        if (isMaster()) ModalButton(title: '삭제하기', event: commentDelete),
+        if (!isMaster()) ModalButton(title: '신고하기', event: commentReport),
       ],
     );
   }
 
   @override
-
   Widget build(BuildContext context) {
     const double modalHeight = 123.0;
     const String title = '더보기';
-    PostModal modalOn = PostModal(context: context ,contents: Buttons() , height: modalHeight , title: title);
+    PostModal modalOn = PostModal(
+        context: context,
+        contents: Buttons(),
+        height: modalHeight,
+        title: title);
 
     return Container(
-        padding: EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
+        padding:
+            EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
         width: 380.w,
         decoration: BoxDecoration(
             color: isShape() ? Palette.paperLow : Colors.white,
@@ -283,7 +284,7 @@ class CommentBox extends StatelessWidget {
           children: [
             if (isShape())
               Container(
-                  width:25.w,
+                  width: 25.w,
                   child: Padding(
                     padding: EdgeInsets.only(top: 6, right: 3),
                     child: SvgPicture.asset(
@@ -295,7 +296,7 @@ class CommentBox extends StatelessWidget {
                     ),
                   )),
             Container(
-                width:isShape() ?300.w :  325.w,
+                width: isShape() ? 300.w : 325.w,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -312,8 +313,8 @@ class CommentBox extends StatelessWidget {
                         ),
                         Container(
                           width: !isShape() ? 76.w : 50.w,
-                          padding:
-                          EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 3.w, vertical: 2.h),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
@@ -325,20 +326,19 @@ class CommentBox extends StatelessWidget {
                               children: [
                                 //*좋아요 기능*/
                                 SizedBox(
-                                  width: 16,
-                                  height:16,
-                                  child:  IconButton(
-                                    padding: EdgeInsets.all(0),
-                                    icon: SvgPicture.asset(
-                                      'assets/icons/sentiment.svg',
-                                      fit: BoxFit.scaleDown,
-                                      width: 10,
-                                      height: 10,
-                                      color: Palette.violet,
-                                    ), onPressed: commentLike,
-                                  )
-                                )
-                               ,
+                                    width: 16,
+                                    height: 16,
+                                    child: IconButton(
+                                      padding: EdgeInsets.all(0),
+                                      icon: SvgPicture.asset(
+                                        'assets/icons/sentiment.svg',
+                                        fit: BoxFit.scaleDown,
+                                        width: 10,
+                                        height: 10,
+                                        color: Palette.violet,
+                                      ),
+                                      onPressed: commentLike,
+                                    )),
                                 if (!isShape())
                                   Container(
                                     width: 1,
@@ -349,8 +349,8 @@ class CommentBox extends StatelessWidget {
                                 if (!isShape())
                                   SizedBox(
                                       width: 16,
-                                      height:16,
-                                      child:  IconButton(
+                                      height: 16,
+                                      child: IconButton(
                                         padding: EdgeInsets.all(0),
                                         icon: SvgPicture.asset(
                                           'assets/icons/commentRectangle.svg',
@@ -358,10 +358,9 @@ class CommentBox extends StatelessWidget {
                                           width: 10,
                                           height: 10,
                                           color: Palette.violet,
-                                        ), onPressed: replyEventOn,
-                                      )
-                                  )
-                                ,
+                                        ),
+                                        onPressed: replyEventOn,
+                                      )),
                                 Container(
                                   width: 1,
                                   height: 10,
@@ -369,8 +368,8 @@ class CommentBox extends StatelessWidget {
                                 ),
                                 //*댓글 more 기능*/
                                 SizedBox(
-                                  width:10,
-                                  height:10,
+                                  width: 10,
+                                  height: 10,
                                   child: IconButton(
                                     padding: EdgeInsets.all(0),
                                     icon: Icon(Icons.more_horiz),
@@ -386,7 +385,7 @@ class CommentBox extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                        padding: EdgeInsets.only(top: 3.h, bottom: 6.h ),
+                        padding: EdgeInsets.only(top: 3.h, bottom: 6.h),
                         child: Text(
                           commentDesc,
                           style: CommonText.BodyM,
@@ -425,6 +424,4 @@ class CommentBox extends StatelessWidget {
           ],
         ));
   }
-
-
 }

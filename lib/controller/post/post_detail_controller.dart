@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:get/get.dart';
-import 'package:waggly/model/postDetail/dtos/post_detail_dto.dart';
+import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 import '../../model/hive/user.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
 import '../../model/post/post_repository.dart';

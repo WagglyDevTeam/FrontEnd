@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:waggly/components/Post/post_app_bar.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/components/post/custom_text_form_field.dart';
-import 'package:waggly/controller/postDetail/post_detail_controller.dart';
+import 'package:waggly/controller/post/post_detail_controller.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 

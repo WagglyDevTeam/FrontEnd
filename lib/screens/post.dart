@@ -6,9 +6,9 @@ import 'package:skeletons/skeletons.dart';
 import 'package:waggly/components/Post/post_app_bar.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/utils/text_frame.dart';
-import '../controller/post/post_home.dart';
+import '../controller/post/post_home_controller.dart';
 import '../controller/signIn/sign_in_conroller.dart';
-import '../model/postCollege/dtos/post_college_dto.dart';
+import '../model/post/dtos/post_college_dto.dart';
 import '../utils/colors.dart';
 
 class PostScreen extends StatelessWidget {
