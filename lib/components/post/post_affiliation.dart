@@ -8,10 +8,14 @@ import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
 
+import './post_app_bar.dart';
+
 class PostAffiliation extends StatelessWidget {
   PostAffiliation({Key? key}) : super(key: key);
   final String postName = Lang().change("${Get.parameters['collegeName']}");
   var page = Status.boardTitle;
+  // final String postName = Lang().change("${collegeName}");
+  //final String postName = Get.parameters['collegeName'] ?? "";
 
   final List<PostSpecificData> data = [
     PostSpecificData(
@@ -23,55 +27,6 @@ class PostAffiliation extends StatelessWidget {
       postImageCnt: 3,
       postLikeCnt: 6,
       postCommentCnt: 4,
-      isLikedByMe: true,
-      isBlind: false,
-    ),
-    PostSpecificData(
-      postId: 13,
-      postTitle: "전공 수업 질문",
-      postDesc: "스레과~ 다들 전공과목 어떤거 들어? 다른 곳은 어떨지 궁금하다 많이 다르려나? ",
-      postCreatedAt: "02/18 19:50",
-      authorMajor: "스포츠레저학과",
-      postImageCnt: 1,
-      postLikeCnt: 68,
-      postCommentCnt: 2,
-      isLikedByMe: true,
-      isBlind: false,
-    ),
-    PostSpecificData(
-      postId: 16,
-      postTitle: "다들 노트북 어떤 제품 많이 써?",
-      postDesc:
-          "내 사촌동생이 이번에 미대 입학해서 노트북 궁금해하던데 추천 좀 해주라! 너네가 노트북을 추천해주면 내 사동의 대학 생활이 달라질거라 확신해 나를 위해 이 글을 누르고 댓글을 써주는 아량을 한번 베풀어 줄 누군가 있을까 여기..?",
-      postCreatedAt: "02/18 19:50",
-      authorMajor: "시각디자인학과",
-      postImageCnt: 3,
-      postLikeCnt: 80,
-      postCommentCnt: 1,
-      isLikedByMe: true,
-      isBlind: false,
-    ),
-    PostSpecificData(
-      postId: 17,
-      postTitle: "악기 브랜드 뭐써?",
-      postDesc: "각자 자기 악기랑 브랜드 알려주라! ",
-      postCreatedAt: "02/18 19:50",
-      authorMajor: "기악과",
-      postImageCnt: 3,
-      postLikeCnt: 80,
-      postCommentCnt: 2,
-      isLikedByMe: true,
-      isBlind: false,
-    ),
-    PostSpecificData(
-      postId: 18,
-      postTitle: "다들 학교 커리큘럼",
-      postDesc: "얘들아 오늘 날씨가 너무 좋은데 난 과제를 하고 있어 교수님이 3일만 기절했다 일어나시면 좋겠어 ",
-      postCreatedAt: "02/18 19:50",
-      authorMajor: "기악과",
-      postImageCnt: 3,
-      postLikeCnt: 80,
-      postCommentCnt: 1,
       isLikedByMe: true,
       isBlind: false,
     ),

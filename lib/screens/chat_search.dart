@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:waggly/components/snackBar/custom_snack_bar.dart';
 import 'package:waggly/controller/chat_search_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
@@ -80,20 +81,29 @@ class ChatSearchScreen extends StatelessWidget {
                     final searchList =
                         chatSearchController.searchHistoryBox.value;
 
-                    int id = 0;
-                    if (chatSearchController.historyList.isNotEmpty == true) {
-                      final prevItem = searchList.getAt(searchList.length - 1);
-                      id = prevItem!.id + 1;
+                    if (_searchKeyword.text.isEmpty) {
+                      CustomSnackBar.messageSnackbar(
+                        context,
+                        "검색어를 입력해주세요.",
+                        EdgeInsets.only(bottom: 60.h, left: 20.w, right: 20.w),
+                      );
+                    } else {
+                      int id = 0;
+                      if (chatSearchController.historyList.isNotEmpty == true) {
+                        final prevItem =
+                            searchList.getAt(searchList.length - 1);
+                        id = prevItem!.id + 1;
+                      }
+
+                      chatSearchController.searchHistoryBox.value.add(
+                          SearchHistory(
+                              id: id,
+                              userId: userId,
+                              keyword: _searchKeyword.text));
+                      chatSearchController.toList(userId);
+
+                      _searchKeyword.text = '';
                     }
-
-                    chatSearchController.searchHistoryBox.value.add(
-                        SearchHistory(
-                            id: id,
-                            userId: userId,
-                            keyword: _searchKeyword.text));
-                    chatSearchController.toList(userId);
-
-                    _searchKeyword.text = '';
                   },
                   child: Container(
                     alignment: Alignment.center,

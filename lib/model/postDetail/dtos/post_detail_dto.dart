@@ -1,33 +1,33 @@
 import 'package:waggly/components/myPage/active/request_list.dart';
 
-class PostDetailData  {
-  String authorMajor;
-  String postTitle;
-  String postCreatedAt;
-  int postId;
-  String postDesc;
-  List<String> postImages;
-  int postLikeCnt;
-  int postCommentCnt;
-  bool isLikedByMe;
-  bool isBlind;
-  int authorId;
-  String authorNickname;
-  String authorProfileImg;
+class PostDetailData {
+  String? authorMajor;
+  String? postTitle;
+  String? postCreatedAt;
+  int? postId;
+  String? postDesc;
+  List<String>? postImages;
+  int? postLikeCnt;
+  int? postCommentCnt;
+  bool? isLikedByMe;
+  bool? isBlind;
+  int? authorId;
+  String? authorNickname;
+  String? authorProfileImg;
   PostDetailData({
-    required this.postImages,
-    required this.postDesc,
-    required this.postLikeCnt,
-    required this.postCommentCnt,
-    required this.isLikedByMe,
-    required this.isBlind,
-    required this.authorNickname,
-    required this.authorId,
-    required this.authorProfileImg,
-    required this.authorMajor,
-    required this.postTitle,
-    required this.postCreatedAt,
-    required this.postId,
+    this.postImages,
+    this.postDesc,
+    this.postLikeCnt,
+    this.postCommentCnt,
+    this.isLikedByMe,
+    this.isBlind,
+    this.authorNickname,
+    this.authorId,
+    this.authorProfileImg,
+    this.authorMajor,
+    this.postTitle,
+    this.postCreatedAt,
+    this.postId,
   }) : super();
 
   factory PostDetailData.fromJson(Map<String, dynamic> json) => PostDetailData(
@@ -46,46 +46,46 @@ class PostDetailData  {
       postId: json["postId"] as int);
 
   @override
-  Map<String, dynamic> toJson()=> {
-    "postImages": postImages,
-    "postDesc":postDesc ,
-    "postLikeCnt" : postLikeCnt,
-    "postCommentCnt" : postCommentCnt,
-    "isLikedByMe" : isLikedByMe,
-    "isBlind" : isBlind ,
-    "authorNickname" : authorNickname,
-    "authorId" :  authorId,
-    "authorProfileImg" : authorProfileImg,
-    "authorMajor" : authorMajor,
-    "postTitle": postTitle,
-    "postCreatedAt": postCreatedAt ,
-    "postId": postId
-  };
+  Map<String, dynamic> toJson() => {
+        "postImages": postImages,
+        "postDesc": postDesc,
+        "postLikeCnt": postLikeCnt,
+        "postCommentCnt": postCommentCnt,
+        "isLikedByMe": isLikedByMe,
+        "isBlind": isBlind,
+        "authorNickname": authorNickname,
+        "authorId": authorId,
+        "authorProfileImg": authorProfileImg,
+        "authorMajor": authorMajor,
+        "postTitle": postTitle,
+        "postCreatedAt": postCreatedAt,
+        "postId": postId
+      };
 }
 
 class ReCommentData {
-  final int replyId;
-  final String replyCreatedAt;
-  final int replyLikeCnt;
-  final String replyDesc;
-  final bool isLikedByMe;
-  final int authorId;
-  final String authorMajor;
-  final String authorNickname;
-  final String authorProfileImg;
-  final bool isBlind;
+  int? replyId;
+  String? replyCreatedAt;
+  late int? replyLikeCnt;
+  String? replyDesc;
+  bool? isLikedByMe;
+  int? authorId;
+  String? authorMajor;
+  String? authorNickname;
+  String? authorProfileImg;
+  bool? isBlind;
 
   ReCommentData({
-    required this.replyId,
-    required this.replyCreatedAt,
-    required this.replyLikeCnt,
-    required this.replyDesc,
-    required this.isLikedByMe,
-    required this.authorId,
-    required this.authorMajor,
-    required this.authorNickname,
-    required this.authorProfileImg,
-    required this.isBlind,
+    this.replyId,
+    this.replyCreatedAt,
+    this.replyLikeCnt,
+    this.replyDesc,
+    this.isLikedByMe,
+    this.authorId,
+    this.authorMajor,
+    this.authorNickname,
+    this.authorProfileImg,
+    this.isBlind,
   });
 
   factory ReCommentData.fromJson(Map<String, dynamic> json) => ReCommentData(
@@ -102,30 +102,30 @@ class ReCommentData {
 }
 
 class CommentData {
-  final int commentId;
-  final String commentCreatedAt;
-  final int commentLikeCnt;
-  final String  commentDesc;
-  final bool isLikedByMe;
-  final int authorId;
-  final String authorMajor;
-  final String authorNickname;
-  final String authorProfileImg;
-  final bool isBlind;
-  final List<ReCommentData> replies;
+  int? commentId;
+  String? commentCreatedAt;
+  late int? commentLikeCnt;
+  String? commentDesc;
+  bool? isLikedByMe;
+  int? authorId;
+  String? authorMajor;
+  String? authorNickname;
+  String? authorProfileImg;
+  bool? isBlind;
+  List<ReCommentData>? replies;
 
   CommentData({
-    required this.commentId,
-    required this.commentCreatedAt,
-    required this.commentLikeCnt,
-    required this.commentDesc,
-    required this.isLikedByMe,
-    required this.replies,
-    required this.authorId,
-    required  this.authorMajor,
-    required  this.authorNickname,
-    required  this.authorProfileImg,
-    required  this.isBlind,
+    this.commentId,
+    this.commentCreatedAt,
+    this.commentLikeCnt,
+    this.commentDesc,
+    this.isLikedByMe,
+    this.replies,
+    this.authorId,
+    this.authorMajor,
+    this.authorNickname,
+    this.authorProfileImg,
+    this.isBlind,
   });
 
   factory CommentData.fromJson(Map<String, dynamic> json) => CommentData(
@@ -144,9 +144,9 @@ class CommentData {
 }
 
 class ListCommentData {
-  List<CommentData> comments;
+  List<CommentData>? comments;
   ListCommentData({
-    required this.comments,
+    this.comments,
   });
 
   factory ListCommentData.fromJson(Map<String, dynamic> json) =>
@@ -156,18 +156,18 @@ class ListCommentData {
 }
 
 class SelectComment {
-  String name;
-  int commentId;
-  bool checkEvent;
-  SelectComment({required this.name,required this.commentId, required this.checkEvent});
-  factory SelectComment.fromJson(Map<String , dynamic> json) => SelectComment(
-      name:json['name'] as String,
-      commentId : json['commentId'] as int,
-      checkEvent : json['checkEvent'] as bool,
-  );
-  Map<String, dynamic> toJson()=> {
-    "name": name,
-    "commentId" : commentId,
-    "checkEvent" : checkEvent,
-  };
+  String? name;
+  int? commentId;
+  bool? checkEvent;
+  SelectComment({this.name, this.commentId, this.checkEvent});
+  factory SelectComment.fromJson(Map<String, dynamic> json) => SelectComment(
+        name: json['name'] as String,
+        commentId: json['commentId'] as int,
+        checkEvent: json['checkEvent'] as bool,
+      );
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "commentId": commentId,
+        "checkEvent": checkEvent,
+      };
 }

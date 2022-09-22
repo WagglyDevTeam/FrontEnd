@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/utils/colors.dart';
-import 'package:waggly/widgets/PageNav/page_nav.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
 
 class NotificationScreen extends StatelessWidget {

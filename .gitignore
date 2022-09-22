@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+.env
 
 # IntelliJ related
 *.iml
@@ -39,6 +40,9 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+
+# IOS related
+ios/.symlinks
 
 # Android Studio will place build artifacts here
 /android/app/debug

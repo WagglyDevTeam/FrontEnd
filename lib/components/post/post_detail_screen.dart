@@ -55,19 +55,19 @@ class DetailContext extends StatelessWidget {
     /// 게시판 상세 페이지 GetX 좋아요 이벤트
     onLikedByMe() {
       _postDetailX.updateDetailBoardLike(
-        isLikedByMe: !_postDetailX.postDetail.value.isLikedByMe,
-        postLikeCnt: _postDetailX.postDetail.value.isLikedByMe
-            ? _postDetailX.postDetail.value.postLikeCnt - 1
-            : _postDetailX.postDetail.value.postLikeCnt + 1,
-        postId: _postDetailX.postDetail.value.postId,
+        isLikedByMe: _postDetailX.postDetail.value.isLikedByMe!,
+        postLikeCnt: _postDetailX.postDetail.value.isLikedByMe!
+            ? _postDetailX.postDetail.value.postLikeCnt! - 1
+            : _postDetailX.postDetail.value.postLikeCnt! + 1,
+        postId: _postDetailX.postDetail.value.postId!,
       );
     }
 
     ///게시판 상세 페이지 GetX 즐겨찾기 이벤트
     onBookMarkByMe() {
       _postDetailX.updateDetailBoardBookmark(
-        isBlind: !_postDetailX.postDetail.value.isBlind,
-        postId: _postDetailX.postDetail.value.postId,
+        isBlind: !_postDetailX.postDetail.value.isBlind!,
+        postId: _postDetailX.postDetail.value.postId!,
       );
     }
 
@@ -120,7 +120,7 @@ class DetailContext extends StatelessWidget {
                                               )),
                                           Obx(() => Text(
                                               _postDetailX.postDetail.value
-                                                  .postCreatedAt,
+                                                  .postCreatedAt!,
                                               style: CommonText.BodyEngGray)),
                                         ],
                                       ),
@@ -138,15 +138,15 @@ class DetailContext extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Obx(() => Text(
-                                                _postDetailX
-                                                    .postDetail.value.postTitle,
+                                                _postDetailX.postDetail.value
+                                                    .postTitle!,
                                                 style: CommonText.BodyL)),
                                             SizedBox(
                                               height: 5,
                                             ),
                                             Obx(() => Text(
                                                 _postDetailX
-                                                    .postDetail.value.postDesc,
+                                                    .postDetail.value.postDesc!,
                                                 style: CommonText.BodyM)),
                                           ]),
                                     ),
@@ -157,7 +157,7 @@ class DetailContext extends StatelessWidget {
                                     /// 게시판 상세 페이지 이미지리스트
                                     Obx(() => Container(
                                           height: _postDetailX.postDetail.value
-                                                  .postImages.isEmpty
+                                                  .postImages!.isEmpty
                                               ? 0
                                               : imageBoxSize,
                                           padding: EdgeInsets.only(
@@ -169,7 +169,7 @@ class DetailContext extends StatelessWidget {
                                                       _postDetailX
                                                           .postDetail
                                                           .value
-                                                          .postImages
+                                                          .postImages!
                                                           .length;
                                                   i++)
                                                 Row(
@@ -178,14 +178,14 @@ class DetailContext extends StatelessWidget {
                                                       width: _postDetailX
                                                               .postDetail
                                                               .value
-                                                              .postImages
+                                                              .postImages!
                                                               .isEmpty
                                                           ? 0
                                                           : imageBoxSize,
                                                       height: _postDetailX
                                                               .postDetail
                                                               .value
-                                                              .postImages
+                                                              .postImages!
                                                               .isEmpty
                                                           ? 0
                                                           : imageBoxSize,
@@ -198,7 +198,7 @@ class DetailContext extends StatelessWidget {
                                                                   _postDetailX
                                                                       .postDetail
                                                                       .value
-                                                                      .postImages[i]),
+                                                                      .postImages![i]),
                                                               fit: BoxFit.cover)),
                                                     ),
                                                     SizedBox(
@@ -206,7 +206,7 @@ class DetailContext extends StatelessWidget {
                                                                 _postDetailX
                                                                         .postDetail
                                                                         .value
-                                                                        .postImages
+                                                                        .postImages!
                                                                         .length -
                                                                     1
                                                             ? contentsPadding.w
@@ -243,19 +243,19 @@ class DetailContext extends StatelessWidget {
                                                     active: _postDetailX
                                                         .postDetail
                                                         .value
-                                                        .isLikedByMe,
+                                                        .isLikedByMe!,
                                                   )),
                                             ],
                                           ),
                                           Obx(() => CommentSide(
                                                 imgCnt: _postDetailX.postDetail
-                                                    .value.postImages.length,
+                                                    .value.postImages!.length,
                                                 likeCnt: _postDetailX.postDetail
-                                                    .value.postLikeCnt,
+                                                    .value.postLikeCnt!,
                                                 commentCnt: _postDetailX
                                                     .postDetail
                                                     .value
-                                                    .postCommentCnt,
+                                                    .postCommentCnt!,
                                               ))
                                         ],
                                       ),
@@ -272,87 +272,90 @@ class DetailContext extends StatelessWidget {
                                 children: [
                                   Obx(() => CommentBox(
                                       authorId: _postDetailX
-                                          .boardComment[commentInt].authorId,
+                                          .boardComment[commentInt].authorId!,
                                       authorMajor: _postDetailX
-                                          .boardComment[commentInt].authorMajor,
+                                          .boardComment[commentInt]
+                                          .authorMajor!,
                                       authorNickname: _postDetailX
                                           .boardComment[commentInt]
-                                          .authorNickname,
+                                          .authorNickname!,
                                       authorProfileImg: _postDetailX
                                           .boardComment[commentInt]
-                                          .authorProfileImg,
+                                          .authorProfileImg!,
                                       isBlind: _postDetailX
-                                          .boardComment[commentInt].isBlind,
+                                          .boardComment[commentInt].isBlind!,
                                       commentId: _postDetailX
-                                          .boardComment[commentInt].commentId,
+                                          .boardComment[commentInt].commentId!,
                                       commentCreatedAt: _postDetailX
                                           .boardComment[commentInt]
-                                          .commentCreatedAt,
+                                          .commentCreatedAt!,
                                       commentLikeCnt: _postDetailX
                                           .boardComment[commentInt]
-                                          .commentLikeCnt,
+                                          .commentLikeCnt!,
                                       commentDesc: _postDetailX
-                                          .boardComment[commentInt].commentDesc,
+                                          .boardComment[commentInt]
+                                          .commentDesc!,
                                       isLikedByMe: _postDetailX
-                                          .boardComment[commentInt].isLikedByMe,
+                                          .boardComment[commentInt]
+                                          .isLikedByMe!,
                                       shape: CommentShape.top,
                                       postingAuthorId: _postDetailX
-                                          .postDetail.value.authorId)),
+                                          .postDetail.value.authorId!)),
                                   Obx(() => Column(
                                         children: [
                                           for (var i = 0;
                                               i <
                                                   _postDetailX
                                                       .boardComment[commentInt]
-                                                      .replies
+                                                      .replies!
                                                       .length;
                                               i++)
                                             Obx(() => CommentBox(
                                                   authorId: _postDetailX
                                                       .boardComment[commentInt]
-                                                      .replies[i]
-                                                      .authorId,
+                                                      .replies![i]
+                                                      .authorId!,
                                                   authorMajor: _postDetailX
                                                       .boardComment[commentInt]
-                                                      .replies[i]
-                                                      .authorMajor,
+                                                      .replies![i]
+                                                      .authorMajor!,
                                                   authorNickname: _postDetailX
                                                       .boardComment[commentInt]
-                                                      .replies[i]
-                                                      .authorNickname,
+                                                      .replies![i]
+                                                      .authorNickname!,
                                                   authorProfileImg: _postDetailX
                                                       .boardComment[commentInt]
-                                                      .replies[i]
-                                                      .authorProfileImg,
+                                                      .replies![i]
+                                                      .authorProfileImg!,
                                                   isBlind: _postDetailX
                                                       .boardComment[commentInt]
-                                                      .replies[i]
-                                                      .isBlind,
+                                                      .replies![i]
+                                                      .isBlind!,
                                                   commentId: _postDetailX
                                                       .boardComment[commentInt]
-                                                      .replies[i]
-                                                      .replyId,
+                                                      .replies![i]
+                                                      .replyId!,
                                                   commentCreatedAt: _postDetailX
                                                       .boardComment[commentInt]
-                                                      .replies[i]
-                                                      .replyCreatedAt,
+                                                      .replies![i]
+                                                      .replyCreatedAt!,
                                                   commentLikeCnt: _postDetailX
                                                       .boardComment[commentInt]
-                                                      .replies[i]
-                                                      .replyLikeCnt,
+                                                      .replies![i]
+                                                      .replyLikeCnt!,
                                                   commentDesc: _postDetailX
                                                       .boardComment[commentInt]
-                                                      .replies[i]
-                                                      .replyDesc,
+                                                      .replies![i]
+                                                      .replyDesc!,
                                                   isLikedByMe: _postDetailX
                                                       .boardComment[commentInt]
-                                                      .replies[i]
-                                                      .isLikedByMe,
+                                                      .replies![i]
+                                                      .isLikedByMe!,
                                                   shape: CommentShape.bottom,
                                                   postingAuthorId: _postDetailX
                                                       .postDetail
                                                       .value
-                                                      .authorId,
+                                                      .authorId!,
                                                 ))
                                         ],
                                       ))
@@ -389,10 +392,10 @@ class PostDetailTextarea extends StatelessWidget {
     /// 게시판 상세페이지 댓글 업데이트 이벤트
     void onCommentUpdate() {
       if (_comment.text != "") {
-        if (_postDetailX.selectCommentEvent.value.checkEvent) {
+        if (_postDetailX.selectCommentEvent.value.checkEvent!) {
           _postDetailX.postBoardCommentReply(
               commentDesc: _comment.text,
-              commentId: _postDetailX.selectCommentEvent.value.commentId);
+              commentId: _postDetailX.selectCommentEvent.value.commentId!);
           _postDetailX.selectCommentReplyOff();
         } else {
           _postDetailX.postBoardComment(
@@ -421,7 +424,7 @@ class PostDetailTextarea extends StatelessWidget {
             child: Obx(() => Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    if (_postDetailX.selectCommentEvent.value.checkEvent)
+                    if (_postDetailX.selectCommentEvent.value.checkEvent!)
                       Obx(
                         () => SizedBox(
                             width: 54,
@@ -436,10 +439,10 @@ class PostDetailTextarea extends StatelessWidget {
                               ),
                             )),
                       ),
-                    if (_postDetailX.selectCommentEvent.value.checkEvent)
+                    if (_postDetailX.selectCommentEvent.value.checkEvent!)
                       SizedBox(width: 10.w),
                     SizedBox(
-                      width: _postDetailX.selectCommentEvent.value.checkEvent
+                      width: _postDetailX.selectCommentEvent.value.checkEvent!
                           ? 200.w
                           : 260.w,
                       height: 36.h,

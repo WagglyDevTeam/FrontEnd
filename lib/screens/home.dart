@@ -16,6 +16,7 @@ import 'package:waggly/widgets/index.dart';
 import 'package:waggly/controller/post/post_controller.dart';
 import 'package:waggly/model/post/post.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 PageRouteWithAnimation sign = PageRouteWithAnimation(SignInScreen());
 List<dynamic> groupChatItem = [
