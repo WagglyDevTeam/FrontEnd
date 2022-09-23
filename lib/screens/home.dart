@@ -599,9 +599,10 @@ class AdvertisementArea extends StatelessWidget {
     return InkWell(
       onTap: () {
         // 로긴 로그아웃 체크
-        if (Get.put(SignInController()).checkLoggedIn().value == true) {
-          Get.put(SignInController()).logout();
-        }
+        Get.toNamed('/chatRoom');
+        // if (Get.put(SignInController()).checkLoggedIn().value == true) {
+        //   Get.put(SignInController()).logout();
+        // }
       },
       child: Container(
         width: double.infinity,
