@@ -19,6 +19,7 @@ import 'package:waggly/model/hive/search_history.dart';
 import 'package:waggly/model/hive/user.dart';
 import 'package:waggly/screens/chat.dart';
 import 'package:waggly/screens/chat_edit.dart';
+import 'package:waggly/screens/chat_room_screen.dart';
 import 'package:waggly/screens/find_password.dart';
 import 'package:waggly/screens/group_chat_create.dart';
 import 'package:waggly/screens/index.dart';
@@ -160,6 +161,10 @@ class HeroApp extends StatelessWidget {
             GetPage(
                 name: "/findPassword",
                 page: () => FindPasswordScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/chatRoom",
+                page: () => ChatRoomScreen(),
                 transition: Transition.rightToLeft)
           ],
         );
