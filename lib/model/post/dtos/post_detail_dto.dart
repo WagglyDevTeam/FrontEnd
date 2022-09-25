@@ -14,7 +14,7 @@ class PostDetailData {
   int? authorId;
   String? authorNickname;
   bool? isAnonymous;
-  String? authorProfileImg;
+  // String? authorProfileImg;
 
   PostDetailData({
     this.postId,
@@ -30,7 +30,7 @@ class PostDetailData {
     this.authorNickname,
     this.isBlind,
     this.isAnonymous,
-    this.authorProfileImg,
+    // this.authorProfileImg,
   }) : super();
 
   factory PostDetailData.fromJson(Map<String, dynamic> json) => PostDetailData(
@@ -47,7 +47,7 @@ class PostDetailData {
         authorNickname: json["authorNickname"] as String,
         isBlind: json["isBlind"] as bool,
         isAnonymous: json["isAnonymous"] as bool,
-        authorProfileImg: json["authorProfileImg"] as String,
+        // authorProfileImg: json["authorProfileImg"] as String,
       );
 
   factory PostDetailData.fromClass(PostDetailData postDetailData) =>
@@ -60,7 +60,7 @@ class PostDetailData {
           isBlind: postDetailData.isBlind,
           authorNickname: postDetailData.authorNickname,
           authorId: postDetailData.authorId,
-          authorProfileImg: postDetailData.authorProfileImg,
+          // authorProfileImg: postDetailData.authorProfileImg,
           authorMajor: postDetailData.authorMajor,
           postTitle: postDetailData.postTitle,
           postCreatedAt: postDetailData.postCreatedAt,
@@ -76,7 +76,7 @@ class PostDetailData {
         "isBlind": isBlind,
         "authorNickname": authorNickname,
         "authorId": authorId,
-        "authorProfileImg": authorProfileImg,
+        // "authorProfileImg": authorProfileImg,
         "isAnonymous": isAnonymous,
         "authorMajor": authorMajor,
         "postTitle": postTitle,
