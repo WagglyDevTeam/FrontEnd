@@ -1,8 +1,7 @@
 class Chat {
   final int? senderId;
   final String? message;
-  final String? messageTime;
-
+  final DateTime? messageTime;
 
   Chat({
     this.senderId,

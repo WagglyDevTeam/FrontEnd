@@ -90,10 +90,8 @@ class PostBoxArea extends StatelessWidget {
                   ),
                   duration: Duration(milliseconds: 1000),
                   behavior: SnackBarBehavior.floating,
-                  margin: EdgeInsets.only(
-                      bottom: bottomAppbarHeight + 20, left: 50.w, right: 50.w),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
+                  margin: EdgeInsets.only(bottom: bottomAppbarHeight + 20, left: 50.w, right: 50.w),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                 ),
               )
             : Get.toNamed('/post');
@@ -163,8 +161,7 @@ class PostBoxArea extends StatelessWidget {
                               ),
                               Positioned.fill(
                                 child: BackdropFilter(
-                                  filter: ImageFilter.blur(
-                                      sigmaX: 2.5, sigmaY: 2.5),
+                                  filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
                                   child: Container(
                                     color: Colors.white.withOpacity(0.5),
                                   ),
@@ -178,8 +175,7 @@ class PostBoxArea extends StatelessWidget {
               SizedBox(height: 7.h),
               Obx(() => signInController.checkLoggedIn().value == true
                   ? MajorAreaLogin(safeWidth: safeWidth)
-                  : MajorAreaLogout(
-                      safeWidth: safeWidth)), // 학과, 이미지, 좋아요, 코멘트 수
+                  : MajorAreaLogout(safeWidth: safeWidth)), // 학과, 이미지, 좋아요, 코멘트 수
             ],
           ),
         ),
@@ -321,8 +317,7 @@ class MajorAreaLogout extends StatelessWidget {
                         ),
                         Text(
                           "150",
-                          style: CommonText.BodyEngMain.copyWith(
-                              fontSize: 10.0.sp),
+                          style: CommonText.BodyEngMain.copyWith(fontSize: 10.0.sp),
                         ),
                       ],
                     ),
@@ -449,8 +444,7 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
                             height: 48.0.h,
                             child: CircleAvatar(
                               radius: 30.0,
-                              foregroundImage:
-                                  AssetImage("assets/images/red_face_big.png"),
+                              foregroundImage: AssetImage("assets/images/red_face_big.png"),
                             ),
                           ),
                           Positioned(
@@ -473,8 +467,7 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
                             Row(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.fromLTRB(
-                                      5.0.w, 3.0.h, 5.0.w, 3.0.h),
+                                  padding: EdgeInsets.fromLTRB(5.0.w, 3.0.h, 5.0.w, 3.0.h),
                                   height: 14.h,
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
@@ -528,30 +521,25 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
                                             children: [
                                               Text(
                                                 "#도전",
-                                                style:
-                                                    CommonText.BodyXSmallMain,
+                                                style: CommonText.BodyXSmallMain,
                                               ),
                                               SizedBox(width: 3.w),
                                               Text(
                                                 "#취직",
-                                                style:
-                                                    CommonText.BodyXSmallMain,
+                                                style: CommonText.BodyXSmallMain,
                                               ),
                                               SizedBox(width: 3.w),
                                               Text(
                                                 "#파이팅",
-                                                style:
-                                                    CommonText.BodyXSmallMain,
+                                                style: CommonText.BodyXSmallMain,
                                               ),
                                             ],
                                           ),
                                           Positioned.fill(
                                             child: BackdropFilter(
-                                              filter: ImageFilter.blur(
-                                                  sigmaX: 2, sigmaY: 2),
+                                              filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                                               child: Container(
-                                                color: Colors.white
-                                                    .withOpacity(0.1),
+                                                color: Colors.white.withOpacity(0.1),
                                               ),
                                             ),
                                           ),
