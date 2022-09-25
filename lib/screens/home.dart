@@ -78,7 +78,6 @@ class PostBoxArea extends StatelessWidget {
   Widget build(BuildContext context) {
     SignInController signInController = Get.put(SignInController());
     double safeWidth = Get.width - 72.w;
-
     return InkWell(
       onTap: () {
         signInController.checkLoggedIn().value == false
@@ -94,7 +93,7 @@ class PostBoxArea extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                 ),
               )
-            : Get.toNamed('/post');
+            : Get.toNamed("/postDetail/param?postId=1&collegeName=인문계열");
       },
       child: Container(
         margin: EdgeInsets.only(left: 20.w, right: 20.w),

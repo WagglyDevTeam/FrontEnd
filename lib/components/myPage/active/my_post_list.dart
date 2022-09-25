@@ -8,7 +8,7 @@ import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/controller/myPage/my_post_list_controller.dart';
 import 'package:waggly/widgets/myPage/my_page_comment.dart';
-import '../../Post/post_affiliation.dart';
+import '../../post/post_affiliation.dart';
 
 class MyPostListScreen extends StatelessWidget {
   const MyPostListScreen({Key? key}) : super(key: key);
@@ -168,23 +168,29 @@ class MyPostList extends StatelessWidget {
                                       width: 1),
                                 )),
                             child: PostContext(
-                              postId: controller.myPosts[index].postId,
-                              postTitle: controller.myPosts[index].postTitle,
-                              postDesc: controller.myPosts[index].postDesc,
+                              postId: controller.myPosts[index].postId ?? 0,
+                              postTitle:
+                                  controller.myPosts[index].postTitle ?? '',
+                              postDesc:
+                                  controller.myPosts[index].postDesc ?? '',
                               postCreatedAt: DateFormat('MM/dd HH:mm').format(
-                                  controller.myPosts[index].postCreatedAt!),
+                                  controller.myPosts[index].postCreatedAt! ??
+                                      ''),
                               authorMajor:
-                                  controller.myPosts[index].authorMajor,
+                                  controller.myPosts[index].authorMajor ?? '',
                               postImageCnt:
-                                  controller.myPosts[index].postImageCnt,
+                                  controller.myPosts[index].postImageCnt ?? 0,
                               postLikeCnt:
-                                  controller.myPosts[index].postLikeCnt,
+                                  controller.myPosts[index].postLikeCnt ?? 0,
                               postCommentCnt:
-                                  controller.myPosts[index].postCommentCnt,
+                                  controller.myPosts[index].postCommentCnt ?? 0,
                               isLikedByMe:
-                                  controller.myPosts[index].isLikedByMe,
-                              isBlind: controller.myPosts[index].authorMajor,
-                              postName: controller.myPosts[index].postTitle,
+                                  controller.myPosts[index].isLikedByMe ??
+                                      false,
+                              isBlind:
+                                  controller.myPosts[index].authorMajor ?? 0,
+                              postName:
+                                  controller.myPosts[index].postTitle ?? 0,
                             ));
                       }))
               : Obx(

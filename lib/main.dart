@@ -99,7 +99,7 @@ class HeroApp extends StatelessWidget {
               curve: Curves.fastOutSlowIn,
             ),
             GetPage(
-              name: '/postDetail/:postId',
+              name: '/postDetail/:param',
               page: () => PostDetail(),
               transition: Transition.rightToLeft,
               transitionDuration: const Duration(milliseconds: 350),
