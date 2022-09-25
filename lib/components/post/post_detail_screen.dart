@@ -5,13 +5,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
-import 'package:waggly/components/Post/post_common.dart';
+import 'package:waggly/components/post/post_common.dart';
 import 'package:waggly/components/post/custom_text_form_field.dart';
 import 'package:waggly/controller/postDetail/post_detail_controller.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
-
 import '../../controller/postDetail/post_edit_controller.dart';
+import '../checkBox/checkBox.dart';
 
 const double contentsHeight = 665.0;
 const double contentsWidth = 360.0;
@@ -86,6 +86,13 @@ class _DetailContext extends State<DetailContext> {
       );
     }
 
+    final ListImg = [
+      "https://cdn.pixabay.com/photo/2022/03/01/09/35/iceland-poppy-7040946_960_720.jpg",
+      "https://cdn.pixabay.com/photo/2022/07/16/07/30/persian-man-7324614_960_720.jpg",
+      "https://cdn.pixabay.com/photo/2022/09/05/18/53/caterpillar-7434958_960_720.jpg",
+      "https://cdn.pixabay.com/photo/2019/03/02/16/26/man-4030112_960_720.jpg",
+      "https://cdn.pixabay.com/photo/2022/09/05/09/40/citrine-7433765_960_720.jpg"
+    ];
     return SizedBox(
         width: contentsWidth.w,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -177,75 +184,32 @@ class _DetailContext extends State<DetailContext> {
                                     ),
 
                                     /// 게시판 상세 페이지 이미지리스트
-                                    Obx(() => Container(
-                                          height: _postDetailX.postDetail.value
-                                                      .postImages?.isEmpty ??
-                                                  false
-                                              ? 0
-                                              : imageBoxSize,
-                                          padding: EdgeInsets.only(
-                                              left: contentsPadding.w),
-                                          child: PostDifferentList(
-                                            widgetList: [
-                                              for (var i = 0;
-                                                  i <
-                                                      _postDetailX
-                                                          .postDetail
-                                                          .value
-                                                          .postImages!
-                                                          .length;
-                                                  i++)
-                                                Row(
-                                                  children: [
-                                                    if (_postDetailX
-                                                        .postDetail
-                                                        .value
-                                                        .postImages!
-                                                        .isEmpty)
-                                                      Container(
-                                                        width: _postDetailX
-                                                                .postDetail
-                                                                .value
-                                                                .postImages!
-                                                                .isEmpty
-                                                            ? 0
-                                                            : imageBoxSize,
-                                                        height: _postDetailX
-                                                                .postDetail
-                                                                .value
-                                                                .postImages!
-                                                                .isEmpty
-                                                            ? 0
-                                                            : imageBoxSize,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20),
-                                                            image: DecorationImage(
-                                                                image: NetworkImage(
-                                                                    _postDetailX
-                                                                            .postDetail
-                                                                            .value
-                                                                            .postImages![i] ??
-                                                                        ''),
-                                                                fit: BoxFit.cover)),
-                                                      ),
-                                                    SizedBox(
-                                                        width: i ==
-                                                                _postDetailX
-                                                                        .postDetail
-                                                                        .value
-                                                                        .postImages!
-                                                                        .length -
-                                                                    1
-                                                            ? contentsPadding.w
-                                                            : 6.w)
-                                                  ],
-                                                )
-                                            ],
-                                          ),
-                                        )),
+                                    Container(
+                                      height: imageBoxSize,
+                                      padding: EdgeInsets.only(
+                                          left: contentsPadding.w),
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: ListImg.length,
+                                          itemBuilder: (BuildContext context,
+                                              int imgIndex) {
+                                            return Row(children: [
+                                              Container(
+                                                width: imageBoxSize,
+                                                height: imageBoxSize,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    image: DecorationImage(
+                                                        image: NetworkImage(
+                                                            ListImg[imgIndex]),
+                                                        fit: BoxFit.cover)),
+                                              ),
+                                              SizedBox(width: 6.w)
+                                            ]);
+                                          }),
+                                    ),
                                     SizedBox(
                                       height: 10.w,
                                     ),
@@ -279,8 +243,12 @@ class _DetailContext extends State<DetailContext> {
                                             ],
                                           ),
                                           Obx(() => CommentSide(
-                                                imgCnt: _postDetailX.postDetail
-                                                    .value.postImages!.length,
+                                                imgCnt: _postDetailX
+                                                        .postDetail
+                                                        .value
+                                                        .postImages
+                                                        ?.length ??
+                                                    0,
                                                 likeCnt: _postDetailX.postDetail
                                                         .value.postLikeCnt ??
                                                     0,
@@ -293,8 +261,15 @@ class _DetailContext extends State<DetailContext> {
                                         ],
                                       ),
                                     ),
-                                    SizedBox(
+                                    Container(
                                       height: 15,
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                              bottom: BorderSide(
+                                        // POINT
+                                        color: Palette.paper,
+                                        width: 1.0,
+                                      ))),
                                     ),
                                   ],
                                 ),
@@ -331,74 +306,75 @@ class _DetailContext extends State<DetailContext> {
                                       isLikedByMe: _postDetailX.boardComment[commentInt].isLikedByMe ?? false,
                                       shape: CommentShape.top,
                                       postingAuthorId: _postDetailX.postDetail.value.authorId ?? 0)),
-                                  Obx(() => Column(
-                                        children: [
-                                          for (var i = 0;
-                                              i <
-                                                  _postDetailX
-                                                      .boardComment[commentInt]
-                                                      .replies!
-                                                      .length;
-                                              i++)
-                                            Obx(() => CommentBox(
+                                  SizedBox(
+                                      child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: _postDetailX
+                                                  .boardComment[commentInt]
+                                                  .replies
+                                                  ?.length ??
+                                              0,
+                                          itemBuilder: (BuildContext context,
+                                              int repliesInt) {
+                                            return Obx(() => CommentBox(
                                                   authorId: _postDetailX
                                                           .boardComment[
                                                               commentInt]
-                                                          .replies![i]
+                                                          .replies?[repliesInt]
                                                           .authorId ??
                                                       0,
                                                   authorMajor: _postDetailX
                                                           .boardComment[
                                                               commentInt]
-                                                          .replies![i]
+                                                          .replies?[repliesInt]
                                                           .authorMajor ??
                                                       '',
                                                   authorNickname: _postDetailX
                                                           .boardComment[
                                                               commentInt]
-                                                          .replies![i]
+                                                          .replies?[repliesInt]
                                                           .authorNickname ??
                                                       '',
                                                   authorProfileImg: _postDetailX
                                                           .boardComment[
                                                               commentInt]
-                                                          .replies![i]
+                                                          .replies?[repliesInt]
                                                           .authorProfileImg ??
                                                       '',
                                                   isBlind: _postDetailX
                                                           .boardComment[
                                                               commentInt]
-                                                          .replies![i]
+                                                          .replies?[repliesInt]
                                                           .isBlind ??
                                                       false,
                                                   commentId: _postDetailX
                                                           .boardComment[
                                                               commentInt]
-                                                          .replies![i]
+                                                          .replies?[repliesInt]
                                                           .replyId ??
                                                       0,
                                                   commentCreatedAt: _postDetailX
                                                           .boardComment[
                                                               commentInt]
-                                                          .replies![i]
+                                                          .replies?[repliesInt]
                                                           .replyCreatedAt ??
                                                       '',
                                                   commentLikeCnt: _postDetailX
                                                           .boardComment[
                                                               commentInt]
-                                                          .replies![i]
+                                                          .replies?[repliesInt]
                                                           .replyLikeCnt ??
                                                       0,
                                                   commentDesc: _postDetailX
                                                           .boardComment[
                                                               commentInt]
-                                                          .replies![i]
+                                                          .replies?[repliesInt]
                                                           .replyDesc ??
                                                       '',
                                                   isLikedByMe: _postDetailX
                                                           .boardComment[
                                                               commentInt]
-                                                          .replies![i]
+                                                          .replies?[repliesInt]
                                                           .isLikedByMe ??
                                                       false,
                                                   shape: CommentShape.bottom,
@@ -407,9 +383,8 @@ class _DetailContext extends State<DetailContext> {
                                                           .value
                                                           .authorId ??
                                                       0,
-                                                ))
-                                        ],
-                                      ))
+                                                ));
+                                          }))
                                 ],
                               );
                             }
@@ -442,7 +417,7 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
   /// 댓글 값 컨트롤러 */
   final _comment = TextEditingController();
   final postId;
-
+  bool _isChecked = false;
   _PostDetailTextarea({Key? key, @required this.postId});
 
   @override
@@ -452,9 +427,7 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
     /// 게시판 상세페이지 댓글 업데이트 이벤트
     void onCommentUpdate() {
       if (_comment.text != "") {
-        print(1);
         if (_postDetailX.selectCommentEvent.value.checkEvent!) {
-          print(2);
           _postDetailX.postBoardCommentReply(
               commentDesc: _comment.text,
               commentId: _postDetailX.selectCommentEvent.value.commentId!);
@@ -470,47 +443,68 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
       }
     }
 
-    bool _isChecked = false;
+    int boxHeight = 110;
+    int boxPadding = 16;
+    int inputHeight = 36;
+    int inputWidthOn = 190;
+    int inputWidthOff = 250;
+
     return Container(
       width: 360.w,
-      height: 75.h,
+      height: boxHeight.h,
       color: Colors.white,
-      padding: EdgeInsets.all(16),
-      child: Row(
+      padding: EdgeInsets.symmetric(
+          vertical: boxPadding.h, horizontal: boxPadding.w),
+      child: Column(
         children: [
-          Container(
-              width: 284.w,
-              height: 36.h,
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(width: 1, color: Color(0xFFE8E8E8)),
-                color: Color(0xFFF8F8F8),
-              ),
-              child: Obx(() => Row(
+          CustomCheck(
+            size: 12,
+            label: "익명",
+            selectedColor: Palette.main,
+            borderColor: Palette.main,
+            iconSize: 10,
+            checkIcon: Icon(
+              Icons.check,
+            ),
+            isChecked: _isChecked,
+            onChange: (value) {
+              setState(() {
+                _isChecked = value;
+              });
+            },
+          ),
+          SizedBox(
+            height: 8.h,
+          ),
+          Row(
+            children: [
+              Container(
+                  width: 284.w,
+                  height: inputHeight.h,
+                  padding: EdgeInsets.symmetric(horizontal: boxPadding.w),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(width: 1, color: Color(0xFFE8E8E8)),
+                    color: Color(0xFFF8F8F8),
+                  ),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      if (_postDetailX.selectCommentEvent.value.checkEvent!)
-                        Obx(
-                          () => SizedBox(
-                              width: 54,
-                              child: RichText(
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                strutStyle: StrutStyle(fontSize: 16.0),
-                                text: TextSpan(
-                                  text:
-                                      "@ ${_postDetailX.selectCommentEvent.value.name}",
-                                  style: CommonText.BodyMediumGray,
-                                ),
-                              )),
-                        ),
-                      if (_postDetailX.selectCommentEvent.value.checkEvent!)
-                        SizedBox(width: 10.w),
+                      if (_isChecked)
+                        SizedBox(
+                            width: 44.w,
+                            child: RichText(
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              strutStyle: StrutStyle(fontSize: 16.0),
+                              text: TextSpan(
+                                text: "@ 익명",
+                                style: CommonText.BodyMediumGray,
+                              ),
+                            )),
+                      if (_isChecked) SizedBox(width: 5.w),
                       SizedBox(
-                        width: _postDetailX.selectCommentEvent.value.checkEvent!
-                            ? 200.w
-                            : 260.w,
+                        width: _isChecked ? inputWidthOn.w : inputWidthOff.w,
                         height: 36.h,
                         child: CustomTextFormField(
                           onChanged: onCommentUpdate,
@@ -519,28 +513,30 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
                         ),
                       )
                     ],
-                  ))),
-          SizedBox(
-            width: 8.w,
-          ),
-          GestureDetector(
-            onTap: onCommentUpdate,
-            child: Container(
-                width: 36.w,
-                height: 36.h,
-                padding: EdgeInsets.all(0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(width: 1, color: Color(0xFFE8E8E8)),
-                  color: Palette.main,
-                ),
-                child: SvgPicture.asset(
-                  'assets/icons/btn_comment.svg',
-                  fit: BoxFit.scaleDown,
-                  width: 36.w,
-                  height: 36.w,
-                  color: Colors.white,
-                )),
+                  )),
+              SizedBox(
+                width: 8.w,
+              ),
+              GestureDetector(
+                onTap: onCommentUpdate,
+                child: Container(
+                    width: 36.w,
+                    height: 36.h,
+                    padding: EdgeInsets.all(0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(width: 1, color: Color(0xFFE8E8E8)),
+                      color: Palette.main,
+                    ),
+                    child: SvgPicture.asset(
+                      'assets/icons/btn_comment.svg',
+                      fit: BoxFit.scaleDown,
+                      width: 36.w,
+                      height: 36.w,
+                      color: Colors.white,
+                    )),
+              )
+            ],
           )
         ],
       ),
