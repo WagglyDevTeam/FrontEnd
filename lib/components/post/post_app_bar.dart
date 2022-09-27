@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:modal_side_sheet/modal_side_sheet.dart';
+import 'package:side_sheet/side_sheet.dart';
 import 'package:waggly/components/post/post_modal.dart';
 
 import '../../utils/colors.dart';
@@ -20,8 +22,7 @@ class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(68);
 
-  const PostAppbar({Key? key, required this.postName, required this.page})
-      : super(key: key);
+  const PostAppbar({Key? key, required this.postName, required this.page}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +43,13 @@ class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox.shrink(),
-            Text(postName, style: CommonText.TitleM)
-          ],
+          children: [SizedBox.shrink(), Text(postName, style: CommonText.TitleM)],
         );
       case Status.login:
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox.shrink(),
-            Text(postName, style: CommonText.TitleM)
-          ],
+          children: [SizedBox.shrink(), Text(postName, style: CommonText.TitleM)],
         );
       default:
         return Row(
@@ -112,12 +107,11 @@ class ActionBtns extends StatelessWidget {
       child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(40.0) // POINT
-            ),
+                ),
             border: Border.all(width: 1.0, color: Palette.lightGray),
           ),
           child: Container(
-            padding:
-            const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
+            padding: const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -181,19 +175,16 @@ class LoginBtn extends StatelessWidget {
       onTap: () => Navigator.of(context).push(sign.slideRitghtToLeft()),
       child: Container(
         width: 80,
-        padding:
-        const EdgeInsets.only(top: 14, bottom: 10, left: 12, right: 12),
+        padding: const EdgeInsets.only(top: 14, bottom: 10, left: 12, right: 12),
         child: DecoratedBox(
             decoration: BoxDecoration(
-              borderRadius:
-              const BorderRadius.all(Radius.circular(40.0) // POINT
-              ),
+              borderRadius: const BorderRadius.all(Radius.circular(40.0) // POINT
+                  ),
               color: Palette.main,
             ),
             child: Container(
               padding: const EdgeInsets.all(5),
-              child: Text('로그인',
-                  style: CommonText.LabelWhite, textAlign: TextAlign.center),
+              child: Text('로그인', style: CommonText.LabelWhite, textAlign: TextAlign.center),
             )),
       ),
     );
@@ -210,14 +201,14 @@ class DetailBtn extends StatelessWidget {
     void postDelete() {
       Navigator.pop(context);
     }
+
     void postFix() {
       Navigator.pop(context);
     }
-    PostModal modalOn = PostModal(context: context ,contents: Buttons() , height: modalHeight , title:title);
+
+    PostModal modalOn = PostModal(context: context, contents: Buttons(), height: modalHeight, title: title);
     return GestureDetector(
-      onTap: () => {
-        modalOn.ModalOn()
-      },
+      onTap: () => {modalOn.ModalOn()},
       child: Container(
           padding: const EdgeInsets.all(10),
           child: SvgPicture.asset(
@@ -227,11 +218,16 @@ class DetailBtn extends StatelessWidget {
           )),
     );
   }
-  Buttons(){
+
+  Buttons() {
     return Column(
       children: [
         ModalButton(title: '삭제하기', event: () {}),
-        ModalButton(title: '수정하기', event: () {Get.toNamed("/editPage");}),
+        ModalButton(
+            title: '수정하기',
+            event: () {
+              Get.toNamed("/editPage");
+            }),
       ],
     );
   }
@@ -241,8 +237,7 @@ class ActionButton extends StatelessWidget {
   final Icon isIcon;
   final void Function()? event;
 
-  ActionButton({Key? key, required this.isIcon, required this.event})
-      : super(key: key);
+  ActionButton({Key? key, required this.isIcon, required this.event}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -268,12 +263,11 @@ class AlarmBtns extends StatelessWidget {
       child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(40.0) // POINT
-            ),
+                ),
             border: Border.all(width: 1.0, color: Palette.lightGray),
           ),
           child: Container(
-            padding:
-            const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
+            padding: const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -367,7 +361,6 @@ class AlarmOnly extends StatelessWidget {
   }
 }
 
-
 class ChatRoomBtns extends StatelessWidget {
   const ChatRoomBtns({Key? key}) : super(key: key);
 
@@ -380,12 +373,11 @@ class ChatRoomBtns extends StatelessWidget {
       child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(40.0) // POINT
-            ),
+                ),
             border: Border.all(width: 1.0, color: Palette.lightGray),
           ),
           child: Container(
-            padding:
-            const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
+            padding: const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -399,7 +391,27 @@ class ChatRoomBtns extends StatelessWidget {
                     )),
                 Line(),
                 ActionButton(
-                    event: () => Navigator.of(context).pop(),
+                    // event: () => Navigator.of(context).pop(),
+                    event: () => showModalSideSheet(
+                          context: context,
+                          body: Column(
+                            children: [
+                              Container(
+                                height: 100,
+                              ),
+                              Container(
+                                height: 100,
+                                width: 100,
+                                color: Colors.red,
+                              ),
+                              Container(
+                                height: 300,
+                                width: 100,
+                                color: Colors.red,
+                              )
+                            ],
+                          ),
+                        ),
                     isIcon: Icon(
                       Icons.more_horiz,
                       color: Palette.gray,
@@ -429,4 +441,3 @@ class ChatRoomBtns extends StatelessWidget {
     );
   }
 }
-
