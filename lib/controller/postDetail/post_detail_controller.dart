@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 import '../../model/hive/user.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
@@ -29,7 +31,6 @@ class PostDetailController extends GetxController {
 
   ///  게시판 상세 페이지 데이터 불러오기
   Future<void> getDetailBoard(String postId) async {
-    print("sss $postId");
     WagglyResponseDto result = await _postRepository.getDetailBoard(postId);
     dynamic postJson = result.datas["post"];
     dynamic commentsJson = result.datas["comments"];
@@ -63,19 +64,33 @@ class PostDetailController extends GetxController {
 
   /// 게시판 상세 페이지 댓글 작성
   Future<void> postBoardComment(
-      {required String commentDesc, required int postId}) async {
-    /// 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
+      {required String commentDesc, String? postId}) async {
+    print(commentDesc);
+    print(postId);
+    CommentRequestDto data =
+        CommentRequestDto(commentDesc: commentDesc, anonymous: true);
+    WagglyResponseDto result = await _postRepository.postComment(postId, data);
+    final box = Hive.box<User>('user');
+    var authorId = box.get('user')?.id;
+    var authorNickname = box.get('user')?.nickName;
+    var authorMajor = box.get('user')?.major;
+    var authorProfileImg = box.get('user')?.profileImg;
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat.Md().add_jm();
+    final String formatted = formatter.format(now);
+    var rng = Random();
+
+    // / 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
     final commentMap = CommentData.fromJson({
-      "commentId": 22,
-      "commentCreatedAt": "02.18 19:50",
-      "commentLikeCnt": 4,
+      "commentId": rng,
+      "commentCreatedAt": formatted,
+      "commentLikeCnt": 0,
       "commentDesc": commentDesc,
       "isLikedByMe": false,
-      "authorId": 0,
-      "authorMajor": "시각디자인학과",
-      "authorNickname": "익명",
-      "authorProfileImg":
-          "https://cdn.pixabay.com/photo/2017/09/25/13/12/cocker-spaniel-2785074_960_720.jpg",
+      "authorId": authorId,
+      "authorMajor": authorMajor,
+      "authorNickname": authorNickname,
+      "authorProfileImg": authorProfileImg,
       "isBlind": false,
       "replies": [],
     });

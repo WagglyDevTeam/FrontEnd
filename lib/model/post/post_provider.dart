@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
+import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 import '../hive/user.dart';
 import 'dtos/post_college_dto.dart';
 
@@ -57,6 +58,17 @@ class PostProvider extends GetConnect {
     var token = box.get('user')?.jwtToken;
     return get(
       "${dotenv.get('BASE_URL')}/board/$boardId",
+      headers: {"Authorization": token!},
+    );
+  }
+
+  /// POST comment
+  Future<Response> postComment(String? postId, CommentRequestDto data) {
+    final box = Hive.box<User>('user');
+    var token = box.get('user')?.jwtToken;
+    return post(
+      "${dotenv.get('BASE_URL')}/comment/$postId",
+      data.toJson(),
       headers: {"Authorization": token!},
     );
   }

@@ -243,8 +243,20 @@ class CommentBox extends StatelessWidget {
 
   /// 대댓글 이벤트 on
   void replyEventOn() {
-    _postDetailX.selectCommentReplyOn(
-        commentId: commentId, name: authorNickname);
+    if (_postDetailX.selectCommentEvent.value.commentId == commentId) {
+      _postDetailX.selectCommentReplyOn(commentId: 0, name: '');
+    } else {
+      _postDetailX.selectCommentReplyOn(
+          commentId: commentId, name: authorNickname);
+    }
+  }
+
+  Color changeColor() {
+    return _postDetailX.selectCommentEvent.value.commentId == commentId
+        ? Palette.candy
+        : isShape()
+            ? Palette.paperLow
+            : Colors.white;
   }
 
   /// 대댓글 모달 버튼 리스트
@@ -267,12 +279,12 @@ class CommentBox extends StatelessWidget {
         height: modalHeight,
         title: title);
 
-    return Container(
+    return Obx(() => Container(
         padding:
             EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
         width: 380.w,
         decoration: BoxDecoration(
-            color: isShape() ? Palette.paperLow : Colors.white,
+            color: changeColor(),
             border: Border(
               top: BorderSide(
                   color: isShape() ? Colors.white : Palette.paper,
@@ -422,6 +434,6 @@ class CommentBox extends StatelessWidget {
                   ],
                 ))
           ],
-        ));
+        )));
   }
 }

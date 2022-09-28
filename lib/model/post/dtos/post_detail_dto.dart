@@ -193,3 +193,18 @@ class SelectComment {
         "checkEvent": checkEvent,
       };
 }
+
+class CommentRequestDto {
+  String? commentDesc;
+  bool? anonymous;
+  CommentRequestDto({this.commentDesc, this.anonymous});
+  factory CommentRequestDto.fromJson(Map<String, dynamic> json) =>
+      CommentRequestDto(
+        commentDesc: json['commentDesc'] as String,
+        anonymous: json['anonymous'] as bool,
+      );
+  Map<String, dynamic> toJson() => {
+        "commentDesc": commentDesc,
+        "anonymous": anonymous,
+      };
+}
