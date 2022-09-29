@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
+import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 import '../hive/user.dart';
 import 'dtos/post_college_dto.dart';
 
@@ -60,6 +61,46 @@ class PostProvider extends GetConnect {
       headers: {"Authorization": token!},
     );
   }
+  /// POST comment
+  Future<Response> postComment(String? postId, CommentRequestDto data) {
+    final box = Hive.box<User>('user');
+    var token = box.get('user')?.jwtToken;
+    return post(
+      "${dotenv.get('BASE_URL')}/comment/$postId",
+      data.toJson(),
+      headers: {"Authorization": token!},
+    );
+  }
+
+  /// POST comment
+  Future<Response> postReComment(int commentId, ReCommentRequestDto data) {
+    final box = Hive.box<User>('user');
+    var token = box.get('user')?.jwtToken;
+    return post(
+      "${dotenv.get('BASE_URL')}/reply/$commentId",
+      data.toJson(),
+      headers: {"Authorization": token!},
+    );
+  }
+
+  Future<Response> likeDetailPost(int postId, likeDetailRequestDto data) {
+    final box = Hive.box<User>('user');
+    var token = box.get('user')?.jwtToken;
+    return put(
+      "${dotenv.get('BASE_URL')}/board/$postId/like",
+      data.toJson(),
+      headers: {"Authorization": token!},
+    );
+  }
+
+  Future<Response> PostDelete(int postId) {
+    final box = Hive.box<User>('user');
+    var token = box.get('user')?.jwtToken;
+    return delete(
+      "${dotenv.get('BASE_URL')}/board/$postId",
+      headers: {"Authorization": token!},
+    );
+  }
 
   Future<Response> editBoard(FormData data) {
     final box = Hive.box<User>('user');
@@ -67,7 +108,7 @@ class PostProvider extends GetConnect {
     print("여기임");
     print(authHeaders);
     return put(
-      "${dotenv.get('BASE_URL')}/board/4",
+      "${dotenv.get('BASE_URL')}/board/$value",
       data,
       headers: {"Authorization": token!},
     );

@@ -10,6 +10,7 @@ import 'package:waggly/components/button/bottom_long_button.dart';
 import 'package:waggly/components/button/rules_button.dart';
 import 'package:waggly/components/inputField/input_hashtag_field.dart';
 import 'package:waggly/components/inputField/input_title_field.dart';
+import 'package:waggly/controller/postDetail/post_detail_controller.dart';
 import 'package:waggly/model/post/dtos/post_edit_request_dto.dart';
 import '../components/post/custom_text_form_field.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
@@ -35,7 +36,7 @@ const double _bottomButtonPaddingBottom = 15.0;
 class WritePage extends StatelessWidget {
   final ImageController _imageController = Get.put(ImageController());
   final PostController _postController = Get.put(PostController());
-  final PostEditController postEditController = Get.put(PostEditController());
+  final PostDetailController postDetailController = Get.put(PostEditController());
   final _hashtag = SocialTextEditingController();
   TextEditingController? _content;
   TextEditingController? _title;
@@ -54,14 +55,16 @@ class WritePage extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
+    print("으아아아아아앙");
+    print(postDetailController.postId.value);
+    print(jsonEncode(postDetailController.postDetail.value));
     var _page = Status.edit;
     var _os = Platform.operatingSystem;
     const _postName = "게시글 작성";
     if(type == "edit"){
-      postEditController.updatePostEditData();
-      _imageController.getImagesUrl(postEditController.postEditData.value.postImages);
-      _title = TextEditingController(text: postEditController.postEditData.value.postTitle);
-      _content = TextEditingController(text: postEditController.postEditData.value.postDesc);
+      _imageController.getImagesUrl(postDetailController.postDetail.value.postImages);
+      _title = TextEditingController(text: postDetailController.postDetail.value.postTitle);
+      _content = TextEditingController(text: postDetailController.postDetail.value.postDesc);
     }else{
       _imageController.getImagesUrl([]);
       _title = TextEditingController();
@@ -233,7 +236,7 @@ class WritePage extends StatelessWidget {
 
   Future<void> editPost(title, description, college) async {
     List<MultipartFile> file = imageToMultipartFile();
-    await _postController.editBoard(PostEditRequestDto(title, description, college, file, _imageController.parseToStringList()));
+    await postDetailController.editBoard(PostEditRequestDto(title, description, college, file, _imageController.parseToStringList()));
   }
 
   Future<void> writePost() async {
@@ -356,7 +359,6 @@ class PhotoWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      if (index == imagesLength-1) SizedBox(width: 20.0.w),
                     ],
                   );
                 }

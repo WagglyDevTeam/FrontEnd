@@ -59,6 +59,7 @@ class _DetailContext extends State<DetailContext> {
   @override
   initState() {
     if (postId != null) {
+      _postDetailX.updatePostId(postId);
       _postDetailX.getDetailBoard(postId);
     }
 
@@ -86,13 +87,6 @@ class _DetailContext extends State<DetailContext> {
       );
     }
 
-    final ListImg = [
-      "https://cdn.pixabay.com/photo/2022/03/01/09/35/iceland-poppy-7040946_960_720.jpg",
-      "https://cdn.pixabay.com/photo/2022/07/16/07/30/persian-man-7324614_960_720.jpg",
-      "https://cdn.pixabay.com/photo/2022/09/05/18/53/caterpillar-7434958_960_720.jpg",
-      "https://cdn.pixabay.com/photo/2019/03/02/16/26/man-4030112_960_720.jpg",
-      "https://cdn.pixabay.com/photo/2022/09/05/09/40/citrine-7433765_960_720.jpg"
-    ];
     return SizedBox(
         width: contentsWidth.w,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -103,7 +97,7 @@ class _DetailContext extends State<DetailContext> {
                     width: contentsWidth.w,
                     height: contentsHeight.h,
                     color: Colors.white10,
-                    padding: EdgeInsets.only(bottom: 45),
+                    padding: EdgeInsets.only(bottom: 95.h),
                     child: Obx(() => ListView.builder(
                           scrollDirection: Axis.vertical,
                           itemCount: _postDetailX.boardComment.length + 1,
@@ -155,6 +149,8 @@ class _DetailContext extends State<DetailContext> {
 
                                     /// 게시판 상세 페이지 내용
                                     Container(
+                                      color: Colors.white,
+                                      width: double.infinity,
                                       padding: EdgeInsets.only(
                                           top: 7.h,
                                           left: 24.w,
@@ -184,32 +180,46 @@ class _DetailContext extends State<DetailContext> {
                                     ),
 
                                     /// 게시판 상세 페이지 이미지리스트
-                                    Container(
-                                      height: imageBoxSize,
-                                      padding: EdgeInsets.only(
-                                          left: contentsPadding.w),
-                                      child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: ListImg.length,
-                                          itemBuilder: (BuildContext context,
-                                              int imgIndex) {
-                                            return Row(children: [
-                                              Container(
-                                                width: imageBoxSize,
-                                                height: imageBoxSize,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            ListImg[imgIndex]),
-                                                        fit: BoxFit.cover)),
-                                              ),
-                                              SizedBox(width: 6.w)
-                                            ]);
-                                          }),
-                                    ),
+                                    Obx(() => Container(
+                                          height: _postDetailX.postDetail.value
+                                                      .postImages?.isEmpty ??
+                                                  false
+                                              ? 0
+                                              : imageBoxSize,
+                                          padding: EdgeInsets.only(
+                                              left: contentsPadding.w),
+                                          child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: _postDetailX
+                                                      .postDetail
+                                                      .value
+                                                      .postImages
+                                                      ?.length ??
+                                                  0,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int imgIndex) {
+                                                return Row(children: [
+                                                  Container(
+                                                    width: imageBoxSize,
+                                                    height: imageBoxSize,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        image: DecorationImage(
+                                                            image: NetworkImage(
+                                                                _postDetailX
+                                                                        .postDetail
+                                                                        .value
+                                                                        .postImages?[imgIndex] ??
+                                                                    ''),
+                                                            fit: BoxFit.cover)),
+                                                  ),
+                                                  SizedBox(width: 6.w)
+                                                ]);
+                                              }),
+                                        )),
                                     SizedBox(
                                       height: 10.w,
                                     ),
@@ -279,33 +289,51 @@ class _DetailContext extends State<DetailContext> {
                               return Column(
                                 children: [
                                   Obx(() => CommentBox(
-                                      authorId: _postDetailX
-                                              .boardComment[commentInt]
-                                              .authorId ??
-                                          0,
-                                      authorMajor: _postDetailX
-                                              .boardComment[commentInt]
-                                              .authorMajor ??
-                                          '',
-                                      authorNickname: _postDetailX
-                                              .boardComment[commentInt]
-                                              .authorNickname ??
-                                          '',
-                                      authorProfileImg: _postDetailX
-                                              .boardComment[commentInt]
-                                              .authorProfileImg ??
-                                          '',
-                                      isBlind: _postDetailX
-                                              .boardComment[commentInt]
-                                              .isBlind ??
-                                          false,
-                                      commentId: _postDetailX.boardComment[commentInt].commentId ?? 0,
-                                      commentCreatedAt: _postDetailX.boardComment[commentInt].commentCreatedAt ?? '',
-                                      commentLikeCnt: _postDetailX.boardComment[commentInt].commentLikeCnt ?? 0,
-                                      commentDesc: _postDetailX.boardComment[commentInt].commentDesc ?? '',
-                                      isLikedByMe: _postDetailX.boardComment[commentInt].isLikedByMe ?? false,
-                                      shape: CommentShape.top,
-                                      postingAuthorId: _postDetailX.postDetail.value.authorId ?? 0)),
+                                        authorId: _postDetailX
+                                                .boardComment[commentInt]
+                                                .authorId ??
+                                            0,
+                                        authorMajor: _postDetailX
+                                                .boardComment[commentInt]
+                                                .authorMajor ??
+                                            '',
+                                        authorNickname: _postDetailX
+                                                .boardComment[commentInt]
+                                                .authorNickname ??
+                                            '',
+                                        authorProfileImg: _postDetailX
+                                                .boardComment[commentInt]
+                                                .authorProfileImg ??
+                                            '',
+                                        isBlind: _postDetailX
+                                                .boardComment[commentInt]
+                                                .isBlind ??
+                                            false,
+                                        commentId: _postDetailX
+                                                .boardComment[commentInt]
+                                                .commentId ??
+                                            0,
+                                        commentCreatedAt: _postDetailX
+                                                .boardComment[commentInt]
+                                                .commentCreatedAt ??
+                                            '',
+                                        commentLikeCnt: _postDetailX
+                                                .boardComment[commentInt]
+                                                .commentLikeCnt ??
+                                            0,
+                                        commentDesc: _postDetailX
+                                                .boardComment[commentInt]
+                                                .commentDesc ??
+                                            '',
+                                        isLikedByMe: _postDetailX
+                                                .boardComment[commentInt]
+                                                .isLikedByMe ??
+                                            false,
+                                        shape: CommentShape.top,
+                                        PostAuthorId: _postDetailX
+                                                .postDetail.value.authorId ??
+                                            0,
+                                      )),
                                   SizedBox(
                                       child: ListView.builder(
                                           shrinkWrap: true,
@@ -378,7 +406,7 @@ class _DetailContext extends State<DetailContext> {
                                                           .isLikedByMe ??
                                                       false,
                                                   shape: CommentShape.bottom,
-                                                  postingAuthorId: _postDetailX
+                                                  PostAuthorId: _postDetailX
                                                           .postDetail
                                                           .value
                                                           .authorId ??
@@ -393,12 +421,7 @@ class _DetailContext extends State<DetailContext> {
               ),
 
               /// 게시판 상세 페이지 Textarea UI
-              Positioned(
-                  bottom: 0,
-                  left: 0,
-                  child: PostDetailTextarea(
-                    postId: _postDetailX.postDetail.value.postId ?? 0,
-                  )),
+              Positioned(bottom: 0, left: 0, child: PostDetailTextarea()),
             ],
           ),
         ]));
@@ -406,19 +429,18 @@ class _DetailContext extends State<DetailContext> {
 }
 
 class PostDetailTextarea extends StatefulWidget {
-  final postId;
-  PostDetailTextarea({Key? key, @required this.postId}) : super(key: key);
+  PostDetailTextarea({Key? key}) : super(key: key);
   @override
-  _PostDetailTextarea createState() => _PostDetailTextarea(postId: postId);
+  _PostDetailTextarea createState() => _PostDetailTextarea();
 }
 
 /// 댓글 Textarea
 class _PostDetailTextarea extends State<PostDetailTextarea> {
   /// 댓글 값 컨트롤러 */
   final _comment = TextEditingController();
-  final postId;
+  final postId = Get.parameters['postId'];
   bool _isChecked = false;
-  _PostDetailTextarea({Key? key, @required this.postId});
+  _PostDetailTextarea({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -429,21 +451,24 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
       if (_comment.text != "") {
         if (_postDetailX.selectCommentEvent.value.checkEvent!) {
           _postDetailX.postBoardCommentReply(
-              commentDesc: _comment.text,
-              commentId: _postDetailX.selectCommentEvent.value.commentId!);
+            commentDesc: _comment.text,
+            commentId: _postDetailX.selectCommentEvent.value.commentId!,
+            anonymous: _isChecked,
+          );
           _postDetailX.selectCommentReplyOff();
           _comment.clear();
         } else {
-          print(_comment.text);
-          print(postId);
           _postDetailX.postBoardComment(
-              commentDesc: _comment.text, postId: postId);
+            commentDesc: _comment.text,
+            postId: postId,
+            anonymous: _isChecked,
+          );
           _comment.clear();
         }
       }
     }
 
-    int boxHeight = 110;
+    int boxHeight = 120;
     int boxPadding = 16;
     int inputHeight = 36;
     int inputWidthOn = 190;

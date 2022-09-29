@@ -1,14 +1,19 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 import '../../model/hive/user.dart';
+import '../../model/post/dtos/post_edit_request_dto.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
 import '../../model/post/post_repository.dart';
 
 class PostDetailController extends GetxController {
   final PostRepository _postRepository = PostRepository();
   final postDetail = PostDetailData().obs;
+  final postId = "".obs;
   final boardComment = [CommentData()].obs;
   final selectCommentEvent = SelectComment(
     commentId: 0,
@@ -29,7 +34,6 @@ class PostDetailController extends GetxController {
 
   ///  게시판 상세 페이지 데이터 불러오기
   Future<void> getDetailBoard(String postId) async {
-    print("sss $postId");
     WagglyResponseDto result = await _postRepository.getDetailBoard(postId);
     dynamic postJson = result.datas["post"];
     dynamic commentsJson = result.datas["comments"];
@@ -38,6 +42,7 @@ class PostDetailController extends GetxController {
         ListCommentData.fromJson({"comments": commentsJson});
     postDetail.value = postDetailMap;
     boardComment.value = boardCommentMap.comments!;
+    print(jsonEncode(postDetail.value));
   }
 
   /// 게시판 상세 페이지 좋아요 업데이트
@@ -46,6 +51,11 @@ class PostDetailController extends GetxController {
       required int postLikeCnt,
       required int postId}) async {
     print("$isLikedByMe, $postLikeCnt , $postId");
+    likeDetailRequestDto data =
+        likeDetailRequestDto(postLikeCnt: postLikeCnt, likedByMe: isLikedByMe);
+
+    WagglyResponseDto result =
+        await _postRepository.likeDetailPost(postId, data);
     postDetail.value.isLikedByMe = isLikedByMe;
     postDetail.value.postLikeCnt = postLikeCnt;
     update();
@@ -63,19 +73,40 @@ class PostDetailController extends GetxController {
 
   /// 게시판 상세 페이지 댓글 작성
   Future<void> postBoardComment(
-      {required String commentDesc, required int postId}) async {
-    /// 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
+      {required String commentDesc,
+      String? postId,
+      required bool anonymous}) async {
+    print("-----------");
+    print(anonymous);
+    print(postId);
+    print("-----------");
+
+    CommentRequestDto data =
+        CommentRequestDto(commentDesc: commentDesc, anonymous: anonymous);
+    WagglyResponseDto result = await _postRepository.postComment(postId, data);
+    final box = Hive.box<User>('user');
+    var authorId = box.get('user')?.id;
+    var authorNickname = box.get('user')?.nickName;
+    var authorMajor = box.get('user')?.major;
+    var authorProfileImg = box.get('user')?.profileImg;
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat.Md().add_jm();
+    final String formatted = formatter.format(now);
+    var rng = Random();
+
+    // / 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
     final commentMap = CommentData.fromJson({
-      "commentId": 22,
-      "commentCreatedAt": "02.18 19:50",
-      "commentLikeCnt": 4,
+      "commentId": 123123123,
+      "commentCreatedAt": formatted,
+      "commentLikeCnt": 0,
       "commentDesc": commentDesc,
       "isLikedByMe": false,
-      "authorId": 0,
-      "authorMajor": "시각디자인학과",
-      "authorNickname": "익명",
-      "authorProfileImg":
-          "https://cdn.pixabay.com/photo/2017/09/25/13/12/cocker-spaniel-2785074_960_720.jpg",
+      "authorId": authorId,
+      "authorMajor": authorMajor,
+      "authorNickname": anonymous ? "익명" : authorNickname,
+      "authorProfileImg": anonymous
+          ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png"
+          : authorProfileImg,
       "isBlind": false,
       "replies": [],
     });
@@ -86,19 +117,38 @@ class PostDetailController extends GetxController {
 
   /// 게시판 상세 페이지 대댓글 작성
   Future<void> postBoardCommentReply(
-      {required String commentDesc, required int commentId}) async {
+      {required String commentDesc,
+      required int commentId,
+      required bool anonymous}) async {
+    ReCommentRequestDto data =
+        ReCommentRequestDto(replyDesc: commentDesc, anonymous: anonymous);
+    WagglyResponseDto result =
+        await _postRepository.postReComment(commentId, data);
+
+    final box = Hive.box<User>('user');
+    var authorId = box.get('user')?.id;
+    var authorNickname = box.get('user')?.nickName;
+    var authorMajor = box.get('user')?.major;
+    var authorProfileImg = box.get('user')?.profileImg;
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat.Md().add_jm();
+    final String formatted = formatter.format(now);
+
+    print(authorId);
+
     /// 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
     final commentMap = ReCommentData.fromJson({
       "replyId": 2,
-      "replyCreatedAt": "02.18 19:50",
+      "replyCreatedAt": formatted,
       "replyLikeCnt": 0,
       "replyDesc": commentDesc,
       "isLikedByMe": false,
-      "authorId": 4,
-      "authorMajor": "시각디자인학과",
-      "authorNickname": "익명",
-      "authorProfileImg":
-          "https://cdn.pixabay.com/photo/2017/09/25/13/12/cocker-spaniel-2785074_960_720.jpg",
+      "authorId": authorId,
+      "authorMajor": authorMajor,
+      "authorNickname": anonymous ? "익명" : authorNickname,
+      "authorProfileImg": anonymous
+          ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png"
+          : authorProfileImg,
       "isBlind": false
     });
 
@@ -108,6 +158,13 @@ class PostDetailController extends GetxController {
         update();
         boardComment.refresh();
       }
+    }
+  }
+
+  Future<void> postDelete({required int postId}) async {
+    WagglyResponseDto result = await _postRepository.PostDelete(postId);
+    if (result.code == 200) {
+      Get.toNamed("/post");
     }
   }
 
@@ -164,5 +221,14 @@ class PostDetailController extends GetxController {
 
   PostDetailData getPostDetailData() {
     return postDetail.value;
+  }
+
+  void updatePostId(value){
+    postId.value = value;
+
+  }
+  Future<void> editBoard(PostEditRequestDto postEditRequestDto) async {
+    FormData form = FormData(postEditRequestDto.toJson());
+    await _postRepository.editBoard(form, postId);
   }
 }
