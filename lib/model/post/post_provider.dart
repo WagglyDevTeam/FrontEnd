@@ -61,13 +61,13 @@ class PostProvider extends GetConnect {
     );
   }
 
-  Future<Response> editBoard(FormData data) {
+  Future<Response> editBoard(FormData data, value) {
     final box = Hive.box<User>('user');
     var token = box.get('user')?.jwtToken;
     print("여기임");
     print(authHeaders);
     return put(
-      "${dotenv.get('BASE_URL')}/board/4",
+      "${dotenv.get('BASE_URL')}/board/$value",
       data,
       headers: {"Authorization": token!},
     );
