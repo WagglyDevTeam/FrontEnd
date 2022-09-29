@@ -185,21 +185,23 @@ class CommentBox extends StatelessWidget {
   final bool isLikedByMe;
   final CommentShape shape;
   final int postingAuthorId;
-  CommentBox(
-      {Key? key,
-      required this.authorId,
-      required this.authorMajor,
-      required this.authorNickname,
-      required this.authorProfileImg,
-      required this.isBlind,
-      required this.commentId,
-      required this.commentCreatedAt,
-      required this.commentLikeCnt,
-      required this.commentDesc,
-      required this.isLikedByMe,
-      required this.shape,
-      required this.postingAuthorId})
-      : super(key: key);
+  // final bool isAnonymous;
+  CommentBox({
+    Key? key,
+    required this.authorId,
+    required this.authorMajor,
+    required this.authorNickname,
+    required this.authorProfileImg,
+    required this.isBlind,
+    required this.commentId,
+    required this.commentCreatedAt,
+    required this.commentLikeCnt,
+    required this.commentDesc,
+    required this.isLikedByMe,
+    required this.shape,
+    required this.postingAuthorId,
+    // required this.isAnonymous,
+  }) : super(key: key);
 
   /// 댓글 , 대댓글 구분
   bool isShape() {

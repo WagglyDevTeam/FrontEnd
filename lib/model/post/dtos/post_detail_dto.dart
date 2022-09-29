@@ -208,3 +208,18 @@ class CommentRequestDto {
         "anonymous": anonymous,
       };
 }
+
+class ReCommentRequestDto {
+  String? replyDesc;
+  bool? anonymous;
+  ReCommentRequestDto({this.replyDesc, this.anonymous});
+  factory ReCommentRequestDto.fromJson(Map<String, dynamic> json) =>
+      ReCommentRequestDto(
+        replyDesc: json['replyDesc'] as String,
+        anonymous: json['anonymous'] as bool,
+      );
+  Map<String, dynamic> toJson() => {
+        "replyDesc": replyDesc,
+        "anonymous": anonymous,
+      };
+}

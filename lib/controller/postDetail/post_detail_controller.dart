@@ -64,11 +64,16 @@ class PostDetailController extends GetxController {
 
   /// 게시판 상세 페이지 댓글 작성
   Future<void> postBoardComment(
-      {required String commentDesc, String? postId}) async {
-    print(commentDesc);
+      {required String commentDesc,
+      String? postId,
+      required bool anonymous}) async {
+    print("-----------");
+    print(anonymous);
     print(postId);
+    print("-----------");
+
     CommentRequestDto data =
-        CommentRequestDto(commentDesc: commentDesc, anonymous: true);
+        CommentRequestDto(commentDesc: commentDesc, anonymous: anonymous);
     WagglyResponseDto result = await _postRepository.postComment(postId, data);
     final box = Hive.box<User>('user');
     var authorId = box.get('user')?.id;
@@ -82,15 +87,17 @@ class PostDetailController extends GetxController {
 
     // / 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
     final commentMap = CommentData.fromJson({
-      "commentId": rng,
+      "commentId": 123123123,
       "commentCreatedAt": formatted,
       "commentLikeCnt": 0,
       "commentDesc": commentDesc,
       "isLikedByMe": false,
       "authorId": authorId,
       "authorMajor": authorMajor,
-      "authorNickname": authorNickname,
-      "authorProfileImg": authorProfileImg,
+      "authorNickname": anonymous ? "익명" : authorNickname,
+      "authorProfileImg": anonymous
+          ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png"
+          : authorProfileImg,
       "isBlind": false,
       "replies": [],
     });
@@ -101,19 +108,36 @@ class PostDetailController extends GetxController {
 
   /// 게시판 상세 페이지 대댓글 작성
   Future<void> postBoardCommentReply(
-      {required String commentDesc, required int commentId}) async {
+      {required String commentDesc,
+      required int commentId,
+      required bool anonymous}) async {
+    ReCommentRequestDto data =
+        ReCommentRequestDto(replyDesc: commentDesc, anonymous: anonymous);
+    WagglyResponseDto result =
+        await _postRepository.postReComment(commentId, data);
+
+    final box = Hive.box<User>('user');
+    var authorId = box.get('user')?.id;
+    var authorNickname = box.get('user')?.nickName;
+    var authorMajor = box.get('user')?.major;
+    var authorProfileImg = box.get('user')?.profileImg;
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat.Md().add_jm();
+    final String formatted = formatter.format(now);
+
     /// 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
     final commentMap = ReCommentData.fromJson({
       "replyId": 2,
-      "replyCreatedAt": "02.18 19:50",
+      "replyCreatedAt": formatted,
       "replyLikeCnt": 0,
       "replyDesc": commentDesc,
       "isLikedByMe": false,
-      "authorId": 4,
-      "authorMajor": "시각디자인학과",
-      "authorNickname": "익명",
-      "authorProfileImg":
-          "https://cdn.pixabay.com/photo/2017/09/25/13/12/cocker-spaniel-2785074_960_720.jpg",
+      "authorId": authorId,
+      "authorMajor": authorMajor,
+      "authorNickname": anonymous ? "익명" : authorNickname,
+      "authorProfileImg": anonymous
+          ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png"
+          : authorProfileImg,
       "isBlind": false
     });
 

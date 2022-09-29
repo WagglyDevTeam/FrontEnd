@@ -79,6 +79,16 @@ class PostRepository {
     return wagglyResponseDto;
   }
 
+  Future<WagglyResponseDto> postReComment(
+      int commentId, ReCommentRequestDto data) async {
+    Response response = await _postProvider.postReComment(commentId, data);
+    dynamic body = response.body;
+    print(body);
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+
+    return wagglyResponseDto;
+  }
+
   Future<void> editBoard(FormData data) async {
     Response response = await _postProvider.editBoard(data);
     dynamic body = response.body;

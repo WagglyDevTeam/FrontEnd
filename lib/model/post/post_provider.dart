@@ -73,6 +73,17 @@ class PostProvider extends GetConnect {
     );
   }
 
+  /// POST comment
+  Future<Response> postReComment(int commentId, ReCommentRequestDto data) {
+    final box = Hive.box<User>('user');
+    var token = box.get('user')?.jwtToken;
+    return post(
+      "${dotenv.get('BASE_URL')}/reply/$commentId",
+      data.toJson(),
+      headers: {"Authorization": token!},
+    );
+  }
+
   Future<Response> editBoard(FormData data) {
     final box = Hive.box<User>('user');
     var token = box.get('user')?.jwtToken;

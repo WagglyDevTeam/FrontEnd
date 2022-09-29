@@ -288,33 +288,51 @@ class _DetailContext extends State<DetailContext> {
                               return Column(
                                 children: [
                                   Obx(() => CommentBox(
-                                      authorId: _postDetailX
-                                              .boardComment[commentInt]
-                                              .authorId ??
-                                          0,
-                                      authorMajor: _postDetailX
-                                              .boardComment[commentInt]
-                                              .authorMajor ??
-                                          '',
-                                      authorNickname: _postDetailX
-                                              .boardComment[commentInt]
-                                              .authorNickname ??
-                                          '',
-                                      authorProfileImg: _postDetailX
-                                              .boardComment[commentInt]
-                                              .authorProfileImg ??
-                                          '',
-                                      isBlind: _postDetailX
-                                              .boardComment[commentInt]
-                                              .isBlind ??
-                                          false,
-                                      commentId: _postDetailX.boardComment[commentInt].commentId ?? 0,
-                                      commentCreatedAt: _postDetailX.boardComment[commentInt].commentCreatedAt ?? '',
-                                      commentLikeCnt: _postDetailX.boardComment[commentInt].commentLikeCnt ?? 0,
-                                      commentDesc: _postDetailX.boardComment[commentInt].commentDesc ?? '',
-                                      isLikedByMe: _postDetailX.boardComment[commentInt].isLikedByMe ?? false,
-                                      shape: CommentShape.top,
-                                      postingAuthorId: _postDetailX.postDetail.value.authorId ?? 0)),
+                                        authorId: _postDetailX
+                                                .boardComment[commentInt]
+                                                .authorId ??
+                                            0,
+                                        authorMajor: _postDetailX
+                                                .boardComment[commentInt]
+                                                .authorMajor ??
+                                            '',
+                                        authorNickname: _postDetailX
+                                                .boardComment[commentInt]
+                                                .authorNickname ??
+                                            '',
+                                        authorProfileImg: _postDetailX
+                                                .boardComment[commentInt]
+                                                .authorProfileImg ??
+                                            '',
+                                        isBlind: _postDetailX
+                                                .boardComment[commentInt]
+                                                .isBlind ??
+                                            false,
+                                        commentId: _postDetailX
+                                                .boardComment[commentInt]
+                                                .commentId ??
+                                            0,
+                                        commentCreatedAt: _postDetailX
+                                                .boardComment[commentInt]
+                                                .commentCreatedAt ??
+                                            '',
+                                        commentLikeCnt: _postDetailX
+                                                .boardComment[commentInt]
+                                                .commentLikeCnt ??
+                                            0,
+                                        commentDesc: _postDetailX
+                                                .boardComment[commentInt]
+                                                .commentDesc ??
+                                            '',
+                                        isLikedByMe: _postDetailX
+                                                .boardComment[commentInt]
+                                                .isLikedByMe ??
+                                            false,
+                                        shape: CommentShape.top,
+                                        postingAuthorId: _postDetailX
+                                                .postDetail.value.authorId ??
+                                            0,
+                                      )),
                                   SizedBox(
                                       child: ListView.builder(
                                           shrinkWrap: true,
@@ -432,13 +450,18 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
       if (_comment.text != "") {
         if (_postDetailX.selectCommentEvent.value.checkEvent!) {
           _postDetailX.postBoardCommentReply(
-              commentDesc: _comment.text,
-              commentId: _postDetailX.selectCommentEvent.value.commentId!);
+            commentDesc: _comment.text,
+            commentId: _postDetailX.selectCommentEvent.value.commentId!,
+            anonymous: _isChecked,
+          );
           _postDetailX.selectCommentReplyOff();
           _comment.clear();
         } else {
           _postDetailX.postBoardComment(
-              commentDesc: _comment.text, postId: postId);
+            commentDesc: _comment.text,
+            postId: postId,
+            anonymous: _isChecked,
+          );
           _comment.clear();
         }
       }
