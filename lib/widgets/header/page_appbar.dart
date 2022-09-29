@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:waggly/components/post/post_modal.dart';
+import 'package:waggly/controller/myPage/my_profile_controller.dart';
 import 'package:waggly/controller/postDetail/post_detail_controller.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/index.dart';
@@ -58,6 +59,7 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
     switch (page) {
       case Status.main:
       case Status.home:
+      case Status.editAlarmOnly:
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -375,6 +377,7 @@ class AlarmBtn extends StatelessWidget {
       onTap: () async {
         // 알림 페이지로 이동
         await Get.put(NotificationController()).getNotification();
+        await Get.put(MyProfileController()).removeData();
         Get.toNamed('/notification');
       },
       child: Container(
