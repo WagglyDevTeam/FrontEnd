@@ -59,6 +59,7 @@ class _DetailContext extends State<DetailContext> {
   @override
   initState() {
     if (postId != null) {
+      _postDetailX.updatePostId(postId);
       _postDetailX.getDetailBoard(postId);
     }
 

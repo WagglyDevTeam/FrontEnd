@@ -273,7 +273,7 @@ class DetailBtn extends StatelessWidget {
     return Column(
       children: [
         ModalButton(title: '삭제하기', event: () {}),
-        ModalButton(title: '수정하기', event: () {}),
+        ModalButton(title: '수정하기', event: () {Get.toNamed("/editPage");}),
       ],
     );
   }
