@@ -89,6 +89,25 @@ class PostRepository {
     return wagglyResponseDto;
   }
 
+  Future<WagglyResponseDto> likeDetailPost(
+      int postId, likeDetailRequestDto data) async {
+    Response response = await _postProvider.likeDetailPost(postId, data);
+    dynamic body = response.body;
+    print(body);
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+
+    return wagglyResponseDto;
+  }
+
+  Future<WagglyResponseDto> PostDelete(int postId) async {
+    Response response = await _postProvider.PostDelete(postId);
+    dynamic body = response.body;
+    print(body);
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+
+    return wagglyResponseDto;
+  }
+
   Future<void> editBoard(FormData data) async {
     Response response = await _postProvider.editBoard(data);
     dynamic body = response.body;

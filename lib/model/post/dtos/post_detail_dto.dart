@@ -223,3 +223,18 @@ class ReCommentRequestDto {
         "anonymous": anonymous,
       };
 }
+
+class likeDetailRequestDto {
+  int? postLikeCnt;
+  bool? likedByMe;
+  likeDetailRequestDto({this.postLikeCnt, this.likedByMe});
+  factory likeDetailRequestDto.fromJson(Map<String, dynamic> json) =>
+      likeDetailRequestDto(
+        postLikeCnt: json['postLikeCnt'] as int,
+        likedByMe: json['likedByMe'] as bool,
+      );
+  Map<String, dynamic> toJson() => {
+        "postLikeCnt": postLikeCnt,
+        "likedByMe": likedByMe,
+      };
+}

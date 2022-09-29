@@ -47,6 +47,11 @@ class PostDetailController extends GetxController {
       required int postLikeCnt,
       required int postId}) async {
     print("$isLikedByMe, $postLikeCnt , $postId");
+    likeDetailRequestDto data =
+        likeDetailRequestDto(postLikeCnt: postLikeCnt, likedByMe: isLikedByMe);
+
+    WagglyResponseDto result =
+        await _postRepository.likeDetailPost(postId, data);
     postDetail.value.isLikedByMe = isLikedByMe;
     postDetail.value.postLikeCnt = postLikeCnt;
     update();
@@ -125,6 +130,8 @@ class PostDetailController extends GetxController {
     final DateFormat formatter = DateFormat.Md().add_jm();
     final String formatted = formatter.format(now);
 
+    print(authorId);
+
     /// 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
     final commentMap = ReCommentData.fromJson({
       "replyId": 2,
@@ -147,6 +154,13 @@ class PostDetailController extends GetxController {
         update();
         boardComment.refresh();
       }
+    }
+  }
+
+  Future<void> postDelete({required int postId}) async {
+    WagglyResponseDto result = await _postRepository.PostDelete(postId);
+    if (result.code == 200) {
+      Get.toNamed("/post");
     }
   }
 

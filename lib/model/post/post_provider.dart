@@ -84,6 +84,25 @@ class PostProvider extends GetConnect {
     );
   }
 
+  Future<Response> likeDetailPost(int postId, likeDetailRequestDto data) {
+    final box = Hive.box<User>('user');
+    var token = box.get('user')?.jwtToken;
+    return put(
+      "${dotenv.get('BASE_URL')}/board/$postId/like",
+      data.toJson(),
+      headers: {"Authorization": token!},
+    );
+  }
+
+  Future<Response> PostDelete(int postId) {
+    final box = Hive.box<User>('user');
+    var token = box.get('user')?.jwtToken;
+    return delete(
+      "${dotenv.get('BASE_URL')}/board/$postId",
+      headers: {"Authorization": token!},
+    );
+  }
+
   Future<Response> editBoard(FormData data) {
     final box = Hive.box<User>('user');
     var token = box.get('user')?.jwtToken;

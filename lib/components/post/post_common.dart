@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
 import 'package:waggly/components/post/post_modal.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:get/get.dart';
 
 import '../../controller/postDetail/post_detail_controller.dart';
+import '../../model/hive/user.dart';
 
 class PostDifferentList extends StatelessWidget {
   PostDifferentList({Key? key, required this.widgetList}) : super(key: key);
@@ -101,75 +103,6 @@ class CommentSide extends StatelessWidget {
 
 enum Shape { posting, comment }
 
-class AuthorForm extends StatelessWidget {
-  final String? image;
-  final String? nickName;
-  final String? major;
-  final Shape? shape;
-  final bool? isMaster;
-
-  AuthorForm(
-      {Key? key,
-      required this.image,
-      required this.nickName,
-      required this.major,
-      required this.shape,
-      required this.isMaster})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        CircleAvatar(
-            radius: shapePostion() ? 15 : 13,
-            backgroundImage: Withdrawal() ? null : NetworkImage(image!),
-            backgroundColor: Palette.data),
-        SizedBox(
-          width: 8,
-        ),
-        Text(
-            Withdrawal()
-                ? '(알수없음)'
-                : isMaster!
-                    ? '글쓴이'
-                    : nickName!,
-            style: Withdrawal()
-                ? CommonText.BodyM
-                : shapePostion()
-                    ? CommonText.TitleS
-                    : isMaster!
-                        ? CommonText.BodyMediumPurple
-                        : CommonText.BodyM),
-        SizedBox(
-          width: 6,
-        ),
-        Text(major!,
-            style: shapePostion()
-                ? CommonText.LabelGray
-                : CommonText.BodyXSmallGray),
-      ],
-    );
-  }
-
-  Withdrawal() {
-    if (nickName == '탈퇴자') {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  shapePostion() {
-    if (shape == Shape.posting) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-}
-
 enum CommentShape { top, bottom }
 
 class CommentBox extends StatelessWidget {
@@ -184,7 +117,7 @@ class CommentBox extends StatelessWidget {
   final String commentDesc;
   final bool isLikedByMe;
   final CommentShape shape;
-  final int postingAuthorId;
+  final int PostAuthorId;
   // final bool isAnonymous;
   CommentBox({
     Key? key,
@@ -199,7 +132,7 @@ class CommentBox extends StatelessWidget {
     required this.commentDesc,
     required this.isLikedByMe,
     required this.shape,
-    required this.postingAuthorId,
+    required this.PostAuthorId,
     // required this.isAnonymous,
   }) : super(key: key);
 
@@ -209,8 +142,26 @@ class CommentBox extends StatelessWidget {
   }
 
   /// 댓글 작성자 확인
+  bool isAuthor() {
+    final box = Hive.box<User>('user');
+    var meId = box.get('user')?.id;
+    return meId == authorId ? true : false;
+  }
+
+  /// 게시판 작성자 확인
   bool isMaster() {
-    return postingAuthorId == authorId ? true : false;
+    return PostAuthorId == authorId ? true : false;
+  }
+
+  /// 둘다 작성자 확인
+  double modalTop() {
+    if (isMaster()) {
+      if (isAuthor()) {
+        return 160.0;
+      }
+      return 123.0;
+    }
+    return 123.0;
   }
 
   /// post detail getX
@@ -262,22 +213,22 @@ class CommentBox extends StatelessWidget {
   }
 
   /// 대댓글 모달 버튼 리스트
-  Widget Buttons() {
+  Widget ButtonList() {
     return Column(
       children: [
-        if (isMaster()) ModalButton(title: '삭제하기', event: commentDelete),
-        if (!isMaster()) ModalButton(title: '신고하기', event: commentReport),
+        if (isAuthor()) ModalButton(title: '삭제하기', event: commentDelete),
+        if (isMaster()) ModalButton(title: '신고하기', event: commentReport),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    const double modalHeight = 123.0;
-    const String title = '더보기';
+    double modalHeight = modalTop();
+    String title = '더보기';
     PostModal modalOn = PostModal(
         context: context,
-        contents: Buttons(),
+        contents: ButtonList(),
         height: modalHeight,
         title: title);
 
@@ -390,6 +341,7 @@ class CommentBox extends StatelessWidget {
                                     iconSize: 10,
                                     color: Palette.violet,
                                     onPressed: () {
+                                      print("$isMaster()");
                                       modalOn.ModalOn();
                                     },
                                   ),
@@ -437,5 +389,74 @@ class CommentBox extends StatelessWidget {
                 ))
           ],
         )));
+  }
+}
+
+class AuthorForm extends StatelessWidget {
+  final String? image;
+  final String? nickName;
+  final String? major;
+  final Shape? shape;
+  final bool? isMaster;
+
+  AuthorForm(
+      {Key? key,
+      required this.image,
+      required this.nickName,
+      required this.major,
+      required this.shape,
+      required this.isMaster})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        CircleAvatar(
+            radius: shapePostion() ? 15 : 13,
+            backgroundImage: Withdrawal() ? null : NetworkImage(image!),
+            backgroundColor: Palette.data),
+        SizedBox(
+          width: 8,
+        ),
+        Text(
+            Withdrawal()
+                ? '(알수없음)'
+                : isMaster!
+                    ? '글쓴이'
+                    : nickName!,
+            style: Withdrawal()
+                ? CommonText.BodyM
+                : shapePostion()
+                    ? CommonText.TitleS
+                    : isMaster!
+                        ? CommonText.BodyMediumPurple
+                        : CommonText.BodyM),
+        SizedBox(
+          width: 6,
+        ),
+        Text(major!,
+            style: shapePostion()
+                ? CommonText.LabelGray
+                : CommonText.BodyXSmallGray),
+      ],
+    );
+  }
+
+  Withdrawal() {
+    if (nickName == '탈퇴자') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  shapePostion() {
+    if (shape == Shape.posting) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

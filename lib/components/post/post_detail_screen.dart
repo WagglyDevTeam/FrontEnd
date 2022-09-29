@@ -329,7 +329,7 @@ class _DetailContext extends State<DetailContext> {
                                                 .isLikedByMe ??
                                             false,
                                         shape: CommentShape.top,
-                                        postingAuthorId: _postDetailX
+                                        PostAuthorId: _postDetailX
                                                 .postDetail.value.authorId ??
                                             0,
                                       )),
@@ -405,7 +405,7 @@ class _DetailContext extends State<DetailContext> {
                                                           .isLikedByMe ??
                                                       false,
                                                   shape: CommentShape.bottom,
-                                                  postingAuthorId: _postDetailX
+                                                  PostAuthorId: _postDetailX
                                                           .postDetail
                                                           .value
                                                           .authorId ??
