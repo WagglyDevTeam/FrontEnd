@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 import 'package:waggly/model/post/post_provider.dart';
 
 import 'dtos/post_college_dto.dart';
@@ -68,15 +69,44 @@ class PostRepository {
     return wagglyResponseDto;
   }
 
-  // Future<WagglyResponseDto> postBoardComment(
-  //     String commentId, String commentDesc, bool anonymous) async {
-  //   Response response =
-  //       await _postProvider.postBoardComment(commentId, commentDesc, anonymous);
-  //   dynamic body = response.body;
-  //   WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
-  //
-  //   return wagglyResponseDto;
-  // }
+  Future<WagglyResponseDto> postComment(
+      String? postId, CommentRequestDto data) async {
+    Response response = await _postProvider.postComment(postId, data);
+    dynamic body = response.body;
+    print(body);
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+
+    return wagglyResponseDto;
+  }
+
+  Future<WagglyResponseDto> postReComment(
+      int commentId, ReCommentRequestDto data) async {
+    Response response = await _postProvider.postReComment(commentId, data);
+    dynamic body = response.body;
+    print(body);
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+
+    return wagglyResponseDto;
+  }
+
+  Future<WagglyResponseDto> likeDetailPost(
+      int postId, likeDetailRequestDto data) async {
+    Response response = await _postProvider.likeDetailPost(postId, data);
+    dynamic body = response.body;
+    print(body);
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+
+    return wagglyResponseDto;
+  }
+
+  Future<WagglyResponseDto> PostDelete(int postId) async {
+    Response response = await _postProvider.PostDelete(postId);
+    dynamic body = response.body;
+    print(body);
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+
+    return wagglyResponseDto;
+  }
 
   Future<void> editBoard(FormData data, value) async {
     Response response = await _postProvider.editBoard(data, value);
