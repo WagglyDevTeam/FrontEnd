@@ -282,7 +282,7 @@ class DetailBtn extends StatelessWidget {
               _postDetailX.postDelete(
                   postId: _postDetailX.postDetail.value.postId ?? 0);
             }),
-        ModalButton(title: '수정하기', event: () {}),
+        ModalButton(title: '수정하기', event: () {Get.toNamed("/editPage");}),
       ],
     );
   }

@@ -10,11 +10,14 @@ class PostEditController extends PostDetailController {
 
   @override
   void onInit() async {
+    print("value $postId");
+    getDetailBoard(postId.value);
     super.onInit();
   }
 
   void updatePostEditData() {
     var postDetailData = getPostDetailData();
+    print(jsonEncode(postDetailData));
     postEditData.value = PostDetailData.fromClass(postDetailData);
   }
 }

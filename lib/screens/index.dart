@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:waggly/screens/chat.dart';
 import 'package:waggly/screens/chat_edit.dart';
+import 'package:waggly/screens/chat_room_screen.dart';
 import 'package:waggly/screens/chat_search.dart';
 import 'package:waggly/screens/group_chat_create.dart';
 import 'package:waggly/screens/home.dart';
@@ -30,8 +31,9 @@ class _ScreenState extends State<Screen> {
   List<Widget> screenList = <Widget>[
     HomeScreen(),
     ChatEditScreen(),
-    ChatSearchScreen(),
-    // ChatScreen(),
+    // ChatSearchScreen(),
+    ChatScreen(),
+    // ChatRoomScreen(),
     PostScreen(),
     MyPageScreen(),
   ];
@@ -47,9 +49,7 @@ class _ScreenState extends State<Screen> {
             child: Container(
               padding: const EdgeInsets.all(0),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20)),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
                 color: Colors.white,
                 border: Border.all(
                   color: const Color(0xFFE8E8E8),
@@ -67,10 +67,8 @@ class _ScreenState extends State<Screen> {
                   child: NavigationBar(
                     height: 55,
                     selectedIndex: screenIndex,
-                    labelBehavior:
-                        NavigationDestinationLabelBehavior.alwaysHide,
-                    onDestinationSelected: (index) =>
-                        setState(() => {screenIndex = index}),
+                    labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+                    onDestinationSelected: (index) => setState(() => {screenIndex = index}),
                     destinations: const [
                       NavigationDestination(
                           icon: Icon(
@@ -90,28 +88,21 @@ class _ScreenState extends State<Screen> {
                           color: Palette.gray,
                           size: 23,
                         ),
-                        selectedIcon: Icon(Icons.add_comment,
-                            color: Palette.main, size: 23),
+                        selectedIcon: Icon(Icons.add_comment, color: Palette.main, size: 23),
                         label: '',
                       ),
                       NavigationDestination(
-                          icon: Icon(Icons.chat_bubble,
-                              color: Palette.gray, size: 23),
-                          selectedIcon: Icon(Icons.chat_bubble,
-                              color: Palette.main, size: 23),
+                          icon: Icon(Icons.chat_bubble, color: Palette.gray, size: 23),
+                          selectedIcon: Icon(Icons.chat_bubble, color: Palette.main, size: 23),
                           label: ''),
                       NavigationDestination(
-                        icon: Icon(Icons.view_list,
-                            color: Palette.gray, size: 23),
-                        selectedIcon: Icon(Icons.view_list,
-                            color: Palette.main, size: 23),
+                        icon: Icon(Icons.view_list, color: Palette.gray, size: 23),
+                        selectedIcon: Icon(Icons.view_list, color: Palette.main, size: 23),
                         label: '',
                       ),
                       NavigationDestination(
-                          icon:
-                              Icon(Icons.person, color: Palette.gray, size: 23),
-                          selectedIcon:
-                              Icon(Icons.person, color: Palette.main, size: 23),
+                          icon: Icon(Icons.person, color: Palette.gray, size: 23),
+                          selectedIcon: Icon(Icons.person, color: Palette.main, size: 23),
                           label: ''),
                     ],
                   ),

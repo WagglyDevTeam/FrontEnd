@@ -11,14 +11,14 @@ import '../../utils/text_frame.dart';
 import '../../widgets/index.dart';
 import '../../widgets/sign_in.dart';
 
-enum Status { home, main, detail, edit, login, alarm, editAlarmOnly }
+enum Status { home, main, detail, edit, login, alarm, editAlarmOnly, chatRoom }
 
 class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String postName;
   final Status page;
 
   @override
-  Size get preferredSize => const Size.fromHeight(50);
+  Size get preferredSize => const Size.fromHeight(68);
 
   const PostAppbar({Key? key, required this.postName, required this.page})
       : super(key: key);
@@ -95,6 +95,8 @@ class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
         return DetailBtn();
       case Status.alarm:
         return AlarmBtns();
+      case Status.chatRoom:
+        return ChatRoomBtns();
     }
   }
 }
@@ -229,7 +231,7 @@ class DetailBtn extends StatelessWidget {
     return Column(
       children: [
         ModalButton(title: '삭제하기', event: () {}),
-        ModalButton(title: '수정하기', event: () {Get.toNamed("/editPage");}),
+        ModalButton(title: '수정하기', event: () {print("asdasdasd"); Get.toNamed("/editPage");}),
       ],
     );
   }
@@ -364,3 +366,67 @@ class AlarmOnly extends StatelessWidget {
     );
   }
 }
+
+
+class ChatRoomBtns extends StatelessWidget {
+  const ChatRoomBtns({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 120.w,
+      // color: Colors.red,
+      padding: EdgeInsets.fromLTRB(10.w, 15.h, 20.w, 5.h),
+      child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(40.0) // POINT
+            ),
+            border: Border.all(width: 1.0, color: Palette.lightGray),
+          ),
+          child: Container(
+            padding:
+            const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ActionButton(
+                    event: () => Navigator.of(context).pop(),
+                    isIcon: Icon(
+                      Icons.search,
+                      color: Palette.gray,
+                      size: 18,
+                    )),
+                Line(),
+                ActionButton(
+                    event: () => Navigator.of(context).pop(),
+                    isIcon: Icon(
+                      Icons.more_horiz,
+                      color: Palette.gray,
+                      size: 18,
+                    )),
+              ],
+            ),
+          )),
+    );
+  }
+
+  Line() {
+    return const SizedBox(
+      width: 1,
+      height: 10,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(
+            right: BorderSide(
+              // POINT
+              color: Color(0xFFE8E8E8),
+              width: 1.0,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
