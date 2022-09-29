@@ -1,11 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-<<<<<<< HEAD
-FLUTTER_ROOT=/Users/choejuyeong/fvm/versions/3.0.5
-FLUTTER_APPLICATION_PATH=/Users/choejuyeong/Desktop/dev/frontend
-=======
 FLUTTER_ROOT=/Users/jeong-yeongbin/development/flutter
 FLUTTER_APPLICATION_PATH=/Users/jeong-yeongbin/Desktop/frontend
->>>>>>> develop
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0

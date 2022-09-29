@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import '../../model/post/post_repository.dart';
 class PostDetailController extends GetxController {
   final PostRepository _postRepository = PostRepository();
   final postDetail = PostDetailData().obs;
+  final postId = "".obs;
   final boardComment = [CommentData()].obs;
   final selectCommentEvent = SelectComment(
     commentId: 0,
@@ -38,6 +40,7 @@ class PostDetailController extends GetxController {
         ListCommentData.fromJson({"comments": commentsJson});
     postDetail.value = postDetailMap;
     boardComment.value = boardCommentMap.comments!;
+    print(jsonEncode(postDetail.value));
   }
 
   /// 게시판 상세 페이지 좋아요 업데이트
@@ -164,5 +167,10 @@ class PostDetailController extends GetxController {
 
   PostDetailData getPostDetailData() {
     return postDetail.value;
+  }
+
+  void updatePostId(value){
+    postId.value = value;
+
   }
 }
