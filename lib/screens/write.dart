@@ -236,7 +236,7 @@ class WritePage extends StatelessWidget {
 
   Future<void> editPost(title, description, college) async {
     List<MultipartFile> file = imageToMultipartFile();
-    await _postController.editBoard(PostEditRequestDto(title, description, college, file, _imageController.parseToStringList()));
+    await postDetailController.editBoard(PostEditRequestDto(title, description, college, file, _imageController.parseToStringList()));
   }
 
   Future<void> writePost() async {

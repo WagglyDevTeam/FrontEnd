@@ -78,8 +78,8 @@ class PostRepository {
   //   return wagglyResponseDto;
   // }
 
-  Future<void> editBoard(FormData data) async {
-    Response response = await _postProvider.editBoard(data);
+  Future<void> editBoard(FormData data, value) async {
+    Response response = await _postProvider.editBoard(data, value);
     dynamic body = response.body;
     print(body);
     // WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
