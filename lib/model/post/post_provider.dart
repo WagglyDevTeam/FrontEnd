@@ -61,7 +61,6 @@ class PostProvider extends GetConnect {
       headers: {"Authorization": token!},
     );
   }
-
   /// POST comment
   Future<Response> postComment(String? postId, CommentRequestDto data) {
     final box = Hive.box<User>('user');
@@ -109,7 +108,7 @@ class PostProvider extends GetConnect {
     print("여기임");
     print(authHeaders);
     return put(
-      "${dotenv.get('BASE_URL')}/board/4",
+      "${dotenv.get('BASE_URL')}/board/$value",
       data,
       headers: {"Authorization": token!},
     );

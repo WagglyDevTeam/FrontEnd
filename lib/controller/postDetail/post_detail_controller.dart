@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 import '../../model/hive/user.dart';
+import '../../model/post/dtos/post_edit_request_dto.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
 import '../../model/post/post_repository.dart';
 
@@ -225,5 +226,9 @@ class PostDetailController extends GetxController {
   void updatePostId(value){
     postId.value = value;
 
+  }
+  Future<void> editBoard(PostEditRequestDto postEditRequestDto) async {
+    FormData form = FormData(postEditRequestDto.toJson());
+    await _postRepository.editBoard(form, postId);
   }
 }

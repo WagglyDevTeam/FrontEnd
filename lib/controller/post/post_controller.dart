@@ -33,8 +33,5 @@ class PostController extends GetxController {
     await _postRepository.writeBoard(form);
   }
 
-  Future<void> editBoard(PostEditRequestDto postEditRequestDto) async {
-    FormData form = FormData(postEditRequestDto.toJson());
-    await _postRepository.editBoard(form);
-  }
+
 }
