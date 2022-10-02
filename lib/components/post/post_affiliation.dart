@@ -18,21 +18,41 @@ class PostAffiliation extends StatefulWidget {
 
 class _PostAffiliation extends State<PostAffiliation> {
   _PostAffiliation({Key? key});
+  final ScrollController _scrollController = ScrollController();
   final String postName = Get.parameters['collegeName'] ?? "";
   final _postDetailX = Get.put(PostHomeController());
-  final dto =
-      PostCollegeDto(college: Get.parameters['collegeId'], page: 0, size: 10);
+  scrollListener() async {
+    if (_scrollController.offset ==
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      _postDetailX.getBoardPaging(Get.parameters['collegeId']);
+    } else if (_scrollController.offset ==
+            _scrollController.position.minScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      // print('스크롤이 맨 위에 위치해 있습니다');
+    }
+  }
+
   @override
   initState() {
-    _postDetailX.getBoardCollege(dto);
+    _scrollController.addListener(() {
+      scrollListener();
+    });
+    _postDetailX.getBoardCollege(Get.parameters['collegeId']);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _postDetailX.postListReset();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     var page = Status.home;
-    // print(_postDetailX.bestPostCollegeData.value);
-    // print(_postDetailX.postCollegeData.value);
+
     return Scaffold(
         appBar: PostAppbar(
             postName: _postDetailX.bestPostOn.value ? "로딩 중" : postName,
@@ -40,6 +60,7 @@ class _PostAffiliation extends State<PostAffiliation> {
         body: Container(
           decoration: BoxDecoration(color: Colors.white),
           child: Obx(() => ListView.builder(
+                controller: _scrollController,
                 scrollDirection: Axis.vertical,
                 itemCount: _postDetailX.postCollegeData.length + 1,
                 itemBuilder: (BuildContext context, int index) {
@@ -204,7 +225,6 @@ class PostContext extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(postId);
     return GestureDetector(
       onTap: () =>
           Get.toNamed("/postDetail/param?postId=$postId&collegeName=인문계열"),
@@ -213,24 +233,27 @@ class PostContext extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(postTitle ?? "", style: CommonText.BodyL),
-              Text(postCreatedAt!, style: CommonText.BodyEngGray),
+              SizedBox(
+                width: 210.w,
+                child: Text(postTitle ?? "", style: CommonText.BodyL),
+              ),
+              Text(postCreatedAt ?? "", style: CommonText.BodyEngGray),
             ],
           ),
           SizedBox(height: 10.h),
           Container(
             width: MediaQuery.of(context).size.width - 32.w,
-            child: Text(postDesc!, style: CommonText.BodyS),
+            child: Text(postDesc ?? "", style: CommonText.BodyS),
           ),
           SizedBox(height: 6.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(authorMajor!, style: CommonText.BodyEngGray),
+              Text(authorMajor ?? "", style: CommonText.BodyEngGray),
               CommentSide(
-                commentCnt: postCommentCnt!,
-                likeCnt: postLikeCnt!,
-                imgCnt: postImageCnt!,
+                commentCnt: postCommentCnt ?? 0,
+                likeCnt: postLikeCnt ?? 0,
+                imgCnt: postImageCnt ?? 0,
               )
             ],
           )
