@@ -37,200 +37,139 @@ class _PostAffiliation extends State<PostAffiliation> {
         appBar: PostAppbar(
             postName: _postDetailX.bestPostOn.value ? "로딩 중" : postName,
             page: page),
-        body: Skeleton(
-          isLoading: _postDetailX.bestPostOn.value,
-          skeleton: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 16.w),
-            child: Column(
-              children: [
-                SkeletonAvatar(
-                  style: SkeletonAvatarStyle(
-                      width: double.infinity, height: 100.h),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                SkeletonAvatar(
-                  style: SkeletonAvatarStyle(
-                      width: double.infinity, height: 100.h),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                SkeletonAvatar(
-                  style: SkeletonAvatarStyle(
-                      width: double.infinity, height: 100.h),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                SkeletonAvatar(
-                  style: SkeletonAvatarStyle(
-                      width: double.infinity, height: 100.h),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                SkeletonAvatar(
-                  style: SkeletonAvatarStyle(
-                      width: double.infinity, height: 100.h),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                SkeletonAvatar(
-                  style: SkeletonAvatarStyle(
-                      width: double.infinity, height: 100.h),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-              ],
-            ),
-          ),
-          child: Container(
-            decoration: BoxDecoration(color: Colors.white),
-            child: Obx(() => ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: _postDetailX.postCollegeData.length + 1,
-                  itemBuilder: (BuildContext context, int index) {
-                    int postInt = index - 1;
-                    if (index == 0) {
-                      /**인기 글*/
-                      return Container(
-                        padding: EdgeInsets.all(16.w),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  '인기글',
-                                  style: CommonText.BodyL,
-                                ),
-                                SizedBox(width: 6.w),
-                                Icon(
-                                  Icons.auto_awesome,
-                                  color: Palette.main,
-                                  size: 17.w,
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 6,
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(
-                                  top: 14, bottom: 14, left: 10, right: 10),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  border: Border.all(
-                                      color: Palette.light,
-                                      style: BorderStyle.solid,
-                                      width: 1)),
-                              child: Obx(() => PostContext(
-                                    postId: _postDetailX
-                                            .bestPostCollegeData.value.postId ??
-                                        0,
-                                    postTitle: _postDetailX.bestPostCollegeData
-                                            .value.postTitle ??
-                                        '',
-                                    postDesc: _postDetailX.bestPostCollegeData
-                                            .value.postDesc ??
-                                        '',
-                                    postCreatedAt: _postDetailX
-                                            .bestPostCollegeData
-                                            .value
-                                            .postCreatedAt ??
-                                        '',
-                                    authorMajor: _postDetailX
-                                            .bestPostCollegeData
-                                            .value
-                                            .authorMajor ??
-                                        '',
-                                    postImageCnt: _postDetailX
-                                            .bestPostCollegeData
-                                            .value
-                                            .postImageCnt ??
-                                        0,
-                                    postLikeCnt: _postDetailX
-                                            .bestPostCollegeData
-                                            .value
-                                            .postLikeCnt ??
-                                        0,
-                                    postCommentCnt: _postDetailX
-                                            .bestPostCollegeData
-                                            .value
-                                            .postCommentCnt ??
-                                        0,
-                                    isLikedByMe: _postDetailX
-                                            .bestPostCollegeData
-                                            .value
-                                            .isLikedByMe ??
-                                        false,
-                                    isBlind: _postDetailX.bestPostCollegeData
-                                            .value.isBlind ??
-                                        false,
-                                    postName: postName,
-                                  )),
-                            )
-                          ],
-                        ),
-                      );
-                    } else {
-                      /**일반 글*/
-                      return Container(
-                        padding: EdgeInsets.only(
-                            top: 16, bottom: 16, left: 26, right: 26),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border(
-                              top: BorderSide(
-                                  color: Palette.paper,
-                                  style: BorderStyle.solid,
-                                  width: 1),
-                            )),
-                        child: Obx(() => PostContext(
-                              postId: _postDetailX
-                                      .postCollegeData[postInt].postId ??
-                                  0,
-                              postTitle: _postDetailX
-                                      .postCollegeData[postInt].postTitle ??
-                                  '',
-                              postDesc: _postDetailX
-                                      .postCollegeData[postInt].postDesc ??
-                                  '',
-                              postCreatedAt: _postDetailX
-                                      .postCollegeData[postInt].postCreatedAt ??
-                                  '',
-                              authorMajor: _postDetailX
-                                      .postCollegeData[postInt].authorMajor ??
-                                  '',
-                              postImageCnt: _postDetailX
-                                      .postCollegeData[postInt].postImageCnt ??
-                                  0,
-                              postLikeCnt: _postDetailX
-                                      .postCollegeData[postInt].postLikeCnt ??
-                                  0,
-                              postCommentCnt: _postDetailX
-                                      .postCollegeData[postInt]
-                                      .postCommentCnt ??
-                                  0,
-                              isLikedByMe: _postDetailX
-                                      .postCollegeData[postInt].isLikedByMe ??
-                                  false,
-                              isBlind: _postDetailX
-                                      .postCollegeData[postInt].isBlind ??
-                                  false,
-                              postName: postName,
-                            )),
-                      );
-                    }
-                  },
-                )),
-          ),
+        body: Container(
+          decoration: BoxDecoration(color: Colors.white),
+          child: Obx(() => ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: _postDetailX.postCollegeData.length + 1,
+                itemBuilder: (BuildContext context, int index) {
+                  int postInt = index - 1;
+                  if (index == 0) {
+                    /**인기 글*/
+                    return Container(
+                      padding: EdgeInsets.all(16.w),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                '인기글',
+                                style: CommonText.BodyL,
+                              ),
+                              SizedBox(width: 6.w),
+                              Icon(
+                                Icons.auto_awesome,
+                                color: Palette.main,
+                                size: 17.w,
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(
+                                top: 14, bottom: 14, left: 10, right: 10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15.0),
+                                border: Border.all(
+                                    color: Palette.light,
+                                    style: BorderStyle.solid,
+                                    width: 1)),
+                            child: Obx(() => PostContext(
+                                  postId: _postDetailX
+                                          .bestPostCollegeData.value.postId ??
+                                      0,
+                                  postTitle: _postDetailX.bestPostCollegeData
+                                          .value.postTitle ??
+                                      '',
+                                  postDesc: _postDetailX
+                                          .bestPostCollegeData.value.postDesc ??
+                                      '',
+                                  postCreatedAt: _postDetailX
+                                          .bestPostCollegeData
+                                          .value
+                                          .postCreatedAt ??
+                                      '',
+                                  authorMajor: _postDetailX.bestPostCollegeData
+                                          .value.authorMajor ??
+                                      '',
+                                  postImageCnt: _postDetailX.bestPostCollegeData
+                                          .value.postImageCnt ??
+                                      0,
+                                  postLikeCnt: _postDetailX.bestPostCollegeData
+                                          .value.postLikeCnt ??
+                                      0,
+                                  postCommentCnt: _postDetailX
+                                          .bestPostCollegeData
+                                          .value
+                                          .postCommentCnt ??
+                                      0,
+                                  isLikedByMe: _postDetailX.bestPostCollegeData
+                                          .value.isLikedByMe ??
+                                      false,
+                                  isBlind: _postDetailX
+                                          .bestPostCollegeData.value.isBlind ??
+                                      false,
+                                  postName: postName,
+                                )),
+                          )
+                        ],
+                      ),
+                    );
+                  } else {
+                    /**일반 글*/
+                    return Container(
+                      padding: EdgeInsets.only(
+                          top: 16, bottom: 16, left: 26, right: 26),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border(
+                            top: BorderSide(
+                                color: Palette.paper,
+                                style: BorderStyle.solid,
+                                width: 1),
+                          )),
+                      child: Obx(() => PostContext(
+                            postId:
+                                _postDetailX.postCollegeData[postInt].postId ??
+                                    0,
+                            postTitle: _postDetailX
+                                    .postCollegeData[postInt].postTitle ??
+                                '',
+                            postDesc: _postDetailX
+                                    .postCollegeData[postInt].postDesc ??
+                                '',
+                            postCreatedAt: _postDetailX
+                                    .postCollegeData[postInt].postCreatedAt ??
+                                '',
+                            authorMajor: _postDetailX
+                                    .postCollegeData[postInt].authorMajor ??
+                                '',
+                            postImageCnt: _postDetailX
+                                    .postCollegeData[postInt].postImageCnt ??
+                                0,
+                            postLikeCnt: _postDetailX
+                                    .postCollegeData[postInt].postLikeCnt ??
+                                0,
+                            postCommentCnt: _postDetailX
+                                    .postCollegeData[postInt].postCommentCnt ??
+                                0,
+                            isLikedByMe: _postDetailX
+                                    .postCollegeData[postInt].isLikedByMe ??
+                                false,
+                            isBlind:
+                                _postDetailX.postCollegeData[postInt].isBlind ??
+                                    false,
+                            postName: postName,
+                          )),
+                    );
+                  }
+                },
+              )),
         ));
   }
 }
