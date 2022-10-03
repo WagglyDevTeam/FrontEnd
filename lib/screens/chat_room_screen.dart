@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:waggly/components/Post/post_app_bar.dart';
 import 'package:waggly/components/chat/chat_bubble.dart';
+import 'package:waggly/components/snackBar/custom_snack_bar.dart';
+import 'package:waggly/controller/post/image_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/model/chat/chat.dart';
 import 'package:waggly/model/hive/user.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:waggly/utils/time_converter.dart';
 
 Chat chat1 = Chat(senderId: 1, message: "잘 가는거 맞나여", messageTime: DateTime(2022, 1, 2, 12, 34, 01));
 Chat chat2 = Chat(senderId: 1, message: "두번째 메시지 잘 가나여 유저1", messageTime: DateTime(2022, 1, 2, 12, 34, 02));
@@ -35,9 +40,11 @@ User user2 = User(
     major: "주정차단속학과",
     profileImg: "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/cfa56b43-a2c3-45b7-ae3b-9f5be44f1692.png");
 
-List<Chat> chatList = [chat1, chat2, chat3, chat4, chat5, chat6, chat7, chat8, chat9];
-List<User> participantList = [user1, user2];
+List<Chat> chatList = [];
+List<User> participantList = [];
 
+TextEditingController _chatMessageController = TextEditingController();
+User loginUser = Hive.box<User>('user').get('user')!;
 bool isOverFlow = false;
 
 class ChatRoomScreen extends StatefulWidget {
@@ -49,12 +56,18 @@ class ChatRoomScreen extends StatefulWidget {
 
 class _ChatRoomScreenState extends State<ChatRoomScreen> {
   @override
+  initState() {
+    super.initState();
+    chatList = [chat1, chat2, chat3, chat4, chat5, chat6, chat7, chat8, chat9];
+    participantList = [user1, user2];
+    print(loginUser.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
     const String _postName = "채팅방 상세";
     const Status _page = Status.chatRoom;
-
-    SignInController _signInController = Get.put(SignInController());
-    final User loginUser = _signInController.user.value;
+    ImageController _imageController = Get.put(ImageController());
 
     chatList.sort((a, b) => b.messageTime!.compareTo(a.messageTime!));
     return Scaffold(
@@ -85,12 +98,18 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                         padding: EdgeInsets.only(left: 10.0.w, right: 5.0.w, top: 5.0.h, bottom: 5.0.h),
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.campaign,
-                              color: Palette.mdGray,
+                            // Icon(
+                            //   Icons.campaign,
+                            //   color: Palette.mdGray,
+                            // ),
+                            SvgPicture.asset(
+                              'assets/icons/speaker.svg',
+                              fit: BoxFit.contain,
+                              width: 17.w,
+                              height: 17.h,
                             ),
                             SizedBox(
-                              width: 10.w,
+                              width: 8.w,
                             ),
                             Flexible(
                               child: SizedBox(
@@ -115,7 +134,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                               },
                               child: Icon(
                                 size: 20,
-                                Icons.arrow_drop_down_sharp,
+                                isOverFlow ? Icons.arrow_drop_up_sharp : Icons.arrow_drop_down_sharp,
                                 color: Palette.mdGray,
                               ),
                             ),
@@ -171,38 +190,58 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                     scrollDirection: Axis.vertical,
                     itemCount: chatList.length,
                     itemBuilder: (ctx, index) {
+                      if (chatList.isEmpty) {
+                        return Container();
+                      }
                       if (index == chatList.length - 1) {
-                        print(DateFormat('MM/dd HH:mm').format(chatList[index].messageTime!) ==
-                            DateFormat('MM/dd HH:mm').format(chatList[index - 1].messageTime!));
-                        return ChatBubble(
-                          user: participantList.where((element) => element.id == chatList[index].senderId).first,
-                          message: "${chatList[index].message!} : $index",
-                          datetime: chatList[index].messageTime!,
-                          isMyMessage: loginUser.id == chatList[index].senderId,
-                          isSameTime: chatList[index].senderId == chatList[index - 1].senderId &&
-                              DateFormat('MM/dd HH:mm').format(chatList[index].messageTime!) ==
-                                  DateFormat('MM/dd HH:mm').format(chatList[index - 1].messageTime!),
-                          isSamePerson: false,
+                        // 첫번째 메시지 일 경우
+                        return Column(
+                          children: [
+                            ChatBubble(
+                              user: participantList.where((element) => element.id == chatList[index].senderId).first,
+                              message: "${chatList[index].message!} : $index",
+                              datetime: chatList[index].messageTime!,
+                              isMyMessage: loginUser.id == chatList[index].senderId,
+                              isSameTime: chatList[index].senderId == chatList[index - 1].senderId &&
+                                  DateFormat('MM/dd HH:mm').format(chatList[index].messageTime!) ==
+                                      DateFormat('MM/dd HH:mm').format(chatList[index - 1].messageTime!),
+                              isSamePerson: false,
+                              isSameDate: false,
+                            ),
+                          ],
                         );
                       } else if (index == 0) {
-                        return ChatBubble(
-                          user: participantList.where((element) => element.id == chatList[index].senderId).first,
-                          message: "${chatList[index].message!} : $index",
-                          datetime: chatList[index].messageTime!,
-                          isMyMessage: loginUser.id == chatList[index].senderId,
-                          isSameTime: false,
-                          isSamePerson: chatList[index].senderId == chatList[index + 1].senderId,
+                        // 마지막 메시지 일 경우
+                        return Column(
+                          children: [
+                            ChatBubble(
+                              user: participantList.where((element) => element.id == chatList[index].senderId).first,
+                              message: "${chatList[index].message!} : $index",
+                              datetime: chatList[index].messageTime!,
+                              isMyMessage: loginUser.id == chatList[index].senderId,
+                              isSameTime: false,
+                              isSamePerson: chatList[index].senderId == chatList[index + 1].senderId,
+                              isSameDate:
+                                  chatList[index].messageTime!.weekday == chatList[index + 1].messageTime!.weekday,
+                            ),
+                          ],
                         );
                       } else {
-                        return ChatBubble(
-                          user: participantList.where((element) => element.id == chatList[index].senderId).first,
-                          message: "${chatList[index].message!} : $index",
-                          datetime: chatList[index].messageTime!,
-                          isMyMessage: loginUser.id == chatList[index].senderId,
-                          isSameTime: chatList[index].senderId == chatList[index - 1].senderId &&
-                              DateFormat('MM/dd HH:mm').format(chatList[index].messageTime!) ==
-                                  DateFormat('MM/dd HH:mm').format(chatList[index - 1].messageTime!),
-                          isSamePerson: chatList[index].senderId == chatList[index + 1].senderId,
+                        return Column(
+                          children: [
+                            ChatBubble(
+                              user: participantList.where((element) => element.id == chatList[index].senderId).first,
+                              message: "${chatList[index].message!} : $index",
+                              datetime: chatList[index].messageTime!,
+                              isMyMessage: loginUser.id == chatList[index].senderId,
+                              isSameTime: chatList[index].senderId == chatList[index - 1].senderId &&
+                                  DateFormat('MM/dd HH:mm').format(chatList[index].messageTime!) ==
+                                      DateFormat('MM/dd HH:mm').format(chatList[index - 1].messageTime!),
+                              isSamePerson: chatList[index].senderId == chatList[index + 1].senderId,
+                              isSameDate:
+                                  chatList[index].messageTime!.weekday == chatList[index + 1].messageTime!.weekday,
+                            ),
+                          ],
                         );
                       }
                     },
@@ -218,22 +257,28 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(right: 10.0.w),
-                      child: Container(
-                        height: 30.0.h,
-                        width: 30.0.h,
-                        decoration: BoxDecoration(
-                          color: Palette.main,
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: Icon(
-                          size: 20.0.h,
-                          Icons.camera_alt,
-                          color: Colors.white,
+                      child: InkWell(
+                        onTap: () async {
+                          await _imageController.uploadSingleImage();
+                        },
+                        child: Container(
+                          height: 30.0.h,
+                          width: 30.0.h,
+                          decoration: BoxDecoration(
+                            color: Palette.main,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Icon(
+                            size: 20.0.h,
+                            Icons.camera_alt,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
                     Expanded(
                       child: TextFormField(
+                        controller: _chatMessageController,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(
                             left: 20.0.w,
@@ -256,17 +301,39 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 10.0.w),
-                      child: Container(
-                        height: 30.0.h,
-                        width: 30.0.h,
-                        decoration: BoxDecoration(
-                          color: Palette.main,
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: Icon(
-                          size: 18.0.h,
-                          Icons.send_rounded,
-                          color: Colors.white,
+                      child: InkWell(
+                        onTap: () {
+                          if (_chatMessageController.text.isEmpty) {
+                            CustomSnackBar.messageSnackbar(
+                              context,
+                              "메시지를 입력해주세요.",
+                              EdgeInsets.only(bottom: 45.h, left: 20.w, right: 20.w),
+                            );
+                          } else {
+                            print(chatList);
+                            Chat newChat = Chat(
+                              senderId: loginUser.id,
+                              message: _chatMessageController.text,
+                              messageTime: DateTime.now(),
+                            );
+                            setState(() {
+                              chatList.add(newChat);
+                            });
+                            _chatMessageController.text = '';
+                          }
+                        },
+                        child: Container(
+                          height: 30.0.h,
+                          width: 30.0.h,
+                          decoration: BoxDecoration(
+                            color: Palette.main,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Icon(
+                            size: 18.0.h,
+                            Icons.send_rounded,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),

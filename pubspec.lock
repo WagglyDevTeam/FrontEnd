@@ -555,6 +555,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  modal_side_sheet:
+    dependency: "direct main"
+    description:
+      name: modal_side_sheet
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   package_config:
     dependency: transitive
     description:
@@ -723,6 +730,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  side_sheet:
+    dependency: "direct main"
+    description:
+      name: side_sheet
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   skeletons:
     dependency: "direct main"
     description:

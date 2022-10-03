@@ -13,8 +13,7 @@ final SignInController _signInController = Get.put(SignInController());
 final _token = Hive.box<User>('user').get('user')?.jwtToken;
 
 class PostProvider extends GetConnect {
-  final Map<String, String> authHeaders =
-      _token != null ? {"Authorization": _token!} : {};
+  final Map<String, String> authHeaders = _token != null ? {"Authorization": _token!} : {};
 
   Future<Response> getBoard() => get(
         "${dotenv.get('BASE_URL')}/board?college=social",

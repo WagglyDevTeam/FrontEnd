@@ -52,8 +52,7 @@ class PostRepository {
 
   /// 특정학부 Response
   Future<WagglyResponseDto> getBoardCollege(PostCollegeDto props) async {
-    Response response = await _postProvider.getBoardCollege(
-        props.college!, props.page!, props.size!);
+    Response response = await _postProvider.getBoardCollege(props.college!, props.page!, props.size!);
     dynamic body = response.body;
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
 
@@ -69,8 +68,7 @@ class PostRepository {
     return wagglyResponseDto;
   }
 
-  Future<WagglyResponseDto> postComment(
-      String? postId, CommentRequestDto data) async {
+  Future<WagglyResponseDto> postComment(String? postId, CommentRequestDto data) async {
     Response response = await _postProvider.postComment(postId, data);
     dynamic body = response.body;
     print(body);
@@ -79,8 +77,7 @@ class PostRepository {
     return wagglyResponseDto;
   }
 
-  Future<WagglyResponseDto> postReComment(
-      int commentId, ReCommentRequestDto data) async {
+  Future<WagglyResponseDto> postReComment(int commentId, ReCommentRequestDto data) async {
     Response response = await _postProvider.postReComment(commentId, data);
     dynamic body = response.body;
     print(body);
@@ -89,8 +86,7 @@ class PostRepository {
     return wagglyResponseDto;
   }
 
-  Future<WagglyResponseDto> likeDetailPost(
-      int postId, likeDetailRequestDto data) async {
+  Future<WagglyResponseDto> likeDetailPost(int postId, likeDetailRequestDto data) async {
     Response response = await _postProvider.likeDetailPost(postId, data);
     dynamic body = response.body;
     print(body);
@@ -108,7 +104,7 @@ class PostRepository {
     return wagglyResponseDto;
   }
 
-  Future<void> editBoard(FormData data, value) async {
+  Future<void> editBoard(FormData data, dynamic value) async {
     Response response = await _postProvider.editBoard(data, value);
     dynamic body = response.body;
     print(body);
