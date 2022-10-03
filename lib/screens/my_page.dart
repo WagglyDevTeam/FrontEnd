@@ -24,7 +24,6 @@ class MyPageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double appbarHeight = 68.0.h;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PageAppbar(page: _page, pageTitle: _pageTitle),
@@ -85,6 +84,7 @@ class myPage extends StatelessWidget {
                   onPress: () {
                     controller.fetchData();
                     Get.toNamed('/profileImg');
+                    myProfileController.removeData();
                   },
                   theme: 'small'),
               SizedBox(height: 5.h),
@@ -140,13 +140,14 @@ class myPage extends StatelessWidget {
                         children: [
                           CircleAvatar(
                               radius: 20.0,
-                              backgroundImage:
-                                  myProfileController.profilePic.value != "기본이미지 Url"
-                                      ? NetworkImage(
-                                              myProfileController.profilePic.value)
-                                      : AssetImage(
-                                              "assets/images/defaultProfile.png")
-                                          as ImageProvider),
+                              backgroundImage: myProfileController
+                                          .profilePic.value !=
+                                      "기본이미지 Url"
+                                  ? NetworkImage(
+                                      myProfileController.profilePic.value)
+                                  : AssetImage(
+                                          "assets/images/defaultProfile.png")
+                                      as ImageProvider),
                           if (myProfileController.nicknameBtn.value)
                             Positioned(
                                 bottom: 6.0.h,
@@ -376,6 +377,7 @@ class myPage extends StatelessWidget {
                     ),
                     onTap: () {
                       Get.toNamed('${myPageIcons[index]['page']}');
+                      myProfileController.removeData();
                     },
                   );
                 },

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:waggly/components/post/post_modal.dart';
+import 'package:waggly/controller/myPage/my_profile_controller.dart';
+import 'package:waggly/controller/postDetail/post_detail_controller.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/index.dart';
 import 'package:waggly/widgets/sign_in.dart';
@@ -57,6 +59,7 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
     switch (page) {
       case Status.main:
       case Status.home:
+      case Status.editAlarmOnly:
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -237,7 +240,10 @@ class LoginBtn extends StatelessWidget {
 }
 
 class DetailBtn extends StatelessWidget {
-  const DetailBtn({Key? key}) : super(key: key);
+  DetailBtn({Key? key}) : super(key: key);
+
+  /// 게시판 상세 페이지 GetX 데이터
+  final PostDetailController _postDetailX = Get.put(PostDetailController());
 
   @override
   Widget build(BuildContext context) {
@@ -272,8 +278,13 @@ class DetailBtn extends StatelessWidget {
   buttons() {
     return Column(
       children: [
-        ModalButton(title: '삭제하기', event: () {}),
-        ModalButton(title: '수정하기', event: () {}),
+        ModalButton(
+            title: '삭제하기',
+            event: () {
+              _postDetailX.postDelete(
+                  postId: _postDetailX.postDetail.value.postId ?? 0);
+            }),
+        ModalButton(title: '수정하기', event: () {Get.toNamed("/editPage");}),
       ],
     );
   }
@@ -366,6 +377,7 @@ class AlarmBtn extends StatelessWidget {
       onTap: () async {
         // 알림 페이지로 이동
         await Get.put(NotificationController()).getNotification();
+        await Get.put(MyProfileController()).removeData();
         Get.toNamed('/notification');
       },
       child: Container(

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:waggly/model/post/dtos/post_edit_request_dto.dart';
 import '../../model/post/dtos/post_request_dto.dart';
@@ -22,6 +24,7 @@ class PostController extends GetxController {
     List<dynamic> postsJson = result.datas["posts"];
     List<Post> convertedPosts = postsJson.map((e) => Post.fromJson(e)).toList();
     posts.value = convertedPosts;
+    print(jsonEncode(posts));
     bestPost.value = Post.fromJson(result.datas["bestPost"]);
   }
 
@@ -30,8 +33,5 @@ class PostController extends GetxController {
     await _postRepository.writeBoard(form);
   }
 
-  Future<void> editBoard(PostEditRequestDto postEditRequestDto) async {
-    FormData form = FormData(postEditRequestDto.toJson());
-    await _postRepository.editBoard(form);
-  }
+
 }

@@ -193,3 +193,48 @@ class SelectComment {
         "checkEvent": checkEvent,
       };
 }
+
+class CommentRequestDto {
+  String? commentDesc;
+  bool? anonymous;
+  CommentRequestDto({this.commentDesc, this.anonymous});
+  factory CommentRequestDto.fromJson(Map<String, dynamic> json) =>
+      CommentRequestDto(
+        commentDesc: json['commentDesc'] as String,
+        anonymous: json['anonymous'] as bool,
+      );
+  Map<String, dynamic> toJson() => {
+        "commentDesc": commentDesc,
+        "anonymous": anonymous,
+      };
+}
+
+class ReCommentRequestDto {
+  String? replyDesc;
+  bool? anonymous;
+  ReCommentRequestDto({this.replyDesc, this.anonymous});
+  factory ReCommentRequestDto.fromJson(Map<String, dynamic> json) =>
+      ReCommentRequestDto(
+        replyDesc: json['replyDesc'] as String,
+        anonymous: json['anonymous'] as bool,
+      );
+  Map<String, dynamic> toJson() => {
+        "replyDesc": replyDesc,
+        "anonymous": anonymous,
+      };
+}
+
+class likeDetailRequestDto {
+  int? postLikeCnt;
+  bool? likedByMe;
+  likeDetailRequestDto({this.postLikeCnt, this.likedByMe});
+  factory likeDetailRequestDto.fromJson(Map<String, dynamic> json) =>
+      likeDetailRequestDto(
+        postLikeCnt: json['postLikeCnt'] as int,
+        likedByMe: json['likedByMe'] as bool,
+      );
+  Map<String, dynamic> toJson() => {
+        "postLikeCnt": postLikeCnt,
+        "likedByMe": likedByMe,
+      };
+}

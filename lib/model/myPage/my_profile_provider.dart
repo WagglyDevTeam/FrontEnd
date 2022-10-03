@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:waggly/model/hive/user.dart';
@@ -9,19 +10,19 @@ class MyProfileProvider extends GetConnect {
   final token = Hive.box<User>('user').get('user')?.jwtToken;
 
   Future<Response> modifyProfile(FormData data) => put(
-        "$host/user/profile",
+        "${dotenv.get('BASE_URL')}/user/profile",
         data,
         headers: {"Authorization": token!},
       );
 
   Future<Response> uploadProfileImg(FormData data) => put(
-    "$myHost/user/profile/img",
-    data,
-    headers: {"Authorization": token!},
-  );
+        "${dotenv.get('BASE_URL')}/user/profile/img",
+        data,
+        headers: {"Authorization": token!},
+      );
 
   Future<Response> putIntroduction(data) => put(
-        "$host/user/introduction",
+        "${dotenv.get('BASE_URL')}/user/introduction",
         data,
         headers: {"Authorization": token!},
       );

@@ -18,7 +18,7 @@ class PostScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     bool? on = false;
     bool? off = true;
-    Status? page = Status.login;
+    Status? page = Status.home;
 
     /// getx controller
     final PostHomeController _postDetailX = Get.put(PostHomeController());

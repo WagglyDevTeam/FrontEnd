@@ -226,6 +226,7 @@ class DetailBtn extends StatelessWidget {
         ModalButton(
             title: '수정하기',
             event: () {
+              print("asdasdasd");
               Get.toNamed("/editPage");
             }),
       ],
