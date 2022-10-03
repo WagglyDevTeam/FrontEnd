@@ -7,13 +7,11 @@ import 'package:waggly/components/Post/post_app_bar.dart';
 import 'package:waggly/components/chat/chat_bubble.dart';
 import 'package:waggly/components/snackBar/custom_snack_bar.dart';
 import 'package:waggly/controller/post/image_controller.dart';
-import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/model/chat/chat.dart';
 import 'package:waggly/model/hive/user.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:waggly/utils/time_converter.dart';
 
 Chat chat1 = Chat(senderId: 1, message: "잘 가는거 맞나여", messageTime: DateTime(2022, 1, 2, 12, 34, 01));
 Chat chat2 = Chat(senderId: 1, message: "두번째 메시지 잘 가나여 유저1", messageTime: DateTime(2022, 1, 2, 12, 34, 02));
@@ -46,6 +44,14 @@ List<User> participantList = [];
 TextEditingController _chatMessageController = TextEditingController();
 User loginUser = Hive.box<User>('user').get('user')!;
 bool isOverFlow = false;
+int selectedUserId = 0;
+
+List<String> imageUrlList = [
+  "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/ff74a528-33d1-4119-8123-ddb81f9ead02.jpg",
+  "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/f36e6b05-70e3-4ead-80e5-c7e719bd09d3.jpeg",
+  "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/d999b74b-61e6-4c19-b82d-986341dfaa44.png",
+  "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/cfa56b43-a2c3-45b7-ae3b-9f5be44f1692.png",
+];
 
 class ChatRoomScreen extends StatefulWidget {
   ChatRoomScreen({Key? key}) : super(key: key);
@@ -76,6 +82,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
         postName: _postName,
         page: _page,
       ),
+      endDrawer: endDrawer(),
       body: SafeArea(
         child: Column(
           children: [
@@ -342,6 +349,185 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  SafeArea endDrawer() {
+    return SafeArea(
+      bottom: false,
+      child: SizedBox(
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+          ),
+          child: Drawer(
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: EdgeInsets.only(top: 20.0.h, bottom: 20.0.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0.h, right: 20.0.h),
+                    child: SizedBox(
+                      height: 30.0.h,
+                      child: Text("앨범", style: CommonText.BodyL),
+                    ),
+                  ),
+                  Flexible(
+                    child: Container(
+                      padding: EdgeInsets.only(top: 5.0.h, left: 20.0.h, right: 20.0.h),
+                      child: GridView.builder(
+                        itemCount: imageUrlList.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3, //1 개의 행에 보여줄 item 개수
+                          // childAspectRatio: 1 / 2, //item 의 가로 1, 세로 2 의 비율
+                          mainAxisSpacing: 7, //수평 Padding
+                          crossAxisSpacing: 7, //수직 Padding
+                        ),
+                        itemBuilder: (BuildContext context, int index) {
+                          return SizedBox(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15.0),
+                              child: Image.network(
+                                imageUrlList[index],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0.h, right: 20.0.h),
+                    child: SizedBox(
+                      height: 30.0.h,
+                      child: Text("대화 참여자", style: CommonText.BodyL),
+                    ),
+                  ),
+                  Flexible(
+                    child: ListView.builder(
+                      itemCount: participantList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: EdgeInsets.only(top: 5.0.h, bottom: 5.0.h),
+                          child: Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    if (selectedUserId == 0) {
+                                      selectedUserId = participantList[index].id!;
+                                    } else {
+                                      if (selectedUserId == participantList[index].id!) {
+                                        selectedUserId = 0;
+                                      } else {
+                                        selectedUserId = participantList[index].id!;
+                                      }
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(top: 3.0.h, bottom: 3.0.h),
+                                  color: participantList[index].id! == selectedUserId ? Palette.paper : Colors.white,
+                                  child: Container(
+                                    padding: EdgeInsets.only(left: 20.0.h, right: 20.0.h),
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 5.0.h),
+                                          child: CircleAvatar(
+                                            radius: 14.0,
+                                            backgroundImage: NetworkImage(participantList[index].profileImg!),
+                                          ),
+                                        ),
+                                        Text(
+                                          participantList[index].nickName!,
+                                          style: CommonText.BodyM,
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            alignment: Alignment.centerRight,
+                                            child: Text(
+                                              participantList[index].major!,
+                                              style: CommonText.BodyXSmallGray,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              if (participantList[index].id! == selectedUserId)
+                                Padding(
+                                  padding: EdgeInsets.only(top: 5.0.h, bottom: 5.0.h, left: 20.0.h, right: 20.0.h),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 28.0.h,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Color(0xffDAAFFE)),
+                                      borderRadius: BorderRadius.circular(26),
+                                      color: Colors.white,
+                                    ),
+                                    child: Text(
+                                      "채팅요청",
+                                      style: CommonText.BodyM,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Expanded(child: SizedBox()),
+                  Container(
+                    height: 50.0.h,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(color: Palette.paper),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 20.0.h, right: 20.0.h),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.notifications,
+                            color: Palette.gray,
+                          ),
+                          SizedBox(width: 10.0.w),
+                          SvgPicture.asset(
+                            'assets/icons/pin.svg',
+                            color: Palette.gray,
+                            width: 15.0.w,
+                            height: 15.0.h,
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              child: SvgPicture.asset(
+                                'assets/icons/exit.svg',
+                                color: Palette.gray,
+                                width: 15.0.w,
+                                height: 15.0.h,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );

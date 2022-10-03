@@ -1,11 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:modal_side_sheet/modal_side_sheet.dart';
-import 'package:side_sheet/side_sheet.dart';
 import 'package:waggly/components/post/post_modal.dart';
 
 import '../../utils/colors.dart';
@@ -20,7 +16,7 @@ class PostAppbar extends StatelessWidget implements PreferredSizeWidget {
   final Status page;
 
   @override
-  Size get preferredSize => const Size.fromHeight(68);
+  Size get preferredSize => page == Status.chatRoom ? Size.fromHeight(55) : Size.fromHeight(68);
 
   const PostAppbar({Key? key, required this.postName, required this.page}) : super(key: key);
 
@@ -392,27 +388,51 @@ class ChatRoomBtns extends StatelessWidget {
                     )),
                 Line(),
                 ActionButton(
-                    // event: () => Navigator.of(context).pop(),
-                    event: () => showModalSideSheet(
-                          context: context,
-                          body: Column(
-                            children: [
-                              Container(
-                                height: 100,
-                              ),
-                              Container(
-                                height: 100,
-                                width: 100,
-                                color: Colors.red,
-                              ),
-                              Container(
-                                height: 300,
-                                width: 100,
-                                color: Colors.red,
-                              )
-                            ],
-                          ),
-                        ),
+                    event: () => Scaffold.of(context).openEndDrawer(),
+                    // event: () => SideSheet.right(
+                    //     barrierDismissible: true,
+                    //     width: MediaQuery.of(context).size.width / 5 * 3,
+                    //     body: SafeArea(
+                    //       child: Column(
+                    //         children: [
+                    //           Center(
+                    //             child: Container(
+                    //               color: Colors.red,
+                    //               height: 100,
+                    //               width: 100,
+                    //             ),
+                    //           ),
+                    //           Center(
+                    //             child: Container(
+                    //               color: Colors.blueGrey,
+                    //               height: 100,
+                    //               width: 100,
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //     context: context),
+                    // event: () => showModalSideSheet(
+                    //       context: context,
+                    //       body: Column(
+                    //         children: [
+                    //           Container(
+                    //             height: 100,
+                    //           ),
+                    //           Container(
+                    //             height: 100,
+                    //             width: 100,
+                    //             color: Colors.red,
+                    //           ),
+                    //           Container(
+                    //             height: 300,
+                    //             width: 100,
+                    //             color: Colors.red,
+                    //           )
+                    //         ],
+                    //       ),
+                    //     ),
                     isIcon: Icon(
                       Icons.more_horiz,
                       color: Palette.gray,
