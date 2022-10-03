@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:waggly/model/hive/user.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/utils/time_converter.dart';
 
 class ChatBubble extends StatelessWidget {
-  const ChatBubble(
-      {Key? key,
-      required this.message,
-      required this.isMyMessage,
-      required this.isSameTime,
-      required this.isSamePerson,
-      required this.user,
-      required this.datetime})
-      : super(key: key);
+  const ChatBubble({
+    Key? key,
+    required this.message,
+    required this.isMyMessage,
+    required this.isSameTime,
+    required this.isSamePerson,
+    required this.user,
+    required this.datetime,
+    required this.isSameDate,
+  }) : super(key: key);
 
   final String message;
   final DateTime datetime;
   final bool isMyMessage;
   final bool isSameTime;
   final bool isSamePerson;
+  final bool isSameDate;
   final User user;
 
   @override
@@ -28,6 +31,18 @@ class ChatBubble extends StatelessWidget {
     return Column(
       crossAxisAlignment: isMyMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
+        if (!isSameDate)
+          Center(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 20.0.h, top: 10.0.h),
+              child: SizedBox(
+                child: Text(
+                  DateFormat('yyyy.MM.dd ${convertWeekDayToKorean(datetime.weekday)}').format(datetime),
+                  style: CommonText.BodyMediumGray,
+                ),
+              ),
+            ),
+          ),
         if (!isSamePerson && !isMyMessage)
           Padding(
             padding: EdgeInsets.only(top: 10.0.h, bottom: 5.0.h),

@@ -44,25 +44,24 @@ class WritePage extends StatelessWidget {
   WritePage(this.type, {Key? key}) : super(key: key);
 
   void buttonActivateCheck() {
-    if (_title!.text.isBlank == true ||
-        extractHashTags(_hashtag.text).isEmpty ||
-        _content!.text.isBlank == true) {
+    if (_title!.text.isBlank == true || extractHashTags(_hashtag.text).isEmpty || _content!.text.isBlank == true) {
       _postController.isButtonActivate.value = false;
     } else {
       _postController.isButtonActivate.value = true;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     var _page = Status.edit;
     var _os = Platform.operatingSystem;
     const _postName = "게시글 작성";
-    if(type == "edit"){
+    if (type == "edit") {
       postEditController.updatePostEditData();
       _imageController.getImagesUrl(postEditController.postEditData.value.postImages);
       _title = TextEditingController(text: postEditController.postEditData.value.postTitle);
       _content = TextEditingController(text: postEditController.postEditData.value.postDesc);
-    }else{
+    } else {
       _imageController.getImagesUrl([]);
       _title = TextEditingController();
       _content = TextEditingController();
@@ -124,7 +123,14 @@ class WritePage extends StatelessWidget {
                   ),
                 ),
               ), // 내용 영역
-              Obx(() => PhotoWidget(imageController: _imageController,imageUrlLength: _imageController.imagesUrl.length,imagesLength:_imageController.images!.length, length: _imageController.showImages.length, type: "write"),),
+              Obx(
+                () => PhotoWidget(
+                    imageController: _imageController,
+                    imageUrlLength: _imageController.imagesUrl.length,
+                    imagesLength: _imageController.images!.length,
+                    length: _imageController.showImages.length,
+                    type: "write"),
+              ),
               // Obx(
               //   () =>
               //     PhotoWidget(imageController: _imageController, length: _imageController.images!.length, type: "write")
@@ -137,7 +143,7 @@ class WritePage extends StatelessWidget {
                     children: [
                       IconButton(
                           onPressed: () async {
-                            await _imageController.getImage();
+                            await _imageController.uploadMultipleImages();
                           },
                           icon: SvgPicture.asset(
                             "assets/icons/photo_camera.svg",
@@ -176,21 +182,23 @@ class WritePage extends StatelessWidget {
                 child: SizedBox(
                   height: _buttonAreaHeight.h,
                   child: Container(
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      height: _bottomButtonHeight.h,
-                      decoration: BoxDecoration(
-                        color: Palette.main,
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: TextButton(
-                        onPressed: () async {type == "edit" ? await editPost(_title!.text, _content!.text, "SOCIAL") : await writePost();},
-                        child: Text(
-                          "게시글 작성하기",
-                          style: CommonText.BodyBoldWhite,
-                        ),
+                    alignment: Alignment.center,
+                    width: double.infinity,
+                    height: _bottomButtonHeight.h,
+                    decoration: BoxDecoration(
+                      color: Palette.main,
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: TextButton(
+                      onPressed: () async {
+                        type == "edit" ? await editPost(_title!.text, _content!.text, "SOCIAL") : await writePost();
+                      },
+                      child: Text(
+                        "게시글 작성하기",
+                        style: CommonText.BodyBoldWhite,
                       ),
                     ),
+                  ),
                   // child: BottomLongButton(
                   //   controller: _postController,
                   //   text: "게시글 작성하기",
@@ -233,35 +241,36 @@ class WritePage extends StatelessWidget {
 
   Future<void> editPost(title, description, college) async {
     List<MultipartFile> file = imageToMultipartFile();
-    await _postController.editBoard(PostEditRequestDto(title, description, college, file, _imageController.parseToStringList()));
+    await _postController
+        .editBoard(PostEditRequestDto(title, description, college, file, _imageController.parseToStringList()));
   }
 
   Future<void> writePost() async {
     print(_content!.text);
-        List<MultipartFile> file = imageToMultipartFile();
-        List<String> hashtags = extractHashTags(_hashtag.text);
-        await _postController.writeBoard(
-          PostRequestDto(
-            _title!.text,
-            _content!.text,
-            "SOCIAL",
-            false,
-            hashtags,
-            file,
-          ),
-        );
+    List<MultipartFile> file = imageToMultipartFile();
+    List<String> hashtags = extractHashTags(_hashtag.text);
+    await _postController.writeBoard(
+      PostRequestDto(
+        _title!.text,
+        _content!.text,
+        "SOCIAL",
+        false,
+        hashtags,
+        file,
+      ),
+    );
   }
 }
 
 class PhotoWidget extends StatelessWidget {
-  const PhotoWidget({
-    Key? key,
-    required this.imageController,
-    required this.imagesLength,
-    required this.imageUrlLength,
-    required this.length,
-    required this.type
-  }) : super(key: key);
+  const PhotoWidget(
+      {Key? key,
+      required this.imageController,
+      required this.imagesLength,
+      required this.imageUrlLength,
+      required this.length,
+      required this.type})
+      : super(key: key);
 
   final int length;
   final int imagesLength;
@@ -283,7 +292,7 @@ class PhotoWidget extends StatelessWidget {
               itemCount: imageUrlLength + imagesLength,
               itemBuilder: (ctx, index) {
                 print(index);
-                if(index < imageUrlLength){
+                if (index < imageUrlLength) {
                   return Row(
                     children: [
                       if (index == 0) SizedBox(width: 20.0.w),
@@ -321,7 +330,7 @@ class PhotoWidget extends StatelessWidget {
                       ),
                     ],
                   );
-                }else{
+                } else {
                   return Row(
                     children: [
                       Container(
@@ -334,7 +343,7 @@ class PhotoWidget extends StatelessWidget {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(18.0),
                               child: Image.file(
-                                File(imageController.images![index-imageUrlLength].path),
+                                File(imageController.images![index - imageUrlLength].path),
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -344,7 +353,7 @@ class PhotoWidget extends StatelessWidget {
                               child: InkWell(
                                 onTap: () {
                                   var list = imageController.showImages[1];
-                                  imageController.showImages[1].removeAt(index-imageUrlLength);
+                                  imageController.showImages[1].removeAt(index - imageUrlLength);
                                 },
                                 child: SvgPicture.asset(
                                   "assets/icons/cancel.svg",
@@ -356,7 +365,7 @@ class PhotoWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      if (index == imagesLength-1) SizedBox(width: 20.0.w),
+                      if (index == imagesLength - 1) SizedBox(width: 20.0.w),
                     ],
                   );
                 }
