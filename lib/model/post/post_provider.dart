@@ -102,7 +102,7 @@ class PostProvider extends GetConnect {
     );
   }
 
-  Future<Response> editBoard(FormData data, dynamic value) {
+  Future<Response> editBoard(FormData data, value) {
     final box = Hive.box<User>('user');
     var token = box.get('user')?.jwtToken;
     print("여기임");

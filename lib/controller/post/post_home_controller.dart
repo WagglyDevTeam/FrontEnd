@@ -22,6 +22,9 @@ class PostHomeController extends GetxController {
   /// 특정학부 페이지 인기글 로드 상태데이터
   final bestPostOn = false.obs;
 
+  /// 특정 학부 페이징
+  final postPage = 0.obs;
+
   /// 특정학부 페이지 게시물 상태데이터
   final postCollegeData = [PostSpecificData()].obs;
 
@@ -47,28 +50,71 @@ class PostHomeController extends GetxController {
   }
 
   /// 게시판 특정학과 페이지 post data get
-  Future<void> getBoardCollege(PostCollegeDto college) async {
+  Future<void> getBoardCollege(String? collegeId) async {
+    PostCollegeDto college =
+        PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
     WagglyResponseDto result = await _postRepository.getBoardCollege(college);
     dynamic bestJson = result.datas["bestPost"];
     dynamic postJson = result.datas["posts"];
     if (bestJson != null) {
       PostSpecificData bestPostData = PostSpecificData.fromJson(bestJson);
       bestPostCollegeData.value = bestPostData;
+      postPage.value++;
       bestPostOn.value = true;
-      print('best OK');
     } else {
       bestPostOn.value = false;
-      print('best no');
     }
     if (postJson != []) {
       List<PostSpecificData> postData = List<PostSpecificData>.from(
           postJson.map((x) => PostSpecificData.fromJson(x)).toList());
       postCollegeData.value = postData;
+      print(postCollegeData.value);
+      postCollegeData.refresh();
       normalPostOn.value = true;
-      print("post OK");
     } else {
       normalPostOn.value = false;
-      print('post No');
     }
+  }
+
+  Future<void> getBoardPaging(String? collegeId) async {
+    PostCollegeDto college =
+        PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
+    WagglyResponseDto result = await _postRepository.getBoardCollege(college);
+    dynamic bestJson = result.datas["bestPost"];
+    dynamic postJson = result.datas["posts"];
+    if (bestJson != null) {
+      PostSpecificData bestPostData = PostSpecificData.fromJson(bestJson);
+      bestPostCollegeData.value = bestPostData;
+      postPage.value++;
+      bestPostOn.value = true;
+    } else {
+      bestPostOn.value = false;
+    }
+    if (postJson != []) {
+      List<PostSpecificData> postData = List<PostSpecificData>.from(
+          postJson.map((x) => PostSpecificData.fromJson(x)).toList());
+
+      postCollegeData.value.addAll(postData);
+      postCollegeData.refresh();
+      normalPostOn.value = true;
+    } else {
+      normalPostOn.value = false;
+    }
+  }
+
+  Future<void> postListReset() async {
+    postPage.value = 0;
+    bestPostCollegeData.value = PostSpecificData();
+    bestPostOn.value = false;
+    postCollegeData.value = [PostSpecificData()];
+    normalPostOn.value = false;
+  }
+
+  Future<void> postHomeReset() async {
+    userCollegeData.value =
+        PostCollegeData(collegeTypeName: '', collegeType: '', posts: []);
+    otherCollegeData.value = [
+      PostCollegeData(collegeTypeName: '', collegeType: '', posts: [])
+    ];
   }
 }
