@@ -61,6 +61,7 @@ class PostProvider extends GetConnect {
       headers: {"Authorization": token!},
     );
   }
+
   /// POST comment
   Future<Response> postComment(String? postId, CommentRequestDto data) {
     final box = Hive.box<User>('user');
@@ -102,7 +103,7 @@ class PostProvider extends GetConnect {
     );
   }
 
-  Future<Response> editBoard(FormData data) {
+  Future<Response> editBoard(FormData data, value) {
     final box = Hive.box<User>('user');
     var token = box.get('user')?.jwtToken;
     print("여기임");
