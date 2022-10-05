@@ -114,17 +114,28 @@ class ChatBubble extends StatelessWidget {
                           Divider(thickness: 1, color: Palette.candy),
                           SizedBox(height: 10.h),
                           Container(
-                            alignment: Alignment.center,
-                            width: 120,
-                            child: DropdownButtonFormField(
-                              // decoration: InputDecoration(
-                              //   border: OutlineInputBorder(),
-                              // ),
-                              hint: Center(child: Text("신고 사유 선택")),
-                              items: reasonList.map((e) => DropdownMenuItem(child: Text(e), value: e)).toList(),
-                              onChanged: (value){
-                                print(value);
-                              },
+                            alignment: Alignment.centerRight,
+                            width: 150.w,
+                            height: 60.h,
+                            // decoration: BoxDecoration(
+                            //   border: Border.all(color: Colors.red, width: 1.0.w)
+                            // ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                              child: DropdownButtonFormField(
+                                decoration: InputDecoration(
+                                  hintText: "신고 사유 선택",
+                                  hintStyle: CommonText.BodyMediumGray,
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.red, width: 1)
+                                  )
+                                ),
+                                alignment: Alignment.centerLeft,
+                                items: reasonList.map((e) => DropdownMenuItem(child: Text(e, style: CommonText.BodyM,), value: e)).toList(),
+                                onChanged: (value){
+                                  print(value);
+                                },
+                              ),
                             ),
                           ),
                           SizedBox(height: 20.h),
