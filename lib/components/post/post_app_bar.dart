@@ -389,50 +389,6 @@ class ChatRoomBtns extends StatelessWidget {
                 Line(),
                 ActionButton(
                     event: () => Scaffold.of(context).openEndDrawer(),
-                    // event: () => SideSheet.right(
-                    //     barrierDismissible: true,
-                    //     width: MediaQuery.of(context).size.width / 5 * 3,
-                    //     body: SafeArea(
-                    //       child: Column(
-                    //         children: [
-                    //           Center(
-                    //             child: Container(
-                    //               color: Colors.red,
-                    //               height: 100,
-                    //               width: 100,
-                    //             ),
-                    //           ),
-                    //           Center(
-                    //             child: Container(
-                    //               color: Colors.blueGrey,
-                    //               height: 100,
-                    //               width: 100,
-                    //             ),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     context: context),
-                    // event: () => showModalSideSheet(
-                    //       context: context,
-                    //       body: Column(
-                    //         children: [
-                    //           Container(
-                    //             height: 100,
-                    //           ),
-                    //           Container(
-                    //             height: 100,
-                    //             width: 100,
-                    //             color: Colors.red,
-                    //           ),
-                    //           Container(
-                    //             height: 300,
-                    //             width: 100,
-                    //             color: Colors.red,
-                    //           )
-                    //         ],
-                    //       ),
-                    //     ),
                     isIcon: Icon(
                       Icons.more_horiz,
                       color: Palette.gray,
