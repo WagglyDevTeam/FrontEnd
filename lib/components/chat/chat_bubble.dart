@@ -89,13 +89,9 @@ class ChatBubble extends StatelessWidget {
                 ),
               ),
             InkWell(
-              // onLongPress: () {
-              onTap: () {
-                print("확인");
+              onLongPress: () {
                 showModalBottomSheet(
-                  //드래그 안되게~
                   enableDrag: false,
-                  //modal 위치 외에 클릭 안되게 하는것
                   isDismissible: true,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
@@ -113,30 +109,24 @@ class ChatBubble extends StatelessWidget {
                           SizedBox(height: 5.h),
                           Divider(thickness: 1, color: Palette.candy),
                           SizedBox(height: 10.h),
-                          Container(
-                            alignment: Alignment.centerRight,
-                            width: 150.w,
-                            height: 60.h,
-                            // decoration: BoxDecoration(
-                            //   border: Border.all(color: Colors.red, width: 1.0.w)
-                            // ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                              child: DropdownButtonFormField(
-                                decoration: InputDecoration(
-                                  hintText: "신고 사유 선택",
-                                  hintStyle: CommonText.BodyMediumGray,
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.red, width: 1)
-                                  )
-                                ),
-                                alignment: Alignment.centerLeft,
-                                items: reasonList.map((e) => DropdownMenuItem(child: Text(e, style: CommonText.BodyM,), value: e)).toList(),
-                                onChanged: (value){
-                                  print(value);
-                                },
-                              ),
+                          DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              isDense: true,
+                              constraints: BoxConstraints.tight(Size(150, 50)),
+                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Palette.main, width: 1)),
+                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Palette.main, width: 1)),
+                              hintText: "신고 사유 선택",
+                              hintStyle: CommonText.BodyMediumGray,
+                              hintMaxLines: 1,
+                              // border: OutlineInputBorder(borderSide: BorderSide(color: Colors.red, width: 1)),
                             ),
+                            alignment: Alignment.centerLeft,
+                            items: reasonList
+                                .map((e) => DropdownMenuItem(alignment: Alignment.center, child: Text(e, style: CommonText.BodyM), value: e))
+                                .toList(),
+                            onChanged: (value) {
+                              print(value);
+                            },
                           ),
                           SizedBox(height: 20.h),
                           Row(
