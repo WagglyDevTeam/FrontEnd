@@ -284,7 +284,11 @@ class DetailBtn extends StatelessWidget {
               _postDetailX.postDelete(
                   postId: _postDetailX.postDetail.value.postId ?? 0);
             }),
-        ModalButton(title: '수정하기', event: () {Get.toNamed("/editPage");}),
+        ModalButton(
+            title: '수정하기',
+            event: () {
+              Get.toNamed("/editPage");
+            }),
       ],
     );
   }
@@ -377,7 +381,6 @@ class AlarmBtn extends StatelessWidget {
       onTap: () async {
         // 알림 페이지로 이동
         await Get.put(NotificationController()).getNotification();
-        await Get.put(MyProfileController()).removeData();
         Get.toNamed('/notification');
       },
       child: Container(

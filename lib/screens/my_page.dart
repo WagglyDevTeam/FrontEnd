@@ -102,24 +102,10 @@ class myPage extends StatelessWidget {
     );
   }
 
-  // Future pickImage() async {
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  //
-  //     if (image == null) return;
-  //
-  //     final imageTemp = File(image.path);
-  //     debugPrint('data: $imageTemp');
-  //
-  //     myProfileController.profilePic.value = imageTemp.toString();
-  //     //setState(() => this.image = imageTemp);
-  //   } on PlatformException catch (e) {
-  //     print('failed to pick image: $e');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
+    //controller 페이지 떠나면 라이프사이클 죽이기
+    Get.delete<MyProfileController>();
     return Stack(children: [
       //close button
       Column(
