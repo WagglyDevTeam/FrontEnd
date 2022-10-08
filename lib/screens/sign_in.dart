@@ -8,7 +8,6 @@ import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/input_validator.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/Button/button.dart';
-import 'package:waggly/components/SignIn/Checkbox/checkbox.dart';
 import 'package:waggly/components/SignIn/BottomTextButton/bottom_text_button.dart';
 import 'package:waggly/screens/home.dart';
 import 'package:waggly/widgets/index.dart';
@@ -55,7 +54,7 @@ class _SignInState extends State<SignInScreen> {
                 SignInHeader(),
                 RenderTextFormField(placeholder: '학교 이메일', controller: _emailController),
                 RenderTextFormField(placeholder: '비밀번호', controller: _passwordController),
-                CustomCheckbox(),
+                // CustomCheckbox(text: '자동로그인'),
                 Padding(
                   padding: EdgeInsets.fromLTRB(18, 8, 18, 0),
                   child: Obx(
@@ -64,14 +63,16 @@ class _SignInState extends State<SignInScreen> {
                       height: 36.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(26),
-                          color: _signInController.emailInputEmpty.value == false && _signInController.passwordInputEmpty.value == false
+                          color: _signInController.emailInputEmpty.value == false &&
+                                  _signInController.passwordInputEmpty.value == false
                               ? Color(0xffB863FB)
                               : Color(0xffE8E8E8)),
                       child: TextButton(
                         child: Text(
                           '시작하기',
                           style: TextStyle(
-                            color: _signInController.emailInputEmpty.value == false && _signInController.passwordInputEmpty.value == false
+                            color: _signInController.emailInputEmpty.value == false &&
+                                    _signInController.passwordInputEmpty.value == false
                                 ? Color(0xffFFFFFF)
                                 : Palette.mdGray,
                             fontSize: 12.sp,
@@ -88,7 +89,8 @@ class _SignInState extends State<SignInScreen> {
                               EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
                             );
                           } else {
-                            final result = await _signInController.signIn(SignInRequestDto(_emailController.text, _passwordController.text));
+                            final result = await _signInController
+                                .signIn(SignInRequestDto(_emailController.text, _passwordController.text));
                             if (result.code == 200) {
                               Get.offAllNamed("/");
                             } else {

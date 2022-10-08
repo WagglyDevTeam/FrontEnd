@@ -7,6 +7,7 @@ class CustomTextFormField extends StatelessWidget {
   final validator;
   final String? initialValue;
   final controller;
+  final onEditingComplete;
   final onChanged;
 
   CustomTextFormField({
@@ -15,6 +16,7 @@ class CustomTextFormField extends StatelessWidget {
     this.initialValue,
     this.controller,
     this.maxLines,
+    this.onEditingComplete,
     this.onChanged,
   });
 
@@ -26,8 +28,12 @@ class CustomTextFormField extends StatelessWidget {
       maxLines: maxLines ?? 1,
       initialValue: initialValue,
       validator: validator,
-      onEditingComplete: () {
+      onChanged: (value) {
+        print(value);
         onChanged();
+      },
+      onEditingComplete: () {
+        onEditingComplete;
       },
       autocorrect: false,
       decoration: InputDecoration(
