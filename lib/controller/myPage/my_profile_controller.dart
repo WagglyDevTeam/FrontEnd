@@ -37,6 +37,12 @@ class MyProfileController extends GetxController {
     print(nickname.value);
   }
 
+  @override
+  void onClose() async {
+    await removeData();
+    super.onClose();
+  }
+
   Future<void> removeData() async {
     bioBtn.value = false;
   }

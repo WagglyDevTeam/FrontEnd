@@ -112,16 +112,16 @@ class HeroApp extends StatelessWidget {
             GetPage(
                 name: "/myPage",
                 page: () => MyPageScreen(),
-                transition: Transition.rightToLeft,
-                binding: BindingsBuilder<MyProfileController>(() {
-                  Get.put(() {
-                    return MyProfileController();
-                  });
-                })),
+                transition: Transition.rightToLeft),
             GetPage(
                 name: "/chatEdit",
                 page: () => ChatEditScreen(),
-                transition: Transition.rightToLeft),
+                transition: Transition.rightToLeft,
+                binding: BindingsBuilder<SignInController>(() {
+                  Get.put(() {
+                    return SignInController();
+                  });
+                })),
             GetPage(
                 name: "/signInPage",
                 page: () => SignInScreen(),
