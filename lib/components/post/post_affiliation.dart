@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:waggly/components/Post/post_common.dart';
+import 'package:waggly/widgets/header/page_appbar.dart';
 import '../../controller/post/post_home_controller.dart';
 import '../../model/post/dtos/post_college_dto.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
-import './post_app_bar.dart';
 import 'package:skeletons/skeletons.dart';
 
 class PostAffiliation extends StatefulWidget {
@@ -19,7 +19,6 @@ class PostAffiliation extends StatefulWidget {
 class _PostAffiliation extends State<PostAffiliation> {
   _PostAffiliation({Key? key});
   final ScrollController _scrollController = ScrollController();
-  final String postName = Get.parameters['collegeName'] ?? "";
   final _postDetailX = Get.put(PostHomeController());
   scrollListener() async {
     if (_scrollController.offset ==
@@ -51,12 +50,12 @@ class _PostAffiliation extends State<PostAffiliation> {
 
   @override
   Widget build(BuildContext context) {
-    var page = Status.home;
-
+    final String postName = Get.parameters['collegeName'] ?? "";
+    var _page = Status.boardTitle;
+    var _pageTitle = _postDetailX.bestPostOn.value ? "로딩 중" : postName;
     return Scaffold(
-        appBar: PostAppbar(
-            postName: _postDetailX.bestPostOn.value ? "로딩 중" : postName,
-            page: page),
+        backgroundColor: Colors.white,
+        appBar: PageAppbar(page: _page, pageTitle: _pageTitle),
         body: Container(
           decoration: BoxDecoration(color: Colors.white),
           child: Obx(() => ListView.builder(
@@ -68,7 +67,8 @@ class _PostAffiliation extends State<PostAffiliation> {
                   if (index == 0) {
                     /**인기 글*/
                     return Container(
-                      padding: EdgeInsets.all(16.w),
+                      padding: EdgeInsets.only(
+                          left: 16.w, right: 16.w, top: 8.w, bottom: 16.w),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,11 +223,12 @@ class PostContext extends StatelessWidget {
     this.postName,
   }) : super(key: key);
 
+  final _postDetailX = Get.put(PostHomeController());
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () =>
-          Get.toNamed("/postDetail/param?postId=$postId&collegeName=인문계열"),
+          {Get.toNamed("/postDetail/param?postId=$postId&collegeName=인문계열")},
       child: Column(
         children: [
           Row(

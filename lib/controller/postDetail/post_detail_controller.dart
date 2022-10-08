@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:waggly/controller/post/post_home_controller.dart';
 import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 import '../../model/hive/user.dart';
 import '../../model/post/dtos/post_edit_request_dto.dart';
@@ -11,6 +12,7 @@ import '../../model/post/dtos/waggly_response_dto.dart';
 import '../../model/post/post_repository.dart';
 
 class PostDetailController extends GetxController {
+  final PostHomeController postHome = PostHomeController();
   final PostRepository _postRepository = PostRepository();
   final postDetail = PostDetailData().obs;
   final postId = "".obs;
@@ -161,13 +163,6 @@ class PostDetailController extends GetxController {
     }
   }
 
-  Future<void> postDelete({required int postId}) async {
-    WagglyResponseDto result = await _postRepository.PostDelete(postId);
-    if (result.code == 200) {
-      Get.toNamed("/post");
-    }
-  }
-
   /// 게시판 상세 페이지 댓글 좋아요
   Future<void> updateLikeBoardComment({required int commentId}) async {
     print("$commentId comment");
@@ -223,10 +218,10 @@ class PostDetailController extends GetxController {
     return postDetail.value;
   }
 
-  void updatePostId(value){
+  void updatePostId(value) {
     postId.value = value;
-
   }
+
   Future<void> editBoard(PostEditRequestDto postEditRequestDto) async {
     FormData form = FormData(postEditRequestDto.toJson());
     await _postRepository.editBoard(form, postId);

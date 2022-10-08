@@ -22,9 +22,8 @@ class PostDetail extends StatelessWidget {
   PostDetail({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // const postId = "아이디";
-
     late String _pageTitle = "${Get.parameters['collegeName']}";
+
     var _page = Status.boardDetail;
     return Scaffold(
       backgroundColor: Colors.white,
