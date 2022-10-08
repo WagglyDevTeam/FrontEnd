@@ -2,29 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:waggly/components/post/post_modal.dart';
-import 'package:waggly/controller/myPage/my_profile_controller.dart';
+import 'package:waggly/controller/post/post_controller.dart';
 import 'package:waggly/controller/postDetail/post_detail_controller.dart';
 import 'package:waggly/utils/text_frame.dart';
-import 'package:waggly/widgets/index.dart';
-import 'package:waggly/widgets/sign_in.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 
-enum Status {
-  home,
-  main,
-  board,
-  boardTitle,
-  detail,
-  boardDetail,
-  edit,
-  login,
-  setting,
-  editAlarmOnly,
-  chatList
-}
+enum Status { home, main, board, boardTitle, detail, boardDetail, edit, login, setting, editAlarmOnly, chatList }
 
 class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String pageTitle;
@@ -35,8 +21,7 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(appbarHeight);
 
-  PageAppbar({Key? key, required this.pageTitle, required this.page})
-      : super(key: key);
+  PageAppbar({Key? key, required this.pageTitle, required this.page}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,10 +60,7 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox.shrink(),
-            Text(pageTitle, style: CommonText.TitleL)
-          ],
+          children: [SizedBox.shrink(), Text(pageTitle, style: CommonText.TitleL)],
         );
       default:
         return Row(
@@ -102,9 +84,7 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
             SizedBox(
               width: 8.w,
             ),
-            Container(
-                padding: EdgeInsets.only(bottom: 3.h),
-                child: Text(pageTitle, style: CommonText.BodyL))
+            Container(padding: EdgeInsets.only(bottom: 3.h), child: Text(pageTitle, style: CommonText.BodyL))
           ],
         );
     }
@@ -118,7 +98,6 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
         } else {
           return LoginBtn();
         }
-        ;
       case Status.boardTitle:
         return ActionBtn();
       case Status.login:
@@ -157,7 +136,10 @@ class ActionBtn extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ActionButton(
-              event: () => Get.toNamed("/writePage"),
+              event: () {
+                Get.put(PostController());
+                Get.toNamed("/writePage");
+              },
               isIcon: Icon(
                 Icons.add,
                 color: Palette.gray,
@@ -257,11 +239,7 @@ class DetailBtn extends StatelessWidget {
       Navigator.pop(context);
     }
 
-    PostModal modalOn = PostModal(
-        context: context,
-        contents: buttons(),
-        height: modalHeight,
-        title: title);
+    PostModal modalOn = PostModal(context: context, contents: buttons(), height: modalHeight, title: title);
     return GestureDetector(
       onTap: () => {modalOn.ModalOn()},
       child: Container(
@@ -281,8 +259,7 @@ class DetailBtn extends StatelessWidget {
         ModalButton(
             title: '삭제하기',
             event: () {
-              _postDetailX.postDelete(
-                  postId: _postDetailX.postDetail.value.postId ?? 0);
+              _postDetailX.postDelete(postId: _postDetailX.postDetail.value.postId ?? 0);
             }),
         ModalButton(
             title: '수정하기',
@@ -298,8 +275,7 @@ class ActionButton extends StatelessWidget {
   final Icon isIcon;
   final void Function()? event;
 
-  ActionButton({Key? key, required this.isIcon, required this.event})
-      : super(key: key);
+  ActionButton({Key? key, required this.isIcon, required this.event}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

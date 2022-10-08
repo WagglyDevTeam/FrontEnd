@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 import 'package:waggly/model/post/post_provider.dart';
@@ -26,11 +24,13 @@ class PostRepository {
     }
   }
 
-  /// 메인 홈 Response
-  Future<void> writeBoard(FormData data) async {
+  // 글쓰기 Response
+  Future<WagglyResponseDto> writeBoard(FormData data) async {
     Response response = await _postProvider.writeBoard(data);
     dynamic body = response.body;
-    print(body);
+
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+    return wagglyResponseDto;
   }
 
   /// 메인 홈 Response

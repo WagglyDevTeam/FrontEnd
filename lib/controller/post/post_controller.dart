@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:waggly/model/post/dtos/post_edit_request_dto.dart';
 import '../../model/post/dtos/post_request_dto.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
 import '../../model/post/post.dart';
@@ -12,6 +11,7 @@ class PostController extends GetxController {
   final posts = <Post>[].obs;
   final bestPost = Post().obs;
   final isButtonActivate = false.obs;
+  final checkBox = false.obs;
 
   @override
   void onInit() async {
@@ -28,10 +28,10 @@ class PostController extends GetxController {
     bestPost.value = Post.fromJson(result.datas["bestPost"]);
   }
 
-  Future<void> writeBoard(PostRequestDto postRequestDto) async {
+  Future<WagglyResponseDto> writeBoard(PostRequestDto postRequestDto) async {
     FormData form = FormData(postRequestDto.toJson());
-    await _postRepository.writeBoard(form);
+    WagglyResponseDto result = await _postRepository.writeBoard(form);
+
+    return result;
   }
-
-
 }
