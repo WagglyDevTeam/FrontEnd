@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
 import '../../model/post/post_repository.dart';
@@ -37,7 +39,7 @@ class PostHomeController extends GetxController {
     await getHomeBoard();
   }
 
-  /// 게시판 홈 post data get d
+  /// 게시판 홈 post data get
   Future<void> getHomeBoard() async {
     WagglyResponseDto result = await _postRepository.getBoardHome();
     dynamic userCollegeJson = result.datas["userCollegePosts"];
@@ -76,20 +78,12 @@ class PostHomeController extends GetxController {
     }
   }
 
+  /// 게시판 페이징 get
   Future<void> getBoardPaging(String? collegeId) async {
     PostCollegeDto college =
         PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
     WagglyResponseDto result = await _postRepository.getBoardCollege(college);
-    dynamic bestJson = result.datas["bestPost"];
     dynamic postJson = result.datas["posts"];
-    if (bestJson != null) {
-      PostSpecificData bestPostData = PostSpecificData.fromJson(bestJson);
-      bestPostCollegeData.value = bestPostData;
-      postPage.value++;
-      bestPostOn.value = true;
-    } else {
-      bestPostOn.value = false;
-    }
     if (postJson != []) {
       List<PostSpecificData> postData = List<PostSpecificData>.from(
           postJson.map((x) => PostSpecificData.fromJson(x)).toList());
@@ -102,6 +96,20 @@ class PostHomeController extends GetxController {
     }
   }
 
+  /// 게시물 삭제
+  Future<void> deleteBoard(int postId) async {
+    WagglyResponseDto result = await _postRepository.PostDelete(postId);
+    for (var i = 0; i < postCollegeData.length; i++) {
+      if (postCollegeData[i].postId == postId) {
+        postCollegeData.remove(postCollegeData[i]);
+        update();
+        postCollegeData.refresh();
+        return;
+      }
+    }
+  }
+
+  /// 게시물 리스트 상태값 초기화
   Future<void> postListReset() async {
     postPage.value = 0;
     bestPostCollegeData.value = PostSpecificData();
@@ -110,6 +118,7 @@ class PostHomeController extends GetxController {
     normalPostOn.value = false;
   }
 
+  /// 게시물 홈 상태값 초기화
   Future<void> postHomeReset() async {
     userCollegeData.value =
         PostCollegeData(collegeTypeName: '', collegeType: '', posts: []);

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:waggly/components/post/post_modal.dart';
+import 'package:waggly/controller/post/post_home_controller.dart';
 import 'package:waggly/controller/postDetail/post_detail_controller.dart';
+import 'package:waggly/model/hive/user.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/index.dart';
 import 'package:waggly/widgets/sign_in.dart';
@@ -10,6 +13,8 @@ import 'package:waggly/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
+
+import '../../screens/post.dart';
 
 enum Status {
   home,
@@ -48,7 +53,7 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
           title: leadingCase(context),
-          actions: [actionCase()],
+          actions: [actionCase(context)],
         )
       ],
     );
@@ -108,7 +113,7 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
     }
   }
 
-  actionCase() {
+  actionCase(context) {
     switch (page) {
       case Status.home:
         if (signInController.checkLoggedIn().value == true) {
@@ -126,7 +131,9 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
       case Status.editAlarmOnly:
         return AlarmBtn();
       case Status.boardDetail:
-        return DetailBtn();
+        return DetailBtn(
+          pageContext: context,
+        );
       case Status.chatList:
         return SearchAlarmPairBtn();
       case Status.setting:
@@ -238,14 +245,27 @@ class LoginBtn extends StatelessWidget {
 }
 
 class DetailBtn extends StatelessWidget {
-  DetailBtn({Key? key}) : super(key: key);
+  BuildContext pageContext;
+  DetailBtn({Key? key, required this.pageContext}) : super(key: key);
 
-  /// 게시판 상세 페이지 GetX 데이터
-  final PostDetailController _postDetailX = Get.put(PostDetailController());
+  isMaster() {
+    final box = Hive.box<User>('user');
+    int? me = box.get('user')?.id;
+    late String postId = "${Get.parameters['postId']}";
+    int postIdInt = int.parse(postId);
+    print(me);
+    print(postIdInt);
+    print('----');
+    if (me == postIdInt) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    double modalHeight = 163.0.h;
+    double modalHeight = isMaster() ? 160.0.h : 123.0.h;
     String title = '글 메뉴';
     void postDelete() {
       Navigator.pop(context);
@@ -257,7 +277,7 @@ class DetailBtn extends StatelessWidget {
 
     PostModal modalOn = PostModal(
         context: context,
-        contents: buttons(),
+        contents: buttons(context, pageContext),
         height: modalHeight,
         title: title);
     return GestureDetector(
@@ -273,16 +293,29 @@ class DetailBtn extends StatelessWidget {
     );
   }
 
-  buttons() {
+  buttons(BuildContext context, BuildContext pageContext) {
+    final PostHomeController _postX = Get.put(PostHomeController());
+    final PostDetailController _postDetailX = Get.put(PostDetailController());
     return Column(
       children: [
+        if (isMaster())
+          ModalButton(
+              title: '삭제하기',
+              event: () {
+                Get.offAll(PostScreen());
+                _postX.deleteBoard(_postDetailX.postDetail.value.postId ?? 0);
+              }),
+        if (isMaster())
+          ModalButton(
+              title: '수정하기',
+              event: () {
+                Get.toNamed("/editPage");
+              }),
         ModalButton(
-            title: '삭제하기',
+            title: '신고하기',
             event: () {
-              _postDetailX.postDelete(
-                  postId: _postDetailX.postDetail.value.postId ?? 0);
+              Get.toNamed("/editPage");
             }),
-        ModalButton(title: '수정하기', event: () {Get.toNamed("/editPage");}),
       ],
     );
   }
