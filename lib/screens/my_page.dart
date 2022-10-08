@@ -24,7 +24,6 @@ class MyPageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double appbarHeight = 68.0.h;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PageAppbar(page: _page, pageTitle: _pageTitle),
@@ -85,6 +84,7 @@ class myPage extends StatelessWidget {
                   onPress: () {
                     controller.fetchData();
                     Get.toNamed('/profileImg');
+                    myProfileController.removeData();
                   },
                   theme: 'small'),
               SizedBox(height: 5.h),
@@ -102,24 +102,10 @@ class myPage extends StatelessWidget {
     );
   }
 
-  // Future pickImage() async {
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  //
-  //     if (image == null) return;
-  //
-  //     final imageTemp = File(image.path);
-  //     debugPrint('data: $imageTemp');
-  //
-  //     myProfileController.profilePic.value = imageTemp.toString();
-  //     //setState(() => this.image = imageTemp);
-  //   } on PlatformException catch (e) {
-  //     print('failed to pick image: $e');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
+    //controller 페이지 떠나면 라이프사이클 죽이기
+    Get.delete<MyProfileController>();
     return Stack(children: [
       //close button
       Column(
@@ -140,13 +126,14 @@ class myPage extends StatelessWidget {
                         children: [
                           CircleAvatar(
                               radius: 20.0,
-                              backgroundImage:
-                                  myProfileController.profilePic.value != "기본이미지 Url"
-                                      ? NetworkImage(
-                                              myProfileController.profilePic.value)
-                                      : AssetImage(
-                                              "assets/images/defaultProfile.png")
-                                          as ImageProvider),
+                              backgroundImage: myProfileController
+                                          .profilePic.value !=
+                                      "기본이미지 Url"
+                                  ? NetworkImage(
+                                      myProfileController.profilePic.value)
+                                  : AssetImage(
+                                          "assets/images/defaultProfile.png")
+                                      as ImageProvider),
                           if (myProfileController.nicknameBtn.value)
                             Positioned(
                                 bottom: 6.0.h,
@@ -376,6 +363,7 @@ class myPage extends StatelessWidget {
                     ),
                     onTap: () {
                       Get.toNamed('${myPageIcons[index]['page']}');
+                      myProfileController.removeData();
                     },
                   );
                 },

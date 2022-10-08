@@ -24,7 +24,6 @@ class NotificationScreen extends StatelessWidget {
 
 class myNotification extends StatelessWidget {
   NotificationController controller = Get.put(NotificationController());
-
   @override
   Widget build(BuildContext context) {
     return Stack(

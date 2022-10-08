@@ -23,8 +23,7 @@ final List<String> categoryList = [
   "동아리",
 ];
 
-final List<int> participantsNumberList =
-    List<int>.generate(10, (i) => ((i + 1) * 5));
+final List<int> participantsNumberList = List<int>.generate(10, (i) => ((i + 1) * 5));
 
 const double dividerHeight = 16.0;
 const double titleAreaHeight = 40.0;
@@ -81,7 +80,7 @@ class GroupChatCreatePage extends StatelessWidget {
                 child: SizedBox(
                   height: titleAreaHeight.h,
                   child: InputTitleField(
-                    onEditingComplete: buttonActivateCheck,
+                    onChanged: buttonActivateCheck,
                     controller: _title,
                     hintText: "채팅방 제목",
                     // height: titleAreaHeight.h,
@@ -94,7 +93,7 @@ class GroupChatCreatePage extends StatelessWidget {
                 child: SizedBox(
                   height: hashtagAreaHeight.h,
                   child: InputHashtagField(
-                    onEditingComplete: buttonActivateCheck,
+                    onChanged: buttonActivateCheck,
                     controller: _hashtag,
                     hintText: "#해시태그를 이용하여 채팅방을 소개해주세요.",
                     // height: hashtagAreaHeight.h,
@@ -125,8 +124,7 @@ class GroupChatCreatePage extends StatelessWidget {
                     controller: groupChatController,
                     text: "참여 인원",
                     itemList: participantsNumberList,
-                    flagIndex:
-                        groupChatController.selectedParticipantsNumberIndex,
+                    flagIndex: groupChatController.selectedParticipantsNumberIndex,
                   ),
                 ),
               ), // 참여 인원 선택 영역
@@ -248,16 +246,12 @@ class SelectButton extends StatelessWidget {
                       alignment: Alignment.center,
                       padding: EdgeInsets.only(left: 15.w, right: 15.w),
                       decoration: BoxDecoration(
-                        color: flagIndex.value == index
-                            ? Palette.main
-                            : Palette.paper,
+                        color: flagIndex.value == index ? Palette.main : Palette.paper,
                         borderRadius: BorderRadius.circular(25.0),
                       ),
                       child: Text(itemList[index].toString(),
                           style: CommonText.BodyM.copyWith(
-                            color: flagIndex.value == index
-                                ? Colors.white
-                                : Palette.data,
+                            color: flagIndex.value == index ? Colors.white : Palette.data,
                           )),
                     ),
                   ),

@@ -37,6 +37,16 @@ class MyProfileController extends GetxController {
     print(nickname.value);
   }
 
+  @override
+  void onClose() async {
+    await removeData();
+    super.onClose();
+  }
+
+  Future<void> removeData() async {
+    bioBtn.value = false;
+  }
+
   Future<void> getMyProfile() async {
     var getBox = Hive.box<User>('user').get('user');
     var name = getBox?.nickName!;
@@ -62,7 +72,7 @@ class MyProfileController extends GetxController {
     var user = box.get('user');
     // Hive 에 저장된 User 객체안의 nickName을 변경후에 Controller에서 저장중인 nickName도 같이 변경해준다!
     user?.editUserNickName(profileData.nickname);
-    box.put('user',user!);
+    box.put('user', user!);
     var changeName = box.get('user')?.nickName!;
     nickname.value = changeName!;
     //
@@ -100,7 +110,8 @@ class MyProfileController extends GetxController {
 
       uploadProfileImg.value = test.path;
       final FormData formData = FormData({
-        'profileImg' : MultipartFile(File(uploadProfileImg.value), filename: test.name)
+        'profileImg':
+            MultipartFile(File(uploadProfileImg.value), filename: test.name)
       });
 
       Response response = await _myProfileProvider.uploadProfileImg(formData);
@@ -112,7 +123,7 @@ class MyProfileController extends GetxController {
       var user = box.get('user');
       var changeProfileImg = wagglyResponseDto.datas['profileImg'];
       user?.editUserProfileImg(changeProfileImg);
-      box.put('user',user!);
+      box.put('user', user!);
       profilePic.value = changeProfileImg;
 
       print(response.statusCode);

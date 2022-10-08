@@ -4,16 +4,14 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:waggly/components/post/post_modal.dart';
 import 'package:waggly/controller/post/post_home_controller.dart';
+import 'package:waggly/controller/post/post_controller.dart';
 import 'package:waggly/controller/postDetail/post_detail_controller.dart';
 import 'package:waggly/model/hive/user.dart';
 import 'package:waggly/utils/text_frame.dart';
-import 'package:waggly/widgets/index.dart';
-import 'package:waggly/widgets/sign_in.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
-
 import '../../screens/post.dart';
 
 enum Status {
@@ -39,8 +37,7 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(appbarHeight);
 
-  PageAppbar({Key? key, required this.pageTitle, required this.page})
-      : super(key: key);
+  PageAppbar({Key? key, required this.pageTitle, required this.page}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +60,7 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
     switch (page) {
       case Status.main:
       case Status.home:
+      case Status.editAlarmOnly:
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -78,10 +76,7 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox.shrink(),
-            Text(pageTitle, style: CommonText.TitleL)
-          ],
+          children: [SizedBox.shrink(), Text(pageTitle, style: CommonText.TitleL)],
         );
       default:
         return Row(
@@ -105,9 +100,7 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
             SizedBox(
               width: 8.w,
             ),
-            Container(
-                padding: EdgeInsets.only(bottom: 3.h),
-                child: Text(pageTitle, style: CommonText.BodyL))
+            Container(padding: EdgeInsets.only(bottom: 3.h), child: Text(pageTitle, style: CommonText.BodyL))
           ],
         );
     }
@@ -121,7 +114,6 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
         } else {
           return LoginBtn();
         }
-        ;
       case Status.boardTitle:
         return ActionBtn();
       case Status.login:
@@ -162,7 +154,10 @@ class ActionBtn extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ActionButton(
-              event: () => Get.toNamed("/writePage"),
+              event: () {
+                Get.put(PostController());
+                Get.toNamed("/writePage");
+              },
               isIcon: Icon(
                 Icons.add,
                 color: Palette.gray,
@@ -274,7 +269,6 @@ class DetailBtn extends StatelessWidget {
     void postFix() {
       Navigator.pop(context);
     }
-
     PostModal modalOn = PostModal(
         context: context,
         contents: buttons(context, pageContext),
@@ -325,8 +319,7 @@ class ActionButton extends StatelessWidget {
   final Icon isIcon;
   final void Function()? event;
 
-  ActionButton({Key? key, required this.isIcon, required this.event})
-      : super(key: key);
+  ActionButton({Key? key, required this.isIcon, required this.event}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

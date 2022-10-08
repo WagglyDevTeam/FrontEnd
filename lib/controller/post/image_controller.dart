@@ -13,7 +13,7 @@ class ImageController extends GetxController {
     super.onInit();
   }
 
-  Future getImage() async {
+  Future uploadMultipleImages() async {
     var image = await ImagePicker().pickMultiImage(maxWidth: 1024, maxHeight: 1024, imageQuality: 50);
     List<String> existBytesString = <String>[];
     if (image != null) {
@@ -32,22 +32,26 @@ class ImageController extends GetxController {
       }
     }
     showImages.add(images);
-    print(showImages);
   }
 
-  void getImagesUrl(imageUrl){
-    if(imageUrl != null){
+  Future uploadSingleImage() async {
+    var image =
+        await ImagePicker().pickImage(source: ImageSource.gallery, maxWidth: 1024, maxHeight: 1024, imageQuality: 50);
+    print(image);
+  }
+
+  void getImagesUrl(imageUrl) {
+    if (imageUrl != null) {
       imagesUrl.value = imageUrl;
       showImages.add(imageUrl);
     }
   }
 
-  List<String> parseToStringList(){
+  List<String> parseToStringList() {
     List<String> list = [];
-    for(var url in deleteImages){
+    for (var url in deleteImages) {
       list.add(url);
     }
     return list;
   }
 }
-

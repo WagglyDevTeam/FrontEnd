@@ -41,6 +41,8 @@ class SignInController extends GetxController {
       user.jwtToken = response.headers!["authorization"];
       this.user.value = user;
       box.put('user', user);
+      print(this.user.value);
+      print(this.user.value.id);
 
       return wagglyResponseDto;
     }

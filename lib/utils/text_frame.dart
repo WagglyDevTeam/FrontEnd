@@ -40,11 +40,8 @@ class CommonText {
     fontFamily: 'NotoSansKR_Bold',
   );
 
-  static TextStyle TitleS = TextStyle(
-      fontSize: 16.0.sp,
-      color: Colors.black,
-      fontFamily: 'NotoSansKR_Bold',
-      height: 1.h);
+  static TextStyle TitleS =
+      TextStyle(fontSize: 16.0.sp, color: Colors.black, fontFamily: 'NotoSansKR_Bold', height: 1.h);
   static TextStyle TitleSmallWhite = TextStyle(
     fontSize: 16.0.sp,
     color: Colors.white,
@@ -55,11 +52,8 @@ class CommonText {
     color: Palette.main,
     fontFamily: 'NotoSansKR_Bold',
   );
-  static TextStyle TitleSmallGray = TextStyle(
-      fontSize: 16.0.sp,
-      color: Palette.mdGray,
-      fontFamily: 'NotoSansKR_Bold',
-      height: 1.h);
+  static TextStyle TitleSmallGray =
+      TextStyle(fontSize: 16.0.sp, color: Palette.mdGray, fontFamily: 'NotoSansKR_Bold', height: 1.h);
 
   static TextStyle BodyL = TextStyle(
     fontSize: 14.0.sp,
@@ -90,6 +84,11 @@ class CommonText {
   static TextStyle BodyBoldMain = TextStyle(
     fontSize: 12.0.sp,
     color: Palette.main,
+    fontFamily: 'NotoSansKR_Bold',
+  );
+  static TextStyle BodyBoldGrey = TextStyle(
+    fontSize: 12.0.sp,
+    color: Palette.gray,
     fontFamily: 'NotoSansKR_Bold',
   );
   static TextStyle BodyBMosaic = TextStyle(
@@ -179,23 +178,14 @@ class CommonText {
     fontFamily: 'Roboto_Rg',
   );
 
-  static TextStyle BodyEngMain = TextStyle(
-      fontSize: 10.0.sp,
-      color: Palette.violet,
-      fontFamily: 'Roboto_Rg',
-      height: 1);
+  static TextStyle BodyEngMain =
+      TextStyle(fontSize: 10.0.sp, color: Palette.violet, fontFamily: 'Roboto_Rg', height: 1);
 
-  static TextStyle BodyEngGray = TextStyle(
-      fontSize: 10.0.sp,
-      color: Palette.mdGray,
-      fontFamily: 'Roboto_Rg',
-      height: 1);
+  static TextStyle BodyEngGray =
+      TextStyle(fontSize: 10.0.sp, color: Palette.mdGray, fontFamily: 'Roboto_Rg', height: 1);
 
-  static TextStyle BodyEngMain11 = TextStyle(
-      fontSize: 11.0.sp,
-      color: Palette.violet,
-      fontFamily: 'Roboto_Rg',
-      height: 1);
+  static TextStyle BodyEngMain11 =
+      TextStyle(fontSize: 11.0.sp, color: Palette.violet, fontFamily: 'Roboto_Rg', height: 1);
 
   static TextStyle Label = TextStyle(
     fontSize: 10.0.sp,
@@ -212,11 +202,8 @@ class CommonText {
     color: Palette.main,
     fontFamily: 'NotoSansKR_Md',
   );
-  static TextStyle LabelGray = TextStyle(
-      fontSize: 10.0.sp,
-      color: Palette.mdGray,
-      fontFamily: 'NotoSansKR_Md',
-      height: 1);
+  static TextStyle LabelGray =
+      TextStyle(fontSize: 10.0.sp, color: Palette.mdGray, fontFamily: 'NotoSansKR_Md', height: 1);
 
   static TextStyle LabelLightGray = TextStyle(
     fontSize: 10.0.sp,

@@ -11,9 +11,9 @@ import 'package:waggly/utils/text_frame.dart';
 class InputHashtagField extends StatelessWidget {
   final SocialTextEditingController controller;
   final String hintText;
-  final onEditingComplete;
+  final onChanged;
 
-  InputHashtagField({required this.controller, required this.hintText, this.onEditingComplete});
+  InputHashtagField({required this.controller, required this.hintText, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +25,14 @@ class InputHashtagField extends StatelessWidget {
         onChanged: (text) {
           if (text.length > 1 && text[text.length - 2] == ',') {
             controller.text = controller.text.replaceFirst(",", " ");
-            controller.selection = TextSelection.collapsed(
-                offset: controller.text.lastIndexOf(" "));
+            controller.selection = TextSelection.collapsed(offset: controller.text.lastIndexOf(" "));
           }
 
           if (extractHashTags(controller.text).isNotEmpty) {
-            onEditingComplete();
+            onChanged();
           } else {
             GroupChatController().isButtonActivate.value = false;
-            onEditingComplete();
+            onChanged();
           }
         },
         keyboardAppearance: Brightness.light,
