@@ -78,10 +78,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     chatList.sort((a, b) => b.messageTime!.compareTo(a.messageTime!));
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: PostAppbar(
-      //   postName: _pageTitle,
-      //   page: _page,
-      // ),
       appBar: PageAppbar(
         pageTitle: _pageTitle,
         page: _page,
