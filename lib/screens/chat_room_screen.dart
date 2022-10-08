@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:waggly/components/Post/post_app_bar.dart';
 import 'package:waggly/components/chat/chat_bubble.dart';
 import 'package:waggly/components/snackBar/custom_snack_bar.dart';
 import 'package:waggly/controller/post/image_controller.dart';
@@ -12,6 +11,7 @@ import 'package:waggly/model/hive/user.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:waggly/widgets/header/page_appbar.dart';
 
 Chat chat1 = Chat(senderId: 1, message: "잘 가는거 맞나여", messageTime: DateTime(2022, 1, 2, 12, 34, 01));
 Chat chat2 = Chat(senderId: 1, message: "두번째 메시지 잘 가나여 유저1", messageTime: DateTime(2022, 1, 2, 12, 34, 02));
@@ -71,15 +71,19 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const String _postName = "채팅방 상세";
+    const String _pageTitle = "채팅방 상세";
     const Status _page = Status.chatRoom;
     ImageController _imageController = Get.put(ImageController());
 
     chatList.sort((a, b) => b.messageTime!.compareTo(a.messageTime!));
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PostAppbar(
-        postName: _postName,
+      // appBar: PostAppbar(
+      //   postName: _pageTitle,
+      //   page: _page,
+      // ),
+      appBar: PageAppbar(
+        pageTitle: _pageTitle,
         page: _page,
       ),
       endDrawer: endDrawer(),

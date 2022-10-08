@@ -25,7 +25,8 @@ enum Status {
   login,
   setting,
   editAlarmOnly,
-  chatList
+  chatList,
+  chatRoom
 }
 
 class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -128,6 +129,8 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
         );
       case Status.chatList:
         return SearchAlarmPairBtn();
+      case Status.chatRoom:
+        return ChatRoomBtn();
       case Status.setting:
         return Empty();
     }
@@ -269,11 +272,9 @@ class DetailBtn extends StatelessWidget {
     void postFix() {
       Navigator.pop(context);
     }
-    PostModal modalOn = PostModal(
-        context: context,
-        contents: buttons(context, pageContext),
-        height: modalHeight,
-        title: title);
+
+    PostModal modalOn =
+        PostModal(context: context, contents: buttons(context, pageContext), height: modalHeight, title: title);
     return GestureDetector(
       onTap: () => {modalOn.ModalOn()},
       child: Container(
@@ -434,6 +435,69 @@ class AlarmBtn extends StatelessWidget {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ChatRoomBtn extends StatelessWidget {
+  const ChatRoomBtn({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 120.w,
+      // color: Colors.red,
+      padding: EdgeInsets.fromLTRB(10.w, 15.h, 20.w, 5.h),
+      child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(40.0) // POINT
+                ),
+            border: Border.all(width: 1.0, color: Palette.lightGray),
+          ),
+          child: Container(
+            padding: const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ActionButton(
+                    event: () {
+                      print("여기눌러졌다 검색버튼");
+                    },
+                    isIcon: Icon(
+                      Icons.search,
+                      color: Palette.gray,
+                      size: 18,
+                    )),
+                Line(),
+                ActionButton(
+                    event: () => Scaffold.of(context).openEndDrawer(),
+                    isIcon: Icon(
+                      Icons.more_horiz,
+                      color: Palette.gray,
+                      size: 18,
+                    )),
+              ],
+            ),
+          )),
+    );
+  }
+
+  Line() {
+    return const SizedBox(
+      width: 1,
+      height: 10,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(
+            right: BorderSide(
+              // POINT
+              color: Color(0xFFE8E8E8),
+              width: 1.0,
+            ),
+          ),
         ),
       ),
     );
