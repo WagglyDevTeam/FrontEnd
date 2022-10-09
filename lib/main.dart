@@ -25,9 +25,8 @@ import 'package:waggly/screens/sign_in.dart';
 import 'package:waggly/screens/write.dart';
 import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/myPage/active/index.dart';
-
-import 'components/Post/post_affiliation.dart';
-import 'components/Post/post_detail_screen.dart';
+import 'components/post/post_detail_screen.dart';
+import 'components/post/post_college_List.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,14 +38,17 @@ void main() async {
   String? encryptionKey = await secureStorage.read(key: 'encryptionKey');
   if (encryptionKey == null) {
     var key = Hive.generateSecureKey();
-    await secureStorage.write(key: 'encryptionKey', value: base64UrlEncode(key));
+    await secureStorage.write(
+        key: 'encryptionKey', value: base64UrlEncode(key));
     encryptionKey = await secureStorage.read(key: 'encryptionKey');
   }
 
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(SearchHistoryAdapter());
-  await Hive.openBox<User>("user", encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey!)));
-  await Hive.openBox<SearchHistory>('searchHistory', encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey)));
+  await Hive.openBox<User>("user",
+      encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey!)));
+  await Hive.openBox<SearchHistory>('searchHistory',
+      encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey)));
   Get.put(HomeController());
   Get.put(SignInController());
   runApp(HeroApp());
@@ -66,7 +68,10 @@ class HeroApp extends StatelessWidget {
           home: MyApp(),
           initialRoute: "/",
           getPages: [
-            GetPage(name: "/", page: () => Screen(), transition: Transition.rightToLeft),
+            GetPage(
+                name: "/",
+                page: () => Screen(),
+                transition: Transition.rightToLeft),
             GetPage(
                 name: "/home",
                 page: () => Screen(),
@@ -76,10 +81,13 @@ class HeroApp extends StatelessWidget {
                     return SignInController();
                   });
                 })),
-            GetPage(name: "/post", page: () => PostScreen(), transition: Transition.rightToLeft),
+            GetPage(
+                name: "/post",
+                page: () => PostScreen(),
+                transition: Transition.rightToLeft),
             GetPage(
               name: '/postCollege/:param',
-              page: () => PostAffiliation(),
+              page: () => PostCollegeList(),
               transition: Transition.rightToLeft,
               transitionDuration: const Duration(milliseconds: 350),
               curve: Curves.fastOutSlowIn,
@@ -91,8 +99,14 @@ class HeroApp extends StatelessWidget {
               transitionDuration: const Duration(milliseconds: 350),
               curve: Curves.fastOutSlowIn,
             ),
-            GetPage(name: "/chat", page: () => ChatScreen(), transition: Transition.rightToLeft),
-            GetPage(name: "/myPage", page: () => MyPageScreen(), transition: Transition.rightToLeft),
+            GetPage(
+                name: "/chat",
+                page: () => ChatScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/myPage",
+                page: () => MyPageScreen(),
+                transition: Transition.rightToLeft),
             GetPage(
                 name: "/chatEdit",
                 page: () => ChatEditScreen(),
@@ -102,7 +116,10 @@ class HeroApp extends StatelessWidget {
                     return SignInController();
                   });
                 })),
-            GetPage(name: "/signInPage", page: () => SignInScreen(), transition: Transition.rightToLeft),
+            GetPage(
+                name: "/signInPage",
+                page: () => SignInScreen(),
+                transition: Transition.rightToLeft),
             GetPage(
               name: "/writePage",
               page: () => WritePage("write"),
@@ -119,13 +136,34 @@ class HeroApp extends StatelessWidget {
                 // 그룹채팅방 만들기 페이지가 갈 곳이 없어서 임시로 여기에 라우팅 해둠
                 // page: () => GroupChatCreatePage(),
                 transition: Transition.rightToLeft),
-            GetPage(name: "/profileImg", page: () => ProfileImgScreen(), transition: Transition.rightToLeft),
-            GetPage(name: "/active", page: () => ActiveScreen(), transition: Transition.rightToLeft),
-            GetPage(name: "/notification", page: () => NotificationScreen(), transition: Transition.rightToLeft),
-            GetPage(name: "/myPostsList", page: () => MyPostListScreen(), transition: Transition.rightToLeft),
-            GetPage(name: "/myRequestList", page: () => RequestScreen(), transition: Transition.rightToLeft),
-            GetPage(name: "/findPassword", page: () => FindPasswordScreen(), transition: Transition.rightToLeft),
-            GetPage(name: "/chatRoom", page: () => ChatRoomScreen(), transition: Transition.rightToLeft)
+            GetPage(
+                name: "/profileImg",
+                page: () => ProfileImgScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/active",
+                page: () => ActiveScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/notification",
+                page: () => NotificationScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/myPostsList",
+                page: () => MyPostListScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/myRequestList",
+                page: () => RequestScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/findPassword",
+                page: () => FindPasswordScreen(),
+                transition: Transition.rightToLeft),
+            GetPage(
+                name: "/chatRoom",
+                page: () => ChatRoomScreen(),
+                transition: Transition.rightToLeft)
           ],
         );
       },
