@@ -209,6 +209,21 @@ class CommentRequestDto {
       };
 }
 
+class CommentLikeRequestDto {
+  int? commentLikeCnt;
+  bool? isLikedByMe;
+  CommentLikeRequestDto({this.commentLikeCnt, this.isLikedByMe});
+  factory CommentLikeRequestDto.fromJson(Map<String, dynamic> json) =>
+      CommentLikeRequestDto(
+        commentLikeCnt: json['commentLikeCnt'] as int,
+        isLikedByMe: json['isLikedByMe'] as bool,
+      );
+  Map<String, dynamic> toJson() => {
+        "commentLikeCnt": commentLikeCnt,
+        "isLikedByMe": isLikedByMe,
+      };
+}
+
 class ReCommentRequestDto {
   String? replyDesc;
   bool? anonymous;

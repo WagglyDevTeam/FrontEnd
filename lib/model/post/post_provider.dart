@@ -13,7 +13,8 @@ final SignInController _signInController = Get.put(SignInController());
 final _token = Hive.box<User>('user').get('user')?.jwtToken;
 
 class PostProvider extends GetConnect {
-  final Map<String, String> authHeaders = _token != null ? {"Authorization": _token!} : {};
+  final Map<String, String> authHeaders =
+      _token != null ? {"Authorization": _token!} : {};
 
   Future<Response> getBoard() => get(
         "${dotenv.get('BASE_URL')}/board?college=social",
@@ -67,6 +68,17 @@ class PostProvider extends GetConnect {
     var token = box.get('user')?.jwtToken;
     return post(
       "${dotenv.get('BASE_URL')}/comment/$postId",
+      data.toJson(),
+      headers: {"Authorization": token!},
+    );
+  }
+
+  /// put comment like
+  Future<Response> putCommentLike(int commentId, CommentLikeRequestDto data) {
+    final box = Hive.box<User>('user');
+    var token = box.get('user')?.jwtToken;
+    return put(
+      "${dotenv.get('BASE_URL')}/like/comment/$commentId",
       data.toJson(),
       headers: {"Authorization": token!},
     );

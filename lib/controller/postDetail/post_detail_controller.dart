@@ -164,13 +164,25 @@ class PostDetailController extends GetxController {
   }
 
   /// 게시판 상세 페이지 댓글 좋아요
-  Future<void> updateLikeBoardComment({required int commentId}) async {
-    print("$commentId comment");
+  Future<void> updateLikeBoardComment(
+      {required int commentId,
+      required bool isLikedByMe,
+      required int commentLikeCnt}) async {
+    CommentLikeRequestDto data = CommentLikeRequestDto(
+        commentLikeCnt: commentLikeCnt, isLikedByMe: isLikedByMe);
+    WagglyResponseDto result =
+        await _postRepository.putCommentLike(commentId, data);
+    dynamic likedMeJson = result.datas["isLikedByMe"];
+    dynamic cntJson = result.datas["commentLikeCnt"];
+
     for (var i = 0; i < boardComment.length; i++) {
       if (boardComment[i].commentId == commentId) {
-        boardComment[i].commentLikeCnt! + 1;
-        update();
-        boardComment.refresh();
+        if (boardComment[i].commentLikeCnt != null) {
+          boardComment[i].commentLikeCnt = cntJson;
+          boardComment[i].isLikedByMe = likedMeJson;
+          update();
+          boardComment.refresh();
+        }
       }
     }
   }

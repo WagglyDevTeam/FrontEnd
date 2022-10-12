@@ -170,7 +170,10 @@ class CommentBox extends StatelessWidget {
   /// 댓글 or 대댓글 좋아요 이벤트
   void commentLike() {
     if (!isShape()) {
-      _postDetailX.updateLikeBoardComment(commentId: commentId);
+      _postDetailX.updateLikeBoardComment(
+          commentId: commentId,
+          commentLikeCnt: commentLikeCnt,
+          isLikedByMe: isLikedByMe);
     } else {
       _postDetailX.updateLikeBoardCommentReply(commentId: commentId);
     }
