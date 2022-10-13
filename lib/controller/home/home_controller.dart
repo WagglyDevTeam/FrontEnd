@@ -44,6 +44,6 @@ class HomeController extends GetxController {
     college.value = collegeName.displayName;
     collegeBestPost.value = PostResponseDto.fromJson(collegeBestData["second"]);
     othersBestPost.value = PostResponseDto.fromJson(othersBestData);
-    print(college.value);
+    // print(college.value);
   }
 }

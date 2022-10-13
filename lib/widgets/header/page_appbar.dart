@@ -464,7 +464,7 @@ class ChatRoomBtn extends StatelessWidget {
               children: [
                 ActionButton(
                     event: () {
-                      print("여기눌러졌다 검색버튼");
+                      // print("여기눌러졌다 검색버튼");
                     },
                     isIcon: Icon(
                       Icons.search,

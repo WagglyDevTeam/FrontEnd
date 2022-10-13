@@ -66,7 +66,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     super.initState();
     chatList = [chat1, chat2, chat3, chat4, chat5, chat6, chat7, chat8, chat9];
     participantList = [user1, user2];
-    print(loginUser.id);
+    // print(loginUser.id);
   }
 
   @override
@@ -136,7 +136,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                 setState(() {
                                   // TODO:59 overflow인지 아닌지 판단할 수 있는 기준이 뭐가 있을까?
                                   isOverFlow = !isOverFlow;
-                                  print(isOverFlow);
+                                  // print(isOverFlow);
                                 });
                               },
                               child: Icon(
@@ -317,7 +317,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                               EdgeInsets.only(bottom: 45.h, left: 20.w, right: 20.w),
                             );
                           } else {
-                            print(chatList);
+                            // print(chatList);
                             Chat newChat = Chat(
                               senderId: loginUser.id,
                               message: _chatMessageController.text,

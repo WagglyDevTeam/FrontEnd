@@ -37,7 +37,7 @@ class ImageController extends GetxController {
   Future uploadSingleImage() async {
     var image =
         await ImagePicker().pickImage(source: ImageSource.gallery, maxWidth: 1024, maxHeight: 1024, imageQuality: 50);
-    print(image);
+    // print(image);
   }
 
   void getImagesUrl(imageUrl) {
