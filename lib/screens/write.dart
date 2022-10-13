@@ -139,13 +139,12 @@ class WritePage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
                 child: Obx(
-                      () =>
-                      PhotoWidget(
-                          imageController: _imageController,
-                          imageUrlLength: _imageController.imagesUrl.length,
-                          imagesLength: _imageController.images!.length,
-                          length: _imageController.showImages.length,
-                          type: "write"),
+                  () => PhotoWidget(
+                      imageController: _imageController,
+                      imageUrlLength: _imageController.imagesUrl.length,
+                      imagesLength: _imageController.images!.length,
+                      length: _imageController.showImages.length,
+                      type: "write"),
                 ),
               ), // 선택된 이미지 표시 영역
               Padding(
@@ -190,65 +189,63 @@ class WritePage extends StatelessWidget {
                 child: SizedBox(
                   height: _buttonAreaHeight.h,
                   child: Obx(
-                        () =>
-                        Container(
-                          alignment: Alignment.center,
-                          width: double.infinity,
-                          height: _bottomButtonHeight.h,
-                          decoration: BoxDecoration(
-                            color: _postController.isButtonActivate.value == true ? Palette.main : Palette.paper,
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          child: TextButton(
-                            onPressed: type == "edit"
+                    () => Container(
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      height: _bottomButtonHeight.h,
+                      decoration: BoxDecoration(
+                        color: _postController.isButtonActivate.value == true ? Palette.main : Palette.paper,
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: TextButton(
+                        onPressed: type == "edit"
+                            ? () async {
+                                await editPost(_title.text, _content.text, "SOCIAL");
+                              }
+                            : _postController.isButtonActivate.value == true
                                 ? () async {
-                              await editPost(_title.text, _content.text, "SOCIAL");
-                            }
-                                : _postController.isButtonActivate.value == true
-                                  ? () async {
-                              final result = await writePost();
-
-                              if (result.code == 201) {
-                                _postController.isButtonActivate.value = false;
-                                CustomSnackBar.messageSnackbar(
-                                  context,
-                                  "게시글 작성이 완료되었습니다.",
-                                  EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
-                                );
-                                await Future.delayed(const Duration(seconds: 2), () {
-                                  Get.offAllNamed("/");
-                                });
-                              } else {
-                                CustomSnackBar.messageSnackbar(
-                                  context,
-                                  result.message,
-                                  EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
-                                );
-                              }
-                            }
-                                  : () {
-                              if (_title.text.isEmpty) {
-                                CustomSnackBar.messageSnackbar(
-                                  context,
-                                  "제목을 입력해주세요.",
-                                  EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
-                                );
-                              } else if (_content.text.isEmpty) {
-                                CustomSnackBar.messageSnackbar(
-                                  context,
-                                  "내용을 입력해주세요.",
-                                  EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
-                                );
-                              }
-                            },
-                            child: Text(
-                              "게시글 작성하기",
-                              style: _postController.isButtonActivate.value == true
-                                  ? CommonText.BodyBoldWhite
-                                  : CommonText.BodyBoldGrey,
-                            ),
-                          ),
+                                    final result = await writePost();
+                                    if (result.code == 201) {
+                                      _postController.isButtonActivate.value = false;
+                                      CustomSnackBar.messageSnackbar(
+                                        context,
+                                        "게시글 작성이 완료되었습니다.",
+                                        EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
+                                      );
+                                      await Future.delayed(const Duration(seconds: 2), () {
+                                        Get.offAllNamed("/");
+                                      });
+                                    } else {
+                                      CustomSnackBar.messageSnackbar(
+                                        context,
+                                        result.message,
+                                        EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
+                                      );
+                                    }
+                                  }
+                                : () {
+                                    if (_title.text.isEmpty) {
+                                      CustomSnackBar.messageSnackbar(
+                                        context,
+                                        "제목을 입력해주세요.",
+                                        EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
+                                      );
+                                    } else if (_content.text.isEmpty) {
+                                      CustomSnackBar.messageSnackbar(
+                                        context,
+                                        "내용을 입력해주세요.",
+                                        EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
+                                      );
+                                    }
+                                  },
+                        child: Text(
+                          "게시글 작성하기",
+                          style: _postController.isButtonActivate.value == true
+                              ? CommonText.BodyBoldWhite
+                              : CommonText.BodyBoldGrey,
                         ),
+                      ),
+                    ),
                   ),
                 ),
               ), // 게시글 작성하기 버튼
@@ -292,12 +289,13 @@ class WritePage extends StatelessWidget {
 }
 
 class PhotoWidget extends StatelessWidget {
-  const PhotoWidget({Key? key,
-    required this.imageController,
-    required this.imagesLength,
-    required this.imageUrlLength,
-    required this.length,
-    required this.type})
+  const PhotoWidget(
+      {Key? key,
+      required this.imageController,
+      required this.imagesLength,
+      required this.imageUrlLength,
+      required this.length,
+      required this.type})
       : super(key: key);
 
   final int length;
@@ -310,95 +308,95 @@ class PhotoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return length > 0
         ? SizedBox(
-      height: _imageThumbnailAreaHeight.h,
-      child: ListView.separated(
-        separatorBuilder: (BuildContext context, int index) {
-          return SizedBox(
-            width: 4.0.w,
-          );
-        },
-        scrollDirection: Axis.horizontal,
-        itemCount: imageUrlLength + imagesLength,
-        itemBuilder: (ctx, index) {
-          if (index < imageUrlLength) {
-            return Row(
-              children: [
-                // if (index == 0) SizedBox(width: 20.0.w),
-                Container(
-                  margin: EdgeInsets.only(bottom: 10.0.w),
-                  height: 100.0.h,
-                  width: 100.0.w,
-                  child: Stack(
-                    fit: StackFit.expand,
+            height: _imageThumbnailAreaHeight.h,
+            child: ListView.separated(
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox(
+                  width: 4.0.w,
+                );
+              },
+              scrollDirection: Axis.horizontal,
+              itemCount: imageUrlLength + imagesLength,
+              itemBuilder: (ctx, index) {
+                if (index < imageUrlLength) {
+                  return Row(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(18.0),
-                        child: Image.network(
-                          imageController.imagesUrl[index],
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Positioned(
-                        top: 6.h,
-                        left: _imageThumbnailAreaHeight - 27.w,
-                        child: InkWell(
-                          onTap: () {
-                            imageController.deleteImages.add(imageController.imagesUrl[index]);
-                            imageController.imagesUrl.removeAt(index);
-                          },
-                          child: SvgPicture.asset(
-                            "assets/icons/cancel.svg",
-                            width: 14.0.w,
-                            height: 14.0.h,
-                          ),
+                      // if (index == 0) SizedBox(width: 20.0.w),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10.0.w),
+                        height: 100.0.h,
+                        width: 100.0.w,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(18.0),
+                              child: Image.network(
+                                imageController.imagesUrl[index],
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                            Positioned(
+                              top: 6.h,
+                              left: _imageThumbnailAreaHeight - 27.w,
+                              child: InkWell(
+                                onTap: () {
+                                  imageController.deleteImages.add(imageController.imagesUrl[index]);
+                                  imageController.imagesUrl.removeAt(index);
+                                },
+                                child: SvgPicture.asset(
+                                  "assets/icons/cancel.svg",
+                                  width: 14.0.w,
+                                  height: 14.0.h,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
-                  ),
-                ),
-              ],
-            );
-          } else {
-            return Row(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(bottom: 10.0.w),
-                  height: 100.0.h,
-                  width: 100.0.w,
-                  child: Stack(
-                    fit: StackFit.expand,
+                  );
+                } else {
+                  return Row(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(18.0),
-                        child: Image.file(
-                          File(imageController.images![index - imageUrlLength].path),
-                          fit: BoxFit.fill,
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10.0.w),
+                        height: 100.0.h,
+                        width: 100.0.w,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(18.0),
+                              child: Image.file(
+                                File(imageController.images![index - imageUrlLength].path),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                            Positioned(
+                              top: 6.h,
+                              left: _imageThumbnailAreaHeight - 27.w,
+                              child: InkWell(
+                                onTap: () {
+                                  imageController.showImages[1].removeAt(index - imageUrlLength);
+                                },
+                                child: SvgPicture.asset(
+                                  "assets/icons/cancel.svg",
+                                  width: 14.0.w,
+                                  height: 14.0.h,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Positioned(
-                        top: 6.h,
-                        left: _imageThumbnailAreaHeight - 27.w,
-                        child: InkWell(
-                          onTap: () {
-                            imageController.showImages[1].removeAt(index - imageUrlLength);
-                          },
-                          child: SvgPicture.asset(
-                            "assets/icons/cancel.svg",
-                            width: 14.0.w,
-                            height: 14.0.h,
-                          ),
-                        ),
-                      ),
+                      // if (index == imagesLength - 1) SizedBox(width: 20.0.w),
                     ],
-                  ),
-                ),
-                // if (index == imagesLength - 1) SizedBox(width: 20.0.w),
-              ],
-            );
-          }
-        },
-      ),
-    )
+                  );
+                }
+              },
+            ),
+          )
         : SizedBox(height: _imageThumbnailAreaHeight.h);
   }
 }
