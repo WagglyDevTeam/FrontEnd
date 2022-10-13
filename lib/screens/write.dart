@@ -40,20 +40,20 @@ class WritePage extends StatelessWidget {
   final PostController _postController = Get.put(PostController());
 
   final _hashtag = SocialTextEditingController();
-  TextEditingController? _content;
-  TextEditingController? _title;
+  var _content = TextEditingController();
+  var _title = TextEditingController();
   final String type;
   final loginUser = Hive.box<User>('user').get('user');
 
   WritePage(this.type, {Key? key}) : super(key: key);
 
   void buttonActivateCheck() {
-    if (_title!.text.isBlank == true || _content!.text.isBlank == true) {
+    if (_title.text.isBlank == true || _content.text.isBlank == true) {
       _postController.isButtonActivate.value = false;
-      print(_postController.isButtonActivate.value);
+      // print(_postController.isButtonActivate.value);
     } else {
       _postController.isButtonActivate.value = true;
-      print(_postController.isButtonActivate.value);
+      // print(_postController.isButtonActivate.value);
     }
   }
 
@@ -103,7 +103,7 @@ class WritePage extends StatelessWidget {
                         height: _titleAreaHeight.h,
                         child: CustomTextFormField(
                           onChanged: buttonActivateCheck,
-                          controller: _title!,
+                          controller: _title,
                           hint: "제목을 입력하세요.",
                         ),
                       ),
@@ -202,11 +202,14 @@ class WritePage extends StatelessWidget {
                           child: TextButton(
                             onPressed: type == "edit"
                                 ? () async {
-                              await editPost(_title!.text, _content!.text, "SOCIAL");
+                              await editPost(_title.text, _content.text, "SOCIAL");
                             }
-                                : () async {
+                                : _postController.isButtonActivate.value == true
+                                  ? () async {
                               final result = await writePost();
+
                               if (result.code == 201) {
+                                _postController.isButtonActivate.value = false;
                                 CustomSnackBar.messageSnackbar(
                                   context,
                                   "게시글 작성이 완료되었습니다.",
@@ -219,6 +222,21 @@ class WritePage extends StatelessWidget {
                                 CustomSnackBar.messageSnackbar(
                                   context,
                                   result.message,
+                                  EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
+                                );
+                              }
+                            }
+                                  : () {
+                              if (_title.text.isEmpty) {
+                                CustomSnackBar.messageSnackbar(
+                                  context,
+                                  "제목을 입력해주세요.",
+                                  EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
+                                );
+                              } else if (_content.text.isEmpty) {
+                                CustomSnackBar.messageSnackbar(
+                                  context,
+                                  "내용을 입력해주세요.",
                                   EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
                                 );
                               }
@@ -262,8 +280,8 @@ class WritePage extends StatelessWidget {
     List<String> hashtags = extractHashTags(_hashtag.text);
     return await _postController.writeBoard(
       PostRequestDto(
-        _title!.text,
-        _content!.text,
+        _title.text,
+        _content.text,
         "ENGINEERING",
         _postController.checkBox.value,
         hashtags,

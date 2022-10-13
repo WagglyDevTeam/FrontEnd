@@ -626,18 +626,18 @@ class RenderTextFormField extends StatelessWidget {
               if (placeholder == '학교 이메일') {
                 if (controller.text.isEmpty == true) {
                   _signInController.emailInputEmpty.value = true;
-                  print(_signInController.emailInputEmpty.value);
+                  // print(_signInController.emailInputEmpty.value);
                 } else if (controller.text.isEmpty == false) {
                   _signInController.emailInputEmpty.value = false;
-                  print(_signInController.emailInputEmpty.value);
+                  // print(_signInController.emailInputEmpty.value);
                 }
               } else if (placeholder == '비밀번호') {
                 if (controller.text.isEmpty == true) {
                   _signInController.passwordInputEmpty.value = true;
-                  print(_signInController.passwordInputEmpty.value);
+                  // print(_signInController.passwordInputEmpty.value);
                 } else if (controller.text.isEmpty == false) {
                   _signInController.passwordInputEmpty.value = false;
-                  print(_signInController.passwordInputEmpty.value);
+                  // print(_signInController.passwordInputEmpty.value);
                 }
               }
             },

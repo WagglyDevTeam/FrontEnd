@@ -125,7 +125,7 @@ class ChatBubble extends StatelessWidget {
                                 .map((e) => DropdownMenuItem(alignment: Alignment.center, child: Text(e, style: CommonText.BodyM), value: e))
                                 .toList(),
                             onChanged: (value) {
-                              print(value);
+                              // print(value);
                             },
                           ),
                           SizedBox(height: 20.h),
