@@ -24,7 +24,7 @@ class PostController extends GetxController {
     List<dynamic> postsJson = result.datas["posts"];
     List<Post> convertedPosts = postsJson.map((e) => Post.fromJson(e)).toList();
     posts.value = convertedPosts;
-    print(jsonEncode(posts));
+    // print(jsonEncode(posts));
     bestPost.value = Post.fromJson(result.datas["bestPost"]);
   }
 
