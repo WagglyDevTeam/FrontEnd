@@ -78,11 +78,6 @@ class PostDetailController extends GetxController {
       {required String commentDesc,
       String? postId,
       required bool anonymous}) async {
-    print("-----------");
-    print(anonymous);
-    print(postId);
-    print("-----------");
-
     CommentRequestDto data =
         CommentRequestDto(commentDesc: commentDesc, anonymous: anonymous);
     WagglyResponseDto result = await _postRepository.postComment(postId, data);
@@ -96,9 +91,10 @@ class PostDetailController extends GetxController {
     final String formatted = formatter.format(now);
     var rng = Random();
 
+    dynamic resCommentId = result.datas["commentId"];
     // / 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
     final commentMap = CommentData.fromJson({
-      "commentId": 123123123,
+      "commentId": resCommentId,
       "commentCreatedAt": formatted,
       "commentLikeCnt": 0,
       "commentDesc": commentDesc,
@@ -112,6 +108,8 @@ class PostDetailController extends GetxController {
       "isBlind": false,
       "replies": [],
     });
+
+    print(resCommentId);
     boardComment.insert(0, commentMap);
     update();
     boardComment.refresh();
@@ -135,12 +133,12 @@ class PostDetailController extends GetxController {
     final DateTime now = DateTime.now();
     final DateFormat formatter = DateFormat.Md().add_jm();
     final String formatted = formatter.format(now);
-
+    dynamic resReplyId = result.datas["replyId"];
     print(authorId);
 
     /// 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
     final commentMap = ReCommentData.fromJson({
-      "replyId": 2,
+      "replyId": resReplyId,
       "replyCreatedAt": formatted,
       "replyLikeCnt": 0,
       "replyDesc": commentDesc,
