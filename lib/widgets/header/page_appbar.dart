@@ -95,7 +95,7 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
                 color: Palette.gray,
                 iconSize: 20.0.sp,
                 onPressed: () {
-                  Get.put(MyProfileController()).removeData();
+                 // Get.put(MyProfileController()).removeData();
                   Navigator.pop(context);
                 },
               ),
