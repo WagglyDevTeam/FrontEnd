@@ -102,6 +102,8 @@ class myPage extends StatelessWidget {
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     //controller 페이지 떠나면 라이프사이클 죽이기
@@ -116,7 +118,7 @@ class myPage extends StatelessWidget {
             Divider(thickness: 1, height: 1, color: Palette.paper),
             Container(
               height: 60.h,
-              padding: EdgeInsets.only(top: 13.h, left: 16.w, right: 16.w),
+              padding: EdgeInsets.only(top: 13.h, left: 10.w, right: 10.w),
               child: Obx(
                 () => Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -191,7 +193,7 @@ class myPage extends StatelessWidget {
                           ),
                         )),
                     SizedBox(
-                      width: 45.0.w,
+                      width: 50.0.w,
                       height: 20.0.h,
                       child: ElevatedButton(
                         child: Text(
@@ -234,7 +236,7 @@ class myPage extends StatelessWidget {
             SizedBox(height: 15.h),
             //자기소개 button
             Container(
-              padding: EdgeInsets.only(left: 16.0.w, right: 16.0.w),
+              padding: EdgeInsets.only(left: 15.0.w, right: 15.0.w),
               child: Obx(
                 () => Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -287,7 +289,7 @@ class myPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: 45.0.w,
+                      width: 50.0.w,
                       height: 20.0.h,
                       child: ElevatedButton(
                         child: Obx(
