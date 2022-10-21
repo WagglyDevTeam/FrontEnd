@@ -45,6 +45,7 @@ class PostProvider extends GetConnect {
   /// GET 특정 학과 페이지 API
   Future<Response> getBoardCollege(String college, int page, int size) {
     final box = Hive.box<User>('user');
+    print(box);
     var token = box.get('user')?.jwtToken;
     return get(
       "${dotenv.get('BASE_URL')}/board?college=$college&page=$page&size=$size",
@@ -62,7 +63,7 @@ class PostProvider extends GetConnect {
     );
   }
 
-  /// POST comment
+  /// Post 댓글 달기
   Future<Response> postComment(String? postId, CommentRequestDto data) {
     final box = Hive.box<User>('user');
     var token = box.get('user')?.jwtToken;
@@ -73,7 +74,7 @@ class PostProvider extends GetConnect {
     );
   }
 
-  /// put comment like
+  /// Post 댓글 좋아요
   Future<Response> putCommentLike(int commentId, CommentLikeRequestDto data) {
     final box = Hive.box<User>('user');
     var token = box.get('user')?.jwtToken;
