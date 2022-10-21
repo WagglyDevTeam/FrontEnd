@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../model/post/dtos/post_request_dto.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
 import '../../model/post/post.dart';
-import '../../model/post/post_repository.dart';
+import '../../repository/post_repository.dart';
 
 class PostController extends GetxController {
   final PostRepository _postRepository = PostRepository();

@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:waggly/screens/chat.dart';
-import 'package:waggly/screens/chat_edit.dart';
-import 'package:waggly/screens/chat_room_screen.dart';
-import 'package:waggly/screens/chat_search.dart';
-import 'package:waggly/screens/group_chat_create.dart';
+import 'package:waggly/screens/chat/chat.dart';
+import 'package:waggly/screens/chat/chat_edit.dart';
 import 'package:waggly/screens/home.dart';
-import 'package:waggly/screens/my_page.dart';
-import 'package:waggly/screens/post.dart';
+import 'package:waggly/screens/user/my_page.dart';
+import 'package:waggly/screens/post/post_home.dart';
 import 'package:waggly/utils/colors.dart';
 
 import '../controller/post/post_controller.dart';

@@ -6,8 +6,8 @@ import 'package:waggly/model/major/major.dart';
 import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
 import 'package:waggly/model/signUp/dtos/sign_up_request_dto.dart';
 import 'package:waggly/model/signUp/dtos/verify_email_request_dto.dart';
-import 'package:waggly/model/signUp/sign_up_provider.dart';
-import 'package:waggly/model/signUp/sign_up_repository.dart';
+import 'package:waggly/provider/sign_up_provider.dart';
+import 'package:waggly/repository/sign_up_repository.dart';
 
 class SignUpController extends GetxController {
   final _signUpRepository = SignUpRepository();

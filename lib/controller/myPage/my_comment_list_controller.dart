@@ -1,10 +1,9 @@
 import 'package:get/get.dart';
-import 'package:waggly/model/myPage/my_comment_provider.dart';
+import 'package:waggly/provider/my_comment_provider.dart';
 import 'package:waggly/model/myPage/my_comment_model.dart';
 
 class MyCommentsListController extends GetxController {
-  final MyCommentsListProvider _myCommentsListProvider =
-      MyCommentsListProvider();
+  final MyCommentsListProvider _myCommentsListProvider = MyCommentsListProvider();
   final myComments = [].obs;
 
   @override

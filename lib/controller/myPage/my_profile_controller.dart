@@ -5,13 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
-import 'package:waggly/model/hive/user.dart';
+import 'package:waggly/hive/user.dart';
 import 'package:waggly/model/myPage/dtos/ProfileImgDto.dart';
 import 'package:waggly/model/myPage/my_profile_introduction_model.dart';
 import 'package:waggly/model/myPage/my_profile_model.dart';
-import 'package:waggly/model/myPage/my_profile_provider.dart';
+import 'package:waggly/provider/my_profile_provider.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:waggly/model/post/post_provider.dart';
+import 'package:waggly/provider/post_provider.dart';
 
 import '../../model/post/dtos/waggly_response_dto.dart';
 
@@ -109,10 +109,8 @@ class MyProfileController extends GetxController {
       if (test == null) return;
 
       uploadProfileImg.value = test.path;
-      final FormData formData = FormData({
-        'profileImg':
-            MultipartFile(File(uploadProfileImg.value), filename: test.name)
-      });
+      final FormData formData =
+          FormData({'profileImg': MultipartFile(File(uploadProfileImg.value), filename: test.name)});
 
       Response response = await _myProfileProvider.uploadProfileImg(formData);
       dynamic body = response.body;

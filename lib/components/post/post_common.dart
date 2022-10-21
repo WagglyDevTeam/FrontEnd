@@ -3,12 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:waggly/components/post/post_modal.dart';
+import 'package:waggly/hive/user.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:get/get.dart';
 
 import '../../controller/postDetail/post_detail_controller.dart';
-import '../../model/hive/user.dart';
 
 class PostDifferentList extends StatelessWidget {
   PostDifferentList({Key? key, required this.widgetList}) : super(key: key);
@@ -171,9 +171,7 @@ class CommentBox extends StatelessWidget {
   void commentLike() {
     if (!isShape()) {
       _postDetailX.updateLikeBoardComment(
-          commentId: commentId,
-          commentLikeCnt: commentLikeCnt,
-          isLikedByMe: isLikedByMe);
+          commentId: commentId, commentLikeCnt: commentLikeCnt, isLikedByMe: isLikedByMe);
     } else {
       _postDetailX.updateLikeBoardCommentReply(commentId: commentId);
     }
@@ -202,8 +200,7 @@ class CommentBox extends StatelessWidget {
     if (_postDetailX.selectCommentEvent.value.commentId == commentId) {
       _postDetailX.selectCommentReplyOn(commentId: 0, name: '');
     } else {
-      _postDetailX.selectCommentReplyOn(
-          commentId: commentId, name: authorNickname);
+      _postDetailX.selectCommentReplyOn(commentId: commentId, name: authorNickname);
     }
   }
 
@@ -229,23 +226,15 @@ class CommentBox extends StatelessWidget {
   Widget build(BuildContext context) {
     double modalHeight = modalTop();
     String title = '더보기';
-    PostModal modalOn = PostModal(
-        context: context,
-        contents: ButtonList(),
-        height: modalHeight,
-        title: title);
+    PostModal modalOn = PostModal(context: context, contents: ButtonList(), height: modalHeight, title: title);
 
     return Obx(() => Container(
-        padding:
-            EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
+        padding: EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
         width: 380.w,
         decoration: BoxDecoration(
             color: changeColor(),
             border: Border(
-              top: BorderSide(
-                  color: isShape() ? Colors.white : Palette.paper,
-                  style: BorderStyle.solid,
-                  width: 1),
+              top: BorderSide(color: isShape() ? Colors.white : Palette.paper, style: BorderStyle.solid, width: 1),
             )),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -281,12 +270,10 @@ class CommentBox extends StatelessWidget {
                         ),
                         Container(
                           width: !isShape() ? 76.w : 50.w,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 3.w, vertical: 2.h),
+                          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                           decoration: BoxDecoration(
                               color: Colors.white,
-                              border: Border.all(
-                                  width: 1.0, color: Palette.lightGray),
+                              border: Border.all(width: 1.0, color: Palette.lightGray),
                               borderRadius: BorderRadius.circular(30)),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -439,10 +426,7 @@ class AuthorForm extends StatelessWidget {
         SizedBox(
           width: 6,
         ),
-        Text(major!,
-            style: shapePostion()
-                ? CommonText.LabelGray
-                : CommonText.BodyXSmallGray),
+        Text(major!, style: shapePostion() ? CommonText.LabelGray : CommonText.BodyXSmallGray),
       ],
     );
   }

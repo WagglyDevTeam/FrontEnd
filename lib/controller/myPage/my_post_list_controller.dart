@@ -1,10 +1,9 @@
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
-import 'package:waggly/model/hive/user.dart';
-import 'package:waggly/model/myPage/my_post_provider.dart';
+import 'package:waggly/provider/my_post_provider.dart';
 import 'package:waggly/model/myPage/my_post_model.dart';
-import 'package:waggly/model/myPage/my_post_repository.dart';
+import 'package:waggly/repository/my_post_repository.dart';
 import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
 
 class MyPostsListController extends GetxController {
@@ -22,8 +21,7 @@ class MyPostsListController extends GetxController {
   Future<void> getMyPosts() async {
     WagglyResponseDto result = await _myPostsListRepository.getMyPosts();
     List<dynamic> myPostsListJson = result.datas['myPosts'];
-    List<MyPost> convertMyPosts =
-        myPostsListJson.map((e) => MyPost.fromJson(e)).toList();
+    List<MyPost> convertMyPosts = myPostsListJson.map((e) => MyPost.fromJson(e)).toList();
     myPosts.value = convertMyPosts;
   }
 }

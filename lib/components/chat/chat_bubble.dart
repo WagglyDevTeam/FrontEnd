@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:waggly/model/hive/user.dart';
+import 'package:waggly/hive/user.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/utils/time_converter.dart';
@@ -122,7 +122,8 @@ class ChatBubble extends StatelessWidget {
                             ),
                             alignment: Alignment.centerLeft,
                             items: reasonList
-                                .map((e) => DropdownMenuItem(alignment: Alignment.center, child: Text(e, style: CommonText.BodyM), value: e))
+                                .map((e) => DropdownMenuItem(
+                                    alignment: Alignment.center, child: Text(e, style: CommonText.BodyM), value: e))
                                 .toList(),
                             onChanged: (value) {
                               // print(value);

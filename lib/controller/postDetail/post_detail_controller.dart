@@ -5,11 +5,11 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:waggly/controller/post/post_home_controller.dart';
+import 'package:waggly/hive/user.dart';
 import 'package:waggly/model/post/dtos/post_detail_dto.dart';
-import '../../model/hive/user.dart';
 import '../../model/post/dtos/post_edit_request_dto.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
-import '../../model/post/post_repository.dart';
+import '../../repository/post_repository.dart';
 
 class PostDetailController extends GetxController {
   final PostHomeController postHome = PostHomeController();
@@ -40,24 +40,18 @@ class PostDetailController extends GetxController {
     dynamic postJson = result.datas["post"];
     dynamic commentsJson = result.datas["comments"];
     PostDetailData postDetailMap = PostDetailData.fromJson(postJson);
-    ListCommentData boardCommentMap =
-        ListCommentData.fromJson({"comments": commentsJson});
+    ListCommentData boardCommentMap = ListCommentData.fromJson({"comments": commentsJson});
     postDetail.value = postDetailMap;
     boardComment.value = boardCommentMap.comments!;
     print(jsonEncode(postDetail.value));
   }
 
   /// 게시판 상세 페이지 좋아요 업데이트
-  Future<void> updateDetailBoardLike(
-      {required bool isLikedByMe,
-      required int postLikeCnt,
-      required int postId}) async {
+  Future<void> updateDetailBoardLike({required bool isLikedByMe, required int postLikeCnt, required int postId}) async {
     print("$isLikedByMe, $postLikeCnt , $postId");
-    likeDetailRequestDto data =
-        likeDetailRequestDto(postLikeCnt: postLikeCnt, likedByMe: isLikedByMe);
+    likeDetailRequestDto data = likeDetailRequestDto(postLikeCnt: postLikeCnt, likedByMe: isLikedByMe);
 
-    WagglyResponseDto result =
-        await _postRepository.likeDetailPost(postId, data);
+    WagglyResponseDto result = await _postRepository.likeDetailPost(postId, data);
     postDetail.value.isLikedByMe = isLikedByMe;
     postDetail.value.postLikeCnt = postLikeCnt;
     update();
@@ -65,8 +59,7 @@ class PostDetailController extends GetxController {
   }
 
   /// 게시판 상세 페이지 즐겨찾기 업데이트
-  Future<void> updateDetailBoardBookmark(
-      {required bool isBlind, required int postId}) async {
+  Future<void> updateDetailBoardBookmark({required bool isBlind, required int postId}) async {
     print("$isBlind, $postId");
     postDetail.value.isBlind = isBlind;
     update();
@@ -74,12 +67,8 @@ class PostDetailController extends GetxController {
   }
 
   /// 게시판 상세 페이지 댓글 작성
-  Future<void> postBoardComment(
-      {required String commentDesc,
-      String? postId,
-      required bool anonymous}) async {
-    CommentRequestDto data =
-        CommentRequestDto(commentDesc: commentDesc, anonymous: anonymous);
+  Future<void> postBoardComment({required String commentDesc, String? postId, required bool anonymous}) async {
+    CommentRequestDto data = CommentRequestDto(commentDesc: commentDesc, anonymous: anonymous);
     WagglyResponseDto result = await _postRepository.postComment(postId, data);
     final box = Hive.box<User>('user');
     var authorId = box.get('user')?.id;
@@ -102,9 +91,8 @@ class PostDetailController extends GetxController {
       "authorId": authorId,
       "authorMajor": authorMajor,
       "authorNickname": anonymous ? "익명" : authorNickname,
-      "authorProfileImg": anonymous
-          ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png"
-          : authorProfileImg,
+      "authorProfileImg":
+          anonymous ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png" : authorProfileImg,
       "isBlind": false,
       "replies": [],
     });
@@ -117,13 +105,9 @@ class PostDetailController extends GetxController {
 
   /// 게시판 상세 페이지 대댓글 작성
   Future<void> postBoardCommentReply(
-      {required String commentDesc,
-      required int commentId,
-      required bool anonymous}) async {
-    ReCommentRequestDto data =
-        ReCommentRequestDto(replyDesc: commentDesc, anonymous: anonymous);
-    WagglyResponseDto result =
-        await _postRepository.postReComment(commentId, data);
+      {required String commentDesc, required int commentId, required bool anonymous}) async {
+    ReCommentRequestDto data = ReCommentRequestDto(replyDesc: commentDesc, anonymous: anonymous);
+    WagglyResponseDto result = await _postRepository.postReComment(commentId, data);
 
     final box = Hive.box<User>('user');
     var authorId = box.get('user')?.id;
@@ -146,9 +130,8 @@ class PostDetailController extends GetxController {
       "authorId": authorId,
       "authorMajor": authorMajor,
       "authorNickname": anonymous ? "익명" : authorNickname,
-      "authorProfileImg": anonymous
-          ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png"
-          : authorProfileImg,
+      "authorProfileImg":
+          anonymous ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png" : authorProfileImg,
       "isBlind": false
     });
 
@@ -163,13 +146,9 @@ class PostDetailController extends GetxController {
 
   /// 게시판 상세 페이지 댓글 좋아요
   Future<void> updateLikeBoardComment(
-      {required int commentId,
-      required bool isLikedByMe,
-      required int commentLikeCnt}) async {
-    CommentLikeRequestDto data = CommentLikeRequestDto(
-        commentLikeCnt: commentLikeCnt, isLikedByMe: isLikedByMe);
-    WagglyResponseDto result =
-        await _postRepository.putCommentLike(commentId, data);
+      {required int commentId, required bool isLikedByMe, required int commentLikeCnt}) async {
+    CommentLikeRequestDto data = CommentLikeRequestDto(commentLikeCnt: commentLikeCnt, isLikedByMe: isLikedByMe);
+    WagglyResponseDto result = await _postRepository.putCommentLike(commentId, data);
     dynamic likedMeJson = result.datas["isLikedByMe"];
     dynamic cntJson = result.datas["commentLikeCnt"];
 
@@ -202,15 +181,12 @@ class PostDetailController extends GetxController {
 
   /// 게시판 상세 페이지 대댓글 이벤트 off
   Future<void> selectCommentReplyOff() async {
-    selectCommentEvent.value =
-        SelectComment(name: '', commentId: 0, checkEvent: false);
+    selectCommentEvent.value = SelectComment(name: '', commentId: 0, checkEvent: false);
   }
 
   /// 게시판 상세 페이지 대댓글 이벤트 on
-  Future<void> selectCommentReplyOn(
-      {required int commentId, required String name}) async {
-    selectCommentEvent.value =
-        SelectComment(name: name, checkEvent: true, commentId: commentId);
+  Future<void> selectCommentReplyOn({required int commentId, required String name}) async {
+    selectCommentEvent.value = SelectComment(name: name, checkEvent: true, commentId: commentId);
   }
 
   ///  게시판 상세 페이지 데이터 Getx 초기화

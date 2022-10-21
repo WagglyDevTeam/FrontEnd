@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:waggly/model/major/major.dart';
-import 'package:waggly/model/major/major_repository.dart';
+import 'package:waggly/repository/major_repository.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
 
 class MajorController extends GetxController {

@@ -9,7 +9,7 @@ import 'package:skeletons/skeletons.dart';
 import 'package:waggly/controller/home/home_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/model/post/dtos/post_response_dto.dart';
-import 'package:waggly/screens/sign_in.dart';
+import 'package:waggly/screens/user/sign_in.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';

@@ -6,14 +6,14 @@ import 'package:waggly/components/post/post_modal.dart';
 import 'package:waggly/controller/post/post_home_controller.dart';
 import 'package:waggly/controller/post/post_controller.dart';
 import 'package:waggly/controller/postDetail/post_detail_controller.dart';
-import 'package:waggly/model/hive/user.dart';
+import 'package:waggly/hive/user.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/controller/myPage/my_profile_controller.dart';
-import '../../screens/post.dart';
+import '../../screens/post/post_home.dart';
 
 enum Status {
   home,
@@ -95,7 +95,7 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
                 color: Palette.gray,
                 iconSize: 20.0.sp,
                 onPressed: () {
-                 // Get.put(MyProfileController()).removeData();
+                  // Get.put(MyProfileController()).removeData();
                   Navigator.pop(context);
                 },
               ),

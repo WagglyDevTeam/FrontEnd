@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
-import 'package:waggly/model/home/home_repository.dart';
+import 'package:waggly/repository/home_repository.dart';
 import 'package:waggly/model/post/dtos/post_response_dto.dart';
 
 import '../../model/post/dtos/post_request_dto.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
 import '../../model/post/post.dart';
-import '../../model/post/post_repository.dart';
+import '../../repository/post_repository.dart';
 
 enum CollegeType {
   artsports("ARTSPORTS", "예술체육계열"),
@@ -17,8 +17,7 @@ enum CollegeType {
   final String displayName;
 
   factory CollegeType.getByKey(String key) {
-    return CollegeType.values.firstWhere((value) => value.key == key,
-    orElse: () => CollegeType.undefined);
+    return CollegeType.values.firstWhere((value) => value.key == key, orElse: () => CollegeType.undefined);
   }
 }
 

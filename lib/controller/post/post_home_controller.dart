@@ -4,19 +4,17 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
-import '../../model/post/post_repository.dart';
+import '../../repository/post_repository.dart';
 import '../../model/post/dtos/post_college_dto.dart';
 
 class PostHomeController extends GetxController {
   final PostRepository _postRepository = PostRepository();
 
   /// 메인 홈 내 계열 상태데이터
-  final userCollegeData =
-      PostCollegeData(collegeTypeName: '', collegeType: '', posts: []).obs;
+  final userCollegeData = PostCollegeData(collegeTypeName: '', collegeType: '', posts: []).obs;
 
   /// 메인 홈 다른 계열 인기글 상태데이터
-  final otherCollegeData =
-      [PostCollegeData(collegeTypeName: '', collegeType: '', posts: [])].obs;
+  final otherCollegeData = [PostCollegeData(collegeTypeName: '', collegeType: '', posts: [])].obs;
 
   ///  특정학부 페이지 인기글 상테데이터
   final bestPostCollegeData = PostSpecificData().obs;
@@ -45,16 +43,15 @@ class PostHomeController extends GetxController {
     dynamic userCollegeJson = result.datas["userCollegePosts"];
     PostCollegeData userCollegeMap = PostCollegeData.fromJson(userCollegeJson);
     dynamic otherCollegeJson = result.datas["otherCollegePosts"];
-    List<PostCollegeData> otherCollegeMap = List<PostCollegeData>.from(
-        otherCollegeJson.map((x) => PostCollegeData.fromJson(x)).toList());
+    List<PostCollegeData> otherCollegeMap =
+        List<PostCollegeData>.from(otherCollegeJson.map((x) => PostCollegeData.fromJson(x)).toList());
     otherCollegeData.value = otherCollegeMap;
     userCollegeData.value = userCollegeMap;
   }
 
   /// 게시판 특정학과 페이지 post data get
   Future<void> getBoardCollege(String? collegeId) async {
-    PostCollegeDto college =
-        PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
+    PostCollegeDto college = PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
     WagglyResponseDto result = await _postRepository.getBoardCollege(college);
     dynamic bestJson = result.datas["bestPost"];
     dynamic postJson = result.datas["posts"];
@@ -67,8 +64,8 @@ class PostHomeController extends GetxController {
       bestPostOn.value = false;
     }
     if (postJson != []) {
-      List<PostSpecificData> postData = List<PostSpecificData>.from(
-          postJson.map((x) => PostSpecificData.fromJson(x)).toList());
+      List<PostSpecificData> postData =
+          List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
       postCollegeData.value = postData;
       print(postCollegeData.value);
       postCollegeData.refresh();
@@ -80,13 +77,12 @@ class PostHomeController extends GetxController {
 
   /// 게시판 페이징 get
   Future<void> getBoardPaging(String? collegeId) async {
-    PostCollegeDto college =
-        PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
+    PostCollegeDto college = PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
     WagglyResponseDto result = await _postRepository.getBoardCollege(college);
     dynamic postJson = result.datas["posts"];
     if (postJson != []) {
-      List<PostSpecificData> postData = List<PostSpecificData>.from(
-          postJson.map((x) => PostSpecificData.fromJson(x)).toList());
+      List<PostSpecificData> postData =
+          List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
 
       postCollegeData.value.addAll(postData);
       postCollegeData.refresh();
@@ -120,10 +116,7 @@ class PostHomeController extends GetxController {
 
   /// 게시물 홈 상태값 초기화
   Future<void> postHomeReset() async {
-    userCollegeData.value =
-        PostCollegeData(collegeTypeName: '', collegeType: '', posts: []);
-    otherCollegeData.value = [
-      PostCollegeData(collegeTypeName: '', collegeType: '', posts: [])
-    ];
+    userCollegeData.value = PostCollegeData(collegeTypeName: '', collegeType: '', posts: []);
+    otherCollegeData.value = [PostCollegeData(collegeTypeName: '', collegeType: '', posts: [])];
   }
 }

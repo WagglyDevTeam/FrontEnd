@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:waggly/model/myPage/notification_model.dart';
-import 'package:waggly/model/myPage/notification_provider.dart';
+import 'package:waggly/provider/notification_provider.dart';
 
 class NotificationController extends GetxController {
   final NotificationProvider _notificationProvider = NotificationProvider();
@@ -59,8 +59,7 @@ class NotificationController extends GetxController {
     Response response = await _notificationProvider.getNotification();
     dynamic body = response.body;
     List<dynamic> notificationJson = body['datas'];
-    List<Data> convertNotifications =
-        notificationJson.map((e) => Data.fromJson(e)).toList();
+    List<Data> convertNotifications = notificationJson.map((e) => Data.fromJson(e)).toList();
     notificationData.value = convertNotifications;
   }
 }

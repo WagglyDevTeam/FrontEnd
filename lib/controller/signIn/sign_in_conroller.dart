@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:waggly/model/hive/user.dart';
+import 'package:waggly/hive/user.dart';
 import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
 import 'package:waggly/model/signIn/dtos/sign_in_reqeust_dto.dart';
-import '../../model/signIn/sign_in_provider.dart';
+import '../../provider/sign_in_provider.dart';
 
 class SignInController extends GetxController {
   final SignInProvider _signInProvider = SignInProvider();
