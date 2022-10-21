@@ -12,6 +12,7 @@ import 'package:waggly/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
+import 'package:waggly/controller/myPage/my_profile_controller.dart';
 import '../../screens/post.dart';
 
 enum Status {
@@ -94,6 +95,7 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
                 color: Palette.gray,
                 iconSize: 20.0.sp,
                 onPressed: () {
+                 // Get.put(MyProfileController()).removeData();
                   Navigator.pop(context);
                 },
               ),
