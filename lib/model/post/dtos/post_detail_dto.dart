@@ -14,41 +14,40 @@ class PostDetailData {
   int? authorId;
   String? authorNickname;
   bool? isAnonymous;
-  // String? authorProfileImg;
+  String? authorProfileImg;
 
-  PostDetailData({
-    this.postId,
-    this.postTitle,
-    this.postDesc,
-    this.postCreatedAt,
-    this.postImages,
-    this.postLikeCnt,
-    this.postCommentCnt,
-    this.isLikedByMe,
-    this.authorId,
-    this.authorMajor,
-    this.authorNickname,
-    this.isBlind,
-    this.isAnonymous,
-    // this.authorProfileImg,
-  }) : super();
+  PostDetailData(
+      {this.postId,
+      this.postTitle,
+      this.postDesc,
+      this.postCreatedAt,
+      this.postImages,
+      this.postLikeCnt,
+      this.postCommentCnt,
+      this.isLikedByMe,
+      this.authorId,
+      this.authorMajor,
+      this.authorNickname,
+      this.isBlind,
+      this.isAnonymous,
+      this.authorProfileImg})
+      : super();
 
   factory PostDetailData.fromJson(Map<String, dynamic> json) => PostDetailData(
-        postId: json["postId"] as int,
-        postTitle: json["postTitle"] as String,
-        postDesc: json["postDesc"] as String,
-        postCreatedAt: json["postCreatedAt"] as String,
-        postImages: json["postImages"] as List<dynamic>,
-        postLikeCnt: json["postLikeCnt"] as int,
-        postCommentCnt: json["postCommentCnt"] as int,
-        isLikedByMe: json["isLikedByMe"] as bool,
-        authorId: json["authorId"] as int,
-        authorMajor: json["authorMajor"] as String,
-        authorNickname: json["authorNickname"] as String,
-        isBlind: json["isBlind"] as bool,
-        isAnonymous: json["isAnonymous"] as bool,
-        // authorProfileImg: json["authorProfileImg"] as String,
-      );
+      postId: json["postId"] as int,
+      postTitle: json["postTitle"] as String,
+      postDesc: json["postDesc"] as String,
+      postCreatedAt: json["postCreatedAt"] as String,
+      postImages: json["postImages"] as List<dynamic>,
+      postLikeCnt: json["postLikeCnt"] as int,
+      postCommentCnt: json["postCommentCnt"] as int,
+      isLikedByMe: json["isLikedByMe"] as bool,
+      authorId: json["authorId"] as int,
+      authorMajor: json["authorMajor"] as String,
+      authorNickname: json["authorNickname"] as String,
+      isBlind: json["isBlind"] as bool,
+      isAnonymous: json["isAnonymous"] as bool,
+      authorProfileImg: json['authorProfileImg'] as String);
 
   factory PostDetailData.fromClass(PostDetailData postDetailData) =>
       PostDetailData(
@@ -60,7 +59,7 @@ class PostDetailData {
           isBlind: postDetailData.isBlind,
           authorNickname: postDetailData.authorNickname,
           authorId: postDetailData.authorId,
-          // authorProfileImg: postDetailData.authorProfileImg,
+          authorProfileImg: postDetailData.authorProfileImg,
           authorMajor: postDetailData.authorMajor,
           postTitle: postDetailData.postTitle,
           postCreatedAt: postDetailData.postCreatedAt,
@@ -76,7 +75,7 @@ class PostDetailData {
         "isBlind": isBlind,
         "authorNickname": authorNickname,
         "authorId": authorId,
-        // "authorProfileImg": authorProfileImg,
+        "authorProfileImg": authorProfileImg,
         "isAnonymous": isAnonymous,
         "authorMajor": authorMajor,
         "postTitle": postTitle,
@@ -206,6 +205,21 @@ class CommentRequestDto {
   Map<String, dynamic> toJson() => {
         "commentDesc": commentDesc,
         "anonymous": anonymous,
+      };
+}
+
+class CommentLikeRequestDto {
+  int? commentLikeCnt;
+  bool? isLikedByMe;
+  CommentLikeRequestDto({this.commentLikeCnt, this.isLikedByMe});
+  factory CommentLikeRequestDto.fromJson(Map<String, dynamic> json) =>
+      CommentLikeRequestDto(
+        commentLikeCnt: json['commentLikeCnt'] as int,
+        isLikedByMe: json['isLikedByMe'] as bool,
+      );
+  Map<String, dynamic> toJson() => {
+        "commentLikeCnt": commentLikeCnt,
+        "isLikedByMe": isLikedByMe,
       };
 }
 

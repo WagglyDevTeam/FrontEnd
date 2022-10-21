@@ -9,15 +9,15 @@ import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
 import 'package:skeletons/skeletons.dart';
 
-class PostAffiliation extends StatefulWidget {
-  const PostAffiliation({Key? key}) : super(key: key);
+class PostCollegeList extends StatefulWidget {
+  const PostCollegeList({Key? key}) : super(key: key);
 
   @override
-  _PostAffiliation createState() => _PostAffiliation();
+  _PostCollegeList createState() => _PostCollegeList();
 }
 
-class _PostAffiliation extends State<PostAffiliation> {
-  _PostAffiliation({Key? key});
+class _PostCollegeList extends State<PostCollegeList> {
+  _PostCollegeList({Key? key});
   final ScrollController _scrollController = ScrollController();
   final _postDetailX = Get.put(PostHomeController());
   scrollListener() async {
@@ -136,6 +136,7 @@ class _PostAffiliation extends State<PostAffiliation> {
                                           .bestPostCollegeData.value.isBlind ??
                                       false,
                                   postName: postName,
+                                  collegeType: _pageTitle,
                                 )),
                           )
                         ],
@@ -186,6 +187,7 @@ class _PostAffiliation extends State<PostAffiliation> {
                                 _postDetailX.postCollegeData[postInt].isBlind ??
                                     false,
                             postName: postName,
+                            collegeType: _pageTitle,
                           )),
                     );
                   }
@@ -207,28 +209,31 @@ class PostContext extends StatelessWidget {
   String? postCreatedAt;
   int? postId;
   String? postName;
+  String? collegeType;
 
-  PostContext({
-    Key? key,
-    this.postId,
-    this.postTitle,
-    this.postDesc,
-    this.postCreatedAt,
-    this.authorMajor,
-    this.postImageCnt,
-    this.postLikeCnt,
-    this.postCommentCnt,
-    this.isLikedByMe,
-    this.isBlind,
-    this.postName,
-  }) : super(key: key);
+  PostContext(
+      {Key? key,
+      this.postId,
+      this.postTitle,
+      this.postDesc,
+      this.postCreatedAt,
+      this.authorMajor,
+      this.postImageCnt,
+      this.postLikeCnt,
+      this.postCommentCnt,
+      this.isLikedByMe,
+      this.isBlind,
+      this.postName,
+      this.collegeType})
+      : super(key: key);
 
   final _postDetailX = Get.put(PostHomeController());
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          {Get.toNamed("/postDetail/param?postId=$postId&collegeName=인문계열")},
+      onTap: () => {
+        Get.toNamed("/postDetail/param?postId=$postId&collegeName=$collegeType")
+      },
       child: Column(
         children: [
           Row(

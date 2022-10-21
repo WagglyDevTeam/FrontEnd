@@ -8,7 +8,7 @@ import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/controller/myPage/my_post_list_controller.dart';
 import 'package:waggly/widgets/myPage/my_page_comment.dart';
-import '../../post/post_affiliation.dart';
+import '../../post/post_college_List.dart';
 
 class MyPostListScreen extends StatelessWidget {
   const MyPostListScreen({Key? key}) : super(key: key);
