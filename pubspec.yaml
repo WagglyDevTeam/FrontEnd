@@ -67,7 +67,7 @@ dependencies:
 
   #sever api
   retrofit: ^3.0.1+1
-  dio: ^4.0.6
+#  dio: ^4.0.6
 
   flutter_screenutil: ^5.5.3+2
 
@@ -81,6 +81,7 @@ dependencies:
 
   #websocket
   web_socket_channel: ^2.2.0
+  stomp_dart_client: ^0.4.4
 
 dev_dependencies:
   flutter_test:
