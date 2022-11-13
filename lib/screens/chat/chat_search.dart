@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/hive/search_history.dart';
 import 'package:waggly/hive/user.dart';
 import 'package:waggly/widgets/snackbar/custom_snack_bar.dart';
 import 'package:waggly/controller/chat/chat_search_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
-import 'package:waggly/widgets/header/page_appbar.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 
@@ -20,8 +20,6 @@ List<dynamic> groupChatItem = [
 ];
 
 class ChatSearchScreen extends StatelessWidget {
-  final String _pageTitle = "채팅 검색";
-  final Status _page = Status.editAlarmOnly;
   final _searchKeyword = TextEditingController();
   final ChatSearchController chatSearchController = Get.put(ChatSearchController());
   final SignInController signInController = Get.put(SignInController());
@@ -34,7 +32,7 @@ class ChatSearchScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PageAppbar(page: _page, pageTitle: _pageTitle),
+      appBar: TopAppBar(),
       body: Column(
         children: [
           SizedBox(height: 5.0.h),
@@ -133,6 +131,99 @@ class ChatSearchScreen extends StatelessWidget {
           ), // 신규 채팅방
         ],
       ),
+    );
+  }
+}
+
+class TopAppBar extends StatelessWidget with PreferredSizeWidget {
+  const TopAppBar({super.key});
+
+  @override
+  Size get preferredSize => Size.fromHeight(68.h);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppBar(
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.0, color: Palette.lightGray),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    color: Palette.gray,
+                    iconSize: 20.0.sp,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Container(padding: EdgeInsets.only(bottom: 3.h), child: Text("채팅 검색", style: CommonText.BodyL))
+            ],
+          ),
+          actions: [
+              InkWell(
+                onTap: () async {
+                  // 알림 페이지로 이동
+                  await Get.put(NotificationController()).getNotification();
+                  Get.toNamed('/notification');
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.only(right: 16.0.w),
+                  width: 36.0.w,
+                  height: 36.0.h,
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.0, color: Palette.lightGray),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Stack(
+                    children: [
+                      Icon(
+                        Icons.notifications_none,
+                        color: Palette.gray,
+                        size: 18.r,
+                      ),
+                      Positioned(
+                        top: 1.6.h,
+                        left: 11.w,
+                        // right: -20,
+                        child: Container(
+                          width: 6.0.w,
+                          height: 6.0.h,
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 0.5.w, color: Colors.white),
+                            color: Color(0xFFFF5F5F),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ],
     );
   }
 }

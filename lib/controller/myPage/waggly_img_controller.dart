@@ -17,6 +17,5 @@ class WagglyImgController extends GetxController {
     if (wagglyImage != null) {
       wagglyImglist.value = wagglyImage;
     }
-    // print(wagglyImglist);
   }
 }
