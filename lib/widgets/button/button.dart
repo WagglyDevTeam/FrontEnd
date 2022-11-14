@@ -98,8 +98,8 @@ class _ButtonState extends State<Button> {
       return Padding(
         padding: const EdgeInsets.fromLTRB(18, 8, 18, 0),
         child: Container(
-          width: 200,
-          height: 36,
+          width: 200.w,
+          height: 36.h,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(26),
               color: Color.fromRGBO(218, 175, 254, 0.2)),
@@ -108,7 +108,7 @@ class _ButtonState extends State<Button> {
               widget.text,
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 12,
+                fontSize: 13,
                 fontWeight: FontWeight.w700,
               ),
             ),

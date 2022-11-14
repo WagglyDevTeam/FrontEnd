@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:waggly/widgets/header/page_appbar.dart';
+import 'package:hive/hive.dart';
+import 'package:waggly/components/post/post_modal.dart';
+import 'package:waggly/controller/post/post_home_controller.dart';
+import 'package:waggly/hive/user.dart';
+import 'package:waggly/screens/post/post_home.dart';
 import 'package:waggly/components/post/post_common.dart';
 import 'package:waggly/controller/postDetail/post_detail_controller.dart';
 import 'package:waggly/utils/colors.dart';
@@ -24,10 +28,10 @@ class PostDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     late String _pageTitle = "${Get.parameters['collegeName']}";
 
-    var _page = Status.boardDetail;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PageAppbar(page: _page, pageTitle: _pageTitle),
+     // appBar: PageAppbar(page: _page, pageTitle: _pageTitle),
+      appBar: TopAppBar(),
       body: Container(
           color: Colors.white,
           child: SingleChildScrollView(
@@ -46,6 +50,133 @@ class DetailContext extends StatefulWidget {
   @override
   _DetailContext createState() => _DetailContext();
 }
+
+class TopAppBar extends StatelessWidget with PreferredSizeWidget {
+
+  @override
+  Size get preferredSize => Size.fromHeight(68.h);
+  @override
+  Widget build(BuildContext context) {
+    late String _pageTitle = "${Get.parameters['collegeName']}";
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppBar(
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.0, color: Palette.lightGray),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    color: Palette.gray,
+                    iconSize: 20.0.sp,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Container(padding: EdgeInsets.only(bottom: 3.h), child: Text( _pageTitle, style: CommonText.BodyL))
+            ],
+          ),
+          actions: [ DetailHiddenBtn(pageContext: context)],
+        ),
+      ],
+    );
+  }
+}
+
+class DetailHiddenBtn extends StatelessWidget {
+  BuildContext pageContext;
+  DetailHiddenBtn({Key? key, required this.pageContext}) : super(key: key);
+
+  isMaster() {
+    final box = Hive.box<User>('user');
+    int? me = box.get('user')?.id;
+    late String postId = "${Get.parameters['postId']}";
+    int postIdInt = int.parse(postId);
+    print(me);
+    print(postIdInt);
+    print('----');
+    if (me == postIdInt) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double modalHeight = isMaster() ? 160.0.h : 123.0.h;
+    String title = '글 메뉴';
+    void postDelete() {
+      Navigator.pop(context);
+    }
+
+    void postFix() {
+      Navigator.pop(context);
+    }
+
+    PostModal modalOn =
+    PostModal(context: context, contents: buttons(context, pageContext), height: modalHeight, title: title);
+    return GestureDetector(
+      onTap: () => {modalOn.ModalOn()},
+      child: Container(
+          margin: EdgeInsets.only(right: 16.w),
+          child: SvgPicture.asset(
+            'assets/icons/top_modal_dot.svg',
+            fit: BoxFit.contain,
+            width: 36.w,
+            height: 36.h,
+          )),
+    );
+  }
+
+  buttons(BuildContext context, BuildContext pageContext) {
+    final PostHomeController _postX = Get.put(PostHomeController());
+    final PostDetailController _postDetailX = Get.put(PostDetailController());
+    return Column(
+      children: [
+        if (isMaster())
+          ModalButton(
+              title: '삭제하기',
+              event: () {
+                Get.offAll(PostScreen());
+                _postX.deleteBoard(_postDetailX.postDetail.value.postId ?? 0);
+              }),
+        if (isMaster())
+          ModalButton(
+              title: '수정하기',
+              event: () {
+                Get.toNamed("/editPage");
+              }),
+        ModalButton(
+            title: '신고하기',
+            event: () {
+              Get.toNamed("/editPage");
+            }),
+      ],
+    );
+  }
+}
+
 
 /// 게시판 상세 페이지 ui
 class _DetailContext extends State<DetailContext> {

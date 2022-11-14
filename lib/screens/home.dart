@@ -3,21 +3,17 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:waggly/controller/home/home_controller.dart';
+import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/model/post/dtos/post_response_dto.dart';
 import 'package:waggly/screens/user/sign_in.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
-import 'package:waggly/widgets/header/page_appbar.dart';
 import 'package:waggly/widgets/index.dart';
-import 'package:waggly/controller/post/post_controller.dart';
-import 'package:waggly/model/post/post.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 PageRouteWithAnimation sign = PageRouteWithAnimation(SignInScreen());
 List<dynamic> groupChatItem = [
@@ -35,8 +31,9 @@ double appbarHeight = 68.0.h;
 
 class HomeScreen extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
-  final String _pageTitle = "와글리";
-  final Status _page = Status.editAlarmOnly;
+
+  // final String _pageTitle = "와글리";
+  // final Status _page = Status.editAlarmOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +42,7 @@ class HomeScreen extends StatelessWidget {
       //TODO: HomeAppbar와 Body 사이에 약간의 공간이 있는데 뭐지?
       //TODO: 아이폰 하단바 높이 조절해야함
       //TODO: SVG 이미지 배너 왜 안나옴
-      appBar: PageAppbar(page: _page, pageTitle: _pageTitle),
+      appBar: TopAppBar(),
       body: RefreshIndicator(
         key: refreshKey,
         onRefresh: () async {
@@ -66,6 +63,71 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class TopAppBar extends StatelessWidget with PreferredSizeWidget {
+  const TopAppBar({super.key});
+
+  @override
+  Size get preferredSize => Size.fromHeight(68.h);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppBar(
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Text('와글리', style: CommonText.TitleL),
+          actions: [
+            InkWell(
+              onTap: () async {
+                // 알림 페이지로 이동
+                await Get.put(NotificationController()).getNotification();
+                Get.toNamed('/notification');
+              },
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(right: 16.0.w),
+                width: 36.0.w,
+                height: 36.0.h,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1.0, color: Palette.lightGray),
+                  shape: BoxShape.circle,
+                ),
+                child: Stack(
+                  children: [
+                    Icon(
+                      Icons.notifications_none,
+                      color: Palette.gray,
+                      size: 18.r,
+                    ),
+                    Positioned(
+                      top: 1.6.h,
+                      left: 11.w,
+                      // right: -20,
+                      child: Container(
+                        width: 6.0.w,
+                        height: 6.0.h,
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 0.5.w, color: Colors.white),
+                          color: Color(0xFFFF5F5F),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -619,7 +681,7 @@ class AdvertisementArea extends StatelessWidget {
     return InkWell(
       onTap: () {
         // 로긴 로그아웃 체크
-        // Get.toNamed('/chatRoom');
+        Get.toNamed('/signInPage');
         if (Get.put(SignInController()).checkLoggedIn().value == true) {
           Get.put(SignInController()).logout();
         }

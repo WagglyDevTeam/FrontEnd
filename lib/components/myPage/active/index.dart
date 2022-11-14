@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 import 'package:waggly/components/myPage/active/request_list.dart';
 import 'package:waggly/controller/myPage/my_comment_list_controller.dart';
 import 'package:waggly/controller/myPage/my_post_list_controller.dart';
-import 'package:waggly/widgets/header/page_appbar.dart';
-import 'package:waggly/widgets/index.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/utils/colors.dart';
 
@@ -15,15 +13,62 @@ class ActiveScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _page = Status.setting;
-    var _pageTitle = '활동';
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PageAppbar(
-        page: _page,
-        pageTitle: _pageTitle,
-      ),
+      appBar: TopAppBar(),
       body: ActiveContent(),
+    );
+  }
+}
+
+
+class TopAppBar extends StatelessWidget with PreferredSizeWidget {
+  const TopAppBar({super.key});
+
+  @override
+  Size get preferredSize => Size.fromHeight(68.h);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppBar(
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.0, color: Palette.lightGray),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    color: Palette.gray,
+                    iconSize: 20.0.sp,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Container(padding: EdgeInsets.only(bottom: 3.h), child: Text("활동", style: CommonText.BodyL))
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

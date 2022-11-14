@@ -85,19 +85,23 @@ class PageAppbar extends StatelessWidget implements PreferredSizeWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(width: 1.0, color: Palette.lightGray),
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: IconButton(
-                icon: Icon(Icons.arrow_back),
-                color: Palette.gray,
-                iconSize: 20.0.sp,
-                onPressed: () {
-                  // Get.put(MyProfileController()).removeData();
-                  Navigator.pop(context);
-                },
+            InkWell(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1.0, color: Palette.lightGray),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  color: Palette.gray,
+                  iconSize: 20.0.sp,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
               ),
             ),
             SizedBox(
@@ -220,11 +224,7 @@ class LoginBtn extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        InkWell(
-          onTap: () {
-            Get.toNamed('/signInPage');
-          },
-          child: Container(
+          Container(
             margin: EdgeInsets.only(right: 16.0.w),
             alignment: Alignment.center,
             width: 60.0.w,
@@ -238,7 +238,6 @@ class LoginBtn extends StatelessWidget {
               borderRadius: BorderRadius.circular(20.0),
             ),
           ),
-        ),
       ],
     );
   }
@@ -404,6 +403,7 @@ class AlarmBtn extends StatelessWidget {
       onTap: () async {
         // 알림 페이지로 이동
         await Get.put(NotificationController()).getNotification();
+        Get.put(MyProfileController()).removeData();
         Get.toNamed('/notification');
       },
       child: Container(

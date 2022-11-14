@@ -76,10 +76,11 @@ class WritePage extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: PageAppbar(
-        page: _page,
-        pageTitle: _postName,
-      ),
+      // appBar: PageAppbar(
+      //   page: _page,
+      //   pageTitle: _postName,
+      // ),
+      appBar: TopAppBar(type),
       backgroundColor: Colors.white,
       body: GestureDetector(
         onTap: () {
@@ -398,5 +399,56 @@ class PhotoWidget extends StatelessWidget {
             ),
           )
         : SizedBox(height: _imageThumbnailAreaHeight.h);
+  }
+}
+
+class TopAppBar extends StatelessWidget with PreferredSizeWidget {
+  TopAppBar(type, {Key? key}) : super(key: key);
+
+  @override
+  Size get preferredSize => Size.fromHeight(68.h);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppBar(
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.0, color: Palette.lightGray),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    color: Palette.gray,
+                    iconSize: 20.0.sp,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Container(padding: EdgeInsets.only(bottom: 3.h), child: Text( "게시글 작성", style: CommonText.BodyL))
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

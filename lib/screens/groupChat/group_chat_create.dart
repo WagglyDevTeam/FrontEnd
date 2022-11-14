@@ -12,7 +12,6 @@ import 'package:waggly/widgets/button/bottom_long_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
-import 'package:waggly/widgets/header/page_appbar.dart';
 
 final List<String> categoryList = [
   "취업",
@@ -54,15 +53,10 @@ class GroupChatCreatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var os = Platform.operatingSystem;
-    var page = Status.edit;
-    const postName = "채팅방 만들기";
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: PageAppbar(
-        page: page,
-        pageTitle: postName,
-      ),
+      appBar: TopAppBar(),
       backgroundColor: Colors.white,
       body: GestureDetector(
         onTap: () {
@@ -161,6 +155,57 @@ class GroupChatCreatePage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class TopAppBar extends StatelessWidget with PreferredSizeWidget {
+  const TopAppBar({super.key});
+
+  @override
+  Size get preferredSize => Size.fromHeight(68.h);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppBar(
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.0, color: Palette.lightGray),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    color: Palette.gray,
+                    iconSize: 20.0.sp,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Container(padding: EdgeInsets.only(bottom: 3.h), child: Text("채팅방 만들기", style: CommonText.BodyL))
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

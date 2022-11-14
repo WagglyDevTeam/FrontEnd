@@ -17,6 +17,8 @@ import 'package:waggly/hive/user.dart';
 import 'package:waggly/screens/chat/chat.dart';
 import 'package:waggly/screens/chat/chat_edit.dart';
 import 'package:waggly/screens/chat/chat_room_screen.dart';
+import 'package:waggly/screens/chat/chat_search.dart';
+import 'package:waggly/screens/groupChat/group_chat_create.dart';
 import 'package:waggly/screens/user/find_password.dart';
 import 'package:waggly/screens/index.dart';
 import 'package:waggly/screens/user/my_page.dart';
@@ -105,8 +107,6 @@ class HeroApp extends StatelessWidget {
             GetPage(
               name: "/writePage",
               page: () => WritePage("write"),
-              // 그룹채팅방 만들기 페이지가 갈 곳이 없어서 임시로 여기에 라우팅 해둠
-              // page: () => GroupChatCreatePage(),
               transition: Transition.rightToLeft,
               binding: BindingsBuilder<PostController>(() {
                 Get.reload<PostController>();
@@ -115,8 +115,6 @@ class HeroApp extends StatelessWidget {
             GetPage(
                 name: "/editPage",
                 page: () => WritePage("edit"),
-                // 그룹채팅방 만들기 페이지가 갈 곳이 없어서 임시로 여기에 라우팅 해둠
-                // page: () => GroupChatCreatePage(),
                 transition: Transition.rightToLeft),
             GetPage(name: "/profileImg", page: () => ProfileImgScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/active", page: () => ActiveScreen(), transition: Transition.rightToLeft),
@@ -124,7 +122,9 @@ class HeroApp extends StatelessWidget {
             GetPage(name: "/myPostsList", page: () => MyPostListScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/myRequestList", page: () => RequestScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/findPassword", page: () => FindPasswordScreen(), transition: Transition.rightToLeft),
-            GetPage(name: "/chatRoom", page: () => ChatRoomScreen(), transition: Transition.rightToLeft)
+            GetPage(name: "/chatRoom", page: () => ChatRoomScreen(), transition: Transition.rightToLeft),
+            GetPage(name: "/chatCreate", page: () => GroupChatCreatePage(), transition: Transition.rightToLeft),
+            GetPage(name: "/chatSearch", page: () => ChatSearchScreen(), transition: Transition.rightToLeft)
           ],
         );
       },
