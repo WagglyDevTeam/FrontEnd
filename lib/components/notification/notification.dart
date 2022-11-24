@@ -5,19 +5,67 @@ import 'package:get/get.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/utils/colors.dart';
-import 'package:waggly/widgets/header/page_appbar.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var page = Status.setting;
-    var pageTitle = '알림';
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PageAppbar(pageTitle: pageTitle, page: page),
+      appBar: TopAppBar(),
       body: myNotification(),
+    );
+  }
+}
+
+class TopAppBar extends StatelessWidget with PreferredSizeWidget {
+  const TopAppBar({super.key});
+
+  @override
+  Size get preferredSize => Size.fromHeight(68.h);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppBar(
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.0, color: Palette.lightGray),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    color: Palette.gray,
+                    iconSize: 20.0.sp,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Container(padding: EdgeInsets.only(bottom: 3.h), child: Text("알림", style: CommonText.BodyL))
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

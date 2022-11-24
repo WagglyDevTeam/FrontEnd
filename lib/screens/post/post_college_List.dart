@@ -3,12 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/model/post/dtos/post_college_dto.dart';
+import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
+
 import '../../controller/post/post_home_controller.dart';
-import '../../model/post/dtos/post_college_dto.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
-import 'package:skeletons/skeletons.dart';
+
 
 class PostCollegeList extends StatefulWidget {
   const PostCollegeList({Key? key}) : super(key: key);
@@ -56,7 +57,7 @@ class _PostCollegeList extends State<PostCollegeList> {
     var _pageTitle = _postDetailX.bestPostOn.value ? "로딩 중" : postName;
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: PageAppbar(page: _page, pageTitle: _pageTitle),
+        appBar: TopAppBar(),
         body: Container(
           decoration: BoxDecoration(color: Colors.white),
           child: FutureBuilder(
@@ -222,6 +223,127 @@ class _PostCollegeList extends State<PostCollegeList> {
             }),
         ));
   }
+}
+
+
+class TopAppBar extends StatelessWidget with PreferredSizeWidget {
+  final _postDetailX = Get.put(PostHomeController());
+  final String postName = Get.parameters['collegeName'] ?? "";
+
+  @override
+  Size get preferredSize => Size.fromHeight(68.h);
+  @override
+  Widget build(BuildContext context) {
+    final _pageTitle = _postDetailX.bestPostOn.value ? "로딩 중" : postName;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppBar(
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.0, color: Palette.lightGray),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    color: Palette.gray,
+                    iconSize: 20.0.sp,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Container(padding: EdgeInsets.only(bottom: 3.h), child: Text( _pageTitle, style: CommonText.BodyL))
+            ],
+          ),
+          actions: [
+            Container(
+              margin: EdgeInsets.only(right: 16.0.w, top: 7.0.h),
+              padding: EdgeInsets.all(10.0.r),
+              width: 155.0.w,
+              height: 36.0.h,
+              decoration: BoxDecoration(
+                borderRadius:
+                const BorderRadius.all(Radius.circular(40.0) // POINT
+                ),
+                border: Border.all(width: 1.0, color: Palette.lightGray),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ActionButton(
+                      event: () {
+                        Get.toNamed("/writePage");
+                      },
+                      isIcon: Icon(
+                        Icons.add,
+                        color: Palette.gray,
+                        size: 18.w,
+                      )),
+                  line(),
+                  ActionButton(
+                    //글 검색 페이지 필요함
+                      event: () => Get.toNamed("/chatSearch"),
+                      isIcon: Icon(
+                        Icons.search,
+                        color: Palette.gray,
+                        size: 18.w,
+                      )),
+                  line(),
+                  ActionButton(
+                      event: () async {
+                        await Get.put(NotificationController())
+                            .getNotification();
+                        Get.toNamed('/notification');
+                      },
+                      isIcon: Icon(
+                        Icons.notifications_none,
+                        color: Palette.gray,
+                        size: 18.w,
+                      )),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+line() {
+  return const SizedBox(
+    width: 1,
+    height: 10,
+    child: DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border(
+          right: BorderSide(
+            // POINT
+            color: Palette.lightGray,
+            width: 1.0,
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 class PostContext extends StatelessWidget {

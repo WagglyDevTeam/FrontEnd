@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:waggly/widgets/header/page_appbar.dart';
+import 'package:waggly/utils/colors.dart';
+import 'package:waggly/utils/text_frame.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/widgets/snackbar/custom_snack_bar.dart';
 import 'package:waggly/controller/major/major_controller.dart';
@@ -9,8 +10,6 @@ import 'package:waggly/controller/signUp/sign_up_controller.dart';
 import 'package:waggly/widgets/textFormField/text_form_field.dart';
 
 class MajorSearchScreen extends StatelessWidget {
-  final String _postName = "학과 검색";
-  final Status _page = Status.editAlarmOnly;
   final MajorController _majorController = Get.put(MajorController());
   final SignUpController _signUpController = Get.put(SignUpController());
   final String universityName;
@@ -24,10 +23,7 @@ class MajorSearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: PageAppbar(
-          pageTitle: _postName,
-          page: _page,
-        ),
+        appBar: TopAppBar(),
         body: Column(
           children: [
             SizedBox(
@@ -79,5 +75,55 @@ class MajorSearchScreen extends StatelessWidget {
             ),
           ],
         ));
+  }
+}
+
+
+class TopAppBar extends StatelessWidget with PreferredSizeWidget {
+  const TopAppBar({super.key});
+
+  @override
+  Size get preferredSize => Size.fromHeight(68.h);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppBar(
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.0, color: Palette.lightGray),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    color: Palette.gray,
+                    iconSize: 20.0.sp,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.w),
+              Container(padding: EdgeInsets.only(bottom: 3.h), child: Text("학과 검색", style: CommonText.BodyL))
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

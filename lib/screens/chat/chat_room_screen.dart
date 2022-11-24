@@ -71,17 +71,12 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const String _pageTitle = "채팅방 상세";
-    const Status _page = Status.chatRoom;
     ImageController _imageController = Get.put(ImageController());
 
     chatList.sort((a, b) => b.messageTime!.compareTo(a.messageTime!));
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PageAppbar(
-        pageTitle: _pageTitle,
-        page: _page,
-      ),
+      appBar: TopAppBar(),
       endDrawer: endDrawer(),
       body: SafeArea(
         child: Column(
@@ -526,6 +521,115 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                   )
                 ],
               ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TopAppBar extends StatelessWidget with PreferredSizeWidget {
+  const TopAppBar({super.key});
+
+  @override
+  Size get preferredSize => Size.fromHeight(68.h);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppBar(
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.0, color: Palette.lightGray),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    color: Palette.gray,
+                    iconSize: 20.0.sp,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Container(padding: EdgeInsets.only(bottom: 3.h), child: Text("채팅방 상세", style: CommonText.BodyL))
+            ],
+          ),
+          actions: [
+              Container(
+                width: 120.w,
+                // color: Colors.red,
+                padding: EdgeInsets.fromLTRB(10.w, 15.h, 20.w, 5.h),
+                child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(40.0) // POINT
+                      ),
+                      border: Border.all(width: 1.0, color: Palette.lightGray),
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ActionButton(
+                              event: () {
+                                // print("여기눌러졌다 검색버튼");
+                              },
+                              isIcon: Icon(
+                                Icons.search,
+                                color: Palette.gray,
+                                size: 18,
+                              )),
+                          Line(),
+                          ActionButton(
+                              event: () => Scaffold.of(context).openEndDrawer(),
+                              isIcon: Icon(
+                                Icons.more_horiz,
+                                color: Palette.gray,
+                                size: 18,
+                              )),
+                        ],
+
+                      ),
+                    )),
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Line() {
+    return const SizedBox(
+      width: 1,
+      height: 10,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(
+            right: BorderSide(
+              // POINT
+              color: Color(0xFFE8E8E8),
+              width: 1.0,
             ),
           ),
         ),
