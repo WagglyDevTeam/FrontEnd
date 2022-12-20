@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:waggly/components/myPage/active/my_post_list.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:waggly/components/myPage/active/request_list.dart';
+import 'package:waggly/components/myPage/setting/index.dart';
 import 'package:waggly/components/notification/notification.dart';
 import 'package:waggly/controller/home/home_controller.dart';
 import 'package:waggly/controller/post/post_controller.dart';
@@ -118,6 +119,7 @@ class HeroApp extends StatelessWidget {
                 transition: Transition.rightToLeft),
             GetPage(name: "/profileImg", page: () => ProfileImgScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/active", page: () => ActiveScreen(), transition: Transition.rightToLeft),
+            GetPage(name: "/setting", page: () => SettingScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/notification", page: () => NotificationScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/myPostsList", page: () => MyPostListScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/myRequestList", page: () => RequestScreen(), transition: Transition.rightToLeft),
