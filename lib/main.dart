@@ -28,10 +28,14 @@ import 'package:waggly/screens/user/sign_in.dart';
 import 'package:waggly/screens/post/write.dart';
 import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/myPage/active/index.dart';
+import 'controller/AppController.dart';
 import 'screens/post/post_detail_screen.dart';
 import 'screens/post/post_college_List.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
+  // Push Notification
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await Hive.initFlutter();
@@ -113,10 +117,7 @@ class HeroApp extends StatelessWidget {
                 Get.reload<PostController>();
               }),
             ),
-            GetPage(
-                name: "/editPage",
-                page: () => WritePage("edit"),
-                transition: Transition.rightToLeft),
+            GetPage(name: "/editPage", page: () => WritePage("edit"), transition: Transition.rightToLeft),
             GetPage(name: "/profileImg", page: () => ProfileImgScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/active", page: () => ActiveScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/setting", page: () => SettingScreen(), transition: Transition.rightToLeft),
@@ -135,13 +136,35 @@ class HeroApp extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+  final AppController c = Get.put(AppController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Screen(),
+      body: FutureBuilder(
+        future: c.initialize(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+            return Center(
+              child: Obx(
+                () => Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(c.message.value?.notification?.title ?? 'title', style: TextStyle(fontSize: 20)),
+                    Text(c.message.value?.notification?.body ?? 'message', style: TextStyle(fontSize: 15)),
+                  ],
+                ),
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Center(child: Text('failed to initialize'));
+          } else {
+            return Screen();
+          }
+        },
+      ),
     );
   }
 }
