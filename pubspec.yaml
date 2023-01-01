@@ -41,7 +41,7 @@ dependencies:
   flutter_svg_provider: ^1.0.3
 
   # push-notification
-  firebase_core: ^2.4.0
+  firebase_core: ^2.4.1
   firebase_messaging: ^14.2.0
 
   #로컬 스토리지 저장용

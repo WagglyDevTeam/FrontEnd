@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "11734943862",
+    "project_id": "waggly-test-notification",
+    "storage_bucket": "waggly-test-notification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:11734943862:android:2134645d010a30f6e83757",
+        "android_client_info": {
+          "package_name": "com.example.waggly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "11734943862-vanvhhd689sd4rmo0ittnec5idhl85oc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ01lB927JdKSeD2JyXuQlTrrGnSbmTyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "11734943862-vanvhhd689sd4rmo0ittnec5idhl85oc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

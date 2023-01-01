@@ -28,11 +28,9 @@ import 'package:waggly/screens/user/sign_in.dart';
 import 'package:waggly/screens/post/write.dart';
 import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/myPage/active/index.dart';
-import 'controller/AppController.dart';
+import 'controller/notification/AppController.dart';
 import 'screens/post/post_detail_screen.dart';
 import 'screens/post/post_college_List.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
   // Push Notification
@@ -59,7 +57,7 @@ void main() async {
 }
 
 class HeroApp extends StatelessWidget {
-  const HeroApp({Key? key}) : super(key: key);
+  HeroApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -146,23 +144,7 @@ class MyApp extends StatelessWidget {
       body: FutureBuilder(
         future: c.initialize(),
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
-            return Center(
-              child: Obx(
-                () => Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(c.message.value?.notification?.title ?? 'title', style: TextStyle(fontSize: 20)),
-                    Text(c.message.value?.notification?.body ?? 'message', style: TextStyle(fontSize: 15)),
-                  ],
-                ),
-              ),
-            );
-          } else if (snapshot.hasError) {
-            return Center(child: Text('failed to initialize'));
-          } else {
-            return Screen();
-          }
+          return Screen();
         },
       ),
     );
