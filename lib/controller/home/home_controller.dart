@@ -39,10 +39,9 @@ class HomeController extends GetxController {
     final othersBestData = result.datas["randomBestPostSummary"];
 
     final collegeName = CollegeType.getByKey(collegeBestData['first']);
-    // print(collegeName.displayName);
+    print(collegeBestData);
     college.value = collegeName.displayName;
     collegeBestPost.value = PostResponseDto.fromJson(collegeBestData["second"]);
     othersBestPost.value = PostResponseDto.fromJson(othersBestData);
-    // print(college.value);
   }
 }

@@ -236,7 +236,7 @@ class PostBoxArea extends StatelessWidget {
               ), // 내용
               SizedBox(height: 7.h),
               Obx(() => signInController.checkLoggedIn().value == true
-                  ? MajorAreaLogin(safeWidth: safeWidth)
+                  ? MajorAreaLogin(safeWidth: safeWidth, post: post)
                   : MajorAreaLogout(safeWidth: safeWidth)), // 학과, 이미지, 좋아요, 코멘트 수
             ],
           ),
@@ -250,9 +250,11 @@ class MajorAreaLogin extends StatelessWidget {
   MajorAreaLogin({
     Key? key,
     required this.safeWidth,
+    required this.post
   }) : super(key: key);
 
   final double safeWidth;
+  final PostResponseDto post;
 
   @override
   Widget build(BuildContext context) {
@@ -262,7 +264,7 @@ class MajorAreaLogin extends StatelessWidget {
           alignment: Alignment.centerLeft,
           width: safeWidth * 0.46,
           child: Text(
-            "치토스양념제조학과",
+            "${post.authorMajor}",
             style: CommonText.BodyXSmallGray,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -285,7 +287,7 @@ class MajorAreaLogin extends StatelessWidget {
                     width: 2.w,
                   ),
                   Text(
-                    "150",
+                    "${post.postImageCnt}",
                     style: CommonText.BodyEngMain.copyWith(fontSize: 10.0.sp),
                   ),
                 ],
@@ -304,7 +306,7 @@ class MajorAreaLogin extends StatelessWidget {
                     width: 2.w,
                   ),
                   Text(
-                    "60000",
+                    "${post.postLikeCnt}",
                     style: CommonText.BodyEngMain,
                   ),
                 ],
@@ -323,7 +325,7 @@ class MajorAreaLogin extends StatelessWidget {
                     width: 2.w,
                   ),
                   Text(
-                    "60000",
+                    "${post.postCommentCnt}",
                     style: CommonText.BodyEngMain,
                   ),
                 ],
