@@ -237,7 +237,7 @@ class PostBoxArea extends StatelessWidget {
               SizedBox(height: 7.h),
               Obx(() => signInController.checkLoggedIn().value == true
                   ? MajorAreaLogin(safeWidth: safeWidth, post: post)
-                  : MajorAreaLogout(safeWidth: safeWidth)), // 학과, 이미지, 좋아요, 코멘트 수
+                  : MajorAreaLogout(safeWidth: safeWidth, post: post)), // 학과, 이미지, 좋아요, 코멘트 수
             ],
           ),
         ),
@@ -250,7 +250,7 @@ class MajorAreaLogin extends StatelessWidget {
   MajorAreaLogin({
     Key? key,
     required this.safeWidth,
-    required this.post
+    required this.post,
   }) : super(key: key);
 
   final double safeWidth;
@@ -342,8 +342,10 @@ class MajorAreaLogout extends StatelessWidget {
   const MajorAreaLogout({
     Key? key,
     required this.safeWidth,
+    required this.post,
   }) : super(key: key);
 
+  final PostResponseDto post;
   final double safeWidth;
 
   @override
@@ -357,7 +359,7 @@ class MajorAreaLogout extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 width: safeWidth * 0.46,
                 child: Text(
-                  "치토스양념제조학과",
+                  "${post.authorMajor}",
                   style: CommonText.BodyXSmallGray,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -380,7 +382,7 @@ class MajorAreaLogout extends StatelessWidget {
                           width: 2.w,
                         ),
                         Text(
-                          "150",
+                          "${post.postImageCnt}",
                           style: CommonText.BodyEngMain.copyWith(fontSize: 10.0.sp),
                         ),
                       ],
@@ -399,7 +401,7 @@ class MajorAreaLogout extends StatelessWidget {
                           width: 2.w,
                         ),
                         Text(
-                          "60000",
+                          "${post.postLikeCnt}",
                           style: CommonText.BodyEngMain,
                         ),
                       ],
@@ -418,7 +420,7 @@ class MajorAreaLogout extends StatelessWidget {
                           width: 2.w,
                         ),
                         Text(
-                          "60000",
+                          "${post.postCommentCnt}",
                           style: CommonText.BodyEngMain,
                         ),
                       ],
@@ -683,9 +685,10 @@ class AdvertisementArea extends StatelessWidget {
     return InkWell(
       onTap: () {
         // 로긴 로그아웃 체크
-        Get.toNamed('/signInPage');
         if (Get.put(SignInController()).checkLoggedIn().value == true) {
           Get.put(SignInController()).logout();
+        } else {
+          Get.toNamed('/signInPage');
         }
       },
       child: Container(
