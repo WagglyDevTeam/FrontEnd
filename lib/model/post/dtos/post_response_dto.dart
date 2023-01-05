@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class PostResponseDto {
@@ -6,8 +5,10 @@ class PostResponseDto {
   final String? postTitle;
   final String? postDesc;
   final String? postCreatedAt;
+  final String? authorMajor;
   final int? postImageCnt;
   final int? postLikeCnt;
+  final int? postCommentCnt;
   final bool? isLikedByMe;
   final bool? isBlind;
   final bool? isAnonymous;
@@ -17,8 +18,10 @@ class PostResponseDto {
       this.postTitle,
       this.postDesc,
       this.postCreatedAt,
+      this.authorMajor,
       this.postImageCnt,
       this.postLikeCnt,
+      this.postCommentCnt,
       this.isLikedByMe,
       this.isBlind,
       this.isAnonymous});
@@ -31,8 +34,10 @@ class PostResponseDto {
       postTitle: json["postTitle"],
       postDesc: json["postDesc"],
       postCreatedAt: formatter.format(DateTime.parse(json['postCreatedAt'])),
+      authorMajor: json["authorMajor"],
       postImageCnt: json["postImageCnt"],
       postLikeCnt: json["postLikeCnt"],
+      postCommentCnt: json["postCommentCnt"],
       isLikedByMe: json["isLikedByMe"],
       isBlind: json["isBlind"],
       isAnonymous: json["isAnonymous"],
