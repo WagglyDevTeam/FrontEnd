@@ -6,8 +6,8 @@ import 'package:waggly/hive/user.dart';
 class MyProfileProvider extends GetConnect {
   final token = Hive.box<User>('user').get('user')?.jwtToken;
 
-  Future<Response> modifyProfile(FormData data) => put(
-        "${dotenv.get('BASE_URL')}/user/profile",
+  Future<Response> modifyNickname(FormData data) => put(
+        "${dotenv.get('BASE_URL')}/user/profile/nickname",
         data,
         headers: {"Authorization": token!},
       );

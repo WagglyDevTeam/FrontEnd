@@ -33,20 +33,16 @@ class ProfileModel {
 
 class ProfileData {
   ProfileData({
-    required this.profileImg,
     required this.nickname,
   });
 
-  String profileImg;
   String nickname;
 
   factory ProfileData.fromJson(Map<String, dynamic> json) => ProfileData(
-        profileImg: json["profileImg"],
         nickname: json["nickname"],
       );
 
   Map<String, dynamic> toJson() => {
-        "profileImg": profileImg,
         "nickname": nickname,
       };
 }

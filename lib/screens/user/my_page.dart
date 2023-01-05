@@ -106,7 +106,10 @@ class _MyPageState extends State<MyPage> {
           ),
         );
       }),
-    );
+    ).whenComplete((){
+      myProfileController.profileBtn.value = !myProfileController.profileBtn.value;
+      print("object");
+    });
   }
 
   @override
@@ -133,30 +136,61 @@ class _MyPageState extends State<MyPage> {
                 Center(
                   child: Stack(
                     children: [
-                      CircleAvatar(
-                          radius: 20.0,
-                          backgroundImage: myProfileController.profilePic.value != "기본이미지 Url"
-                              ? NetworkImage(myProfileController.profilePic.value)
-                              : AssetImage("assets/images/defaultProfile.png") as ImageProvider),
-                      if (myProfileController.nicknameBtn.value)
+                      SizedBox(width: 60.w, height: 50.w),
+                      Positioned(
+                        top: 4.h,
+                        left: 10.w,
+                        child: Stack(
+                          children: [
+                            CircleAvatar(
+                                radius: 20.0.r,
+                                backgroundImage: myProfileController.profilePic.value != "기본이미지 Url"
+                                    ? NetworkImage(myProfileController.profilePic.value)
+                                    : AssetImage("assets/images/defaultProfile.png") as ImageProvider),
+                            if(myProfileController.profileBtn.value)
+                              CircleAvatar(
+                                radius: 20.0.r,
+                                backgroundColor: Colors.black.withOpacity(0.3)
+                              )
+                          ],
+                        )
+                      ),
+                      if (myProfileController.profileBtn.value)
                         Positioned(
-                            bottom: 6.0.h,
-                            right: 6.0.w,
+                            bottom: 13.0.h,
+                            left: 20.w,
                             child: InkWell(
-                                onTap: () {
-                                  _showModalBottomSheet(context);
-                                },
                                 child: Icon(
                                   Icons.camera_alt,
                                   color: Palette.lightGray,
                                   size: 20.0.r,
                                 ))),
+                      if(!myProfileController.profileBtn.value)
+                        Positioned(
+                            right: 5.w,
+                            top: 1.h,
+                            child: InkWell(
+                              onTap: (){
+                                myProfileController.profileBtn.value = !myProfileController.profileBtn.value;
+                                print(myProfileController.profileBtn.value);
+                                _showModalBottomSheet(context);
+                              },
+                              child: CircleAvatar(
+                                radius: 8.w,
+                                backgroundColor: Palette.candy,
+                                child: Icon(
+                                  Icons.edit_rounded,
+                                  color: Palette.purple,
+                                  size: 13.0.r
+                                ),
+                              )
+                            )),
                     ],
                   ),
                 ),
                 SizedBox(width: 10.w),
                 Container(
-                  width: MediaQuery.of(context).size.width - 119.w,
+                  width: MediaQuery.of(context).size.width - 159.w,
                   padding: EdgeInsets.only(top: 8.h),
                   child: Obx(
                         () => Column(
@@ -206,7 +240,7 @@ class _MyPageState extends State<MyPage> {
                         myProfileController.nicknameBtn.value = true;
                       } else {
                         await myProfileController.changeUserProfile(
-                          ProfileData(profileImg: _nickname.text, nickname: _nickname.text),
+                          ProfileData(nickname: _nickname.text),
                         );
                         myProfileController.nicknameBtn.value = false;
                         // myProfileController.nickname.value = _nickname.text;

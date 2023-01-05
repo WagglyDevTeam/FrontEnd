@@ -20,6 +20,7 @@ class MyProfileController extends GetxController {
   final MyProfileProvider _myProfileProvider = MyProfileProvider();
   final picker = ImagePicker();
   final nicknameBtn = false.obs;
+  final profileBtn = false.obs;
   final bioBtn = false.obs;
   final cameraBtn = false.obs;
   var profilePic = "".obs;
@@ -78,7 +79,7 @@ class MyProfileController extends GetxController {
     //
 
     FormData form = FormData(profileData.toJson());
-    await _myProfileProvider.modifyProfile(form);
+    await _myProfileProvider.modifyNickname(form);
   }
 
   Future<void> changeUserIntroduction(Bio bio) async {
@@ -104,7 +105,7 @@ class MyProfileController extends GetxController {
     try {
       // final test =
       //     await ImagePicker().pickImage(source: ImageSource.gallery);
-      final test = await picker.pickImage(source: ImageSource.gallery);
+      final test = await picker.pickImage(source: ImageSource.gallery, maxHeight: 400, maxWidth: 540);
 
       if (test == null) return;
 
@@ -123,9 +124,6 @@ class MyProfileController extends GetxController {
       user?.editUserProfileImg(changeProfileImg);
       box.put('user', user!);
       profilePic.value = changeProfileImg;
-
-      print(response.statusCode);
-      print(wagglyResponseDto.datas['profileImg']);
       //setState(() => this.image = imageTemp);
     } on PlatformException catch (e) {
       print('failed to pick image: $e');
