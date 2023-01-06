@@ -13,6 +13,7 @@ import 'package:waggly/components/post/post_common.dart';
 import 'package:waggly/controller/postDetail/post_detail_controller.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
+import 'package:waggly/utils/time_converter.dart';
 import 'package:waggly/widgets/textFormField/custom_text_form_field.dart';
 import '../../widgets/checkBox/custom_check_box.dart';
 
@@ -292,8 +293,7 @@ class _DetailContext extends State<DetailContext> {
                                                           _postDetailX
                                                                   .postDetail
                                                                   .value
-                                                                  .postCreatedAt ??
-                                                              '',
+                                                                  .postCreatedAt ?? '',
                                                           style: CommonText
                                                               .BodyEngGray)),
                                                     ],

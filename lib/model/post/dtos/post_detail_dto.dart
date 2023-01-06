@@ -1,4 +1,4 @@
-import 'package:waggly/components/myPage/active/request_list.dart';
+import 'package:intl/intl.dart';
 
 class PostDetailData {
   String? authorMajor;
@@ -33,21 +33,25 @@ class PostDetailData {
       this.authorProfileImg})
       : super();
 
-  factory PostDetailData.fromJson(Map<String, dynamic> json) => PostDetailData(
-      postId: json["postId"] as int,
-      postTitle: json["postTitle"] as String,
-      postDesc: json["postDesc"] as String,
-      postCreatedAt: json["postCreatedAt"] as String,
-      postImages: json["postImages"] as List<dynamic>,
-      postLikeCnt: json["postLikeCnt"] as int,
-      postCommentCnt: json["postCommentCnt"] as int,
-      isLikedByMe: json["isLikedByMe"] as bool,
-      authorId: json["authorId"] as int,
-      authorMajor: json["authorMajor"] as String,
-      authorNickname: json["authorNickname"] as String,
-      isBlind: json["isBlind"] as bool,
-      isAnonymous: json["isAnonymous"] as bool,
-      authorProfileImg: json['authorProfileImg'] as String);
+  factory PostDetailData.fromJson(Map<String, dynamic> json) {
+    final DateFormat formatter = DateFormat('MM/dd HH:mm');
+
+    return PostDetailData(
+        postId: json["postId"] as int,
+        postTitle: json["postTitle"] as String,
+        postDesc: json["postDesc"] as String,
+        postCreatedAt: formatter.format(DateTime.parse(json["postCreatedAt"])),
+        postImages: json["postImages"] as List<dynamic>,
+        postLikeCnt: json["postLikeCnt"] as int,
+        postCommentCnt: json["postCommentCnt"] as int,
+        isLikedByMe: json["isLikedByMe"] as bool,
+        authorId: json["authorId"] as int,
+        authorMajor: json["authorMajor"] as String,
+        authorNickname: json["authorNickname"] as String,
+        isBlind: json["isBlind"] as bool,
+        isAnonymous: json["isAnonymous"] as bool,
+        authorProfileImg: json['authorProfileImg'] as String);
+  }
 
   factory PostDetailData.fromClass(PostDetailData postDetailData) =>
       PostDetailData(
@@ -109,17 +113,21 @@ class ReCommentData {
     this.isBlind,
   });
 
-  factory ReCommentData.fromJson(Map<String, dynamic> json) => ReCommentData(
-      replyId: json["replyId"] as int,
-      replyCreatedAt: json["replyCreatedAt"] as String,
-      replyLikeCnt: json["replyLikeCnt"] as int,
-      replyDesc: json["replyDesc"] as String,
-      isLikedByMe: json["isLikedByMe"] as bool,
-      authorId: json["authorId"] as int,
-      authorMajor: json["authorMajor"] as String,
-      authorNickname: json["authorNickname"] as String,
-      authorProfileImg: json["authorProfileImg"] as String,
-      isBlind: json["isBlind"] as bool);
+  factory ReCommentData.fromJson(Map<String, dynamic> json) {
+    final DateFormat formatter = DateFormat('MM/dd HH:mm');
+
+    return ReCommentData(
+        replyId: json["replyId"] as int,
+        replyCreatedAt: formatter.format(DateTime.parse(json["replyCreatedAt"])),
+        replyLikeCnt: json["replyLikeCnt"] as int,
+        replyDesc: json["replyDesc"] as String,
+        isLikedByMe: json["isLikedByMe"] as bool,
+        authorId: json["authorId"] as int,
+        authorMajor: json["authorMajor"] as String,
+        authorNickname: json["authorNickname"] as String,
+        authorProfileImg: json["authorProfileImg"] as String,
+        isBlind: json["isBlind"] as bool);
+  }
 }
 
 class CommentData {
@@ -149,9 +157,12 @@ class CommentData {
     this.isBlind,
   });
 
-  factory CommentData.fromJson(Map<String, dynamic> json) => CommentData(
+  factory CommentData.fromJson(Map<String, dynamic> json) {
+    final DateFormat formatter = DateFormat('MM/dd HH:mm');
+
+    return CommentData(
       commentId: json["commentId"] as int,
-      commentCreatedAt: json["commentCreatedAt"] as String,
+      commentCreatedAt: formatter.format(DateTime.parse(json["commentCreatedAt"])),
       commentLikeCnt: json["commentLikeCnt"] as int,
       commentDesc: json["commentDesc"] as String,
       isLikedByMe: json["isLikedByMe"] as bool,
@@ -161,7 +172,8 @@ class CommentData {
       authorProfileImg: json["authorProfileImg"] as String,
       isBlind: json["isBlind"] as bool,
       replies: List<ReCommentData>.from(
-          json["replies"].map((x) => ReCommentData.fromJson(x))));
+         json["replies"].map((x) => ReCommentData.fromJson(x))));
+  }
 }
 
 class ListCommentData {
