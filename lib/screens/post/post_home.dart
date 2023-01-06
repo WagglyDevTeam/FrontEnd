@@ -242,7 +242,7 @@ class PostCard extends StatelessWidget {
               SizedBox(
                 height: 123.h,
                 child: ListView.builder(
-                  scrollDirection: Axis.vertical,
+                  physics: NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(5),
                   itemCount: postList?.length,
                   itemBuilder: (BuildContext context, int index) {
