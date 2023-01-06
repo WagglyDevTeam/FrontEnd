@@ -522,6 +522,7 @@ class _DetailContext extends State<DetailContext> {
                                                   )),
                                               SizedBox(
                                                   child: ListView.builder(
+                                                      physics: NeverScrollableScrollPhysics(),
                                                       shrinkWrap: true,
                                                       itemCount: _postDetailX
                                                               .boardComment[
