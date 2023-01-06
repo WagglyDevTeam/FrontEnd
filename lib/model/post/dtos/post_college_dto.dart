@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import 'waggly_response_dto.dart';
+import 'package:intl/intl.dart';
 
 class PostListData {
   String majorName;
@@ -75,18 +73,21 @@ class PostSpecificData {
       this.postCreatedAt,
       this.postId});
 
-  factory PostSpecificData.fromJson(Map<String, dynamic> json) =>
-      PostSpecificData(
-          postDesc: json["postDesc"],
-          postImageCnt: json["postImageCnt"],
-          postLikeCnt: json["postLikeCnt"],
-          postCommentCnt: json["postCommentCnt"],
-          isLikedByMe: json["isLikedByMe"],
-          isBlind: json["isBlind"],
-          authorMajor: json["authorMajor"],
-          postTitle: json["postTitle"],
-          postCreatedAt: json["postCreatedAt"],
-          postId: json["postId"]);
+  factory PostSpecificData.fromJson(Map<String, dynamic> json) {
+    final DateFormat formatter = DateFormat('MM/dd HH:mm');
+
+    return PostSpecificData(
+        postDesc: json["postDesc"],
+        postImageCnt: json["postImageCnt"],
+        postLikeCnt: json["postLikeCnt"],
+        postCommentCnt: json["postCommentCnt"],
+        isLikedByMe: json["isLikedByMe"],
+        isBlind: json["isBlind"],
+        authorMajor: json["authorMajor"],
+        postTitle: json["postTitle"],
+        postCreatedAt: formatter.format(DateTime.parse(json["postCreatedAt"])),
+        postId: json["postId"]);
+  }
 }
 
 class PostCollegeDto {

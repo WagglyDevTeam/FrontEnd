@@ -13,6 +13,7 @@ import 'package:waggly/components/post/post_common.dart';
 import 'package:waggly/controller/postDetail/post_detail_controller.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
+import 'package:waggly/utils/time_converter.dart';
 import 'package:waggly/widgets/textFormField/custom_text_form_field.dart';
 import '../../widgets/checkBox/custom_check_box.dart';
 
@@ -186,6 +187,7 @@ class _DetailContext extends State<DetailContext> {
   /// 게시판 상세 페이지 GetX 데이터
   final PostDetailController _postDetailX = Get.put(PostDetailController());
   late String postId = "${Get.parameters['postId']}";
+  final ScrollController _scrollController = ScrollController();
 
   @override
   initState() {
@@ -241,6 +243,8 @@ class _DetailContext extends State<DetailContext> {
                                 color: Colors.white10,
                                 padding: EdgeInsets.only(bottom: 95.h),
                                 child: Obx(() => ListView.builder(
+                                      physics: ClampingScrollPhysics(),
+                                      controller: _scrollController,
                                       scrollDirection: Axis.vertical,
                                       itemCount:
                                           _postDetailX.boardComment.length + 1,
@@ -292,8 +296,7 @@ class _DetailContext extends State<DetailContext> {
                                                           _postDetailX
                                                                   .postDetail
                                                                   .value
-                                                                  .postCreatedAt ??
-                                                              '',
+                                                                  .postCreatedAt ?? '',
                                                           style: CommonText
                                                               .BodyEngGray)),
                                                     ],
@@ -522,6 +525,7 @@ class _DetailContext extends State<DetailContext> {
                                                   )),
                                               SizedBox(
                                                   child: ListView.builder(
+                                                      physics: NeverScrollableScrollPhysics(),
                                                       shrinkWrap: true,
                                                       itemCount: _postDetailX
                                                               .boardComment[
@@ -623,7 +627,7 @@ class _DetailContext extends State<DetailContext> {
 
                           /// 게시판 상세 페이지 Textarea UI
                           Positioned(
-                              bottom: 0, left: 0, child: PostDetailTextarea()),
+                              bottom: 0, left: 0, child: PostDetailTextarea(scrollController: _scrollController)),
                         ],
                       ),
                     ]);
@@ -633,7 +637,8 @@ class _DetailContext extends State<DetailContext> {
 }
 
 class PostDetailTextarea extends StatefulWidget {
-  PostDetailTextarea({Key? key}) : super(key: key);
+  PostDetailTextarea({Key? key, required this.scrollController}) : super(key: key);
+  final ScrollController scrollController;
 
   @override
   _PostDetailTextarea createState() => _PostDetailTextarea();
@@ -651,6 +656,7 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
   @override
   Widget build(BuildContext context) {
     final PostDetailController _postDetailX = Get.put(PostDetailController());
+
 
     /// 게시판 상세페이지 댓글 업데이트 이벤트
     void onCommentUpdate() {
@@ -670,6 +676,12 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
             anonymous: _isChecked,
           );
           _comment.clear();
+          final position = widget.scrollController.position.maxScrollExtent;
+          widget.scrollController.animateTo(
+              position,
+              duration: Duration(milliseconds: 400),
+              curve: Curves.easeOut,
+          );
         }
       }
     }

@@ -8,6 +8,7 @@ import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 
 final SignInController _signInController = Get.put(SignInController());
 final _token = Hive.box<User>('user').get('user')?.jwtToken;
+final _userId = Hive.box<User>('user').get('user')?.id;
 
 class PostProvider extends GetConnect {
   final Map<String, String> authHeaders = _token != null ? {"Authorization": _token!} : {};
@@ -34,7 +35,7 @@ class PostProvider extends GetConnect {
 
   /// GET 게시판 홈 API
   Future<Response> getBoardHome() => get(
-        "${dotenv.get('BASE_URL')}/board/home",
+        "${dotenv.get('BASE_URL')}/board/home?userId=$_userId",
         headers: authHeaders,
       );
 

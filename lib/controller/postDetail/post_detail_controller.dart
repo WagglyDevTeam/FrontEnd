@@ -76,29 +76,32 @@ class PostDetailController extends GetxController {
     var authorMajor = box.get('user')?.major;
     var authorProfileImg = box.get('user')?.profileImg;
     final DateTime now = DateTime.now();
-    final DateFormat formatter = DateFormat.Md().add_jm();
-    final String formatted = formatter.format(now);
+    final DateFormat formatter = DateFormat('MM/dd HH:mm');
+    final formatted = formatter.format(now);
+
     var rng = Random();
 
     dynamic resCommentId = result.datas["commentId"];
     // / 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
-    final commentMap = CommentData.fromJson({
-      "commentId": resCommentId,
-      "commentCreatedAt": formatted,
-      "commentLikeCnt": 0,
-      "commentDesc": commentDesc,
-      "isLikedByMe": false,
-      "authorId": authorId,
-      "authorMajor": authorMajor,
-      "authorNickname": anonymous ? "익명" : authorNickname,
-      "authorProfileImg":
+    final commentMap = CommentData(
+      commentId: resCommentId,
+      commentCreatedAt: formatted,
+      commentLikeCnt: 0,
+      commentDesc: commentDesc,
+      isLikedByMe: false,
+      authorId: authorId,
+      authorMajor: authorMajor,
+      authorNickname: anonymous ? "익명" : authorNickname,
+      authorProfileImg:
           anonymous ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png" : authorProfileImg,
-      "isBlind": false,
-      "replies": [],
-    });
+      isBlind: false,
+      replies: [],
+    );
 
-    print(resCommentId);
-    boardComment.insert(0, commentMap);
+    for (CommentData comment in boardComment.value) {
+      print(comment.commentDesc);
+    }
+    boardComment.add(commentMap);
     update();
     boardComment.refresh();
   }
