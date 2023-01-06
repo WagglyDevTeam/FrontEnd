@@ -29,7 +29,7 @@ class CustomTextFormField extends StatelessWidget {
       initialValue: initialValue,
       validator: validator,
       onChanged: (value) {
-        onChanged();
+        onChanged;
       },
       onEditingComplete: () {
         onEditingComplete;
