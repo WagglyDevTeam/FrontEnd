@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:waggly/controller/myPage/my_comment_list_controller.dart';
+import 'package:waggly/provider/my_comment_provider.dart';
 import 'package:waggly/screens/post/post_college_List.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
@@ -16,7 +17,70 @@ class MyPostListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: TopAppBar(),
       body: MyPostList(),
+    );
+  }
+}
+
+
+class TopAppBar extends StatelessWidget with PreferredSizeWidget {
+  MyPostsListController controller = Get.put(MyPostsListController());
+  MyCommentsListController commentController = Get.put(MyCommentsListController());
+
+
+  @override
+  Size get preferredSize => Size.fromHeight(68.h);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppBar(
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.0, color: Palette.lightGray),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    color: Palette.gray,
+                    iconSize: 20.0.sp,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Obx(
+                    () => Container(
+                  margin: EdgeInsets.only(bottom: 3.h),
+                  child: Text(
+                    controller.mine.value ? '내가 쓴 글' : '내가 쓴 댓글',
+                    style: CommonText.BodyL,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -36,43 +100,6 @@ class MyPostList extends StatelessWidget {
 
     return Stack(children: [
       Column(children: [
-        Container(
-          margin: EdgeInsets.only(top: 20.h, left: 16.w),
-          height: appbarHeight,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(width: 1.0, color: Palette.lightGray),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  color: Palette.gray,
-                  iconSize: 20.0.sp,
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              SizedBox(
-                width: 8.w,
-              ),
-              Obx(
-                () => Container(
-                  width: 200.w,
-                  margin: EdgeInsets.only(bottom: 3.h),
-                  child: Text(
-                    controller.mine.value ? '내가 쓴 글' : '내가 쓴 댓글',
-                    style: CommonText.BodyL,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
         //아이콘 버튼
         Obx(
           () => Expanded(
@@ -91,7 +118,7 @@ class MyPostList extends StatelessWidget {
                       size: 16.0,
                     ),
                     onPressed: () {
-                      controller.mine.value = true;
+                       controller.mine.value = true;
                     },
                     style: ElevatedButton.styleFrom(
                       primary: controller.mine.value ? Palette.main : Colors.white,
@@ -133,18 +160,18 @@ class MyPostList extends StatelessWidget {
             ),
           ),
         ),
-        //리스트
+       //리스트
         Obx(
-          () => controller.mine.value
-              ? SizedBox(
-                  height: MediaQuery.of(context).size.height - 120.h,
+          () => controller.mine.value ?
+          SizedBox(
+                  height: MediaQuery.of(context).size.height - 145.h,
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       itemCount: controller.myPosts.length,
                       itemBuilder: (context, index) {
                         return Container(
-                            padding: EdgeInsets.only(top: 8.h, bottom: 16.h, left: 26.w, right: 26.w),
+                            padding: EdgeInsets.only(top: 5.h, bottom: 16.h, left: 26.w, right: 26.w),
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 border: Border(
@@ -155,19 +182,18 @@ class MyPostList extends StatelessWidget {
                               postTitle: controller.myPosts[index].postTitle ?? '',
                               postDesc: controller.myPosts[index].postDesc ?? '',
                               postCreatedAt:
-                                  DateFormat('MM/dd HH:mm').format(controller.myPosts[index].postCreatedAt! ?? ''),
+                              DateFormat('MM/dd HH:mm').format(controller.myPosts[index].postCreatedAt! ?? ''),
                               authorMajor: controller.myPosts[index].authorMajor ?? '',
                               postImageCnt: controller.myPosts[index].postImageCnt ?? 0,
                               postLikeCnt: controller.myPosts[index].postLikeCnt ?? 0,
                               postCommentCnt: controller.myPosts[index].postCommentCnt ?? 0,
                               isLikedByMe: controller.myPosts[index].isLikedByMe ?? false,
-                              isBlind: controller.myPosts[index].authorMajor ?? 0,
-                              postName: controller.myPosts[index].postTitle ?? 0,
+                              isAnonymous: controller.myPosts[index].isAnonymous ?? false,
+                              collegeType: controller.myPosts[index].authorMajor ?? "",
                             ));
                       }))
-              : Obx(
-                  () => SizedBox(
-                      height: MediaQuery.of(context).size.height - 120.h,
+              : SizedBox(
+                      height: MediaQuery.of(context).size.height - 200.h,
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
@@ -190,9 +216,8 @@ class MyPostList extends StatelessWidget {
                               ),
                             );
                           })),
-                ),
         ),
-      ])
+      ]),
     ]);
   }
 }
