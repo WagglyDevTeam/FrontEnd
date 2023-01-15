@@ -33,9 +33,9 @@ import 'screens/post/post_detail_screen.dart';
 import 'screens/post/post_college_List.dart';
 
 void main() async {
+  await dotenv.load(fileName: ".env");
   // Push Notification
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
   await Hive.initFlutter();
 
   const FlutterSecureStorage secureStorage = FlutterSecureStorage();

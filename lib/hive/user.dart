@@ -22,17 +22,10 @@ class User {
   final String? introduction;
   @HiveField(8)
   String? jwtToken;
+  @HiveField(9)
+  String? deviceToken;
 
-  User(
-      {this.id,
-      this.nickName,
-      this.university,
-      this.classNumber,
-      this.major,
-      this.gender,
-      this.profileImg,
-      this.introduction,
-      this.jwtToken});
+  User({this.id, this.nickName, this.university, this.classNumber, this.major, this.gender, this.profileImg, this.introduction, this.jwtToken, this.deviceToken});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -57,6 +50,7 @@ class User {
         'profileImg': profileImg,
         'introduction': introduction,
         'jwtToken': jwtToken,
+        'deviceToken': deviceToken,
       };
 
   factory User.fromDto(WagglyResponseDto dto) {
@@ -72,11 +66,11 @@ class User {
     );
   }
 
-  void editUserNickName(String nickName){
+  void editUserNickName(String nickName) {
     this.nickName = nickName;
   }
 
-  void editUserProfileImg(String profileImg){
+  void editUserProfileImg(String profileImg) {
     this.profileImg = profileImg;
   }
 }

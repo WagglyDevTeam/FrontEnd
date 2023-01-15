@@ -17,11 +17,11 @@ class AppController extends GetxController {
     // Android 에서는 별도의 확인 없이 리턴되지만, requestPermission()을 호출하지 않으면 수신되지 않는다.
     await FirebaseMessaging.instance.requestPermission(
       alert: true,
-      announcement: true,
+      announcement: false,
       badge: true,
-      carPlay: true,
-      criticalAlert: true,
-      provisional: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
       sound: true,
     );
 
@@ -36,5 +36,11 @@ class AppController extends GetxController {
     });
 
     return true;
+  }
+
+  Future<String> getToken() async {
+    final String? token = await FirebaseMessaging.instance.getToken();
+    print('token is $token!');
+    return token!;
   }
 }
