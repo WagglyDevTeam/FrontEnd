@@ -63,18 +63,12 @@ class _SignInState extends State<SignInScreen> {
                       height: 36.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(26),
-                          color: _signInController.emailInputEmpty.value == false &&
-                                  _signInController.passwordInputEmpty.value == false
-                              ? Color(0xffB863FB)
-                              : Color(0xffE8E8E8)),
+                          color: _signInController.emailInputEmpty.value == false && _signInController.passwordInputEmpty.value == false ? Color(0xffB863FB) : Color(0xffE8E8E8)),
                       child: TextButton(
                         child: Text(
                           '시작하기',
                           style: TextStyle(
-                            color: _signInController.emailInputEmpty.value == false &&
-                                    _signInController.passwordInputEmpty.value == false
-                                ? Color(0xffFFFFFF)
-                                : Palette.mdGray,
+                            color: _signInController.emailInputEmpty.value == false && _signInController.passwordInputEmpty.value == false ? Color(0xffFFFFFF) : Palette.mdGray,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w700,
                           ),
@@ -89,8 +83,8 @@ class _SignInState extends State<SignInScreen> {
                               EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
                             );
                           } else {
-                            final result = await _signInController
-                                .signIn(SignInRequestDto(_emailController.text, _passwordController.text));
+                            // 로딩 추가
+                            final result = await _signInController.signIn(SignInRequestDto(_emailController.text, _passwordController.text));
                             if (result.code == 200) {
                               Get.offAllNamed("/");
                             } else {
@@ -131,7 +125,7 @@ class SignInHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Stack(
         children: [

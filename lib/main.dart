@@ -12,6 +12,7 @@ import 'package:waggly/components/myPage/setting/index.dart';
 import 'package:waggly/components/notification/notification.dart';
 import 'package:waggly/controller/home/home_controller.dart';
 import 'package:waggly/controller/post/post_controller.dart';
+import 'package:waggly/controller/pushNotification/push_notification_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/hive/search_history.dart';
 import 'package:waggly/hive/user.dart';
@@ -113,10 +114,7 @@ class HeroApp extends StatelessWidget {
                 Get.reload<PostController>();
               }),
             ),
-            GetPage(
-                name: "/editPage",
-                page: () => WritePage("edit"),
-                transition: Transition.rightToLeft),
+            GetPage(name: "/editPage", page: () => WritePage("edit"), transition: Transition.rightToLeft),
             GetPage(name: "/profileImg", page: () => ProfileImgScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/active", page: () => ActiveScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/setting", page: () => SettingScreen(), transition: Transition.rightToLeft),
@@ -135,13 +133,17 @@ class HeroApp extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+  final PushNotificationController _pushNotificationController = Get.put(PushNotificationController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Screen(),
+      body: FutureBuilder(
+        future: _pushNotificationController.initialize(),
+        builder: (context, snapshot) => Screen(),
+      ),
     );
   }
 }

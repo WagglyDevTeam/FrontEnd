@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:waggly/controller/pushNotification/push_notification_controller.dart';
 import 'package:waggly/hive/user.dart';
 import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
+import 'package:waggly/model/signIn/dtos/device_token_request_dto.dart';
 import 'package:waggly/model/signIn/dtos/sign_in_reqeust_dto.dart';
 import '../../provider/sign_in_provider.dart';
 
 class SignInController extends GetxController {
   final SignInProvider _signInProvider = SignInProvider();
+  final PushNotificationController _pushNotificationController = Get.put(PushNotificationController());
   String tempToken = '';
   final box = Hive.box<User>('user');
   final user = User().obs;
@@ -23,24 +26,30 @@ class SignInController extends GetxController {
     dynamic body = response.body;
     if (response.hasError) {
       if (body.runtimeType == String && body.contains('Invalid password')) {
-        WagglyResponseDto wagglyResponseDto =
-            WagglyResponseDto(code: 401, message: "비밀번호를 확인해주세요.", status: 401, datas: null);
+        WagglyResponseDto wagglyResponseDto = WagglyResponseDto(code: 401, message: "비밀번호를 확인해주세요.", status: 401, datas: null);
         return wagglyResponseDto;
       } else if (body.runtimeType.toString() == "_InternalLinkedHashMap<String, dynamic>") {
-        WagglyResponseDto wagglyResponseDto =
-            WagglyResponseDto(code: 403, message: "해당 유저를 찾을 수 없습니다.", status: 403, datas: null);
+        WagglyResponseDto wagglyResponseDto = WagglyResponseDto(code: 403, message: "해당 유저를 찾을 수 없습니다.", status: 403, datas: null);
         return wagglyResponseDto;
       } else {
-        WagglyResponseDto wagglyResponseDto =
-            WagglyResponseDto(code: 500, message: "알 수 없는 오류가 발생했습니다.", status: 500, datas: null);
+        WagglyResponseDto wagglyResponseDto = WagglyResponseDto(code: 500, message: "알 수 없는 오류가 발생했습니다.", status: 500, datas: null);
         return wagglyResponseDto;
       }
     } else {
       WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
       User user = User.fromDto(wagglyResponseDto);
+
       user.jwtToken = response.headers!["authorization"];
       this.user.value = user;
       box.put('user', user);
+
+      String deviceToken = await _pushNotificationController.getToken();
+      Response deviceTokenResponse = await _signInProvider.putDeviceToken(DeviceTokenRequestDto(deviceToken), user.id!, user.jwtToken!);
+      print(deviceTokenResponse.body);
+      if (deviceTokenResponse.hasError) {
+        WagglyResponseDto wagglyResponseDto = WagglyResponseDto(code: 500, message: "디바이스 토큰 업데이트에 실패했습니다.", status: 500, datas: null);
+        return wagglyResponseDto;
+      }
       // print(this.user.value);
       // print(this.user.value.id);
 
