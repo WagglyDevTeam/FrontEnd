@@ -28,10 +28,17 @@ class _SignInState extends State<SignInScreen> {
   bool isChecked = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  var isLoading = false;
 
   setChecked() {
     setState(() {
       isChecked = !isChecked;
+    });
+  }
+
+  setIsLoading() {
+    setState(() {
+      isLoading = !isLoading;
     });
   }
 
@@ -63,36 +70,41 @@ class _SignInState extends State<SignInScreen> {
                       height: 36.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(26),
-                          color: _signInController.emailInputEmpty.value == false && _signInController.passwordInputEmpty.value == false ? Color(0xffB863FB) : Color(0xffE8E8E8)),
+                          color: _signInController.emailInputEmpty.value == false && _signInController.passwordInputEmpty.value == false && isLoading == false ? Color(0xffB863FB) : Color(0xffE8E8E8)),
                       child: TextButton(
                         child: Text(
                           '시작하기',
                           style: TextStyle(
-                            color: _signInController.emailInputEmpty.value == false && _signInController.passwordInputEmpty.value == false ? Color(0xffFFFFFF) : Palette.mdGray,
+                            color: _signInController.emailInputEmpty.value == false && _signInController.passwordInputEmpty.value == false && isLoading == false ? Color(0xffFFFFFF) : Palette.mdGray,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         onPressed: () async {
-                          final String validResult = validateEmail(_emailController.text);
-                          if (validResult.isNotEmpty) {
-                            _signInController.emailValidateSuccess.value = false;
-                            CustomSnackBar.messageSnackbar(
-                              context,
-                              validResult,
-                              EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
-                            );
-                          } else {
-                            // 로딩 추가
-                            final result = await _signInController.signIn(SignInRequestDto(_emailController.text, _passwordController.text));
-                            if (result.code == 200) {
-                              Get.offAllNamed("/");
-                            } else {
+                          if (!isLoading) {
+                            setIsLoading();
+                            final String validResult = validateEmail(_emailController.text);
+                            if (validResult.isNotEmpty) {
+                              setIsLoading();
+                              _signInController.emailValidateSuccess.value = false;
                               CustomSnackBar.messageSnackbar(
                                 context,
-                                result.message,
+                                validResult,
                                 EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
                               );
+                            } else {
+                              // 로딩 추가
+                              final result = await _signInController.signIn(SignInRequestDto(_emailController.text, _passwordController.text));
+                              if (result.code == 200) {
+                                setIsLoading();
+                                Get.offAllNamed("/");
+                              } else {
+                                CustomSnackBar.messageSnackbar(
+                                  context,
+                                  result.message,
+                                  EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                                );
+                              }
                             }
                           }
                         },
@@ -110,7 +122,14 @@ class _SignInState extends State<SignInScreen> {
                 SizedBox(
                   height: 18,
                 ),
-                BottomTextButton()
+                BottomTextButton(),
+                SizedBox(
+                  height: 60.h,
+                ),
+                if (isLoading)
+                  Center(
+                    child: CircularProgressIndicator(),
+                  )
               ],
             ),
           ),
