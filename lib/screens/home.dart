@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:waggly/controller/home/home_controller.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
+import 'package:waggly/controller/pushNotification/push_notification_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/model/post/dtos/post_response_dto.dart';
 import 'package:waggly/screens/user/sign_in.dart';
@@ -13,7 +14,6 @@ import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/index.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 PageRouteWithAnimation sign = PageRouteWithAnimation(SignInScreen());
 List<dynamic> groupChatItem = [
@@ -51,7 +51,17 @@ class HomeScreen extends StatelessWidget {
         child: ListView(
           children: [
             AdvertisementArea(), // 광고영역
-            SizedBox(height: 24.h),
+            InkWell(
+              onTap: () {
+                print("123");
+                if (Get.put(SignInController()).checkLoggedIn().value == true) {
+                  Get.put(SignInController()).logout();
+                } else {
+                  Get.toNamed('/signInPage');
+                }
+              },
+              child: SizedBox(height: 24.h),
+            ),
             Obx(() => PostTitleArea(_homeController.college.value)),
             Obx(() => PostBoxArea(post: _homeController.collegeBestPost.value)),
             SizedBox(height: 24.h),
@@ -235,9 +245,7 @@ class PostBoxArea extends StatelessWidget {
                 ),
               ), // 내용
               SizedBox(height: 7.h),
-              Obx(() => signInController.checkLoggedIn().value == true
-                  ? MajorAreaLogin(safeWidth: safeWidth, post: post)
-                  : MajorAreaLogout(safeWidth: safeWidth, post: post)), // 학과, 이미지, 좋아요, 코멘트 수
+              Obx(() => signInController.checkLoggedIn().value == true ? MajorAreaLogin(safeWidth: safeWidth, post: post) : MajorAreaLogout(safeWidth: safeWidth, post: post)), // 학과, 이미지, 좋아요, 코멘트 수
             ],
           ),
         ),
@@ -678,18 +686,24 @@ class GroupChatRecommendTitleArea extends StatelessWidget {
 }
 
 class AdvertisementArea extends StatelessWidget {
-  const AdvertisementArea({Key? key}) : super(key: key);
+  AdvertisementArea({Key? key}) : super(key: key);
+  final PushNotificationController _pushNotificationController = Get.put(PushNotificationController());
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         // 로긴 로그아웃 체크
-        if (Get.put(SignInController()).checkLoggedIn().value == true) {
-          Get.put(SignInController()).logout();
-        } else {
-          Get.toNamed('/signInPage');
-        }
+        _pushNotificationController.sendPushMessage(
+          "fltfH5yda03ggppahcfISC:APA91bHPJfJsgGWfBAkN9z7uNxiRXzTtmJntO-o91FW52eIfBRd5_EF2gX8TDmovtupjWR7XAxbVcrWoJJUZJ1EnbeWC58iTkdqIQz1bxBDqnj5ncNBRLpbPK89YWRLspAMradCQK3Xx",
+          "Titleeeeee",
+          "Body",
+        );
+        // if (Get.put(SignInController()).checkLoggedIn().value == true) {
+        //   Get.put(SignInController()).logout();
+        // } else {
+        //   Get.toNamed('/signInPage');
+        // }
       },
       child: Container(
         width: double.infinity,

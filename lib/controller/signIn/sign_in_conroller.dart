@@ -6,10 +6,12 @@ import 'package:waggly/hive/user.dart';
 import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
 import 'package:waggly/model/signIn/dtos/device_token_request_dto.dart';
 import 'package:waggly/model/signIn/dtos/sign_in_reqeust_dto.dart';
+import 'package:waggly/provider/user_provider.dart';
 import '../../provider/sign_in_provider.dart';
 
 class SignInController extends GetxController {
   final SignInProvider _signInProvider = SignInProvider();
+  final UserProvider _userProvider = UserProvider();
   final PushNotificationController _pushNotificationController = Get.put(PushNotificationController());
   String tempToken = '';
   final box = Hive.box<User>('user');
@@ -44,7 +46,7 @@ class SignInController extends GetxController {
       box.put('user', user);
 
       String deviceToken = await _pushNotificationController.getToken();
-      Response deviceTokenResponse = await _signInProvider.putDeviceToken(DeviceTokenRequestDto(deviceToken), user.id!, user.jwtToken!);
+      Response deviceTokenResponse = await _userProvider.putDeviceToken(DeviceTokenRequestDto(deviceToken), user.id!, user.jwtToken!);
       if (deviceTokenResponse.hasError) {
         WagglyResponseDto wagglyResponseDto = WagglyResponseDto(code: 500, message: "디바이스 토큰 업데이트에 실패했습니다.", status: 500, datas: null);
         return wagglyResponseDto;

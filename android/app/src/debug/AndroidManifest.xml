@@ -1,7 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.waggly">
+    package="com.example.waggly"
+    android:installLocation="preferExternal">
     <!-- Flutter needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission 
+        android:name="android.permission.INTERNET"
+    />
+    <!-- <application android:name="android.support.multidex.MultiDexApplication"></application> -->
 </manifest>
