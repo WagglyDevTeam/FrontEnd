@@ -45,14 +45,10 @@ class SignInController extends GetxController {
 
       String deviceToken = await _pushNotificationController.getToken();
       Response deviceTokenResponse = await _signInProvider.putDeviceToken(DeviceTokenRequestDto(deviceToken), user.id!, user.jwtToken!);
-      print(deviceTokenResponse.body);
       if (deviceTokenResponse.hasError) {
         WagglyResponseDto wagglyResponseDto = WagglyResponseDto(code: 500, message: "디바이스 토큰 업데이트에 실패했습니다.", status: 500, datas: null);
         return wagglyResponseDto;
       }
-      // print(this.user.value);
-      // print(this.user.value.id);
-
       return wagglyResponseDto;
     }
   }
