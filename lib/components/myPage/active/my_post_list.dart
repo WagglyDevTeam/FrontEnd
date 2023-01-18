@@ -72,7 +72,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                     () => Container(
                   margin: EdgeInsets.only(bottom: 3.h),
                   child: Text(
-                    controller.mine.value ? '내가 쓴 글' : '내가 쓴 댓글',
+                    controller.mine.value ? '내가 작성한 글' : '내가 작성한 댓글',
                     style: CommonText.BodyL,
                   ),
                 ),
@@ -206,15 +206,52 @@ class MyPostList extends StatelessWidget {
                                   border: Border(
                                     bottom: BorderSide(color: Palette.paper, style: BorderStyle.solid, width: 1),
                                   )),
-                              child: CommentContext(
+                              child:
+                              CommentContext(
                                 postId: commentController.myComments[index].postId,
-                                postTitle: commentController.myComments[index].postId,
-                                boardType: commentController.myComments[index].postId,
-                                commentCreatedAt: commentController.myComments[index].postId,
-                                commentId: commentController.myComments[index].postId,
-                                commentDesc: commentController.myComments[index].postId,
+                                postTitle: commentController.myComments[index].postTitle ,
+                                boardType: commentController.myComments[index].boardType,
+                                commentCreatedAt: DateFormat('MM/dd HH:mm').format(commentController.myComments[index].commentCreatedAt!),
+                                commentId: commentController.myComments[index].commentId,
+                                commentDesc: commentController.myComments[index].commentDesc,
                               ),
                             );
+                            // return GestureDetector(
+                            //   onTap: () => {
+                            //     Get.toNamed("/postDetail/param?postId=$postId&collegeName=$collegeType")
+                            //   },
+                            //   child: Column(
+                            //     children: [
+                            //       Row(
+                            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //         children: [
+                            //           SizedBox(
+                            //             width: 210.w,
+                            //             child: Text(postTitle ?? "", style: CommonText.BodyL),
+                            //           ),
+                            //           Text(postCreatedAt ?? "", style: CommonText.BodyEngGray),
+                            //         ],
+                            //       ),
+                            //       SizedBox(height: 10.h),
+                            //       Container(
+                            //         width: MediaQuery.of(context).size.width - 32.w,
+                            //         child: Text(postDesc ?? "", style: CommonText.BodyS),
+                            //       ),
+                            //       SizedBox(height: 6.h),
+                            //       Row(
+                            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //         children: [
+                            //           Text(authorMajor ?? "", style: CommonText.BodyEngGray),
+                            //           CommentSide(
+                            //             commentCnt: postCommentCnt ?? 0,
+                            //             likeCnt: postLikeCnt ?? 0,
+                            //             imgCnt: postImageCnt ?? 0,
+                            //           )
+                            //         ],
+                            //       )
+                            //     ],
+                            //   ),
+                            // );
                           })),
         ),
       ]),

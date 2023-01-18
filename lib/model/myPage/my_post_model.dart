@@ -102,7 +102,7 @@ class MyPost {
         postCommentCnt: json["postCommentCnt"],
         isLikedByMe: json["isLikedByMe"],
         isBlind: json["isBlind"],
-      isAnonymous: json["isAnonymous"],
+        isAnonymous: json["isAnonymous"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -116,7 +116,7 @@ class MyPost {
         "postCommentCnt": postCommentCnt,
         "isLikedByMe": isLikedByMe,
         "isBlind": isBlind,
-    "isAnonymous":isAnonymous,
+        "isAnonymous":isAnonymous,
       };
 }
 //

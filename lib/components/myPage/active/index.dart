@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
-import 'package:waggly/components/myPage/active/request_list.dart';
 import 'package:waggly/controller/myPage/my_comment_list_controller.dart';
 import 'package:waggly/controller/myPage/my_post_list_controller.dart';
 import 'package:waggly/utils/text_frame.dart';
@@ -176,9 +175,10 @@ class _ActiveContentState extends State<ActiveContent> {
                     ],
                   )),
               onTap: () async {
-                await Get.put(MyPostsListController()).getMyPosts();
+               // await Get.put(MyPostsListController()).getMyPosts();
+                await Get.put(MyCommentsListController()).getMyComments();
                 Get.toNamed('/myPostsList');
-                //await Get.put(MyCommentsListController()).getMyComments();
+
               },
             ),
             Divider(thickness: 1, height: 1, color: Palette.paper),

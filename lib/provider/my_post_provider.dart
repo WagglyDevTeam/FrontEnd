@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/hive/user.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 
 final token = Hive.box<User>('user').get('user')?.jwtToken;
+
 
 class MyPostsListProvider extends GetConnect {
   final Map<String, String> authHeaders = token != null ? {"Authorization": token!} : {};
