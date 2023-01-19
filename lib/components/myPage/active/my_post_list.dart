@@ -193,7 +193,7 @@ class MyPostList extends StatelessWidget {
                             ));
                       }))
               : SizedBox(
-                      height: MediaQuery.of(context).size.height - 200.h,
+                      height: MediaQuery.of(context).size.height - 145.h,
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
@@ -206,52 +206,36 @@ class MyPostList extends StatelessWidget {
                                   border: Border(
                                     bottom: BorderSide(color: Palette.paper, style: BorderStyle.solid, width: 1),
                                   )),
-                              child:
-                              CommentContext(
-                                postId: commentController.myComments[index].postId,
-                                postTitle: commentController.myComments[index].postTitle ,
-                                boardType: commentController.myComments[index].boardType,
-                                commentCreatedAt: DateFormat('MM/dd HH:mm').format(commentController.myComments[index].commentCreatedAt!),
-                                commentId: commentController.myComments[index].commentId,
-                                commentDesc: commentController.myComments[index].commentDesc,
+                              child: GestureDetector(
+                              onTap: () => {
+                                Get.toNamed("/postDetail/param?postId=${commentController.myComments[index].postId}&collegeName=${commentController.myComments[index].boardType}")
+                              },
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: 210.w,
+                                        child: Text(commentController.myComments[index].postTitle ?? "", style: CommonText.BodyL),
+                                      ),
+                                      Text(DateFormat('MM/dd HH:mm').format(commentController.myComments[index].commentCreatedAt!) ?? "", style: CommonText.BodyEngGray),
+                                      ],
+                                  ),
+                                  SizedBox(height: 10.h),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: 210.w,
+                                        child: Text(commentController.myComments[index].commentDesc ?? "", style: CommonText.BodyS),
+                                      ),
+                                      Text(commentController.myComments[index].boardType ?? "", style: CommonText.BodyEngGray),
+                                    ],
+                                  )
+                                ],
                               ),
-                            );
-                            // return GestureDetector(
-                            //   onTap: () => {
-                            //     Get.toNamed("/postDetail/param?postId=$postId&collegeName=$collegeType")
-                            //   },
-                            //   child: Column(
-                            //     children: [
-                            //       Row(
-                            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //         children: [
-                            //           SizedBox(
-                            //             width: 210.w,
-                            //             child: Text(postTitle ?? "", style: CommonText.BodyL),
-                            //           ),
-                            //           Text(postCreatedAt ?? "", style: CommonText.BodyEngGray),
-                            //         ],
-                            //       ),
-                            //       SizedBox(height: 10.h),
-                            //       Container(
-                            //         width: MediaQuery.of(context).size.width - 32.w,
-                            //         child: Text(postDesc ?? "", style: CommonText.BodyS),
-                            //       ),
-                            //       SizedBox(height: 6.h),
-                            //       Row(
-                            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //         children: [
-                            //           Text(authorMajor ?? "", style: CommonText.BodyEngGray),
-                            //           CommentSide(
-                            //             commentCnt: postCommentCnt ?? 0,
-                            //             likeCnt: postLikeCnt ?? 0,
-                            //             imgCnt: postImageCnt ?? 0,
-                            //           )
-                            //         ],
-                            //       )
-                            //     ],
-                            //   ),
-                            // );
+                            ));
                           })),
         ),
       ]),

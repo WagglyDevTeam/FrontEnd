@@ -175,7 +175,7 @@ class _ActiveContentState extends State<ActiveContent> {
                     ],
                   )),
               onTap: () async {
-               // await Get.put(MyPostsListController()).getMyPosts();
+                await Get.put(MyPostsListController()).getMyPosts();
                 await Get.put(MyCommentsListController()).getMyComments();
                 Get.toNamed('/myPostsList');
 

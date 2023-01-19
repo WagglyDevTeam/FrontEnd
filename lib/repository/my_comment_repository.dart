@@ -10,7 +10,6 @@ class MyCommentsListRepository {
   Future<WagglyResponseDto> getMyComments(props) async {
     Response response = await _myCommentsListProvider.getMyComments(props.page!, props.size!);
     dynamic body = response.body;
-    print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
     return wagglyResponseDto;
   }

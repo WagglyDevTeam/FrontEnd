@@ -3,6 +3,8 @@ import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
 import 'package:waggly/model/myPage/my_comment_model.dart';
 import 'package:waggly/repository/my_comment_repository.dart';
 
+
+
 class MyCommentsListController extends GetxController {
   final MyCommentsListRepository _myCommentsListProvider = MyCommentsListRepository();
   final myComments = [].obs;
@@ -15,14 +17,11 @@ class MyCommentsListController extends GetxController {
   }
 
   Future<void> getMyComments() async {
-    print(1);
-    MyCommentDto writtenComment = MyCommentDto(page: postPage.value , size: 10);
-    print(2);
+    MyCommentDto writtenComment = MyCommentDto(page: postPage.value , size: 1);
     WagglyResponseDto response = await _myCommentsListProvider.getMyComments(writtenComment);
     List<dynamic> myCommentsListJson = response.datas['myComments']!;
-    List<MyCommentModel> convertMyComments =
-        myCommentsListJson.map((e) => MyCommentModel.fromJson(e)).toList();
-    print(convertMyComments);
+    List<MyComment> convertMyComments =
+        myCommentsListJson.map((e) => MyComment.fromJson(e)).toList();
     myComments.value = convertMyComments;
 
   }

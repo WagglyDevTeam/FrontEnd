@@ -83,7 +83,7 @@ class MyComment {
 
   factory MyComment.fromJson(Map<String, dynamic> json) => MyComment(
         commentId: json["commentId"],
-        commentCreatedAt: json["commentCreatedAt"],
+        commentCreatedAt: DateTime.parse(json["commentCreatedAt"]),
         commentDesc: json["commentDesc"],
         postId: json["postId"],
         postTitle: json["postTitle"],
