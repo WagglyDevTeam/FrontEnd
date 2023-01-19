@@ -17,7 +17,7 @@ class MyCommentsListController extends GetxController {
   }
 
   Future<void> getMyComments() async {
-    MyCommentDto writtenComment = MyCommentDto(page: postPage.value , size: 1);
+    MyCommentDto writtenComment = MyCommentDto(page: postPage.value , size: 10);
     WagglyResponseDto response = await _myCommentsListProvider.getMyComments(writtenComment);
     List<dynamic> myCommentsListJson = response.datas['myComments']!;
     List<MyComment> convertMyComments =
