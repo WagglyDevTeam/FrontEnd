@@ -27,10 +27,10 @@ class MyCommentModel {
     required this.datas,
   });
 
-  int? code;
-  String? message;
-  String? status;
-  Data datas;
+  final int? code;
+  final String? message;
+  final String? status;
+  final Data datas;
 
   factory MyCommentModel.fromJson(Map<String, dynamic> json) => MyCommentModel(
     code: json["code"],
@@ -75,7 +75,7 @@ class MyComment {
   });
 
   final int commentId;
-  final String commentCreatedAt;
+  final DateTime commentCreatedAt;
   final String commentDesc;
   final int postId;
   final String postTitle;
@@ -92,7 +92,7 @@ class MyComment {
 
   Map<String, dynamic> toJson() => {
         "commentId": commentId,
-        "commentCreatedAt": commentCreatedAt,
+        "commentCreatedAt": commentCreatedAt.toIso8601String(),
         "commentDesc": commentDesc,
         "postId": postId,
         "postTitle": postTitle,
