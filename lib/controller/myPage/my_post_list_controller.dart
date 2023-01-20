@@ -10,6 +10,7 @@ class MyPostsListController extends GetxController {
   final MyPostsListRepository _myPostsListRepository = MyPostsListRepository();
   final myPosts = [].obs;
   final mine = true.obs;
+  final postPage = 0.obs;
 
   SignInController signInController = Get.put(SignInController());
 
@@ -19,9 +20,14 @@ class MyPostsListController extends GetxController {
   }
 
   Future<void> getMyPosts() async {
-    WagglyResponseDto result = await _myPostsListRepository.getMyPosts();
+    MyPostDto writtenPost = MyPostDto(page: postPage.value , size: 10);
+    WagglyResponseDto result = await _myPostsListRepository.getMyPosts(writtenPost);
     List<dynamic> myPostsListJson = result.datas['myPosts'];
     List<MyPost> convertMyPosts = myPostsListJson.map((e) => MyPost.fromJson(e)).toList();
+    print(convertMyPosts);
     myPosts.value = convertMyPosts;
+
   }
 }
+
+

@@ -5,6 +5,20 @@ MyPostModel myPostModelFromJson(String str) =>
 
 String myPostModelToJson(MyPostModel data) => json.encode(data.toJson());
 
+class MyPostDto{
+  MyPostDto({
+    required this.page,
+    required this.size,
+});
+
+  final int page;
+  final int size;
+
+  factory MyPostDto.fromJson(Map<String, dynamic> json) => MyPostDto(
+    page: json["page"], size: json['size']);
+  Map<String, dynamic> toJson() => { "page" : page, "size": size};
+}
+
 class MyPostModel {
   MyPostModel({
     required this.code,
@@ -60,8 +74,9 @@ class MyPost {
     this.postImageCnt,
     this.postLikeCnt,
     this.postCommentCnt,
+    this.isBlind,
     required this.isLikedByMe,
-    required this.isAnonymous,
+    this.isAnonymous,
   });
 
   int postId;
@@ -72,8 +87,9 @@ class MyPost {
   int? postImageCnt;
   int? postLikeCnt;
   int? postCommentCnt;
-  bool isLikedByMe;
-  bool isAnonymous;
+  bool? isLikedByMe;
+  bool? isBlind;
+  bool? isAnonymous;
 
   factory MyPost.fromJson(Map<String, dynamic> json) => MyPost(
         postId: json["postId"],
@@ -85,6 +101,7 @@ class MyPost {
         postLikeCnt: json["postLikeCnt"],
         postCommentCnt: json["postCommentCnt"],
         isLikedByMe: json["isLikedByMe"],
+        isBlind: json["isBlind"],
         isAnonymous: json["isAnonymous"],
       );
 
@@ -98,7 +115,8 @@ class MyPost {
         "postLikeCnt": postLikeCnt,
         "postCommentCnt": postCommentCnt,
         "isLikedByMe": isLikedByMe,
-        "isAnonymous": isAnonymous,
+        "isBlind": isBlind,
+        "isAnonymous":isAnonymous,
       };
 }
 //

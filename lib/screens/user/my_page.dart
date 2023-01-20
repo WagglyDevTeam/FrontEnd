@@ -4,6 +4,7 @@ import 'package:waggly/controller/myPage/my_profile_controller.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/myPage/waggly_img_controller.dart';
 import 'package:waggly/provider/my_comment_provider.dart';
+import 'package:waggly/screens/home.dart';
 import 'package:waggly/utils/my_page_icons.dart';
 import 'package:waggly/model/myPage/waggly_img.dart';
 import 'package:waggly/widgets/Button/button.dart';

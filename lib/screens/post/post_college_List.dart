@@ -353,6 +353,7 @@ class PostContext extends StatelessWidget {
   int? postCommentCnt;
   bool? isLikedByMe;
   bool? isBlind;
+  bool? isAnonymous;
   String? authorMajor;
   String? postTitle;
   String? postCreatedAt;
@@ -373,7 +374,8 @@ class PostContext extends StatelessWidget {
       this.isLikedByMe,
       this.isBlind,
       this.postName,
-      this.collegeType})
+      this.collegeType,
+      this.isAnonymous})
       : super(key: key);
 
   final _postDetailX = Get.put(PostHomeController());
