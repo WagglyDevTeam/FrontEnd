@@ -5,6 +5,7 @@ import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/model/post/dtos/post_college_dto.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
+import 'package:waggly/widgets/imageIndicator/index.dart';
 
 import '../../controller/post/post_home_controller.dart';
 import '../../utils/colors.dart';
@@ -65,8 +66,8 @@ class _PostCollegeList extends State<PostCollegeList> {
             builder : (context, snapshot){
               if(snapshot.connectionState != ConnectionState.done) {
                 return Container(
-                  padding: EdgeInsets.all(10),
-                  child: Text('loading.....loading......'),
+                  height: MediaQuery.of(context).size.height - 200.h,
+                  child: ImageIndicator(),
                 );
               }else{
                 return Obx(() => ListView.builder(
