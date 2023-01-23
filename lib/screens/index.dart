@@ -20,6 +20,8 @@ class Screen extends StatefulWidget {
 }
 
 class _ScreenState extends State<Screen> {
+  final SignInController _signInController = Get.put(SignInController());
+
   @override
   void initState() {
     super.initState();
@@ -38,84 +40,87 @@ class _ScreenState extends State<Screen> {
   ];
   @override
   Widget build(BuildContext context) {
-    final bool isLoggedIn = SignInController().isLoggedIn.value;
     Get.put(PostController());
+    final bool isLoggedIn = _signInController.isLoggedIn.value;
     return Scaffold(
-        body: screenList[screenIndex],
-        bottomNavigationBar: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
+      body: screenList[screenIndex],
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+            color: Colors.white,
+            border: Border.all(
+              color: const Color(0xFFE8E8E8),
+              width: 1.0,
             ),
-            child: Container(
-              padding: const EdgeInsets.all(0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-                color: Colors.white,
-                border: Border.all(
-                  color: const Color(0xFFE8E8E8),
-                  width: 1.0,
-                ),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(25.0),
+            child: NavigationBarTheme(
+              data: const NavigationBarThemeData(
+                backgroundColor: Colors.white,
+                indicatorColor: Colors.white,
+                height: 0,
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(25.0),
-                child: NavigationBarTheme(
-                  data: const NavigationBarThemeData(
-                    backgroundColor: Colors.white,
-                    indicatorColor: Colors.white,
-                    height: 0,
-                  ),
-                  child: NavigationBar(
-                    height: 55,
-                    selectedIndex: screenIndex,
-                    labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-                    onDestinationSelected: (index) {
-                      if (isLoggedIn == true) {
-                        setState(() {
-                          screenIndex = index;
-                        });
-                      } else {
-                        if (index != 0) {
-                          CustomSnackBar.messageSnackbar(
-                            context,
-                            "로그인이 필요한 메뉴입니다.",
-                            EdgeInsets.only(bottom: 60.h, left: 20.w, right: 20.w),
-                          );
-                        }
-                      }
-                    },
-                    destinations: const [
-                      NavigationDestination(
-                          icon: Icon(
-                            Icons.home,
-                            color: Palette.gray,
-                            size: 23,
-                          ),
-                          selectedIcon: Icon(
-                            Icons.home,
-                            color: Palette.main,
-                            size: 23,
-                          ),
-                          label: ''),
-                      NavigationDestination(
-                        icon: Icon(
-                          Icons.add_comment,
-                          color: Palette.gray,
-                          size: 23,
-                        ),
-                        selectedIcon: Icon(Icons.add_comment, color: Palette.main, size: 23),
-                        label: '',
+              child: NavigationBar(
+                height: 55,
+                selectedIndex: screenIndex,
+                labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+                onDestinationSelected: (index) {
+                  if (isLoggedIn == true || index == 0) {
+                    setState(() {
+                      screenIndex = index;
+                    });
+                  } else {
+                    if (index != 0) {
+                      print('index: $index');
+                      CustomSnackBar.messageSnackbar(
+                        context,
+                        "로그인이 필요한 메뉴입니다.",
+                        EdgeInsets.only(bottom: 60.h, left: 20.w, right: 20.w),
+                      );
+                    }
+                  }
+                },
+                destinations: const [
+                  NavigationDestination(
+                      icon: Icon(
+                        Icons.home,
+                        color: Palette.gray,
+                        size: 23,
                       ),
-                      NavigationDestination(icon: Icon(Icons.chat_bubble, color: Palette.gray, size: 23), selectedIcon: Icon(Icons.chat_bubble, color: Palette.main, size: 23), label: ''),
-                      NavigationDestination(
-                        icon: Icon(Icons.view_list, color: Palette.gray, size: 23),
-                        selectedIcon: Icon(Icons.view_list, color: Palette.main, size: 23),
-                        label: '',
+                      selectedIcon: Icon(
+                        Icons.home,
+                        color: Palette.main,
+                        size: 23,
                       ),
-                      NavigationDestination(icon: Icon(Icons.person, color: Palette.gray, size: 23), selectedIcon: Icon(Icons.person, color: Palette.main, size: 23), label: ''),
-                    ],
+                      label: ''),
+                  NavigationDestination(
+                    icon: Icon(
+                      Icons.add_comment,
+                      color: Palette.gray,
+                      size: 23,
+                    ),
+                    selectedIcon: Icon(Icons.add_comment, color: Palette.main, size: 23),
+                    label: '',
                   ),
-                ),
+                  NavigationDestination(icon: Icon(Icons.chat_bubble, color: Palette.gray, size: 23), selectedIcon: Icon(Icons.chat_bubble, color: Palette.main, size: 23), label: ''),
+                  NavigationDestination(
+                    icon: Icon(Icons.view_list, color: Palette.gray, size: 23),
+                    selectedIcon: Icon(Icons.view_list, color: Palette.main, size: 23),
+                    label: '',
+                  ),
+                  NavigationDestination(icon: Icon(Icons.person, color: Palette.gray, size: 23), selectedIcon: Icon(Icons.person, color: Palette.main, size: 23), label: ''),
+                ],
               ),
-            )));
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

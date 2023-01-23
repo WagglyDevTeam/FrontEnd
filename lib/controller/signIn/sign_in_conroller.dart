@@ -11,7 +11,7 @@ class SignInController extends GetxController {
   String tempToken = '';
   final box = Hive.box<User>('user');
   final user = User().obs;
-  RxBool isLoggedIn = false.obs;
+  RxBool isLoggedIn = Hive.box<User>('user').get('user')?.jwtToken != null ? true.obs : false.obs;
   RxBool emailValidateSuccess = true.obs;
   RxBool passwordValidateSuccess = true.obs;
 
@@ -23,16 +23,13 @@ class SignInController extends GetxController {
     dynamic body = response.body;
     if (response.hasError) {
       if (body.runtimeType == String && body.contains('Invalid password')) {
-        WagglyResponseDto wagglyResponseDto =
-            WagglyResponseDto(code: 401, message: "비밀번호를 확인해주세요.", status: 401, datas: null);
+        WagglyResponseDto wagglyResponseDto = WagglyResponseDto(code: 401, message: "비밀번호를 확인해주세요.", status: 401, datas: null);
         return wagglyResponseDto;
       } else if (body.runtimeType.toString() == "_InternalLinkedHashMap<String, dynamic>") {
-        WagglyResponseDto wagglyResponseDto =
-            WagglyResponseDto(code: 403, message: "해당 유저를 찾을 수 없습니다.", status: 403, datas: null);
+        WagglyResponseDto wagglyResponseDto = WagglyResponseDto(code: 403, message: "해당 유저를 찾을 수 없습니다.", status: 403, datas: null);
         return wagglyResponseDto;
       } else {
-        WagglyResponseDto wagglyResponseDto =
-            WagglyResponseDto(code: 500, message: "알 수 없는 오류가 발생했습니다.", status: 500, datas: null);
+        WagglyResponseDto wagglyResponseDto = WagglyResponseDto(code: 500, message: "알 수 없는 오류가 발생했습니다.", status: 500, datas: null);
         return wagglyResponseDto;
       }
     } else {
@@ -41,6 +38,7 @@ class SignInController extends GetxController {
       user.jwtToken = response.headers!["authorization"];
       this.user.value = user;
       box.put('user', user);
+      isLoggedIn.value = true;
       // print(this.user.value);
       // print(this.user.value.id);
 
