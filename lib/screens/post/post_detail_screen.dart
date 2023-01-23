@@ -14,6 +14,7 @@ import 'package:waggly/controller/postDetail/post_detail_controller.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/utils/time_converter.dart';
+import 'package:waggly/widgets/imageIndicator/index.dart';
 import 'package:waggly/widgets/textFormField/custom_text_form_field.dart';
 import '../../widgets/checkBox/custom_check_box.dart';
 
@@ -227,8 +228,14 @@ class _DetailContext extends State<DetailContext> {
             builder: (context, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
                 return Container(
-                  padding: EdgeInsets.all(10),
-                  child: Text('loading.....loading......'),
+                  height: MediaQuery.of(context).size.height - 200.h,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ImageIndicator(),
+                    ],
+                  ),
                 );
               } else {
                 return Column(

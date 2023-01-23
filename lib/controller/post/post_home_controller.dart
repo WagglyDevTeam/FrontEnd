@@ -67,7 +67,6 @@ class PostHomeController extends GetxController {
       List<PostSpecificData> postData =
           List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
       postCollegeData.value = postData;
-      print(postCollegeData.value);
       postCollegeData.refresh();
       normalPostOn.value = true;
     } else {
