@@ -60,6 +60,8 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                     color: Palette.gray,
                     iconSize: 20.0.sp,
                     onPressed: () {
+                      controller.mine.value = true;
+                      commentController.reload();
                       Navigator.pop(context);
                     },
                   ),
@@ -192,53 +194,56 @@ class MyPostList extends StatelessWidget {
                               collegeType: controller.myPosts[index].authorMajor ?? "",
                             ));
                       }))
+               ///내가 쓴 댓글 리스트
               : SizedBox(
-                      height: MediaQuery.of(context).size.height - 145.h,
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: commentController.myComments.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              padding: EdgeInsets.only(top: 8.h, bottom: 16.h, left: 26.w, right: 26.w),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border(
-                                    bottom: BorderSide(color: Palette.paper, style: BorderStyle.solid, width: 1),
-                                  )),
-                              child: GestureDetector(
-                              onTap: () => {
-                                Get.toNamed("/postDetail/param?postId=${commentController.myComments[index].postId}&collegeName=${commentController.myComments[index].boardType}")
-                              },
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: 210.w,
-                                        child: Text(commentController.myComments[index].postTitle ?? "", style: CommonText.BodyL),
-                                      ),
-                                      Text(DateFormat('MM/dd HH:mm').format(commentController.myComments[index].commentCreatedAt!) ?? "", style: CommonText.BodyEngGray),
-                                      ],
-                                  ),
-                                  SizedBox(height: 10.h),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: 210.w,
-                                        child: Text(commentController.myComments[index].commentDesc ?? "", style: CommonText.BodyS),
-                                      ),
-                                      Text(commentController.myComments[index].boardType ?? "", style: CommonText.BodyEngGray),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ));
-                          })),
-        ),
-      ]),
-    ]);
-  }
+                        height: MediaQuery.of(context).size.height - 145.h,
+                        child: ListView.builder(
+                                        controller: commentController.scrollController.value,
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        itemCount: commentController.myComments.length,
+                                        itemBuilder: (context, index) {
+                                          return Container(
+                                                padding: EdgeInsets.only(top: 8.h, bottom: 16.h, left: 26.w, right: 26.w),
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    border: Border(
+                                                      bottom: BorderSide(color: Palette.paper, style: BorderStyle.solid, width: 1),
+                                                    )),
+                                                child: GestureDetector(
+                                                onTap: () => {
+                                                  Get.toNamed("/postDetail/param?postId=${commentController.myComments[index].postId}&collegeName=${commentController.myComments[index].boardType}")
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 210.w,
+                                                          child: Text(commentController.myComments[index].postTitle ?? "", style: CommonText.BodyL),
+                                                        ),
+                                                        Text(DateFormat('MM/dd HH:mm').format(commentController.myComments[index].commentCreatedAt!) ?? "", style: CommonText.BodyEngGray),
+                                                        ],
+                                                    ),
+                                                    SizedBox(height: 10.h),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 210.w,
+                                                          child: Text(commentController.myComments[index].commentDesc ?? "", style: CommonText.BodyS),
+                                                        ),
+                                                        Text(commentController.myComments[index].boardType ?? "", style: CommonText.BodyEngGray),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ));
+                                        }),
+
+            ),),
+        ]),
+      ]);
+    }
 }
