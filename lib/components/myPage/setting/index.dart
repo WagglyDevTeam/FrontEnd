@@ -201,7 +201,9 @@ class _SettingContentState extends State<SettingContent> {
                       ),
                     ],
                   )),
-              onTap: () async {},
+              onTap: () async {
+                Get.toNamed('/withdraw');
+              },
             ),
             Divider(thickness: 1, height: 1, color: Palette.paper),
           ],
