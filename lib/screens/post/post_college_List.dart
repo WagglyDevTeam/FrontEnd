@@ -34,7 +34,6 @@ class _PostCollegeList extends State<PostCollegeList> {
     _scrollController.addListener(() {
       scrollListener();
     });
-    _postDetailX.getBoardCollege(Get.parameters['collegeId']);
     super.initState();
   }
 
