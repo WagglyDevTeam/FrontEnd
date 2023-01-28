@@ -21,6 +21,8 @@ import 'package:waggly/screens/chat/chat_edit.dart';
 import 'package:waggly/screens/chat/chat_room_screen.dart';
 import 'package:waggly/screens/chat/chat_search.dart';
 import 'package:waggly/screens/groupChat/group_chat_create.dart';
+import 'package:waggly/screens/post/edit.dart';
+import 'package:waggly/screens/post/writeTest.dart';
 import 'package:waggly/screens/user/find_password.dart';
 import 'package:waggly/screens/index.dart';
 import 'package:waggly/screens/user/my_page.dart';
@@ -108,7 +110,7 @@ class HeroApp extends StatelessWidget {
             GetPage(name: "/signInPage", page: () => SignInScreen(), transition: Transition.rightToLeft),
             GetPage(
               name: "/writePage",
-              page: () => WritePage("write"),
+              page: () => WritePage2("write"),
               transition: Transition.rightToLeft,
               binding: BindingsBuilder<PostController>(() {
                 Get.reload<PostController>();
@@ -116,7 +118,7 @@ class HeroApp extends StatelessWidget {
             ),
             GetPage(
                 name: "/editPage",
-                page: () => WritePage("edit"),
+                page: () => EditMyPost("edit"),
                 transition: Transition.rightToLeft),
             GetPage(name: "/profileImg", page: () => ProfileImgScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/active", page: () => ActiveScreen(), transition: Transition.rightToLeft),

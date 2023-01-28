@@ -35,7 +35,7 @@ const double _imageThumbnailAreaHeight = 110.0;
 const double _bottomButtonPaddingTop = 10.0;
 const double _bottomButtonPaddingBottom = 15.0;
 
-class WritePage extends StatelessWidget {
+class EditMyPost extends StatelessWidget {
   final ImageController _imageController = Get.put(ImageController());
   final PostController _postController = Get.put(PostController());
 
@@ -45,7 +45,7 @@ class WritePage extends StatelessWidget {
   final String type;
   final loginUser = Hive.box<User>('user').get('user');
 
-  WritePage(this.type, {Key? key}) : super(key: key);
+  EditMyPost(this.type, {Key? key}) : super(key: key);
 
   void buttonActivateCheck() {
     if (_title.text.isBlank == true || _content.text.isBlank == true) {
@@ -62,17 +62,7 @@ class WritePage extends StatelessWidget {
     var _page = Status.edit;
     var _os = Platform.operatingSystem;
     var _postName = "게시글 작성";
-    if (type == "edit") {
-      _postName = "게시글 수정";
-      final PostDetailController postDetailController = Get.put(PostEditController());
-      _imageController.getImagesUrl(postDetailController.postDetail.value.postImages);
-      _title = TextEditingController(text: postDetailController.postDetail.value.postTitle);
-      _content = TextEditingController(text: postDetailController.postDetail.value.postDesc);
-    } else {
-      _imageController.getImagesUrl([]);
-      _title = TextEditingController();
-      _content = TextEditingController();
-    }
+    _imageController.getImagesUrl([]);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -140,12 +130,9 @@ class WritePage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
                 child: Obx(
-                  () => PhotoWidget(
+                      () => PhotoWidget(
                       imageController: _imageController,
-                      imageUrlLength: _imageController.imagesUrl.length,
-                      imagesLength: _imageController.images!.length,
-                      length: _imageController.showImages.length,
-                      type: "write"),
+                      imagesLength: _imageController.images!.length),
                 ),
               ), // 선택된 이미지 표시 영역
               Padding(
@@ -190,57 +177,21 @@ class WritePage extends StatelessWidget {
                 child: SizedBox(
                   height: _buttonAreaHeight.h,
                   child: Obx(
-                    () => Container(
+                        () => Container(
                       alignment: Alignment.center,
                       width: double.infinity,
                       height: _bottomButtonHeight.h,
                       decoration: BoxDecoration(
-                        color: _postController.isButtonActivate.value == true ? Palette.main : Palette.paper,
+                        color: _postController.isButtonActivate.value == true
+                            ? Palette.main
+                            : Palette.paper,
                         borderRadius: BorderRadius.circular(40),
                       ),
                       child: TextButton(
-                        onPressed: type == "edit"
-                            ? () async {
-                                await editPost(_title.text, _content.text, "SOCIAL");
-                              }
-                            : _postController.isButtonActivate.value == true
-                                ? () async {
-                                    final result = await writePost();
-                                    print("나를 채킹하세요");
-                                    print(result);
-                                    if (result.code == 201) {
-                                      _postController.isButtonActivate.value = false;
-                                      CustomSnackBar.messageSnackbar(
-                                        context,
-                                        "게시글 작성이 완료되었습니다.",
-                                        EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
-                                      );
-                                      await Future.delayed(const Duration(seconds: 2), () {
-                                        Get.offAllNamed("/");
-                                      });
-                                    } else {
-                                      CustomSnackBar.messageSnackbar(
-                                        context,
-                                        result.message,
-                                        EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
-                                      );
-                                    }
-                                  }
-                                : () {
-                                    if (_title.text.isEmpty) {
-                                      CustomSnackBar.messageSnackbar(
-                                        context,
-                                        "제목을 입력해주세요.",
-                                        EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
-                                      );
-                                    } else if (_content.text.isEmpty) {
-                                      CustomSnackBar.messageSnackbar(
-                                        context,
-                                        "내용을 입력해주세요.",
-                                        EdgeInsets.only(bottom: 65.h, left: 20.w, right: 20.w),
-                                      );
-                                    }
-                                  },
+                        onPressed: () {
+                          final result = writePost();
+                          print(result);
+                        },
                         child: Text(
                           "게시글 작성하기",
                           style: _postController.isButtonActivate.value == true
@@ -268,11 +219,12 @@ class WritePage extends StatelessWidget {
   }
 
   Future<void> editPost(title, description, college) async {
-    final PostDetailController postDetailController = Get.put(PostEditController());
+    final PostDetailController postDetailController =
+    Get.put(PostEditController());
 
     List<MultipartFile> file = imageToMultipartFile();
-    await postDetailController
-        .editBoard(PostEditRequestDto(title, description, college, file, _imageController.parseToStringList()));
+    await postDetailController.editBoard(PostEditRequestDto(title, description,
+        college, file, _imageController.parseToStringList()));
   }
 
   Future<WagglyResponseDto> writePost() async {
@@ -282,7 +234,7 @@ class WritePage extends StatelessWidget {
       PostRequestDto(
         _title.text,
         _content.text,
-        "ENGINEERING",
+        "SOCIAL",
         _postController.checkBox.value,
         hashtags,
         file,
@@ -294,113 +246,68 @@ class WritePage extends StatelessWidget {
 class PhotoWidget extends StatelessWidget {
   const PhotoWidget(
       {Key? key,
-      required this.imageController,
-      required this.imagesLength,
-      required this.imageUrlLength,
-      required this.length,
-      required this.type})
+        required this.imageController,
+        required this.imagesLength})
       : super(key: key);
 
-  final int length;
   final int imagesLength;
-  final int imageUrlLength;
   final ImageController imageController;
-  final String type;
 
   @override
   Widget build(BuildContext context) {
-    return length > 0
-        ? SizedBox(
-            height: _imageThumbnailAreaHeight.h,
-            child: ListView.separated(
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  width: 4.0.w,
-                );
-              },
-              scrollDirection: Axis.horizontal,
-              itemCount: imageUrlLength + imagesLength,
-              itemBuilder: (ctx, index) {
-                if (index < imageUrlLength) {
-                  return Row(
-                    children: [
-                      // if (index == 0) SizedBox(width: 20.0.w),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 10.0.w),
-                        height: 100.0.h,
-                        width: 100.0.w,
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(18.0),
-                              child: Image.network(
-                                imageController.imagesUrl[index],
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            Positioned(
-                              top: 6.h,
-                              left: _imageThumbnailAreaHeight - 27.w,
-                              child: InkWell(
-                                onTap: () {
-                                  imageController.deleteImages.add(imageController.imagesUrl[index]);
-                                  imageController.imagesUrl.removeAt(index);
-                                },
-                                child: SvgPicture.asset(
-                                  "assets/icons/cancel.svg",
-                                  width: 14.0.w,
-                                  height: 14.0.h,
-                                ),
-                              ),
-                            ),
-                          ],
+    return SizedBox(
+      height: _imageThumbnailAreaHeight.h,
+      child: ListView.separated(
+        separatorBuilder: (BuildContext context, int index) {
+          return SizedBox(
+            width: 4.0.w,
+          );
+        },
+        scrollDirection: Axis.horizontal,
+        itemCount: imagesLength,
+        itemBuilder: (ctx, index) {
+          return Row(
+            children: [
+              Container(
+                margin: EdgeInsets.only(bottom: 10.0.w),
+                height: 100.0.h,
+                width: 100.0.w,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(18.0),
+                      child: Image.file(
+                        File(imageController
+                            .images![index].path),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    Positioned(
+                      top: 6.h,
+                      left: _imageThumbnailAreaHeight - 27.w,
+                      child: InkWell(
+                        onTap: () {
+                          print(index);
+                          print(imageController.images);
+                          imageController.images?.removeAt(index);
+                        },
+                        child: SvgPicture.asset(
+                          "assets/icons/cancel.svg",
+                          width: 14.0.w,
+                          height: 14.0.h,
                         ),
                       ),
-                    ],
-                  );
-                } else {
-                  return Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(bottom: 10.0.w),
-                        height: 100.0.h,
-                        width: 100.0.w,
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(18.0),
-                              child: Image.file(
-                                File(imageController.images![index - imageUrlLength].path),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            Positioned(
-                              top: 6.h,
-                              left: _imageThumbnailAreaHeight - 27.w,
-                              child: InkWell(
-                                onTap: () {
-                                  imageController.showImages[1].removeAt(index - imageUrlLength);
-                                },
-                                child: SvgPicture.asset(
-                                  "assets/icons/cancel.svg",
-                                  width: 14.0.w,
-                                  height: 14.0.h,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // if (index == imagesLength - 1) SizedBox(width: 20.0.w),
-                    ],
-                  );
-                }
-              },
-            ),
-          )
-        : SizedBox(height: _imageThumbnailAreaHeight.h);
+                    ),
+                  ],
+                ),
+              ),
+              // if (index == imagesLength - 1) SizedBox(width: 20.0.w),
+            ],
+          );
+        },
+      ),
+    );
   }
 }
 
@@ -425,7 +332,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               InkWell(
-                onTap: (){
+                onTap: () {
                   Navigator.pop(context);
                 },
                 child: Container(
@@ -446,7 +353,9 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
               SizedBox(
                 width: 8.w,
               ),
-              Container(padding: EdgeInsets.only(bottom: 3.h), child: Text( "게시글 작성", style: CommonText.BodyL))
+              Container(
+                  padding: EdgeInsets.only(bottom: 3.h),
+                  child: Text("게시글 작성", style: CommonText.BodyL))
             ],
           ),
         ),

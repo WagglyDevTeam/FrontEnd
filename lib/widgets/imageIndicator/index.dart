@@ -26,10 +26,10 @@ class _ImageIndicatorState extends State<ImageIndicator>{
 
   @override
   void initState() {
-    Timer.periodic(const Duration(milliseconds: 500), (Timer t){
-      final isLast = _count == imgList.length - 1;
-      setState(() => _count = isLast ? 0 : _count + 1);
-    });
+    // Timer.periodic(const Duration(milliseconds: 500), (Timer t){
+    //   final isLast = _count == imgList.length - 1;
+    //   // setState(() => _count = isLast ? 0 : _count + 1);
+    // });
     super.initState();
   }
 

@@ -31,7 +31,9 @@ class ImageController extends GetxController {
         }
       }
     }
+
     showImages.add(images);
+    print(showImages);
   }
 
   Future uploadSingleImage() async {
