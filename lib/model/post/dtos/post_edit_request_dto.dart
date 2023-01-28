@@ -14,6 +14,6 @@ class PostEditRequestDto{
     "description": description,
     "college": college,
     "file": file,
-    "hashtags": deleteTargetUrl,
+    "deleteTargetUrl": deleteTargetUrl,
   };
 }

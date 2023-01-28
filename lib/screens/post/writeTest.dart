@@ -230,6 +230,9 @@ class WritePage2 extends StatelessWidget {
   Future<WagglyResponseDto> writePost() async {
     List<MultipartFile> file = imageToMultipartFile();
     List<String> hashtags = extractHashTags(_hashtag.text);
+    final box = Hive.box<User>('user');
+    int? me = box.get('user')?.id;
+
     return await _postController.writeBoard(
       PostRequestDto(
         _title.text,
@@ -289,7 +292,6 @@ class PhotoWidget extends StatelessWidget {
                             child: InkWell(
                               onTap: () {
                                 print(index);
-                                print(imageController.images);
                                 imageController.images?.removeAt(index);
                               },
                               child: SvgPicture.asset(

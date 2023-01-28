@@ -33,7 +33,6 @@ class ImageController extends GetxController {
     }
 
     showImages.add(images);
-    print(showImages);
   }
 
   Future uploadSingleImage() async {
@@ -54,6 +53,7 @@ class ImageController extends GetxController {
     for (var url in deleteImages) {
       list.add(url);
     }
+    print("삭제할 리스트"+list.toString());
     return list;
   }
 }

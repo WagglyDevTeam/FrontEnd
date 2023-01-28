@@ -107,18 +107,20 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
 }
 
 class DetailHiddenBtn extends StatelessWidget {
+  final PostDetailController _postDetailX = Get.put(PostDetailController());
   BuildContext pageContext;
   DetailHiddenBtn({Key? key, required this.pageContext}) : super(key: key);
 
   isMaster() {
     final box = Hive.box<User>('user');
     int? me = box.get('user')?.id;
-    late String postId = "${Get.parameters['postId']}";
-    int postIdInt = int.parse(postId);
-    print(me);
-    print(postIdInt);
-    print('----');
-    if (me == postIdInt) {
+    final postDetail = _postDetailX.postDetail.value.toJson();
+    final authorId =  _postDetailX.authorId;
+    // print(Get.parameters);
+    // print("====");
+    // print(me);
+    // print(authorId);
+    if (me == authorId) {
       return true;
     } else {
       return false;
@@ -168,8 +170,10 @@ class DetailHiddenBtn extends StatelessWidget {
           ModalButton(
               title: '수정하기',
               event: () {
+                print("asdasdasd");
                 Get.toNamed("/editPage");
               }),
+        if(!isMaster())
         ModalButton(
             title: '신고하기',
             event: () {
