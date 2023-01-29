@@ -78,7 +78,7 @@ dependencies:
 
   #env
   flutter_dotenv: ^5.0.2
-  full_screen_image_null_safe: ^2.0.0
+  easy_image_viewer: ^1.2.0
 
 dev_dependencies:
   flutter_test:

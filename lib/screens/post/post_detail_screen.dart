@@ -1,9 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:waggly/components/post/post_modal.dart';
@@ -298,7 +298,15 @@ class _DetailContext extends State<DetailContext> {
                                                       itemCount: _postDetailX.postDetail.value.postImages?.length ?? 0,
                                                       itemBuilder: (BuildContext context, int imgIndex) {
                                                         return Row(children: [
-                                                          FullScreenWidget(
+                                                          GestureDetector(
+                                                            onTap: () => {
+                                                              showImageViewer(
+                                                                context,
+                                                                Image.network(_postDetailX.postDetail.value.postImages?[imgIndex]).image,
+                                                                swipeDismissible: true,
+                                                                doubleTapZoomable: true,
+                                                              )
+                                                            },
                                                             child: Container(
                                                               width: imageBoxSize,
                                                               height: imageBoxSize,
