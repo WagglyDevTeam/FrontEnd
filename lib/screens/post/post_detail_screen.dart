@@ -200,7 +200,7 @@ class _DetailContext extends State<DetailContext> {
     /// 게시판 상세 페이지 GetX 좋아요 이벤트
     onLikedByMe() {
       _postDetailX.updateDetailBoardLike(
-        isLikedByMe: _postDetailX.postDetail.value.isLikedByMe ?? false,
+        isLikedByMe: _postDetailX.postDetail.value.isLikedByMe == true ? false : true,
         postLikeCnt: _postDetailX.postDetail.value.isLikedByMe ?? false ? _postDetailX.postDetail.value.postLikeCnt ?? 0 - 1 : _postDetailX.postDetail.value.postLikeCnt ?? 0 + 1,
         postId: _postDetailX.postDetail.value.postId ?? 0,
       );
