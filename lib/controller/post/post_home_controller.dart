@@ -20,7 +20,7 @@ class PostHomeController extends GetxController {
   final bestPostOn = false.obs;
 
   /// 특정 학부 페이징
-  final postPage = 1.obs;
+  final postPage = 0.obs;
 
   /// 토탈페이지
   final totalPage = 0.obs;
@@ -79,10 +79,13 @@ class PostHomeController extends GetxController {
 
   /// 게시판 페이징 get
   Future<void> getBoardPaging(String? collegeId) async {
+    print(totalPage.value);
+    print(postPage.value);
     if (totalPage.value >= postPage.value) {
       PostCollegeDto college = PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
       WagglyResponsePaginationDto result = await _postRepository.getBoardCollege(college);
       dynamic postJson = result.datas["posts"];
+      print('postLength = ${postJson.length}');
       if (postJson != []) {
         List<PostSpecificData> postData = List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
         postCollegeData.addAll(postData);
