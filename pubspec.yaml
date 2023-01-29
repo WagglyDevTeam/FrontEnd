@@ -78,6 +78,7 @@ dependencies:
 
   #env
   flutter_dotenv: ^5.0.2
+  easy_image_viewer: ^1.2.0
 
 dev_dependencies:
   flutter_test:
