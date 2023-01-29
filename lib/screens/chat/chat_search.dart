@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +42,7 @@ class ChatSearchScreen extends StatelessWidget {
             child: Row(
               children: [
                 SizedBox(
-                  width: 278.0.w,
+                  width: 250.0.w,
                   height: 36.0.h,
                   child: TextField(
                     textAlignVertical: TextAlignVertical.center,
@@ -52,22 +53,25 @@ class ChatSearchScreen extends StatelessWidget {
                     autocorrect: false,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(
-                        left: 20.0.w,
+                        left: 10.0.w,
                         right: 20.0.w,
                         bottom: 36.0.h / 2, // Vertical Center
                       ),
                       isDense: true,
                       filled: true,
-                      fillColor: Color(0xFFF8F8F8),
+                      fillColor: Colors.white,
+                      hintText: "채팅,학과 검색",
+                      hintStyle: CommonText.BodyMediumGray,
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1.0),
-                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(color: Palette.lavender, width: 1.0),
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1.0),
-                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(color: Palette.lavender,width: 1.0),
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
+
                   ),
                 ),
                 Expanded(child: SizedBox()),
@@ -96,18 +100,16 @@ class ChatSearchScreen extends StatelessWidget {
                     }
                   },
                   child: Container(
-                    alignment: Alignment.center,
-                    width: 36.0.w,
-                    height: 36.0.h,
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1.0, color: Palette.lightGray),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.search,
-                      color: Palette.gray,
-                      size: 18.w,
-                    ),
+                      alignment: Alignment.center,
+                      width: 70.0.w,
+                      height: 36.0.h,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1.0, color: Palette.violet),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Text("검색하기", style: TextStyle(fontSize: 12.0.sp,
+                        color: Palette.violet,
+                        fontFamily: 'NotoSansKR_Md',),),
                   ),
                 ),
               ],
@@ -344,7 +346,7 @@ class GroupChatBoxArea extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
+          padding: EdgeInsets.only(left: 18.0.w, right: 18.0.w),
           child: Container(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -355,112 +357,140 @@ class GroupChatBoxArea extends StatelessWidget {
         ),
         SizedBox(height: 10.0.h),
         SizedBox(
-          height: 72.h,
-          child: ListView.separated(
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(width: 7.0.w);
-              },
-              scrollDirection: Axis.horizontal,
+          height: MediaQuery.of(context).size.height - 300.h,
+          child: ListView.builder(
+              scrollDirection: Axis.vertical,
               itemCount: itemList.length,
               itemBuilder: (ctx, index) {
                 return Row(
                   children: [
-                    if (index == 0) SizedBox(width: 20.0.w),
                     Container(
-                      height: 85.0.h,
-                      width: 217.0.w,
-                      padding: EdgeInsets.fromLTRB(12.5.w, 12.5.h, 12.5.w, 12.5.h),
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.fromLTRB(20.w, 12.5.h, 20.w, 12.5.h),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        border: Border.all(
-                          width: 0.7.w,
-                          color: Palette.lavender,
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 1.w,
+                            color: Palette.paper,
+                          ),
                         ),
                       ),
-                      child: Row(
+                      child: Column(
                         children: [
-                          Stack(
-                            alignment: Alignment.center,
+                          Row(
                             children: [
-                              SizedBox(
-                                width: 48.0.w,
-                                height: 48.0.h,
-                                child: CircleAvatar(
-                                  radius: 30.0,
-                                  foregroundImage: AssetImage("assets/images/red_face_big.png"),
-                                ),
-                              ),
-                              Positioned(
-                                top: 22.5.h,
-                                child: Center(
-                                  child: Text(
-                                    "99/99",
-                                    style: CommonText.BodyEngWhite,
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 48.0.w,
+                                    height: 48.0.h,
+                                    child: CircleAvatar(
+                                      radius: 30.0,
+                                      foregroundImage: AssetImage("assets/images/red_face_big.png"),
+                                    ),
                                   ),
+                                  Positioned(
+                                    top: 22.5.h,
+                                    child: Center(
+                                      child: Text(
+                                        "99/99",
+                                        style: CommonText.BodyEngWhite,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ), // 참여자 수 얼굴
+                              SizedBox(width: 7.w),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width - 165.w,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.fromLTRB(5.0.w, 3.0.h, 5.0.w, 3.0.h),
+                                          height: 14.h,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            color: Palette.main,
+                                            borderRadius: BorderRadius.circular(20.0),
+                                          ),
+                                          child: Text(
+                                            "대외활동",
+                                            style: CommonText.ChipWhite,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 7.w,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            "와글와글 채팅방 이름?이름이름이름",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: CommonText.BodyL,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 3.h),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "#도전",
+                                          style: CommonText.BodyXSmallMain,
+                                        ),
+                                        SizedBox(width: 3.w),
+                                        Text(
+                                          "#취직",
+                                          style: CommonText.BodyXSmallMain,
+                                        ),
+                                        SizedBox(width: 3.w),
+                                        Text(
+                                          "#파이팅",
+                                          style: CommonText.BodyXSmallMain,
+                                        ),
+                                      ],
+                                    )
+                                  ],
                                 ),
                               ),
+                              SizedBox(width: 20.w,),
+                              Stack(
+                                children: [
+                                  Container(
+                                    width: 36.0.w,
+                                    height: 36.0.h,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 1.5.w,
+                                        color: Palette.light,
+                                      ),
+                                      borderRadius: BorderRadius.circular(100.0.w),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    left: 10.w,
+                                    top: 10.h,
+                                    child: SizedBox(
+                                      width: 16.0.w,
+                                      height: 16.0.h,
+                                      child: SvgPicture.asset(
+                                        'assets/icons/play.svg',
+                                        color: Palette.iris,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                             // 카테고리, 채팅방이름
                             ],
-                          ), // 참여자 수 얼굴
-                          SizedBox(width: 7.w),
-                          SizedBox(
-                            width: 135.5.w,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.fromLTRB(5.0.w, 3.0.h, 5.0.w, 3.0.h),
-                                      height: 14.h,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: Palette.main,
-                                        borderRadius: BorderRadius.circular(20.0),
-                                      ),
-                                      child: Text(
-                                        "대외활동",
-                                        style: CommonText.ChipWhite,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 7.w,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        "와글와글 채팅방 이름?이름이름이름",
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: CommonText.BodyL,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 3.h),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "#도전",
-                                      style: CommonText.BodyXSmallMain,
-                                    ),
-                                    SizedBox(width: 3.w),
-                                    Text(
-                                      "#취직",
-                                      style: CommonText.BodyXSmallMain,
-                                    ),
-                                    SizedBox(width: 3.w),
-                                    Text(
-                                      "#파이팅",
-                                      style: CommonText.BodyXSmallMain,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ), // 카테고리, 채팅방이름
+                          ),
                         ],
                       ),
                     ),
-                    if (index == groupChatItem.length - 1) SizedBox(width: 20.0.w),
                   ],
                 );
               }),
