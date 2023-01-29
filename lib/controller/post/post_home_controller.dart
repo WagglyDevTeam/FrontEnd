@@ -1,8 +1,5 @@
-import 'dart:convert';
-import 'dart:math';
-
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:waggly/model/post/dtos/waggly_response_pagination_dto.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
 import '../../repository/post_repository.dart';
 import '../../model/post/dtos/post_college_dto.dart';
@@ -23,7 +20,10 @@ class PostHomeController extends GetxController {
   final bestPostOn = false.obs;
 
   /// 특정 학부 페이징
-  final postPage = 0.obs;
+  final postPage = 1.obs;
+
+  /// 토탈페이지
+  final totalPage = 0.obs;
 
   /// 특정학부 페이지 게시물 상태데이터
   final postCollegeData = [PostSpecificData()].obs;
@@ -43,8 +43,7 @@ class PostHomeController extends GetxController {
     dynamic userCollegeJson = result.datas["userCollegePosts"];
     PostCollegeData userCollegeMap = PostCollegeData.fromJson(userCollegeJson);
     dynamic otherCollegeJson = result.datas["otherCollegePosts"];
-    List<PostCollegeData> otherCollegeMap =
-        List<PostCollegeData>.from(otherCollegeJson.map((x) => PostCollegeData.fromJson(x)).toList());
+    List<PostCollegeData> otherCollegeMap = List<PostCollegeData>.from(otherCollegeJson.map((x) => PostCollegeData.fromJson(x)).toList());
     otherCollegeData.value = otherCollegeMap;
     userCollegeData.value = userCollegeMap;
   }
@@ -52,42 +51,47 @@ class PostHomeController extends GetxController {
   /// 게시판 특정학과 페이지 post data get
   Future<void> getBoardCollege(String? collegeId) async {
     PostCollegeDto college = PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
-    WagglyResponseDto result = await _postRepository.getBoardCollege(college);
+    WagglyResponsePaginationDto result = await _postRepository.getBoardCollege(college);
     dynamic bestJson = result.datas["bestPost"];
     dynamic postJson = result.datas["posts"];
-    if (bestJson != null) {
-      PostSpecificData bestPostData = PostSpecificData.fromJson(bestJson);
-      bestPostCollegeData.value = bestPostData;
-      postPage.value++;
-      bestPostOn.value = true;
+    if (result.status == '200') {
+      totalPage.value = result.totalPage ?? 0;
+      if (result.totalPage != postPage.value) {
+        PostSpecificData bestPostData = PostSpecificData.fromJson(bestJson);
+        List<PostSpecificData> postData = List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
+        bestPostCollegeData.value = bestPostData;
+        postCollegeData.value = postData;
+        postPage.value++;
+        bestPostOn.value = true;
+      }
     } else {
       bestPostOn.value = false;
     }
-    if (postJson != []) {
-      List<PostSpecificData> postData =
-          List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
-      postCollegeData.value = postData;
-      postCollegeData.refresh();
-      normalPostOn.value = true;
-    } else {
-      normalPostOn.value = false;
-    }
+    // if (postJson != []) {
+    //   List<PostSpecificData> postData = List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
+    //   postCollegeData.value = postData;
+    //   postCollegeData.refresh();
+    //   normalPostOn.value = true;
+    // } else {
+    //   normalPostOn.value = false;
+    // }
   }
 
   /// 게시판 페이징 get
   Future<void> getBoardPaging(String? collegeId) async {
-    PostCollegeDto college = PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
-    WagglyResponseDto result = await _postRepository.getBoardCollege(college);
-    dynamic postJson = result.datas["posts"];
-    if (postJson != []) {
-      List<PostSpecificData> postData =
-          List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
-
-      postCollegeData.value.addAll(postData);
-      postCollegeData.refresh();
-      normalPostOn.value = true;
-    } else {
-      normalPostOn.value = false;
+    if (totalPage.value >= postPage.value) {
+      PostCollegeDto college = PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
+      WagglyResponsePaginationDto result = await _postRepository.getBoardCollege(college);
+      dynamic postJson = result.datas["posts"];
+      if (postJson != []) {
+        List<PostSpecificData> postData = List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
+        postCollegeData.addAll(postData);
+        postCollegeData.refresh();
+        normalPostOn.value = true;
+      } else {
+        normalPostOn.value = false;
+      }
+      postPage.value++;
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:waggly/model/post/dtos/post_detail_dto.dart';
+import 'package:waggly/model/post/dtos/waggly_response_pagination_dto.dart';
 import 'package:waggly/provider/post_provider.dart';
 
 import '../model/post/dtos/post_college_dto.dart';
@@ -51,10 +52,10 @@ class PostRepository {
   }
 
   /// 특정학부 Response
-  Future<WagglyResponseDto> getBoardCollege(PostCollegeDto props) async {
+  Future<WagglyResponsePaginationDto> getBoardCollege(PostCollegeDto props) async {
     Response response = await _postProvider.getBoardCollege(props.college!, props.page!, props.size!);
     dynamic body = response.body;
-    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+    WagglyResponsePaginationDto wagglyResponseDto = WagglyResponsePaginationDto.fromJson(body);
 
     return wagglyResponseDto;
   }
