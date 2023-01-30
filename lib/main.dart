@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +20,7 @@ import 'package:waggly/screens/chat/chat_edit.dart';
 import 'package:waggly/screens/chat/chat_room_screen.dart';
 import 'package:waggly/screens/chat/chat_search.dart';
 import 'package:waggly/screens/groupChat/group_chat_create.dart';
+import 'package:waggly/screens/post/post_search.dart';
 import 'package:waggly/screens/user/find_password.dart';
 import 'package:waggly/screens/index.dart';
 import 'package:waggly/screens/user/my_page.dart';
@@ -118,6 +118,11 @@ class HeroApp extends StatelessWidget {
                 name: "/editPage",
                 page: () => WritePage("edit"),
                 transition: Transition.rightToLeft),
+            GetPage(
+              name: "/searchPost",
+              page: () => PostSearchScreen(),
+              transition: Transition.rightToLeft,
+            ),
             GetPage(name: "/profileImg", page: () => ProfileImgScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/active", page: () => ActiveScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/setting", page: () => SettingScreen(), transition: Transition.rightToLeft),
