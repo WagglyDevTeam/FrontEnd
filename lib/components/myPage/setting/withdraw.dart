@@ -6,6 +6,7 @@ import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/controller/signUp/sign_up_controller.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
+import 'package:waggly/widgets/snackbar/custom_snack_bar.dart';
 import 'package:waggly/widgets/textFormField/text_form_field.dart';
 
 class WithdrawScreen extends StatelessWidget{
@@ -126,7 +127,6 @@ class _WithdrawState extends State<Withdraw> {
                         SizedBox(height: 5.h,),
                         SizedBox(
                           child: TextFormField(
-                            // focusNode: label == '비밀번호'  ? _signUpController.focus : null,
                             autofocus: true,
                             controller: _passwordInput,
                             obscureText: true,
@@ -189,7 +189,22 @@ class _WithdrawState extends State<Withdraw> {
                             ),
                             ),
                             onPressed: (){
-                              print('탈퇴하기 버튼 클릭완');
+                              //탈퇴하는 api 연결하고 여기서 예외처리
+                              if(_passwordInput.value == null ){
+                                CustomSnackBar.messageSnackbar(
+                                  context,
+                                  "탈퇴가 성공적으로 완료되었습니다.",
+                                  EdgeInsets.only(bottom: 60.h, left: 20.w, right: 20.w),
+                                );
+                                Future.delayed(const Duration(milliseconds: 1000), () {
+                                  Get.toNamed('/home');
+                                });
+                              }else{
+                                CustomSnackBar.messageSnackbar(
+                                    context,
+                                    "비밀번호를 입력해주세요.",
+                                    EdgeInsets.only(bottom: 60.h, left: 20.w, right: 20.w),);
+                              }
                             },
                           ),
                         ),
