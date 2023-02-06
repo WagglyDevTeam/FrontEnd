@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:get/get.dart';
@@ -30,7 +29,7 @@ class PostDetailController extends GetxController {
   }
 
   ///  게시판 상세 페이지 데이터 불러오기
-  Future<void> getDetailBoard(String postId) async {
+  Future<PostDetailData> getDetailBoard(String postId) async {
     WagglyResponseDto result = await _postRepository.getDetailBoard(postId);
     dynamic postJson = result.datas["post"];
     dynamic commentsJson = result.datas["comments"];
@@ -38,7 +37,7 @@ class PostDetailController extends GetxController {
     ListCommentData boardCommentMap = ListCommentData.fromJson({"comments": commentsJson});
     postDetail.value = postDetailMap;
     boardComment.value = boardCommentMap.comments!;
-    print(jsonEncode(postDetail.value));
+    return postDetail.value;
   }
 
   /// 게시판 상세 페이지 좋아요 업데이트

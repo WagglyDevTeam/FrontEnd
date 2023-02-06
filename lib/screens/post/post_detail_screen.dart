@@ -9,6 +9,7 @@ import 'package:hive/hive.dart';
 import 'package:waggly/components/post/post_modal.dart';
 import 'package:waggly/controller/post/post_home_controller.dart';
 import 'package:waggly/hive/user.dart';
+import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 import 'package:waggly/screens/post/post_home.dart';
 import 'package:waggly/components/post/post_common.dart';
 import 'package:waggly/controller/postDetail/post_detail_controller.dart';
@@ -22,6 +23,10 @@ const double contentsHeight = 665.0;
 const double contentsWidth = 360.0;
 const double imageBoxSize = 100.0;
 const double contentsPadding = 18.0;
+final PostDetailController _postDetailX = Get.put(PostDetailController());
+final String postId = "${Get.parameters['postId']}";
+late Future<PostDetailData> postDetailData;
+final box = Hive.box<User>('user');
 
 /// 게시판 상세 페이지 레이아웃
 class PostDetail extends StatelessWidget {
@@ -106,27 +111,12 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
 }
 
 class DetailHiddenBtn extends StatelessWidget {
-  BuildContext pageContext;
-  DetailHiddenBtn({Key? key, required this.pageContext}) : super(key: key);
-
-  isMaster() {
-    final box = Hive.box<User>('user');
-    int? me = box.get('user')?.id;
-    late String postId = "${Get.parameters['postId']}";
-    int postIdInt = int.parse(postId);
-    print(me);
-    print(postIdInt);
-    print('----');
-    if (me == postIdInt) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  DetailHiddenBtn({Key? key, required this.pageContext, this.authorId}) : super(key: key);
+  final int? authorId;
+  final BuildContext pageContext;
 
   @override
   Widget build(BuildContext context) {
-    double modalHeight = isMaster() ? 160.0.h : 123.0.h;
     String title = '글 메뉴';
     void postDelete() {
       Navigator.pop(context);
@@ -136,45 +126,67 @@ class DetailHiddenBtn extends StatelessWidget {
       Navigator.pop(context);
     }
 
-    PostModal modalOn = PostModal(context: context, contents: buttons(context, pageContext), height: modalHeight, title: title);
-    return GestureDetector(
-      onTap: () => {modalOn.ModalOn()},
-      child: Container(
-          margin: EdgeInsets.only(right: 16.w),
-          child: SvgPicture.asset(
-            'assets/icons/top_modal_dot.svg',
-            fit: BoxFit.contain,
-            width: 36.w,
-            height: 36.h,
-          )),
+    return FutureBuilder(
+      future: postDetailData,
+      builder: (context, snapshot) {
+        late PostDetailData data;
+        late double modalHeight;
+        if (snapshot.hasData) {
+          data = snapshot.data! as PostDetailData;
+          modalHeight = box.get('user')?.id == data.authorId ? 150.0.h : 123.0.h;
+        } else {
+          modalHeight = 123.0.h;
+        }
+        PostModal modalOn = PostModal(context: context, contents: buttons(context, pageContext), height: modalHeight, title: title);
+        return GestureDetector(
+          onTap: () => {modalOn.ModalOn()},
+          child: Container(
+              margin: EdgeInsets.only(right: 16.w),
+              child: SvgPicture.asset(
+                'assets/icons/top_modal_dot.svg',
+                fit: BoxFit.contain,
+                width: 36.w,
+                height: 36.h,
+              )),
+        );
+      },
     );
   }
 
   buttons(BuildContext context, BuildContext pageContext) {
     final PostHomeController _postX = Get.put(PostHomeController());
-    final PostDetailController _postDetailX = Get.put(PostDetailController());
-    return Column(
-      children: [
-        if (isMaster())
-          ModalButton(
-              title: '삭제하기',
-              event: () {
-                Get.offAll(PostScreen());
-                _postX.deleteBoard(_postDetailX.postDetail.value.postId ?? 0);
-              }),
-        if (isMaster())
-          ModalButton(
-              title: '수정하기',
-              event: () {
-                Get.toNamed("/editPage");
-              }),
-        ModalButton(
-            title: '신고하기',
-            event: () {
-              Get.toNamed("/editPage");
-            }),
-      ],
-    );
+    return FutureBuilder(
+        future: postDetailData,
+        builder: (context, snapshot) {
+          if (box.get('user')?.id == _postDetailX.postDetail.value.authorId) {
+            return Column(
+              children: [
+                ModalButton(
+                    title: '삭제하기',
+                    event: () {
+                      Get.offAll(PostScreen());
+                      _postX.deleteBoard(_postDetailX.postDetail.value.postId ?? 0);
+                    }),
+                ModalButton(
+                    title: '수정하기',
+                    event: () {
+                      Get.toNamed("/editPage");
+                    }),
+              ],
+            );
+          } else {
+            return Column(
+              children: [
+                ModalButton(
+                  title: '신고하기',
+                  event: () {
+                    Get.toNamed("/editPage");
+                  },
+                )
+              ],
+            );
+          }
+        });
   }
 }
 
@@ -183,14 +195,13 @@ class _DetailContext extends State<DetailContext> {
   _DetailContext();
 
   /// 게시판 상세 페이지 GetX 데이터
-  final PostDetailController _postDetailX = Get.put(PostDetailController());
   late String postId = "${Get.parameters['postId']}";
   final ScrollController _scrollController = ScrollController();
 
   @override
   initState() {
-    _postDetailX.updatePostId(postId);
-    _postDetailX.getDetailBoard(postId);
+    // await _postDetailX.updatePostId(postId);
+    postDetailData = _postDetailX.getDetailBoard(postId);
 
     super.initState();
   }
@@ -217,7 +228,7 @@ class _DetailContext extends State<DetailContext> {
     return SizedBox(
         width: contentsWidth.w,
         child: FutureBuilder(
-            future: _postDetailX.getDetailBoard(postId),
+            future: postDetailData,
             builder: (context, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
                 return SizedBox(
