@@ -12,7 +12,7 @@ import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/snackbar/custom_snack_bar.dart';
 
-class PostSearchScreen extends StatelessWidget{
+class PostSearchScreen extends StatelessWidget {
   PostSearchScreen({Key? key}) : super(key: key);
 
   final _searchKeyword = TextEditingController();
@@ -20,10 +20,8 @@ class PostSearchScreen extends StatelessWidget{
   //게시판꺼 나오면 게시판꺼로 변경해야함
   final ChatSearchController chatSearchController = Get.put(ChatSearchController());
 
-
-
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     var box = Hive.box<User>('user');
     var userId = box.get('user')?.id;
 
@@ -85,25 +83,24 @@ class PostSearchScreen extends StatelessWidget{
                       //   final prevItem = searchList.getAt(searchList.length - 1);
                       //   id = prevItem!.id + 1;
                       // }
-                    //
-                    //   chatSearchController.searchHistoryBox.value
-                    //       .add(SearchHistory(id: id, userId: userId, keyword: _searchKeyword.text));
-                    //   chatSearchController.toList(userId);
-                    //
+                      //
+                      //   chatSearchController.searchHistoryBox.value
+                      //       .add(SearchHistory(id: id, userId: userId, keyword: _searchKeyword.text));
+                      //   chatSearchController.toList(userId);
+                      //
                       _searchKeyword.text = '';
-                   }
+                    }
                   },
                   child: Container(
-                    alignment: Alignment.center,
-                    width: 70.0.w,
-                    height: 36.0.h,
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1.0, color: Palette.lavender),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Text("검색하기", style: CommonText.BodyMediumMain)
-                    ),
-                  ),
+                      alignment: Alignment.center,
+                      width: 70.0.w,
+                      height: 36.0.h,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1.0, color: Palette.lavender),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Text("검색하기", style: CommonText.BodyMediumMain)),
+                ),
               ],
             ),
           ), // 검색영역
@@ -122,10 +119,9 @@ class PostSearchScreen extends StatelessWidget{
   }
 }
 
-
-
 class TopAppBar extends StatelessWidget with PreferredSizeWidget {
-  const TopAppBar({super.key});
+  TopAppBar({super.key});
+  final SignInController signInController = Get.put(SignInController());
 
   @override
   Size get preferredSize => Size.fromHeight(68.h);
@@ -145,7 +141,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               InkWell(
-                onTap: (){
+                onTap: () {
                   Navigator.pop(context);
                 },
                 child: Container(
@@ -219,7 +215,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
   }
 }
 
-class SearchHistoryBox extends StatelessWidget{
+class SearchHistoryBox extends StatelessWidget {
   SearchHistoryBox({
     Key? key,
     required this.text,
@@ -237,7 +233,7 @@ class SearchHistoryBox extends StatelessWidget{
   final list = [];
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Padding(
         padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
@@ -250,114 +246,122 @@ class SearchHistoryBox extends StatelessWidget{
         ),
       ), // 타이틀
       SizedBox(height: 10.0.h),
-      if(list.length >0)
+      if (list.isNotEmpty)
         SizedBox(
           height: 24.0.h,
-          child: ListView.separated(itemBuilder: (item, index){
-            return Row(
-              children: [
-                if(index == 0) SizedBox(width: 20.0.w),
-                Container(
-                  alignment: AlignmentDirectional(0.w, 0.h),
-                  height: 24.0.h,
-                  padding: EdgeInsets.only(left: 15.w, right: 15.w),
-                  decoration: BoxDecoration(
-                    color: Palette.candy,
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        list[index],
-                        style: CommonText.BodyM,
-                      ),
-                      SizedBox(
-                        width: 4.0.w,
-                      ),
-                      InkWell(
-                        onTap: (){},
-                        child: Container(
-                          alignment: AlignmentDirectional(0.w, 0.15.h),
-                          child: Icon(Icons.close, size: 10.w),
+          child: ListView.separated(
+            itemBuilder: (item, index) {
+              return Row(
+                children: [
+                  if (index == 0) SizedBox(width: 20.0.w),
+                  Container(
+                    alignment: AlignmentDirectional(0.w, 0.h),
+                    height: 24.0.h,
+                    padding: EdgeInsets.only(left: 15.w, right: 15.w),
+                    decoration: BoxDecoration(
+                      color: Palette.candy,
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          list[index],
+                          style: CommonText.BodyM,
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 4.0.w,
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            alignment: AlignmentDirectional(0.w, 0.15.h),
+                            child: Icon(Icons.close, size: 10.w),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                if(index== list.length -1) SizedBox(width: 20.w,)
-              ],
-            );
-          }, separatorBuilder: (BuildContext context, int index){
-            return SizedBox(width: 7.0.h);
-          }, itemCount: list.length,
-            scrollDirection: Axis.horizontal,),
-        )
-      else if(list.length == 0)
-        Padding(padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
-        child: Container(
-          alignment: Alignment.centerLeft,
-          height: 24.0.h,
-          child: Text(
-            '검색 내역이 존재하지 않습니다.',
-            style: CommonText.BodyMediumGray,
+                  if (index == list.length - 1)
+                    SizedBox(
+                      width: 20.w,
+                    )
+                ],
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return SizedBox(width: 7.0.h);
+            },
+            itemCount: list.length,
+            scrollDirection: Axis.horizontal,
           ),
-        ),)
+        )
+      else if (list.isEmpty)
+        Padding(
+          padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
+          child: Container(
+            alignment: Alignment.centerLeft,
+            height: 24.0.h,
+            child: Text(
+              '검색 내역이 존재하지 않습니다.',
+              style: CommonText.BodyMediumGray,
+            ),
+          ),
+        )
     ]);
   }
 }
 
 class SearchPostList extends StatelessWidget {
-  SearchPostList({ Key? key});
-
+  SearchPostList({Key? key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Container(
-      // padding: EdgeInsets.only(
-      //     top: 16, bottom: 16, left: 26, right: 26),
-      // decoration: BoxDecoration(
-      //     color: Colors.white,
-      //     border: Border(
-      //       top: BorderSide(
-      //           color: Palette.paper,
-      //           style: BorderStyle.solid,
-      //           width: 1),
-      //     )),
-      // child: Obx(() => PostContext(
-      //   postId:
-      //   _postDetailX.postCollegeData[postInt].postId ??
-      //       0,
-      //   postTitle: _postDetailX
-      //       .postCollegeData[postInt].postTitle ??
-      //       '',
-      //   postDesc: _postDetailX
-      //       .postCollegeData[postInt].postDesc ??
-      //       '',
-      //   postCreatedAt: _postDetailX
-      //       .postCollegeData[postInt].postCreatedAt ??
-      //       '',
-      //   authorMajor: _postDetailX
-      //       .postCollegeData[postInt].authorMajor ??
-      //       '',
-      //   postImageCnt: _postDetailX
-      //       .postCollegeData[postInt].postImageCnt ??
-      //       0,
-      //   postLikeCnt: _postDetailX
-      //       .postCollegeData[postInt].postLikeCnt ??
-      //       0,
-      //   postCommentCnt: _postDetailX
-      //       .postCollegeData[postInt].postCommentCnt ??
-      //       0,
-      //   isLikedByMe: _postDetailX
-      //       .postCollegeData[postInt].isLikedByMe ??
-      //       false,
-      //   isBlind:
-      //   _postDetailX.postCollegeData[postInt].isBlind ??
-      //       false,
-      //   postName: postName,
-      //   collegeType: _pageTitle,
-      // )),
-    );
+        // padding: EdgeInsets.only(
+        //     top: 16, bottom: 16, left: 26, right: 26),
+        // decoration: BoxDecoration(
+        //     color: Colors.white,
+        //     border: Border(
+        //       top: BorderSide(
+        //           color: Palette.paper,
+        //           style: BorderStyle.solid,
+        //           width: 1),
+        //     )),
+        // child: Obx(() => PostContext(
+        //   postId:
+        //   _postDetailX.postCollegeData[postInt].postId ??
+        //       0,
+        //   postTitle: _postDetailX
+        //       .postCollegeData[postInt].postTitle ??
+        //       '',
+        //   postDesc: _postDetailX
+        //       .postCollegeData[postInt].postDesc ??
+        //       '',
+        //   postCreatedAt: _postDetailX
+        //       .postCollegeData[postInt].postCreatedAt ??
+        //       '',
+        //   authorMajor: _postDetailX
+        //       .postCollegeData[postInt].authorMajor ??
+        //       '',
+        //   postImageCnt: _postDetailX
+        //       .postCollegeData[postInt].postImageCnt ??
+        //       0,
+        //   postLikeCnt: _postDetailX
+        //       .postCollegeData[postInt].postLikeCnt ??
+        //       0,
+        //   postCommentCnt: _postDetailX
+        //       .postCollegeData[postInt].postCommentCnt ??
+        //       0,
+        //   isLikedByMe: _postDetailX
+        //       .postCollegeData[postInt].isLikedByMe ??
+        //       false,
+        //   isBlind:
+        //   _postDetailX.postCollegeData[postInt].isBlind ??
+        //       false,
+        //   postName: postName,
+        //   collegeType: _pageTitle,
+        // )),
+        );
   }
 }
 
@@ -377,26 +381,24 @@ class PostContext extends StatelessWidget {
 
   PostContext(
       {Key? key,
-        this.postId,
-        this.postTitle,
-        this.postDesc,
-        this.postCreatedAt,
-        this.authorMajor,
-        this.postImageCnt,
-        this.postLikeCnt,
-        this.postCommentCnt,
-        this.isLikedByMe,
-        this.isBlind,
-        this.postName,
-        this.collegeType})
+      this.postId,
+      this.postTitle,
+      this.postDesc,
+      this.postCreatedAt,
+      this.authorMajor,
+      this.postImageCnt,
+      this.postLikeCnt,
+      this.postCommentCnt,
+      this.isLikedByMe,
+      this.isBlind,
+      this.postName,
+      this.collegeType})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {
-        Get.toNamed("/postDetail/param?postId=$postId&collegeName=$collegeType")
-      },
+      onTap: () => {Get.toNamed("/postDetail/param?postId=$postId&collegeName=$collegeType")},
       child: Column(
         children: [
           Row(
@@ -410,7 +412,7 @@ class PostContext extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10.h),
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width - 32.w,
             child: Text(postDesc ?? "", style: CommonText.BodyS),
           ),

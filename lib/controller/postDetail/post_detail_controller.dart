@@ -24,11 +24,6 @@ class PostDetailController extends GetxController {
   ).obs;
 
   @override
-  void onInit() async {
-    super.onInit();
-  }
-
-  @override
   void onClose() {
     super.onClose();
     resetDetailBoard();
@@ -52,8 +47,8 @@ class PostDetailController extends GetxController {
     likeDetailRequestDto data = likeDetailRequestDto(postLikeCnt: postLikeCnt, likedByMe: isLikedByMe);
 
     WagglyResponseDto result = await _postRepository.likeDetailPost(postId, data);
-    postDetail.value.isLikedByMe = isLikedByMe;
-    postDetail.value.postLikeCnt = postLikeCnt;
+    postDetail.value.isLikedByMe = result.datas['isLikedByMe'];
+    postDetail.value.postLikeCnt = result.datas['postLikeCnt'];
     update();
     postDetail.refresh();
   }
@@ -92,8 +87,7 @@ class PostDetailController extends GetxController {
       authorId: authorId,
       authorMajor: authorMajor,
       authorNickname: anonymous ? "익명" : authorNickname,
-      authorProfileImg:
-          anonymous ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png" : authorProfileImg,
+      authorProfileImg: anonymous ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png" : authorProfileImg,
       isBlind: false,
       replies: [],
     );
@@ -107,8 +101,7 @@ class PostDetailController extends GetxController {
   }
 
   /// 게시판 상세 페이지 대댓글 작성
-  Future<void> postBoardCommentReply(
-      {required String commentDesc, required int commentId, required bool anonymous}) async {
+  Future<void> postBoardCommentReply({required String commentDesc, required int commentId, required bool anonymous}) async {
     ReCommentRequestDto data = ReCommentRequestDto(replyDesc: commentDesc, anonymous: anonymous);
     WagglyResponseDto result = await _postRepository.postReComment(commentId, data);
 
@@ -133,8 +126,7 @@ class PostDetailController extends GetxController {
       "authorId": authorId,
       "authorMajor": authorMajor,
       "authorNickname": anonymous ? "익명" : authorNickname,
-      "authorProfileImg":
-          anonymous ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png" : authorProfileImg,
+      "authorProfileImg": anonymous ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png" : authorProfileImg,
       "isBlind": false
     });
 
@@ -148,8 +140,7 @@ class PostDetailController extends GetxController {
   }
 
   /// 게시판 상세 페이지 댓글 좋아요
-  Future<void> updateLikeBoardComment(
-      {required int commentId, required bool isLikedByMe, required int commentLikeCnt}) async {
+  Future<void> updateLikeBoardComment({required int commentId, required bool isLikedByMe, required int commentLikeCnt}) async {
     CommentLikeRequestDto data = CommentLikeRequestDto(commentLikeCnt: commentLikeCnt, isLikedByMe: isLikedByMe);
     WagglyResponseDto result = await _postRepository.putCommentLike(commentId, data);
     dynamic likedMeJson = result.datas["isLikedByMe"];
