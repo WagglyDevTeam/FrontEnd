@@ -20,13 +20,14 @@ import 'package:waggly/screens/chat/chat_edit.dart';
 import 'package:waggly/screens/chat/chat_room_screen.dart';
 import 'package:waggly/screens/chat/chat_search.dart';
 import 'package:waggly/screens/groupChat/group_chat_create.dart';
+import 'package:waggly/screens/post/edit.dart';
+import 'package:waggly/screens/post/write.dart';
 import 'package:waggly/screens/post/post_search.dart';
 import 'package:waggly/screens/user/find_password.dart';
 import 'package:waggly/screens/index.dart';
 import 'package:waggly/screens/user/my_page.dart';
 import 'package:waggly/screens/post/post_home.dart';
 import 'package:waggly/screens/user/sign_in.dart';
-import 'package:waggly/screens/post/write.dart';
 import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/myPage/active/index.dart';
 import 'screens/post/post_detail_screen.dart';
@@ -116,7 +117,7 @@ class HeroApp extends StatelessWidget {
             ),
             GetPage(
                 name: "/editPage",
-                page: () => WritePage("edit"),
+                page: () => EditMyPost("edit"),
                 transition: Transition.rightToLeft),
             GetPage(
               name: "/searchPost",

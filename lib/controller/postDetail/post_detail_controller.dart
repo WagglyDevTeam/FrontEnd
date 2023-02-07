@@ -16,6 +16,7 @@ class PostDetailController extends GetxController {
   final PostRepository _postRepository = PostRepository();
   final postDetail = PostDetailData().obs;
   final postId = "".obs;
+  var authorId = -1;
   final boardComment = [CommentData()].obs;
   final selectCommentEvent = SelectComment(
     commentId: 0,
@@ -32,13 +33,15 @@ class PostDetailController extends GetxController {
   ///  게시판 상세 페이지 데이터 불러오기
   Future<void> getDetailBoard(String postId) async {
     WagglyResponseDto result = await _postRepository.getDetailBoard(postId);
+    print(result);
     dynamic postJson = result.datas["post"];
     dynamic commentsJson = result.datas["comments"];
     PostDetailData postDetailMap = PostDetailData.fromJson(postJson);
     ListCommentData boardCommentMap = ListCommentData.fromJson({"comments": commentsJson});
     postDetail.value = postDetailMap;
     boardComment.value = boardCommentMap.comments!;
-    print(jsonEncode(postDetail.value));
+    authorId = postDetailMap.authorId!;
+    // print(jsonEncode(postDetail.value));
   }
 
   /// 게시판 상세 페이지 좋아요 업데이트

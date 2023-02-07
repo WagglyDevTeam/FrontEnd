@@ -35,7 +35,7 @@ const double _imageThumbnailAreaHeight = 110.0;
 const double _bottomButtonPaddingTop = 10.0;
 const double _bottomButtonPaddingBottom = 15.0;
 
-class WritePage extends StatelessWidget {
+class EditMyPost extends StatelessWidget {
   final ImageController _imageController = Get.put(ImageController());
   final PostController _postController = Get.put(PostController());
 
@@ -45,15 +45,13 @@ class WritePage extends StatelessWidget {
   final String type;
   final loginUser = Hive.box<User>('user').get('user');
 
-  WritePage(this.type, {Key? key}) : super(key: key);
+  EditMyPost(this.type, {Key? key}) : super(key: key);
 
   void buttonActivateCheck() {
     if (_title.text.isBlank == true || _content.text.isBlank == true) {
       _postController.isButtonActivate.value = false;
-      // print(_postController.isButtonActivate.value);
     } else {
       _postController.isButtonActivate.value = true;
-      // print(_postController.isButtonActivate.value);
     }
   }
 
@@ -61,9 +59,15 @@ class WritePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var _page = Status.edit;
     var _os = Platform.operatingSystem;
-    var _postName = "게시글 작성";
-    _imageController.getImagesUrl([]);
-
+    var _postName = "게시글 수정";
+    final PostDetailController postDetailController = Get.put(
+        PostEditController());
+    _imageController.getImagesUrl(
+        postDetailController.postDetail.value.postImages);
+    _title = TextEditingController(
+        text: postDetailController.postDetail.value.postTitle);
+    _content = TextEditingController(
+        text: postDetailController.postDetail.value.postDesc);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       // appBar: PageAppbar(
@@ -130,9 +134,12 @@ class WritePage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
                 child: Obx(
-                  () => PhotoWidget(
-                      imageController: _imageController,
-                      imagesLength: _imageController.images!.length),
+                      () =>
+                      PhotoWidget(
+                          imageController: _imageController,
+                          imagesLength: _imageController.images!.length,
+                        existLenght: _imageController.imagesUrl.length
+                      ),
                 ),
               ), // 선택된 이미지 표시 영역
               Padding(
@@ -177,29 +184,31 @@ class WritePage extends StatelessWidget {
                 child: SizedBox(
                   height: _buttonAreaHeight.h,
                   child: Obx(
-                    () => Container(
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      height: _bottomButtonHeight.h,
-                      decoration: BoxDecoration(
-                        color: _postController.isButtonActivate.value == true
-                            ? Palette.main
-                            : Palette.paper,
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: TextButton(
-                        onPressed: () {
-                          final result = writePost();
-                          print(result);
-                        },
-                        child: Text(
-                          "게시글 작성하기",
-                          style: _postController.isButtonActivate.value == true
-                              ? CommonText.BodyBoldWhite
-                              : CommonText.BodyBoldGrey,
+                        () =>
+                        Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          height: _bottomButtonHeight.h,
+                          decoration: BoxDecoration(
+                            color: _postController.isButtonActivate.value ==
+                                true
+                                ? Palette.main
+                                : Palette.paper,
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          child: TextButton(
+                            onPressed: () {
+                              editPost(_title.text, _content.text, "SOCIAL");
+                            },
+                            child: Text(
+                              "게시글 수정하기",
+                              style: _postController.isButtonActivate.value ==
+                                  true
+                                  ? CommonText.BodyBoldWhite
+                                  : CommonText.BodyBoldGrey,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
                   ),
                 ),
               ), // 게시글 작성하기 버튼
@@ -220,7 +229,7 @@ class WritePage extends StatelessWidget {
 
   Future<void> editPost(title, description, college) async {
     final PostDetailController postDetailController =
-        Get.put(PostEditController());
+    Get.put(PostEditController());
 
     List<MultipartFile> file = imageToMultipartFile();
     await postDetailController.editBoard(PostEditRequestDto(title, description,
@@ -230,9 +239,6 @@ class WritePage extends StatelessWidget {
   Future<WagglyResponseDto> writePost() async {
     List<MultipartFile> file = imageToMultipartFile();
     List<String> hashtags = extractHashTags(_hashtag.text);
-    final box = Hive.box<User>('user');
-    int? me = box.get('user')?.id;
-
     return await _postController.writeBoard(
       PostRequestDto(
         _title.text,
@@ -247,71 +253,163 @@ class WritePage extends StatelessWidget {
 }
 
 class PhotoWidget extends StatelessWidget {
-  const PhotoWidget(
-      {Key? key,
-      required this.imageController,
-      required this.imagesLength})
+  const PhotoWidget({Key? key,
+    required this.imageController,
+    required this.existLenght,
+    required this.imagesLength})
       : super(key: key);
 
   final int imagesLength;
+  final int existLenght;
   final ImageController imageController;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-            height: _imageThumbnailAreaHeight.h,
-            child: ListView.separated(
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  width: 4.0.w,
-                );
-              },
-              scrollDirection: Axis.horizontal,
-              itemCount: imagesLength,
-              itemBuilder: (ctx, index) {
-                return Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(bottom: 10.0.w),
-                      height: 100.0.h,
-                      width: 100.0.w,
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(18.0),
-                            child: Image.file(
-                              File(imageController
-                                  .images![index].path),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          Positioned(
-                            top: 6.h,
-                            left: _imageThumbnailAreaHeight - 27.w,
-                            child: InkWell(
-                              onTap: () {
-                                print(index);
-                                imageController.images?.removeAt(index);
-                              },
-                              child: SvgPicture.asset(
-                                "assets/icons/cancel.svg",
-                                width: 14.0.w,
-                                height: 14.0.h,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // if (index == imagesLength - 1) SizedBox(width: 20.0.w),
-                  ],
-                );
-              },
-            ),
+      height: _imageThumbnailAreaHeight.h,
+      child: ListView.separated(
+        separatorBuilder: (BuildContext context, int index) {
+          return SizedBox(
+            width: 4.0.w,
+          );
+        },
+        scrollDirection: Axis.horizontal,
+        itemCount: imageController.imagesUrl.length +
+            imagesLength,
+        itemBuilder: (ctx, index) {
+          if (index < imageController.imagesUrl.length) {
+            return ExistPhoto(imageController: imageController,
+                existLenght: existLenght,
+                index: index);
+          }
+          else {
+            return NewPhoto(imageController: imageController,
+                imagesLength: imagesLength,
+                index: index - imageController.imagesUrl.length);
+          }
+        },
+      ),
     );
   }
 }
+
+
+class ExistPhoto extends StatelessWidget {
+  const ExistPhoto({Key? key,
+    required this.imageController,
+    required this.index,
+    required this.existLenght
+  })
+      : super(key: key);
+
+  final ImageController imageController;
+  final int index;
+  final int existLenght;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 10.0.w),
+          height: 100.0.h,
+          width: 100.0.w,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(18.0),
+                child: Image.network(
+                  imageController.imagesUrl[index],
+                  fit: BoxFit.fill,
+                ),
+              ),
+              Positioned(
+                top: 6.h,
+                left: _imageThumbnailAreaHeight - 27.w,
+                child: InkWell(
+                  onTap: () {
+                    print(index);
+                    imageController.deleteImages.add(imageController.imagesUrl[index]);
+                    imageController.imagesUrl.removeAt(index);
+                    print(imageController.imagesUrl);
+                  },
+                  child: SvgPicture.asset(
+                    "assets/icons/cancel.svg",
+                    width: 14.0.w,
+                    height: 14.0.h,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        // if (index == imagesLength - 1) SizedBox(width: 20.0.w),
+      ],
+    );
+  }
+
+}
+
+class NewPhoto extends StatelessWidget {
+  const NewPhoto({Key? key,
+    required this.imageController,
+    required this.imagesLength,
+    required this.index
+  })
+      :
+        super
+          (
+            key: key);
+
+  final int imagesLength;
+  final ImageController imageController;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 10.0.w),
+          height: 100.0.h,
+          width: 100.0.w,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(18.0),
+                child: Image.file(
+                  File(imageController
+                      .images![index].path),
+                  fit: BoxFit.fill,
+                ),
+              ),
+              Positioned(
+                top: 6.h,
+                left: _imageThumbnailAreaHeight - 27.w,
+                child: InkWell(
+                  onTap: () {
+                    print(index);
+                    print(imageController.images);
+                    imageController.images?.removeAt(index);
+                  },
+                  child: SvgPicture.asset(
+                    "assets/icons/cancel.svg",
+                    width: 14.0.w,
+                    height: 14.0.h,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        // if (index == imagesLength - 1) SizedBox(width: 20.0.w),
+      ],
+    );
+  }
+}
+
 
 class TopAppBar extends StatelessWidget with PreferredSizeWidget {
   TopAppBar(type, {Key? key}) : super(key: key);
@@ -357,7 +455,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
               ),
               Container(
                   padding: EdgeInsets.only(bottom: 3.h),
-                  child: Text("게시글 작성", style: CommonText.BodyL))
+                  child: Text("게시글 수정", style: CommonText.BodyL))
             ],
           ),
         ),
