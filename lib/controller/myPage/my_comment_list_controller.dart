@@ -33,7 +33,6 @@ class MyCommentsListController extends GetxController {
   Future<void> getMyComments() async {
     isLoadedMore.value = true;
 
-    await Future.delayed(Duration(seconds: 2));
     print(postPage);
     print(555555555);
     MyCommentDto writtenComment = MyCommentDto(page: postPage.value , size: 10);
