@@ -31,7 +31,6 @@ class ImageController extends GetxController {
         }
       }
     }
-
     showImages.add(images);
   }
 
