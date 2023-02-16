@@ -199,8 +199,18 @@ class CommentBox extends StatelessWidget {
   void replyEventOn() {
     if (_postDetailX.selectCommentEvent.value.commentId == commentId) {
       _postDetailX.selectCommentReplyOn(commentId: 0, name: '');
+
     } else {
       _postDetailX.selectCommentReplyOn(commentId: commentId, name: authorNickname);
+    }
+  }
+
+  ///클릭시 인풋에 대댓글 넣어주기 위해서 트리거 만든거 지금 제대록 작동안함
+  void inputOn(){
+    if(_postDetailX.reCommentInputOn.value){
+       _postDetailX.reCommentInputOn.value = false;
+    }else{
+      _postDetailX.reCommentInputOn.value = true;
     }
   }
 
@@ -314,7 +324,10 @@ class CommentBox extends StatelessWidget {
                                           height: 10,
                                           color: Palette.violet,
                                         ),
-                                        onPressed: replyEventOn,
+                                        onPressed: (){
+                                          replyEventOn();
+                                          inputOn();
+                                        },
                                       )),
                                 Container(
                                   width: 1,

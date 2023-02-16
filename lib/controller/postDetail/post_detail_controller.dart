@@ -23,6 +23,8 @@ class PostDetailController extends GetxController {
     name: '',
     checkEvent: false,
   ).obs;
+  final reCommentInputOn = false.obs;
+
 
   @override
   void onClose() {
@@ -41,7 +43,6 @@ class PostDetailController extends GetxController {
     postDetail.value = postDetailMap;
     boardComment.value = boardCommentMap.comments!;
     authorId = postDetailMap.authorId!;
-    // print(jsonEncode(postDetail.value));
   }
 
   /// 게시판 상세 페이지 좋아요 업데이트
@@ -108,38 +109,6 @@ class PostDetailController extends GetxController {
     ReCommentRequestDto data = ReCommentRequestDto(replyDesc: commentDesc, anonymous: anonymous);
     WagglyResponseDto result = await _postRepository.postReComment(commentId, data);
 
-    final box = Hive.box<User>('user');
-    var authorId = box.get('user')?.id;
-    var authorNickname = box.get('user')?.nickName;
-    var authorMajor = box.get('user')?.major;
-    var authorProfileImg = box.get('user')?.profileImg;
-    final DateTime now = DateTime.now();
-    final DateFormat formatter = DateFormat.Md().add_jm();
-    final String formatted = formatter.format(now);
-    dynamic resReplyId = result.datas["replyId"];
-    print(authorId);
-
-    /// 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
-    final commentMap = ReCommentData.fromJson({
-      "replyId": resReplyId,
-      "replyCreatedAt": formatted,
-      "replyLikeCnt": 0,
-      "replyDesc": commentDesc,
-      "isLikedByMe": false,
-      "authorId": authorId,
-      "authorMajor": authorMajor,
-      "authorNickname": anonymous ? "익명" : authorNickname,
-      "authorProfileImg": anonymous ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png" : authorProfileImg,
-      "isBlind": false
-    });
-
-    for (var i = 0; i < boardComment.length; i++) {
-      if (boardComment[i].commentId == commentId) {
-        boardComment[i].replies?.add(commentMap);
-        update();
-        boardComment.refresh();
-      }
-    }
   }
 
   /// 게시판 상세 페이지 댓글 좋아요

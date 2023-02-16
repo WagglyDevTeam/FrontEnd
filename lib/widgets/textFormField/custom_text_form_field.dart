@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final controller;
   final onEditingComplete;
   final onChanged;
+  final focus;
 
   CustomTextFormField({
     required this.hint,
@@ -18,6 +19,7 @@ class CustomTextFormField extends StatelessWidget {
     this.maxLines,
     this.onEditingComplete,
     this.onChanged,
+    this.focus,
   });
 
   @override
@@ -34,6 +36,7 @@ class CustomTextFormField extends StatelessWidget {
       onEditingComplete: () {
         onEditingComplete;
       },
+      autofocus: focus,
       autocorrect: false,
       decoration: InputDecoration(
         isDense: true,
