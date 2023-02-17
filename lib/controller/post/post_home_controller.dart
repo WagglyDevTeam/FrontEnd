@@ -79,6 +79,7 @@ class PostHomeController extends GetxController {
 
   /// 게시판 페이징 get
   Future<void> getBoardPaging(String? collegeId) async {
+    //total page 어케알지?
     if (totalPage.value >= postPage.value) {
       PostCollegeDto college = PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
       WagglyResponsePaginationDto result = await _postRepository.getBoardCollege(college);

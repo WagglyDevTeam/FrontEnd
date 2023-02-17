@@ -193,10 +193,10 @@ class _DetailContext extends State<DetailContext> {
 
   @override
   initState() {
+    super.initState();
     _postDetailX.updatePostId(postId);
     _postDetailX.getDetailBoard(postId);
 
-    super.initState();
   }
 
   @override
@@ -384,27 +384,27 @@ class _DetailContext extends State<DetailContext> {
                                                 shape: CommentShape.top,
                                                 PostAuthorId: _postDetailX.postDetail.value.authorId ?? 0,
                                               )),
-                                          SizedBox(
-                                              child: ListView.builder(
-                                                  physics: NeverScrollableScrollPhysics(),
-                                                  shrinkWrap: true,
-                                                  itemCount: _postDetailX.boardComment[commentInt].replies?.length ?? 0,
-                                                  itemBuilder: (BuildContext context, int repliesInt) {
-                                                    return Obx(() => CommentBox(
-                                                          authorId: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorId ?? 0,
-                                                          authorMajor: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorMajor ?? '',
-                                                          authorNickname: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorNickname ?? '',
-                                                          authorProfileImg: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorProfileImg ?? '',
-                                                          isBlind: _postDetailX.boardComment[commentInt].replies?[repliesInt].isBlind ?? false,
-                                                          commentId: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyId ?? 0,
-                                                          commentCreatedAt: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyCreatedAt ?? '',
-                                                          commentLikeCnt: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyLikeCnt ?? 0,
-                                                          commentDesc: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyDesc ?? '',
-                                                          isLikedByMe: _postDetailX.boardComment[commentInt].replies?[repliesInt].isLikedByMe ?? false,
-                                                          shape: CommentShape.bottom,
-                                                          PostAuthorId: _postDetailX.postDetail.value.authorId ?? 0,
-                                                        ));
-                                                  }))
+                                          Obx(()=>ListView.builder(
+                                                      physics: NeverScrollableScrollPhysics(),
+                                                      shrinkWrap: true,
+                                                      itemCount: _postDetailX.boardComment[commentInt].replies?.length ?? 0,
+                                                      itemBuilder: (BuildContext context, int repliesInt) {
+                                                        return Obx(() => CommentBox(
+                                                              authorId:_postDetailX.boardComment[commentInt].replies?[repliesInt].authorId ?? 0,
+                                                              authorMajor: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorMajor ?? '',
+                                                              authorNickname: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorNickname ?? '',
+                                                              authorProfileImg: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorProfileImg ?? '',
+                                                              isBlind: _postDetailX.boardComment[commentInt].replies?[repliesInt].isBlind ?? false,
+                                                              commentId:_postDetailX.boardComment[commentInt].replies?[repliesInt].replyId ?? 0,
+                                                              commentCreatedAt: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyCreatedAt ?? '',
+                                                              commentLikeCnt: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyLikeCnt ?? 0,
+                                                              commentDesc: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyDesc ?? '',
+                                                              isLikedByMe: _postDetailX.boardComment[commentInt].replies?[repliesInt].isLikedByMe ?? false,
+                                                              shape: CommentShape.bottom,
+                                                              PostAuthorId: _postDetailX.postDetail.value.authorId ?? 0,
+                                                            ));
+                                                      }),
+                                          ),
                                         ],
                                       );
                                     }
@@ -436,6 +436,7 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
   final _comment = TextEditingController();
   final postId = Get.parameters['postId'];
   bool _isChecked = false;
+  bool reCommentChecked = false;
 
   _PostDetailTextarea();
 
@@ -454,6 +455,7 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
           );
           _postDetailX.selectCommentReplyOff();
           _comment.clear();
+          _postDetailX.getDetailBoard(postId!);
         } else {
           _postDetailX.postBoardComment(
             commentDesc: _comment.text,
@@ -519,7 +521,7 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
                     children: [
                       if (_isChecked)
                         SizedBox(
-                            width: 44.w,
+                            width: 40.w,
                             child: RichText(
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
@@ -530,13 +532,15 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
                               ),
                             )),
                       if (_isChecked) SizedBox(width: 5.w),
+                      ///여기에 대댓글일때 변경될 ui 작업쓰기
                       SizedBox(
                         width: _isChecked ? inputWidthOn.w : inputWidthOff.w,
                         height: 36.h,
                         child: CustomTextFormField(
+                          focus: _isChecked ? true : false,
                           onEditingComplete: onCommentUpdate,
                           controller: _comment,
-                          hint: "",
+                          hint: _postDetailX.reCommentInputOn.value && _isChecked == false ? "대댓글 작성하기":"",
                         ),
                       )
                     ],
