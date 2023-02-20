@@ -589,7 +589,8 @@ class DetailBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+     padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+      alignment: Alignment.center,
       decoration: BoxDecoration(
         color: active ? Palette.main : Colors.white,
         borderRadius: BorderRadius.circular(15),
@@ -601,6 +602,7 @@ class DetailBtn extends StatelessWidget {
       child: GestureDetector(
           onTap: onTap,
           child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
             SvgPicture.asset(
@@ -613,8 +615,8 @@ class DetailBtn extends StatelessWidget {
             SizedBox(
               width: 3.w,
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 2.0),
+            Container(
+              margin: EdgeInsets.only(bottom: 2.0),
               child: Text(
                 name,
                 style: active ? CommonText.BodyEngWhite : CommonText.BodyEngMain,
