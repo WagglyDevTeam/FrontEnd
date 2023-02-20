@@ -21,16 +21,16 @@ class _ImageIndicatorState extends State<ImageIndicator> {
 
   Timer? timer;
 
-  @override
-  void initState() {
-    if (mounted) {
-      Timer.periodic(const Duration(milliseconds: 500), (Timer t) {
-        final isLast = _count == imgList.length - 1;
-        setState(() => _count = isLast ? 0 : _count + 1);
-      });
-    }
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   if (mounted) {
+  //     Timer.periodic(const Duration(milliseconds: 500), (Timer t) {
+  //       final isLast = _count == imgList.length - 1;
+  //       setState(() => _count = isLast ? 0 : _count + 1);
+  //     });
+  //   }
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -11,7 +11,7 @@ class CustomTextFormField extends StatelessWidget {
   final onChanged;
   final focus;
 
-  CustomTextFormField({
+  CustomTextFormField({Key? key,
     required this.hint,
     this.validator,
     this.initialValue,
@@ -20,7 +20,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onEditingComplete,
     this.onChanged,
     this.focus,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

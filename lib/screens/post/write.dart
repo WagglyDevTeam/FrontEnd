@@ -40,8 +40,8 @@ class WritePage extends StatelessWidget {
   final PostController _postController = Get.put(PostController());
 
   final _hashtag = SocialTextEditingController();
-  var _content = TextEditingController();
-  var _title = TextEditingController();
+  final _content = TextEditingController();
+  final _title = TextEditingController();
   final String type;
   final loginUser = Hive.box<User>('user').get('user');
 
@@ -96,6 +96,7 @@ class WritePage extends StatelessWidget {
                           onChanged: buttonActivateCheck,
                           controller: _title,
                           hint: "제목을 입력하세요.",
+                          focus: true,
                         ),
                       ),
                     ),
@@ -125,6 +126,7 @@ class WritePage extends StatelessWidget {
                   maxLines: 15,
                   controller: _content,
                   hint: "내용을 입력하세요.",
+                  focus: true,
                 ),
               ), // 내용 영역
               Padding(
