@@ -349,6 +349,7 @@ class _DetailContext extends State<DetailContext> {
                                                         imgCnt: _postDetailX.postDetail.value.postImages?.length ?? 0,
                                                         likeCnt: _postDetailX.postDetail.value.postLikeCnt ?? 0,
                                                         commentCnt: _postDetailX.postDetail.value.postCommentCnt ?? 0,
+                                                        active: _postDetailX.postDetail.value.isLikedByMe ?? false,
                                                       ))
                                                 ],
                                               ),
@@ -553,6 +554,7 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
                 child: Container(
                     width: 36.w,
                     height: 36.h,
+                    alignment: Alignment.center,
                     padding: EdgeInsets.all(0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
@@ -562,8 +564,8 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
                     child: SvgPicture.asset(
                       'assets/icons/btn_comment.svg',
                       fit: BoxFit.scaleDown,
-                      width: 36.w,
-                      height: 36.w,
+                      width: 30.w,
+                      height: 30.h,
                       color: Colors.white,
                     )),
               )
@@ -592,26 +594,31 @@ class DetailBtn extends StatelessWidget {
         color: active ? Palette.main : Colors.white,
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
-          width: 0.5,
+          width: 0.5.w,
           color: active ? Palette.main : Palette.lightGray,
         ),
       ),
       child: GestureDetector(
           onTap: onTap,
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.end, children: [
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
             SvgPicture.asset(
               svg,
               fit: BoxFit.scaleDown,
-              width: 16,
-              height: 16,
+              width: 16.w,
+              height: 16.h,
               color: active ? Palette.lightGray : Palette.main,
             ),
             SizedBox(
-              width: 3,
+              width: 3.w,
             ),
-            Text(
-              name,
-              style: active ? CommonText.BodyEngWhite : CommonText.BodyEngMain,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 2.0),
+              child: Text(
+                name,
+                style: active ? CommonText.BodyEngWhite : CommonText.BodyEngMain,
+              ),
             )
           ])),
     );

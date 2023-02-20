@@ -20,14 +20,13 @@ class PostDifferentList extends StatelessWidget {
     return Container(
         width: double.infinity,
         color: Colors.white,
-        child: Container(
-            child: ListView.builder(
+        child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: widgetList.length,
           itemBuilder: (context, index) {
-            return widgetList[index];
+        return widgetList[index];
           },
-        )));
+        ));
   }
 }
 
@@ -35,31 +34,39 @@ class CommentSide extends StatelessWidget {
   int? imgCnt;
   int? likeCnt;
   int? commentCnt;
+  bool? active;
 
   CommentSide({
     Key? key,
     this.imgCnt,
     this.likeCnt,
     this.commentCnt,
+    this.active,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return SizedBox(
-      height: 20,
-      child: Row(children: [
+      height: 20.h,
+      child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(
               'assets/icons/imgs.svg',
               fit: BoxFit.scaleDown,
-              width: 16,
-              height: 16,
+              width: 16.w,
+              height: 16.h,
             ),
-            Text(imgCnt?.toString() ?? '', style: CommonText.BodyEngMain11),
+            Padding(
+              padding: const EdgeInsets.only(top:2.0),
+              child: Text(imgCnt?.toString() ?? '', style: CommonText.BodyEngMain11),
+            ),
             SizedBox(
-              width: 5,
+              width: 5.w,
             ),
           ],
         ),
@@ -67,34 +74,40 @@ class CommentSide extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(
-              'assets/icons/sentiment.svg',
+              active! ? 'assets/icons/sentiment_fill.svg': 'assets/icons/sentiment.svg',
               fit: BoxFit.scaleDown,
-              width: 16,
-              height: 16,
+              width: 16.w,
+              height: 16.h,
             ),
-            Text(likeCnt?.toString() ?? '', style: CommonText.BodyEngMain11),
+            Padding(
+              padding: const EdgeInsets.only(top:2.0),
+              child: Text(likeCnt?.toString() ?? '', style: CommonText.BodyEngMain11),
+            ),
           ],
         ),
-        SizedBox(
-          width: 5,
-        ),
+        // SizedBox(
+        //   width: 5.w,
+        // ),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(
               'assets/icons/commentRectangle.svg',
               fit: BoxFit.scaleDown,
-              width: 16,
-              height: 16,
+              width: 16.w,
+              height: 16.h,
             ),
-            Text(commentCnt?.toString() ?? '', style: CommonText.BodyEngMain11),
+            Padding(
+              padding: const EdgeInsets.only(top: 2.0),
+              child: Text(commentCnt?.toString() ?? '', style: CommonText.BodyEngMain11),
+            ),
           ],
         ),
         SizedBox(
-          width: 5,
+          width: 5.w,
         ),
         SizedBox(
-          width: 3,
+          width: 3.w,
         ),
       ]),
     );
@@ -373,16 +386,19 @@ class CommentBox extends StatelessWidget {
                               SvgPicture.asset(
                                 'assets/icons/sentiment.svg',
                                 fit: BoxFit.scaleDown,
-                                width: 10,
-                                height: 10,
+                                width: 10.w,
+                                height: 10.h,
                                 color: Palette.violet,
                               ),
                               SizedBox(
-                                width: 3,
+                                width: 3.w,
                               ),
-                              Text(
-                                "$commentLikeCnt",
-                                style: CommonText.BodyEngMain11,
+                              Padding(
+                                padding: const EdgeInsets.only(top:2.0),
+                                child: Text(
+                                  "$commentLikeCnt",
+                                  style: CommonText.BodyEngMain11,
+                                ),
                               )
                             ],
                           )
