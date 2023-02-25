@@ -11,7 +11,7 @@ class ImageIndicator extends StatefulWidget {
 }
 
 class _ImageIndicatorState extends State<ImageIndicator> {
-  final int _count = 0;
+  int _count = 0;
   var imgList = [
     "https://blog.kakaocdn.net/dn/lqgEB/btrHZpYXw7z/BhhbhA1nwpEngejDq7TVA0/img.png",
     "https://blog.kakaocdn.net/dn/cAzaaO/btrHZD3Jlvo/P4Rec5yBcmASmqu8TVZ8xk/img.png",
@@ -19,7 +19,7 @@ class _ImageIndicatorState extends State<ImageIndicator> {
     "https://blog.kakaocdn.net/dn/tklol/btrH0wW6GEw/WWmTM0sn0fVIzqFFR0iO11/img.png"
   ];
 
-  // Timer? timer;
+  Timer? timer;
 
   // @override
   // void initState() {
