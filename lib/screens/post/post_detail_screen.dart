@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,6 +55,7 @@ class DetailContext extends StatefulWidget {
 class TopAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(68.h);
+
   @override
   Widget build(BuildContext context) {
     late String _pageTitle = "${Get.parameters['collegeName']}";
@@ -105,30 +104,33 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
   }
 }
 
-class DetailHiddenBtn extends StatelessWidget {
-  final PostDetailController _postDetailX = Get.put(PostDetailController());
+class DetailHiddenBtn extends StatefulWidget {
   BuildContext pageContext;
   DetailHiddenBtn({Key? key, required this.pageContext}) : super(key: key);
 
-  isMaster() {
-    final box = Hive.box<User>('user');
-    int? me = box.get('user')?.id;
-    final postDetail = _postDetailX.postDetail.value.toJson();
-    final authorId =  _postDetailX.authorId;
-    // print(Get.parameters);
-    // print("====");
-    // print(me);
-    // print(authorId);
-    if (me == authorId) {
-      return true;
-    } else {
-      return false;
-    }
+  @override
+  State<DetailHiddenBtn> createState() => _DetailHiddenBtnState();
+}
+
+class _DetailHiddenBtnState extends State<DetailHiddenBtn> {
+  final PostDetailController _postDetailX = Get.put(PostDetailController());
+  String postId = "${Get.parameters['postId']}";
+  final int? loginUserId = Hive.box<User>('user').get('user')?.id;
+
+  void waitForData() async {
+    await _postDetailX.getDetailBoard(postId);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    waitForData();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    double modalHeight = isMaster() ? 160.0.h : 123.0.h;
+    double modalHeight = _postDetailX.postDetail.value.authorId == loginUserId ? 150.h : 120.h;
     String title = '글 메뉴';
     void postDelete() {
       Navigator.pop(context);
@@ -138,7 +140,7 @@ class DetailHiddenBtn extends StatelessWidget {
       Navigator.pop(context);
     }
 
-    PostModal modalOn = PostModal(context: context, contents: buttons(context, pageContext), height: modalHeight, title: title);
+    PostModal modalOn = PostModal(context: context, contents: buttons(context, widget.pageContext, loginUserId), height: modalHeight, title: title);
     return GestureDetector(
       onTap: () => {modalOn.ModalOn()},
       child: Container(
@@ -152,31 +154,29 @@ class DetailHiddenBtn extends StatelessWidget {
     );
   }
 
-  buttons(BuildContext context, BuildContext pageContext) {
+  buttons(BuildContext context, BuildContext pageContext, int? loginUserId) {
     final PostHomeController _postX = Get.put(PostHomeController());
-    final PostDetailController _postDetailX = Get.put(PostDetailController());
     return Column(
       children: [
-        if (isMaster())
+        if (_postDetailX.postDetail.value.authorId == loginUserId)
           ModalButton(
               title: '삭제하기',
               event: () {
                 Get.offAll(PostScreen());
                 _postX.deleteBoard(_postDetailX.postDetail.value.postId ?? 0);
               }),
-        if (isMaster())
+        if (_postDetailX.postDetail.value.authorId == loginUserId)
           ModalButton(
               title: '수정하기',
               event: () {
-                print("asdasdasd");
                 Get.toNamed("/editPage");
               }),
-        if(!isMaster())
-        ModalButton(
-            title: '신고하기',
-            event: () {
-              Get.toNamed("/editPage");
-            }),
+        if (_postDetailX.postDetail.value.authorId != loginUserId)
+          ModalButton(
+              title: '신고하기',
+              event: () {
+                Get.toNamed("/editPage");
+              }),
       ],
     );
   }
@@ -196,7 +196,6 @@ class _DetailContext extends State<DetailContext> {
     super.initState();
     _postDetailX.updatePostId(postId);
     _postDetailX.getDetailBoard(postId);
-
   }
 
   @override
@@ -384,26 +383,27 @@ class _DetailContext extends State<DetailContext> {
                                                 shape: CommentShape.top,
                                                 PostAuthorId: _postDetailX.postDetail.value.authorId ?? 0,
                                               )),
-                                          Obx(()=>ListView.builder(
-                                                      physics: NeverScrollableScrollPhysics(),
-                                                      shrinkWrap: true,
-                                                      itemCount: _postDetailX.boardComment[commentInt].replies?.length ?? 0,
-                                                      itemBuilder: (BuildContext context, int repliesInt) {
-                                                        return Obx(() => CommentBox(
-                                                              authorId:_postDetailX.boardComment[commentInt].replies?[repliesInt].authorId ?? 0,
-                                                              authorMajor: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorMajor ?? '',
-                                                              authorNickname: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorNickname ?? '',
-                                                              authorProfileImg: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorProfileImg ?? '',
-                                                              isBlind: _postDetailX.boardComment[commentInt].replies?[repliesInt].isBlind ?? false,
-                                                              commentId:_postDetailX.boardComment[commentInt].replies?[repliesInt].replyId ?? 0,
-                                                              commentCreatedAt: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyCreatedAt ?? '',
-                                                              commentLikeCnt: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyLikeCnt ?? 0,
-                                                              commentDesc: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyDesc ?? '',
-                                                              isLikedByMe: _postDetailX.boardComment[commentInt].replies?[repliesInt].isLikedByMe ?? false,
-                                                              shape: CommentShape.bottom,
-                                                              PostAuthorId: _postDetailX.postDetail.value.authorId ?? 0,
-                                                            ));
-                                                      }),
+                                          Obx(
+                                            () => ListView.builder(
+                                                physics: NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: _postDetailX.boardComment[commentInt].replies?.length ?? 0,
+                                                itemBuilder: (BuildContext context, int repliesInt) {
+                                                  return Obx(() => CommentBox(
+                                                        authorId: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorId ?? 0,
+                                                        authorMajor: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorMajor ?? '',
+                                                        authorNickname: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorNickname ?? '',
+                                                        authorProfileImg: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorProfileImg ?? '',
+                                                        isBlind: _postDetailX.boardComment[commentInt].replies?[repliesInt].isBlind ?? false,
+                                                        commentId: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyId ?? 0,
+                                                        commentCreatedAt: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyCreatedAt ?? '',
+                                                        commentLikeCnt: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyLikeCnt ?? 0,
+                                                        commentDesc: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyDesc ?? '',
+                                                        isLikedByMe: _postDetailX.boardComment[commentInt].replies?[repliesInt].isLikedByMe ?? false,
+                                                        shape: CommentShape.bottom,
+                                                        PostAuthorId: _postDetailX.postDetail.value.authorId ?? 0,
+                                                      ));
+                                                }),
                                           ),
                                         ],
                                       );
@@ -442,7 +442,7 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
 
   @override
   Widget build(BuildContext context) {
-    final PostDetailController _postDetailX = Get.put(PostDetailController());
+    final PostDetailController _postDetailX = Get.find();
 
     /// 게시판 상세페이지 댓글 업데이트 이벤트
     void onCommentUpdate() {
@@ -532,6 +532,7 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
                               ),
                             )),
                       if (_isChecked) SizedBox(width: 5.w),
+
                       ///여기에 대댓글일때 변경될 ui 작업쓰기
                       SizedBox(
                         width: _isChecked ? inputWidthOn.w : inputWidthOff.w,
@@ -540,7 +541,7 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
                           focus: _isChecked ? true : false,
                           onEditingComplete: onCommentUpdate,
                           controller: _comment,
-                          hint: _postDetailX.reCommentInputOn.value && _isChecked == false ? "대댓글 작성하기":"",
+                          hint: _postDetailX.reCommentInputOn.value && _isChecked == false ? "대댓글 작성하기" : "",
                         ),
                       )
                     ],

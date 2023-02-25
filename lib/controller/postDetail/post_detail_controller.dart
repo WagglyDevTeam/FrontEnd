@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:get/get.dart';
@@ -25,7 +24,6 @@ class PostDetailController extends GetxController {
   ).obs;
   final reCommentInputOn = false.obs;
 
-
   @override
   void onClose() {
     super.onClose();
@@ -35,7 +33,6 @@ class PostDetailController extends GetxController {
   ///  게시판 상세 페이지 데이터 불러오기
   Future<void> getDetailBoard(String postId) async {
     WagglyResponseDto result = await _postRepository.getDetailBoard(postId);
-    print(result);
     dynamic postJson = result.datas["post"];
     dynamic commentsJson = result.datas["comments"];
     PostDetailData postDetailMap = PostDetailData.fromJson(postJson);
@@ -108,7 +105,6 @@ class PostDetailController extends GetxController {
   Future<void> postBoardCommentReply({required String commentDesc, required int commentId, required bool anonymous}) async {
     ReCommentRequestDto data = ReCommentRequestDto(replyDesc: commentDesc, anonymous: anonymous);
     WagglyResponseDto result = await _postRepository.postReComment(commentId, data);
-
   }
 
   /// 게시판 상세 페이지 댓글 좋아요
