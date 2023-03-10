@@ -371,9 +371,9 @@ class _DetailContext extends State<DetailContext> {
                                         children: [
                                           Obx(() => CommentBox(
                                                 authorId: _postDetailX.boardComment[commentInt].authorId ?? 0,
-                                                authorMajor: _postDetailX.boardComment[commentInt].authorMajor ?? '',
-                                                authorNickname: _postDetailX.boardComment[commentInt].authorNickname ?? '',
-                                                authorProfileImg: _postDetailX.boardComment[commentInt].authorProfileImg ?? '',
+                                                authorMajor: _postDetailX.boardComment[commentInt].isAnonymous ?? false ? "" : _postDetailX.boardComment[commentInt].authorMajor ?? '',
+                                                authorNickname: _postDetailX.boardComment[commentInt].isAnonymous ?? false ? "익명" : _postDetailX.boardComment[commentInt].authorNickname ?? '',
+                                                authorProfileImg: _postDetailX.boardComment[commentInt].isAnonymous ?? false ? "" : _postDetailX.boardComment[commentInt].authorProfileImg ?? '',
                                                 isBlind: _postDetailX.boardComment[commentInt].isBlind ?? false,
                                                 commentId: _postDetailX.boardComment[commentInt].commentId ?? 0,
                                                 commentCreatedAt: _postDetailX.boardComment[commentInt].commentCreatedAt ?? '',
@@ -391,9 +391,9 @@ class _DetailContext extends State<DetailContext> {
                                                 itemBuilder: (BuildContext context, int repliesInt) {
                                                   return Obx(() => CommentBox(
                                                         authorId: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorId ?? 0,
-                                                        authorMajor: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorMajor ?? '',
-                                                        authorNickname: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorNickname ?? '',
-                                                        authorProfileImg: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorProfileImg ?? '',
+                                                        authorMajor: _postDetailX.boardComment[commentInt].replies?[repliesInt].isAnonymous ?? false ? "" : _postDetailX.boardComment[commentInt].replies?[repliesInt].authorMajor ?? '',
+                                                        authorNickname: _postDetailX.boardComment[commentInt].replies?[repliesInt].isAnonymous ?? false ? "익명" : _postDetailX.boardComment[commentInt].replies?[repliesInt].authorNickname ?? '',
+                                                        authorProfileImg: _postDetailX.boardComment[commentInt].replies?[repliesInt].isAnonymous ?? false ? "" : _postDetailX.boardComment[commentInt].replies?[repliesInt].authorProfileImg ?? '',
                                                         isBlind: _postDetailX.boardComment[commentInt].replies?[repliesInt].isBlind ?? false,
                                                         commentId: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyId ?? 0,
                                                         commentCreatedAt: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyCreatedAt ?? '',

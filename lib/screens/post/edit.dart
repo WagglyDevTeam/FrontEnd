@@ -100,6 +100,7 @@ class EditMyPost extends StatelessWidget {
                           onChanged: buttonActivateCheck,
                           controller: _title,
                           hint: "제목을 입력하세요.",
+                          focus: true,
                         ),
                       ),
                     ),
@@ -129,6 +130,7 @@ class EditMyPost extends StatelessWidget {
                   maxLines: 15,
                   controller: _content,
                   hint: "내용을 입력하세요.",
+                  focus: true,
                 ),
               ), // 내용 영역
               Padding(

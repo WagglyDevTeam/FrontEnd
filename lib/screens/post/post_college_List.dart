@@ -19,12 +19,18 @@ class PostCollegeList extends StatefulWidget {
 
 class _PostCollegeList extends State<PostCollegeList> {
   _PostCollegeList({Key? key});
+
   final ScrollController _scrollController = ScrollController();
   final _postDetailX = Get.put(PostHomeController());
+
   scrollListener() async {
-    if (_scrollController.offset == _scrollController.position.maxScrollExtent && !_scrollController.position.outOfRange) {
+    if (_scrollController.offset ==
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
       _postDetailX.getBoardPaging(Get.parameters['collegeId']);
-    } else if (_scrollController.offset == _scrollController.position.minScrollExtent && !_scrollController.position.outOfRange) {
+    } else if (_scrollController.offset ==
+            _scrollController.position.minScrollExtent &&
+        !_scrollController.position.outOfRange) {
       // print('스크롤이 맨 위에 위치해 있습니다');
     }
   }
@@ -72,7 +78,11 @@ class _PostCollegeList extends State<PostCollegeList> {
                           if (index == 0) {
                             /**인기 글*/
                             return Container(
-                              padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 8.w, bottom: 16.w),
+                              padding: EdgeInsets.only(
+                                  left: 16.w,
+                                  right: 16.w,
+                                  top: 8.w,
+                                  bottom: 16.w),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,20 +105,70 @@ class _PostCollegeList extends State<PostCollegeList> {
                                     height: 6,
                                   ),
                                   Container(
-                                    padding: EdgeInsets.only(top: 14, bottom: 14, left: 10, right: 10),
-                                    decoration:
-                                        BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15.0), border: Border.all(color: Palette.light, style: BorderStyle.solid, width: 1)),
+                                    padding: EdgeInsets.only(
+                                        top: 14,
+                                        bottom: 14,
+                                        left: 10,
+                                        right: 10),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(15.0),
+                                        border: Border.all(
+                                            color: Palette.light,
+                                            style: BorderStyle.solid,
+                                            width: 1)),
                                     child: Obx(() => PostContext(
-                                          postId: _postDetailX.bestPostCollegeData.value.postId ?? 0,
-                                          postTitle: _postDetailX.bestPostCollegeData.value.postTitle ?? '',
-                                          postDesc: _postDetailX.bestPostCollegeData.value.postDesc ?? '',
-                                          postCreatedAt: _postDetailX.bestPostCollegeData.value.postCreatedAt ?? '',
-                                          authorMajor: _postDetailX.bestPostCollegeData.value.authorMajor ?? '',
-                                          postImageCnt: _postDetailX.bestPostCollegeData.value.postImageCnt ?? 0,
-                                          postLikeCnt: _postDetailX.bestPostCollegeData.value.postLikeCnt ?? 0,
-                                          postCommentCnt: _postDetailX.bestPostCollegeData.value.postCommentCnt ?? 0,
-                                          isLikedByMe: _postDetailX.bestPostCollegeData.value.isLikedByMe ?? false,
-                                          isBlind: _postDetailX.bestPostCollegeData.value.isBlind ?? false,
+                                          postId: _postDetailX
+                                                  .bestPostCollegeData
+                                                  .value
+                                                  .postId ??
+                                              0,
+                                          postTitle: _postDetailX
+                                                  .bestPostCollegeData
+                                                  .value
+                                                  .postTitle ??
+                                              '',
+                                          postDesc: _postDetailX
+                                                  .bestPostCollegeData
+                                                  .value
+                                                  .postDesc ??
+                                              '',
+                                          postCreatedAt: _postDetailX
+                                                  .bestPostCollegeData
+                                                  .value
+                                                  .postCreatedAt ??
+                                              '',
+                                          authorMajor: _postDetailX
+                                                  .bestPostCollegeData
+                                                  .value
+                                                  .authorMajor ??
+                                              '',
+                                          postImageCnt: _postDetailX
+                                                  .bestPostCollegeData
+                                                  .value
+                                                  .postImageCnt ??
+                                              0,
+                                          postLikeCnt: _postDetailX
+                                                  .bestPostCollegeData
+                                                  .value
+                                                  .postLikeCnt ??
+                                              0,
+                                          postCommentCnt: _postDetailX
+                                                  .bestPostCollegeData
+                                                  .value
+                                                  .postCommentCnt ??
+                                              0,
+                                          isLikedByMe: _postDetailX
+                                                  .bestPostCollegeData
+                                                  .value
+                                                  .isLikedByMe ??
+                                              false,
+                                          isBlind: _postDetailX
+                                                  .bestPostCollegeData
+                                                  .value
+                                                  .isBlind ??
+                                              false,
                                           postName: postName,
                                           collegeType: _pageTitle,
                                         )),
@@ -118,28 +178,67 @@ class _PostCollegeList extends State<PostCollegeList> {
                             );
                           } else {
                             /**일반 글*/
-                            return Container(
-                              padding: EdgeInsets.only(top: 16, bottom: 16, left: 26, right: 26),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border(
-                                    top: BorderSide(color: Palette.paper, style: BorderStyle.solid, width: 1),
-                                  )),
-                              child: Obx(() => PostContext(
-                                    postId: _postDetailX.postCollegeData[postInt].postId ?? 0,
-                                    postTitle: _postDetailX.postCollegeData[postInt].postTitle ?? '',
-                                    postDesc: _postDetailX.postCollegeData[postInt].postDesc ?? '',
-                                    postCreatedAt: _postDetailX.postCollegeData[postInt].postCreatedAt ?? '',
-                                    authorMajor: _postDetailX.postCollegeData[postInt].authorMajor ?? '',
-                                    postImageCnt: _postDetailX.postCollegeData[postInt].postImageCnt ?? 0,
-                                    postLikeCnt: _postDetailX.postCollegeData[postInt].postLikeCnt ?? 0,
-                                    postCommentCnt: _postDetailX.postCollegeData[postInt].postCommentCnt ?? 0,
-                                    isLikedByMe: _postDetailX.postCollegeData[postInt].isLikedByMe ?? false,
-                                    isBlind: _postDetailX.postCollegeData[postInt].isBlind ?? false,
-                                    postName: postName,
-                                    collegeType: _pageTitle,
-                                  )),
-                            );
+                            return GestureDetector(
+                                onTap: () => {
+                                      Get.toNamed(
+                                          "/postDetail/param?postId=${_postDetailX.postCollegeData[postInt].postId ?? 0}&collegeName=$_pageTitle")
+                                    },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      top: 16, bottom: 16, left: 26, right: 26),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border(
+                                        top: BorderSide(
+                                            color: Palette.paper,
+                                            style: BorderStyle.solid,
+                                            width: 1),
+                                      )),
+                                  child: Obx(() => PostContext(
+                                        postId: _postDetailX
+                                                .postCollegeData[postInt]
+                                                .postId ??
+                                            0,
+                                        postTitle: _postDetailX
+                                                .postCollegeData[postInt]
+                                                .postTitle ??
+                                            '',
+                                        postDesc: _postDetailX
+                                                .postCollegeData[postInt]
+                                                .postDesc ??
+                                            '',
+                                        postCreatedAt: _postDetailX
+                                                .postCollegeData[postInt]
+                                                .postCreatedAt ??
+                                            '',
+                                        authorMajor: _postDetailX
+                                                .postCollegeData[postInt]
+                                                .authorMajor ??
+                                            '',
+                                        postImageCnt: _postDetailX
+                                                .postCollegeData[postInt]
+                                                .postImageCnt ??
+                                            0,
+                                        postLikeCnt: _postDetailX
+                                                .postCollegeData[postInt]
+                                                .postLikeCnt ??
+                                            0,
+                                        postCommentCnt: _postDetailX
+                                                .postCollegeData[postInt]
+                                                .postCommentCnt ??
+                                            0,
+                                        isLikedByMe: _postDetailX
+                                                .postCollegeData[postInt]
+                                                .isLikedByMe ??
+                                            false,
+                                        isBlind: _postDetailX
+                                                .postCollegeData[postInt]
+                                                .isBlind ??
+                                            false,
+                                        postName: postName,
+                                        collegeType: _pageTitle,
+                                      )),
+                                ));
                           }
                         },
                       ));
@@ -155,6 +254,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(68.h);
+
   @override
   Widget build(BuildContext context) {
     final _pageTitle = _postDetailX.bestPostOn.value ? "로딩 중" : postName;
@@ -192,7 +292,9 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
               SizedBox(
                 width: 8.w,
               ),
-              Container(padding: EdgeInsets.only(bottom: 3.h), child: Text(_pageTitle, style: CommonText.BodyL))
+              Container(
+                  padding: EdgeInsets.only(bottom: 3.h),
+                  child: Text(_pageTitle, style: CommonText.BodyL))
             ],
           ),
           actions: [
@@ -202,8 +304,9 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
               width: 155.0.w,
               height: 36.0.h,
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(40.0) // POINT
-                    ),
+                borderRadius:
+                    const BorderRadius.all(Radius.circular(40.0) // POINT
+                        ),
                 border: Border.all(width: 1.0, color: Palette.lightGray),
               ),
               child: Row(
@@ -231,7 +334,8 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                   line(),
                   ActionButton(
                       event: () async {
-                        await Get.put(NotificationController()).getNotification();
+                        await Get.put(NotificationController())
+                            .getNotification();
                         Get.toNamed('/notification');
                       },
                       isIcon: Icon(
@@ -300,10 +404,10 @@ class PostContext extends StatelessWidget {
       : super(key: key);
 
   final _postDetailX = Get.put(PostHomeController());
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => {Get.toNamed("/postDetail/param?postId=$postId&collegeName=$collegeType")},
+    return Container(
       child: Column(
         children: [
           Row(
