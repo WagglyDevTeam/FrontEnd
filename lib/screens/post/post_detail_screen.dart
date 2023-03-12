@@ -381,7 +381,7 @@ class _DetailContext extends State<DetailContext> {
                                                 commentDesc: _postDetailX.boardComment[commentInt].commentDesc ?? '',
                                                 isLikedByMe: _postDetailX.boardComment[commentInt].isLikedByMe ?? false,
                                                 shape: CommentShape.top,
-                                                PostAuthorId: _postDetailX.postDetail.value.authorId ?? 0,
+                                                postAuthorId: _postDetailX.postDetail.value.authorId ?? 0,
                                               )),
                                           Obx(
                                             () => ListView.builder(
@@ -391,9 +391,15 @@ class _DetailContext extends State<DetailContext> {
                                                 itemBuilder: (BuildContext context, int repliesInt) {
                                                   return Obx(() => CommentBox(
                                                         authorId: _postDetailX.boardComment[commentInt].replies?[repliesInt].authorId ?? 0,
-                                                        authorMajor: _postDetailX.boardComment[commentInt].replies?[repliesInt].isAnonymous ?? false ? "" : _postDetailX.boardComment[commentInt].replies?[repliesInt].authorMajor ?? '',
-                                                        authorNickname: _postDetailX.boardComment[commentInt].replies?[repliesInt].isAnonymous ?? false ? "익명" : _postDetailX.boardComment[commentInt].replies?[repliesInt].authorNickname ?? '',
-                                                        authorProfileImg: _postDetailX.boardComment[commentInt].replies?[repliesInt].isAnonymous ?? false ? "" : _postDetailX.boardComment[commentInt].replies?[repliesInt].authorProfileImg ?? '',
+                                                        authorMajor: _postDetailX.boardComment[commentInt].replies?[repliesInt].isAnonymous ?? false
+                                                            ? ""
+                                                            : _postDetailX.boardComment[commentInt].replies?[repliesInt].authorMajor ?? '',
+                                                        authorNickname: _postDetailX.boardComment[commentInt].replies?[repliesInt].isAnonymous ?? false
+                                                            ? "익명"
+                                                            : _postDetailX.boardComment[commentInt].replies?[repliesInt].authorNickname ?? '',
+                                                        authorProfileImg: _postDetailX.boardComment[commentInt].replies?[repliesInt].isAnonymous ?? false
+                                                            ? ""
+                                                            : _postDetailX.boardComment[commentInt].replies?[repliesInt].authorProfileImg ?? '',
                                                         isBlind: _postDetailX.boardComment[commentInt].replies?[repliesInt].isBlind ?? false,
                                                         commentId: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyId ?? 0,
                                                         commentCreatedAt: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyCreatedAt ?? '',
@@ -401,7 +407,7 @@ class _DetailContext extends State<DetailContext> {
                                                         commentDesc: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyDesc ?? '',
                                                         isLikedByMe: _postDetailX.boardComment[commentInt].replies?[repliesInt].isLikedByMe ?? false,
                                                         shape: CommentShape.bottom,
-                                                        PostAuthorId: _postDetailX.postDetail.value.authorId ?? 0,
+                                                        postAuthorId: _postDetailX.postDetail.value.authorId ?? 0,
                                                       ));
                                                 }),
                                           ),

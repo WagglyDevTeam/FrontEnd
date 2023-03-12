@@ -121,4 +121,9 @@ class PostRepository {
     // print(jsonEncode(wagglyResponseDto));
     // return wagglyResponseDto;
   }
+
+  Future<void> deleteComment(int commentId) async {
+    Response response = await _postProvider.deleteComment(commentId);
+    print(response.body);
+  }
 }
