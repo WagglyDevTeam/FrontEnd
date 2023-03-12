@@ -178,9 +178,10 @@ class CommentBox extends StatelessWidget {
   }
 
   /// 댓글 or 대댓글 삭제 이벤트
-  void commentDelete() {
+  void commentDelete(BuildContext context) {
     // if (!isShape()) {
     _postDetailX.delectBoardComment(commnetId: commentId);
+    Navigator.pop(context);
     // } else {
     //   _postDetailX.delectBoardCommentReply(replycommnetId: commentId);
     // }
@@ -222,10 +223,10 @@ class CommentBox extends StatelessWidget {
   }
 
   /// 대댓글 모달 버튼 리스트
-  Widget ButtonList() {
+  Widget ButtonList(BuildContext context) {
     return Column(
       children: [
-        if (isAuthor()) ModalButton(title: '삭제하기', event: commentDelete),
+        if (isAuthor()) ModalButton(title: '삭제하기', event: () => commentDelete(context)),
         if (isMaster()) ModalButton(title: '신고하기', event: commentReport),
       ],
     );
@@ -235,7 +236,7 @@ class CommentBox extends StatelessWidget {
   Widget build(BuildContext context) {
     double modalHeight = modalTop();
     String title = '더보기';
-    PostModal modalOn = PostModal(context: context, contents: ButtonList(), height: modalHeight, title: title);
+    PostModal modalOn = PostModal(context: context, contents: ButtonList(context), height: modalHeight, title: title);
     if (commentDeletedAt == null) {
       return Obx(() => Container(
           padding: EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
@@ -398,24 +399,29 @@ class CommentBox extends StatelessWidget {
                 top: BorderSide(color: isShape() ? Colors.white : Palette.paper, style: BorderStyle.solid, width: 1),
               )),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               if (isShape())
-                SizedBox(
-                    width: 25.w,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 6, right: 3),
-                      child: SvgPicture.asset(
-                        'assets/icons/commentArrow.svg',
-                        fit: BoxFit.scaleDown,
-                        width: 16,
-                        height: 16,
-                        color: Palette.lightGray,
-                      ),
-                    )),
+                Row(
+                  children: [
+                    SizedBox(
+                        width: 25.w,
+                        child: SvgPicture.asset(
+                          'assets/icons/commentArrow.svg',
+                          fit: BoxFit.scaleDown,
+                          width: 16,
+                          height: 16,
+                          color: Palette.lightGray,
+                        )),
+                    SizedBox(
+                      width: 5.0.w,
+                    ),
+                  ],
+                ),
               SizedBox(
-                  // width: isShape() ? 300.w : 325.w,
-                  child: Text("삭제된 댓글입니다."))
+                child: Text("삭제된 댓글입니다."),
+              )
             ],
           )));
     }
