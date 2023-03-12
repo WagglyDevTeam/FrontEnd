@@ -112,6 +112,7 @@ class CommentBox extends StatelessWidget {
   final bool isBlind;
   final int commentId;
   final String commentCreatedAt;
+  final String? commentDeletedAt;
   final int commentLikeCnt;
   final String commentDesc;
   final bool isLikedByMe;
@@ -127,6 +128,7 @@ class CommentBox extends StatelessWidget {
     required this.isBlind,
     required this.commentId,
     required this.commentCreatedAt,
+    required this.commentDeletedAt,
     required this.commentLikeCnt,
     required this.commentDesc,
     required this.isLikedByMe,
@@ -234,159 +236,189 @@ class CommentBox extends StatelessWidget {
     double modalHeight = modalTop();
     String title = '더보기';
     PostModal modalOn = PostModal(context: context, contents: ButtonList(), height: modalHeight, title: title);
-
-    return Obx(() => Container(
-        padding: EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
-        width: 380.w,
-        decoration: BoxDecoration(
-            color: changeColor(),
-            border: Border(
-              top: BorderSide(color: isShape() ? Colors.white : Palette.paper, style: BorderStyle.solid, width: 1),
-            )),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (isShape())
+    if (commentDeletedAt == null) {
+      return Obx(() => Container(
+          padding: EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
+          width: 380.w,
+          decoration: BoxDecoration(
+              color: changeColor(),
+              border: Border(
+                top: BorderSide(color: isShape() ? Colors.white : Palette.paper, style: BorderStyle.solid, width: 1),
+              )),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (isShape())
+                SizedBox(
+                    width: 25.w,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 6, right: 3),
+                      child: SvgPicture.asset(
+                        'assets/icons/commentArrow.svg',
+                        fit: BoxFit.scaleDown,
+                        width: 16,
+                        height: 16,
+                        color: Palette.lightGray,
+                      ),
+                    )),
               SizedBox(
-                  width: 25.w,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 6, right: 3),
-                    child: SvgPicture.asset(
-                      'assets/icons/commentArrow.svg',
-                      fit: BoxFit.scaleDown,
-                      width: 16,
-                      height: 16,
-                      color: Palette.lightGray,
-                    ),
-                  )),
-            SizedBox(
-                width: isShape() ? 300.w : 325.w,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        AuthorForm(
-                          image: authorProfileImg,
-                          nickName: authorNickname,
-                          major: authorMajor,
-                          shape: Shape.comment,
-                          isMaster: isMaster(),
-                        ),
-                        Container(
-                          width: !isShape() ? 76.w : 50.w,
-                          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(width: 1.0, color: Palette.lightGray),
-                            borderRadius: BorderRadius.circular(30),
+                  width: isShape() ? 300.w : 325.w,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          AuthorForm(
+                            image: authorProfileImg,
+                            nickName: authorNickname,
+                            major: authorMajor,
+                            shape: Shape.comment,
+                            isMaster: isMaster(),
                           ),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                            //*좋아요 기능*/
-                            SizedBox(
-                                width: 16,
-                                height: 16,
-                                child: IconButton(
-                                  padding: EdgeInsets.all(0),
-                                  icon: SvgPicture.asset(
-                                    'assets/icons/sentiment.svg',
-                                    fit: BoxFit.scaleDown,
-                                    width: 10,
-                                    height: 10,
-                                    color: Palette.violet,
-                                  ),
-                                  onPressed: commentLike,
-                                )),
-                            if (!isShape())
-                              Container(
-                                width: 1,
-                                height: 10,
-                                color: Palette.lightGray,
-                              ),
-                            //*대댓글 기능*/
-                            if (!isShape())
+                          Container(
+                            width: !isShape() ? 76.w : 50.w,
+                            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(width: 1.0, color: Palette.lightGray),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center, children: [
+                              //*좋아요 기능*/
                               SizedBox(
                                   width: 16,
                                   height: 16,
                                   child: IconButton(
                                     padding: EdgeInsets.all(0),
                                     icon: SvgPicture.asset(
-                                      'assets/icons/commentRectangle.svg',
+                                      'assets/icons/sentiment.svg',
                                       fit: BoxFit.scaleDown,
                                       width: 10,
                                       height: 10,
                                       color: Palette.violet,
                                     ),
-                                    onPressed: () {
-                                      replyEventOn();
-                                      inputOn();
-                                    },
+                                    onPressed: commentLike,
                                   )),
-                            Container(
-                              width: 1,
-                              height: 10,
-                              color: Palette.lightGray,
-                            ),
-                            //*댓글 more 기능*/
-                            SizedBox(
-                              width: 10,
-                              height: 10,
-                              child: IconButton(
-                                padding: EdgeInsets.all(0),
-                                icon: Icon(Icons.more_horiz),
-                                iconSize: 10,
-                                color: Palette.violet,
-                                onPressed: () {
-                                  print("$isMaster()");
-                                  modalOn.ModalOn();
-                                },
+                              if (!isShape())
+                                Container(
+                                  width: 1,
+                                  height: 10,
+                                  color: Palette.lightGray,
+                                ),
+                              //*대댓글 기능*/
+                              if (!isShape())
+                                SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: IconButton(
+                                      padding: EdgeInsets.all(0),
+                                      icon: SvgPicture.asset(
+                                        'assets/icons/commentRectangle.svg',
+                                        fit: BoxFit.scaleDown,
+                                        width: 10,
+                                        height: 10,
+                                        color: Palette.violet,
+                                      ),
+                                      onPressed: () {
+                                        replyEventOn();
+                                        inputOn();
+                                      },
+                                    )),
+                              Container(
+                                width: 1,
+                                height: 10,
+                                color: Palette.lightGray,
                               ),
-                            )
-                          ]),
-                        )
-                      ],
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(top: 3.h, bottom: 6.h),
-                        child: Text(
-                          commentDesc,
-                          style: CommonText.BodyM,
-                        )),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          commentCreatedAt,
-                          style: CommonText.BodyEngGray,
-                        ),
-                        if (!isMaster())
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/icons/sentiment.svg',
-                                fit: BoxFit.scaleDown,
+                              //*댓글 more 기능*/
+                              SizedBox(
                                 width: 10,
                                 height: 10,
-                                color: Palette.violet,
-                              ),
-                              SizedBox(
-                                width: 3,
-                              ),
-                              Text(
-                                "$commentLikeCnt",
-                                style: CommonText.BodyEngMain11,
+                                child: IconButton(
+                                  padding: EdgeInsets.all(0),
+                                  icon: Icon(Icons.more_horiz),
+                                  iconSize: 10,
+                                  color: Palette.violet,
+                                  onPressed: () {
+                                    modalOn.ModalOn();
+                                  },
+                                ),
                               )
-                            ],
+                            ]),
                           )
-                      ],
-                    )
-                  ],
-                ))
-          ],
-        )));
+                        ],
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(top: 3.h, bottom: 6.h),
+                          child: Text(
+                            commentDesc,
+                            style: CommonText.BodyM,
+                          )),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            commentCreatedAt,
+                            style: CommonText.BodyEngGray,
+                          ),
+                          if (!isMaster())
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/sentiment.svg',
+                                  fit: BoxFit.scaleDown,
+                                  width: 10,
+                                  height: 10,
+                                  color: Palette.violet,
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                  "$commentLikeCnt",
+                                  style: CommonText.BodyEngMain11,
+                                )
+                              ],
+                            )
+                        ],
+                      )
+                    ],
+                  ))
+            ],
+          )));
+    } else {
+      return Obx(() => Container(
+          padding: EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
+          width: 380.w,
+          decoration: BoxDecoration(
+              color: changeColor(),
+              border: Border(
+                top: BorderSide(color: isShape() ? Colors.white : Palette.paper, style: BorderStyle.solid, width: 1),
+              )),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (isShape())
+                SizedBox(
+                    width: 25.w,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 6, right: 3),
+                      child: SvgPicture.asset(
+                        'assets/icons/commentArrow.svg',
+                        fit: BoxFit.scaleDown,
+                        width: 16,
+                        height: 16,
+                        color: Palette.lightGray,
+                      ),
+                    )),
+              SizedBox(
+                  // width: isShape() ? 300.w : 325.w,
+                  child: Text("삭제된 댓글입니다."))
+            ],
+          )));
+    }
   }
 }
 
