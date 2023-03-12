@@ -20,34 +20,43 @@ class InputHashtagField extends StatelessWidget {
     return Container(
       alignment: Alignment.centerLeft,
       // TODO: 입력 방식이 불편하지는 않은지? 해시태그마다 # 을 쳐줘야하는데
-      child: HashTagTextField(
-        basicStyle: CommonText.BodyM,
-        onChanged: (text) {
-          if (text.length > 1 && text[text.length - 2] == ',') {
-            controller.text = controller.text.replaceFirst(",", " ");
-            controller.selection = TextSelection.collapsed(offset: controller.text.lastIndexOf(" "));
-          }
-
-          if (extractHashTags(controller.text).isNotEmpty) {
-            onChanged();
-          } else {
-            GroupChatController().isButtonActivate.value = false;
-            onChanged();
+      child: RawKeyboardListener(
+        child: HashTagTextField(
+          basicStyle: CommonText.BodyM,
+          onChanged: (text) {
+            // if (text.length > 1 && text[text.length - 2] == ',') {
+            //   controller.text = controller.text.replaceFirst(",", " ");
+            //   controller.selection = TextSelection.collapsed(offset: controller.text.lastIndexOf(" "));
+            // }
+            //
+            // if (extractHashTags(controller.text).isNotEmpty) {
+            //   onChanged();
+            // } else {
+            //   GroupChatController().isButtonActivate.value = false;
+            //   onChanged();
+            // }
+          },
+          keyboardAppearance: Brightness.light,
+          keyboardType: TextInputType.text,
+          controller: controller,
+          decoration: InputDecoration(
+            isDense: true,
+            hintText: hintText,
+            hintStyle: CommonText.BodyMediumMain.copyWith(color: Palette.lavender),
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+          ),
+          decoratedStyle: TextStyle(fontSize: 14.0, color: Colors.purple),
+        ),
+        focusNode: FocusNode(),
+        onKey: (RawKeyEvent event) {
+          print(event.data.logicalKey.keyId);
+          if(event.data.logicalKey.keyId == 8589934851){
+            print("aaaaaaaaa");
           }
         },
-        keyboardAppearance: Brightness.light,
-        keyboardType: TextInputType.text,
-        controller: controller,
-        decoration: InputDecoration(
-          isDense: true,
-          hintText: hintText,
-          hintStyle: CommonText.BodyMediumMain.copyWith(color: Palette.lavender),
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          errorBorder: InputBorder.none,
-        ),
-        decoratedStyle: TextStyle(fontSize: 14.0, color: Colors.purple),
-      ),
+      )
     );
   }
 }

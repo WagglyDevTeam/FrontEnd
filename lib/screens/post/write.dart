@@ -18,6 +18,7 @@ import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
 import '../../controller/post/image_controller.dart';
 import '../../controller/post/post_controller.dart';
+import '../../controller/post/post_home_controller.dart';
 import '../../controller/postDetail/post_edit_controller.dart';
 import '../../model/post/dtos/post_request_dto.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +26,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
 
-const double _dividerHeight = 18.0;
+const double _dividerHeight = 25.0;
 const double _titleAreaHeight = 30.0;
 const double _hashtagAreaHeight = 30.0;
 const double _buttonAreaHeight = 41.0;
@@ -38,7 +39,7 @@ const double _bottomButtonPaddingBottom = 15.0;
 class WritePage extends StatelessWidget {
   final ImageController _imageController = Get.put(ImageController());
   final PostController _postController = Get.put(PostController());
-
+  final PostHomeController _postHomeController = Get.put(PostHomeController());
   final _hashtag = SocialTextEditingController();
   final _content = TextEditingController();
   final _title = TextEditingController();
@@ -104,19 +105,19 @@ class WritePage extends StatelessWidget {
                   ],
                 ),
               ), // 제목 영역
-              Divider(height: _dividerHeight.h),
-              Padding(
-                padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
-                child: SizedBox(
-                  height: _hashtagAreaHeight.h,
-                  child: InputHashtagField(
-                    // onChanged: buttonActivateCheck,
-                    controller: _hashtag,
-                    hintText: "#해시태그를 이용하여 게시글을 소개해주세요.",
-                    // height: hashtagAreaHeight,
-                  ),
-                ),
-              ), // 해시태그 영역
+              // Divider(height: _dividerHeight.h),
+              // Padding(
+              //   padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
+              //   child: SizedBox(
+              //     height: _hashtagAreaHeight.h,
+              //     child: InputHashtagField(
+              //       // onChanged: buttonActivateCheck,
+              //       controller: _hashtag,
+              //       hintText: "#해시태그를 이용하여 게시글을 소개해주세요.",
+              //       // height: hashtagAreaHeight,
+              //     ),
+              //   ),
+              // ), // 해시태그 영역
               Divider(height: _dividerHeight.h),
               Padding(
                 padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
@@ -190,9 +191,18 @@ class WritePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(40),
                       ),
                       child: TextButton(
-                        onPressed: () {
-                          final result = writePost();
-                          print(result);
+                        onPressed: () async {
+                          final result = await writePost();
+                          if (result.code == 201) {
+                            _postHomeController.updateBoardCollege(Get.parameters['collegeId']);
+                            Get.back();
+                          } else {
+                            CustomSnackBar.messageSnackbar(
+                              context,
+                              result.message,
+                              EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                            );
+                          }
                         },
                         child: Text(
                           "게시글 작성하기",
@@ -317,7 +327,7 @@ class PhotoWidget extends StatelessWidget {
 
 class TopAppBar extends StatelessWidget with PreferredSizeWidget {
   TopAppBar(type, {Key? key}) : super(key: key);
-
+  final PostHomeController _postHomeController = Get.put(PostHomeController());
   @override
   Size get preferredSize => Size.fromHeight(68.h);
 
@@ -335,23 +345,18 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1.0, color: Palette.lightGray),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    color: Palette.gray,
-                    iconSize: 20.0.sp,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1.0, color: Palette.lightGray),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  color: Palette.gray,
+                  iconSize: 20.0.sp,
+                  onPressed: () {
+                    _postHomeController.updateBoardCollege(Get.parameters['collegeId']);
+                  },
                 ),
               ),
               SizedBox(
