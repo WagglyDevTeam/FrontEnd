@@ -108,7 +108,7 @@ class HeroApp extends StatelessWidget {
                 })),
             GetPage(name: "/signInPage", page: () => SignInScreen(), transition: Transition.rightToLeft),
             GetPage(
-              name: "/writePage",
+              name: "/writePage/:param",
               page: () => WritePage("write"),
               transition: Transition.rightToLeft,
               binding: BindingsBuilder<PostController>(() {
@@ -116,7 +116,7 @@ class HeroApp extends StatelessWidget {
               }),
             ),
             GetPage(
-                name: "/editPage",
+                name: "/editPage/:param",
                 page: () => EditMyPost("edit"),
                 transition: Transition.rightToLeft),
             GetPage(

@@ -114,16 +114,6 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ActionButton(
-                        event: () {
-                          Get.toNamed("/writePage");
-                        },
-                        isIcon: Icon(
-                          Icons.add,
-                          color: Palette.gray,
-                          size: 18.w,
-                        )),
-                    line(),
-                    ActionButton(
                         event: () => Get.toNamed("/searchPost"),
                         isIcon: Icon(
                           Icons.search,
