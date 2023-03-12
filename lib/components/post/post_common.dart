@@ -179,12 +179,8 @@ class CommentBox extends StatelessWidget {
 
   /// 댓글 or 대댓글 삭제 이벤트
   void commentDelete(BuildContext context) {
-    // if (!isShape()) {
-    _postDetailX.delectBoardComment(commnetId: commentId);
+    _postDetailX.delectBoardComment(commentId: commentId);
     Navigator.pop(context);
-    // } else {
-    //   _postDetailX.delectBoardCommentReply(replycommnetId: commentId);
-    // }
   }
 
   /// 댓글 or 대댓글 신고 이벤트
