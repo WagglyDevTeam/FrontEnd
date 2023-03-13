@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:get/get.dart';
@@ -134,7 +133,9 @@ class PostDetailController extends GetxController {
 
   /// 게시판 상세 페이지 댓글 삭제
   Future<void> delectBoardComment({required int commnetId}) async {
-    print("$commnetId comment");
+    await _postRepository.deleteComment(commnetId);
+    List<CommentData> newCommentList = boardComment.where((commentData) => commentData.commentId != commnetId).toList();
+    boardComment.value = newCommentList;
   }
 
   /// 게시판 상세 페이지 대댓글 삭제
