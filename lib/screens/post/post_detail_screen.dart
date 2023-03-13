@@ -53,6 +53,8 @@ class DetailContext extends StatefulWidget {
 }
 
 class TopAppBar extends StatelessWidget with PreferredSizeWidget {
+  final PostHomeController _postHomeController = Get.put(PostHomeController());
+
   @override
   Size get preferredSize => Size.fromHeight(68.h);
 
@@ -72,23 +74,19 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1.0, color: Palette.lightGray),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    color: Palette.gray,
-                    iconSize: 20.0.sp,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1.0, color: Palette.lightGray),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  color: Palette.gray,
+                  iconSize: 20.0.sp,
+                  onPressed: () {
+                    _postHomeController.updateBoardCollege(Get.parameters['collegeId']);
+                    Get.back();
+                  },
                 ),
               ),
               SizedBox(
@@ -106,6 +104,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
 
 class DetailHiddenBtn extends StatefulWidget {
   BuildContext pageContext;
+
   DetailHiddenBtn({Key? key, required this.pageContext}) : super(key: key);
 
   @override
@@ -169,11 +168,7 @@ class _DetailHiddenBtnState extends State<DetailHiddenBtn> {
           ModalButton(
               title: '수정하기',
               event: () {
-<<<<<<< HEAD
                 Get.toNamed("/editPage/param?postId=${_postDetailX.postDetail.value.postId ?? 0}&collegeName=${Get.parameters['collegeName']}&collegeId=${Get.parameters['collegeId']}");
-=======
-                Get.toNamed("/editPage");
->>>>>>> 54403c1ed834318a6fa82011a23a33661f20b713
               }),
         if (_postDetailX.postDetail.value.authorId != loginUserId)
           ModalButton(

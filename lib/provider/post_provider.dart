@@ -39,7 +39,7 @@ class PostProvider extends GetConnect {
   /// GET 특정 학과 페이지 API
   Future<Response> getBoardCollege(String college, int page, int size) {
     final box = Hive.box<User>('user');
-    print(box);
+    // print(box);
     var token = box.get('user')?.jwtToken;
     return get(
       "${dotenv.get('BASE_URL')}/board?college=$college&page=$page&size=$size",
