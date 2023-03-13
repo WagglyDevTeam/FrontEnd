@@ -10,7 +10,7 @@ class PostController extends GetxController {
   final PostRepository _postRepository = PostRepository();
   final posts = <Post>[].obs;
   final bestPost = Post().obs;
-  final isButtonActivate = false.obs;
+  final isButtonActivate = true.obs;
   final checkBox = false.obs;
 
   @override

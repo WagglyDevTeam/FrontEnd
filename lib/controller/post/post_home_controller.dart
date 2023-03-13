@@ -77,6 +77,42 @@ class PostHomeController extends GetxController {
     // }
   }
 
+
+  Future<void> updateBoardCollege(String? collegeId) async {
+    PostCollegeDto college = PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
+    WagglyResponsePaginationDto result = await _postRepository.getBoardCollege(college);
+    print(result.code);
+    dynamic bestJson = result.datas["bestPost"];
+    dynamic postJson = result.datas["posts"];
+    if (result.status == '200') {
+      totalPage.value = result.totalPage ?? 0;
+      if (result.totalPage != postPage.value) {
+        PostSpecificData bestPostData = PostSpecificData.fromJson(bestJson);
+        List<PostSpecificData> postData = List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
+        bestPostCollegeData.value = bestPostData;
+        postCollegeData.value = postData;
+        bestPostOn.value = true;
+        update();
+        bestPostCollegeData.refresh();
+        postCollegeData.refresh();
+        bestPostOn.refresh();
+        postPage.refresh();
+      }
+    } else {
+      bestPostOn.value = false;
+    }
+    // if (postJson != []) {
+    //   List<PostSpecificData> postData = List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
+    //   postCollegeData.value = postData;
+    //   postCollegeData.refresh();
+    //   normalPostOn.value = true;
+    // } else {
+    //   normalPostOn.value = false;
+    // }
+  }
+
+
+
   /// 게시판 페이징 get
   Future<void> getBoardPaging(String? collegeId) async {
     //total page 어케알지?

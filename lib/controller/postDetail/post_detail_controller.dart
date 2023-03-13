@@ -161,8 +161,13 @@ class PostDetailController extends GetxController {
     postId.value = value;
   }
 
-  Future<void> editBoard(PostEditRequestDto postEditRequestDto) async {
+  Future<WagglyResponseDto> editBoard(PostEditRequestDto postEditRequestDto) async {
     FormData form = FormData(postEditRequestDto.toJson());
-    await _postRepository.editBoard(form, postId);
+    WagglyResponseDto response = await _postRepository.editBoard(form, postId);
+    PostDetailData postDetailMap = PostDetailData.fromJson(response.datas);
+    postDetail.value = postDetailMap;
+    update();
+    postDetail.refresh();
+    return response;
   }
 }

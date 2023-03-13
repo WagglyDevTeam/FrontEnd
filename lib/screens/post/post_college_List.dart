@@ -181,7 +181,7 @@ class _PostCollegeList extends State<PostCollegeList> {
                             return GestureDetector(
                                 onTap: () => {
                                       Get.toNamed(
-                                          "/postDetail/param?postId=${_postDetailX.postCollegeData[postInt].postId ?? 0}&collegeName=$_pageTitle")
+                                          "/postDetail/param?postId=${_postDetailX.postCollegeData[postInt].postId ?? 0}&collegeName=$_pageTitle&collegeId=${Get.parameters['collegeId']}")
                                     },
                                 child: Container(
                                   padding: EdgeInsets.only(
@@ -315,7 +315,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                 children: [
                   ActionButton(
                       event: () {
-                        Get.toNamed("/writePage");
+                        Get.toNamed("/writePage/param?&collegeId=${Get.parameters['collegeId']}");
                       },
                       isIcon: Icon(
                         Icons.add,
