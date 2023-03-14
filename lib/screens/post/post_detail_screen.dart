@@ -268,6 +268,7 @@ class _DetailContext extends State<DetailContext> {
                                                         major: _postDetailX.postDetail.value.authorMajor ?? '',
                                                         shape: Shape.posting,
                                                         isMaster: false,
+                                                        isAnonymous: _postDetailX.postDetail.value.isAnonymous,
                                                       )),
                                                   Obx(() => Text(_postDetailX.postDetail.value.postCreatedAt ?? '', style: CommonText.BodyEngGray)),
                                                 ],
@@ -374,6 +375,7 @@ class _DetailContext extends State<DetailContext> {
                                                 authorNickname: _postDetailX.boardComment[commentInt].isAnonymous ?? false ? "익명" : _postDetailX.boardComment[commentInt].authorNickname ?? '',
                                                 authorProfileImg: _postDetailX.boardComment[commentInt].isAnonymous ?? false ? "" : _postDetailX.boardComment[commentInt].authorProfileImg ?? '',
                                                 isBlind: _postDetailX.boardComment[commentInt].isBlind ?? false,
+                                                isAnonymous: _postDetailX.boardComment[commentInt].isAnonymous ?? false,
                                                 commentId: _postDetailX.boardComment[commentInt].commentId ?? 0,
                                                 commentCreatedAt: _postDetailX.boardComment[commentInt].commentCreatedAt ?? '',
                                                 commentDeletedAt: _postDetailX.boardComment[commentInt].commentDeletedAt,
@@ -401,6 +403,7 @@ class _DetailContext extends State<DetailContext> {
                                                             ? ""
                                                             : _postDetailX.boardComment[commentInt].replies?[repliesInt].authorProfileImg ?? '',
                                                         isBlind: _postDetailX.boardComment[commentInt].replies?[repliesInt].isBlind ?? false,
+                                                        isAnonymous: _postDetailX.boardComment[commentInt].replies?[repliesInt].isAnonymous ?? false,
                                                         commentId: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyId ?? 0,
                                                         commentCreatedAt: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyCreatedAt ?? '',
                                                         commentDeletedAt: _postDetailX.boardComment[commentInt].replies?[repliesInt].replyDeletedAt,
@@ -462,7 +465,6 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
           );
           _postDetailX.selectCommentReplyOff();
           _comment.clear();
-          _postDetailX.getDetailBoard(postId!);
         } else {
           _postDetailX.postBoardComment(
             commentDesc: _comment.text,
@@ -470,6 +472,7 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
             anonymous: _isChecked,
           );
           _comment.clear();
+
           final position = widget.scrollController.position.maxScrollExtent;
           widget.scrollController.animateTo(
             position,
