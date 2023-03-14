@@ -1,10 +1,5 @@
-import 'dart:math';
-
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
 import 'package:waggly/controller/post/post_home_controller.dart';
-import 'package:waggly/hive/user.dart';
 import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 import '../../model/post/dtos/post_edit_request_dto.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
@@ -63,43 +58,15 @@ class PostDetailController extends GetxController {
   /// 게시판 상세 페이지 댓글 작성
   Future<void> postBoardComment({required String commentDesc, String? postId, required bool anonymous}) async {
     CommentRequestDto data = CommentRequestDto(commentDesc: commentDesc, anonymous: anonymous);
-    WagglyResponseDto result = await _postRepository.postComment(postId, data);
-    final box = Hive.box<User>('user');
-    var authorId = box.get('user')?.id;
-    var authorNickname = box.get('user')?.nickName;
-    var authorMajor = box.get('user')?.major;
-    var authorProfileImg = box.get('user')?.profileImg;
-    final DateTime now = DateTime.now();
-    final DateFormat formatter = DateFormat('MM/dd HH:mm');
-    final formatted = formatter.format(now);
-
-    var rng = Random();
-
-    dynamic resCommentId = result.datas["commentId"];
-    // / 서버에서 수신된 응답 JSON 데이터를 Map 형태로 치환
-    final commentMap = CommentData(
-      commentId: resCommentId,
-      commentCreatedAt: formatted,
-      commentLikeCnt: 0,
-      commentDesc: commentDesc,
-      isLikedByMe: false,
-      authorId: authorId,
-      authorMajor: authorMajor,
-      authorNickname: anonymous ? "익명" : authorNickname,
-      authorProfileImg: anonymous ? "https://cdn.pixabay.com/photo/2016/03/31/21/58/face-1296761_960_720.png" : authorProfileImg,
-      isBlind: false,
-      replies: [],
-    );
-
-    boardComment.add(commentMap);
-    update();
-    boardComment.refresh();
+    await _postRepository.postComment(postId, data);
+    await getDetailBoard(postId!);
   }
 
   /// 게시판 상세 페이지 대댓글 작성
   Future<void> postBoardCommentReply({required String commentDesc, required int commentId, required bool anonymous}) async {
     ReCommentRequestDto data = ReCommentRequestDto(replyDesc: commentDesc, anonymous: anonymous);
-    WagglyResponseDto result = await _postRepository.postReComment(commentId, data);
+    await _postRepository.postReComment(commentId, data);
+    await getDetailBoard(postId.value);
   }
 
   /// 게시판 상세 페이지 댓글 좋아요

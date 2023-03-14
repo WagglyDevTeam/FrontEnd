@@ -110,6 +110,7 @@ class CommentBox extends StatelessWidget {
   final String authorNickname;
   final String authorProfileImg;
   final bool isBlind;
+  final bool isAnonymous;
   final int commentId;
   final String commentCreatedAt;
   final String? commentDeletedAt;
@@ -118,7 +119,6 @@ class CommentBox extends StatelessWidget {
   final bool isLikedByMe;
   final CommentShape shape;
   final int postAuthorId;
-  // final bool isAnonymous;
   CommentBox({
     Key? key,
     required this.authorId,
@@ -126,6 +126,7 @@ class CommentBox extends StatelessWidget {
     required this.authorNickname,
     required this.authorProfileImg,
     required this.isBlind,
+    required this.isAnonymous,
     required this.commentId,
     required this.commentCreatedAt,
     required this.commentDeletedAt,
@@ -134,7 +135,6 @@ class CommentBox extends StatelessWidget {
     required this.isLikedByMe,
     required this.shape,
     required this.postAuthorId,
-    // required this.isAnonymous,
   }) : super(key: key);
 
   /// 댓글 , 대댓글 구분
@@ -273,6 +273,7 @@ class CommentBox extends StatelessWidget {
                             major: authorMajor,
                             shape: Shape.comment,
                             isMaster: isMaster(),
+                            isAnonymous: isAnonymous,
                           ),
                           Container(
                             width: !isShape() ? 76.w : 50.w,
@@ -430,6 +431,7 @@ class AuthorForm extends StatelessWidget {
   final String? major;
   final Shape? shape;
   final bool? isMaster;
+  final bool? isAnonymous;
 
   AuthorForm({
     Key? key,
@@ -438,6 +440,7 @@ class AuthorForm extends StatelessWidget {
     required this.major,
     required this.shape,
     required this.isMaster,
+    required this.isAnonymous,
   }) : super(key: key);
 
   @override
@@ -457,7 +460,9 @@ class AuthorForm extends StatelessWidget {
             Withdrawal()
                 ? '(알수없음)'
                 : isMaster!
-                    ? '글쓴이'
+                    ? isAnonymous == true
+                        ? nickName!
+                        : '글쓴이'
                     : nickName!,
             style: Withdrawal()
                 ? CommonText.BodyM
