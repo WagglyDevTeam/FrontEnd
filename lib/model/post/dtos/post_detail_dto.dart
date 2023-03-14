@@ -91,6 +91,7 @@ class PostDetailData {
 class ReCommentData {
   int? replyId;
   String? replyCreatedAt;
+  String? replyDeletedAt;
   late int? replyLikeCnt;
   String? replyDesc;
   bool? isLikedByMe;
@@ -104,6 +105,7 @@ class ReCommentData {
   ReCommentData({
     this.replyId,
     this.replyCreatedAt,
+    this.replyDeletedAt,
     this.replyLikeCnt,
     this.replyDesc,
     this.isLikedByMe,
@@ -121,6 +123,7 @@ class ReCommentData {
     return ReCommentData(
         replyId: json["replyId"] as int,
         replyCreatedAt: formatter.format(DateTime.parse(json["replyCreatedAt"])),
+        replyDeletedAt: json["replyDeletedAt"] != null ? formatter.format(DateTime.parse(json["replyDeletedAt"])) : null,
         replyLikeCnt: json["replyLikeCnt"] as int,
         replyDesc: json["replyDesc"] as String,
         isLikedByMe: json["isLikedByMe"] as bool,
@@ -136,6 +139,7 @@ class ReCommentData {
 class CommentData {
   int? commentId;
   String? commentCreatedAt;
+  String? commentDeletedAt;
   late int? commentLikeCnt;
   String? commentDesc;
   bool? isLikedByMe;
@@ -150,6 +154,7 @@ class CommentData {
   CommentData({
     this.commentId,
     this.commentCreatedAt,
+    this.commentDeletedAt,
     this.commentLikeCnt,
     this.commentDesc,
     this.isLikedByMe,
@@ -168,6 +173,7 @@ class CommentData {
     return CommentData(
       commentId: json["commentId"] as int,
       commentCreatedAt: formatter.format(DateTime.parse(json["commentCreatedAt"])),
+      commentDeletedAt: json["commentDeletedAt"] != null ? formatter.format(DateTime.parse(json["commentDeletedAt"])) : null,
       commentLikeCnt: json["commentLikeCnt"] as int,
       commentDesc: json["commentDesc"] as String,
       isLikedByMe: json["isLikedByMe"] as bool,

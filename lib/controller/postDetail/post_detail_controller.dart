@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:get/get.dart';
@@ -45,7 +44,6 @@ class PostDetailController extends GetxController {
 
   /// 게시판 상세 페이지 좋아요 업데이트
   Future<void> updateDetailBoardLike({required bool isLikedByMe, required int postLikeCnt, required int postId}) async {
-    print("$isLikedByMe, $postLikeCnt , $postId");
     likeDetailRequestDto data = likeDetailRequestDto(postLikeCnt: postLikeCnt, likedByMe: isLikedByMe);
 
     WagglyResponseDto result = await _postRepository.likeDetailPost(postId, data);
@@ -57,7 +55,6 @@ class PostDetailController extends GetxController {
 
   /// 게시판 상세 페이지 즐겨찾기 업데이트
   Future<void> updateDetailBoardBookmark({required bool isBlind, required int postId}) async {
-    print("$isBlind, $postId");
     postDetail.value.isBlind = isBlind;
     update();
     postDetail.refresh();
@@ -94,9 +91,6 @@ class PostDetailController extends GetxController {
       replies: [],
     );
 
-    for (CommentData comment in boardComment.value) {
-      print(comment.commentDesc);
-    }
     boardComment.add(commentMap);
     update();
     boardComment.refresh();
@@ -133,13 +127,9 @@ class PostDetailController extends GetxController {
   }
 
   /// 게시판 상세 페이지 댓글 삭제
-  Future<void> delectBoardComment({required int commnetId}) async {
-    print("$commnetId comment");
-  }
-
-  /// 게시판 상세 페이지 대댓글 삭제
-  Future<void> delectBoardCommentReply({required int replycommnetId}) async {
-    print("$replycommnetId reply");
+  Future<void> delectBoardComment({required int commentId}) async {
+    await _postRepository.deleteComment(commentId);
+    await getDetailBoard(postId.value);
   }
 
   /// 게시판 상세 페이지 대댓글 이벤트 off

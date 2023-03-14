@@ -29,7 +29,7 @@ class PostRepository {
   Future<WagglyResponseDto> writeBoard(FormData data) async {
     Response response = await _postProvider.writeBoard(data);
     dynamic body = response.body;
-    print(body);
+    // print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
     return wagglyResponseDto;
   }
@@ -72,7 +72,7 @@ class PostRepository {
   Future<WagglyResponseDto> postComment(String? postId, CommentRequestDto data) async {
     Response response = await _postProvider.postComment(postId, data);
     dynamic body = response.body;
-    print(body);
+    // print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
 
     return wagglyResponseDto;
@@ -81,7 +81,7 @@ class PostRepository {
   Future<WagglyResponseDto> putCommentLike(int commentId, CommentLikeRequestDto data) async {
     Response response = await _postProvider.putCommentLike(commentId, data);
     dynamic body = response.body;
-    print(body);
+    // print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
     return wagglyResponseDto;
   }
@@ -89,7 +89,7 @@ class PostRepository {
   Future<WagglyResponseDto> postReComment(int commentId, ReCommentRequestDto data) async {
     Response response = await _postProvider.postReComment(commentId, data);
     dynamic body = response.body;
-    print(body);
+    // print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
 
     return wagglyResponseDto;
@@ -98,7 +98,7 @@ class PostRepository {
   Future<WagglyResponseDto> likeDetailPost(int postId, likeDetailRequestDto data) async {
     Response response = await _postProvider.likeDetailPost(postId, data);
     dynamic body = response.body;
-    print(body);
+    // print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
 
     return wagglyResponseDto;
@@ -107,7 +107,7 @@ class PostRepository {
   Future<WagglyResponseDto> PostDelete(int postId) async {
     Response response = await _postProvider.PostDelete(postId);
     dynamic body = response.body;
-    print(body);
+    // print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
 
     return wagglyResponseDto;
@@ -116,12 +116,16 @@ class PostRepository {
   Future<WagglyResponseDto> editBoard(FormData data, dynamic value) async {
     Response response = await _postProvider.editBoard(data, value);
     dynamic body = response.body;
-    print(body);
+    // print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
 
     return wagglyResponseDto;
     // WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
     // print(jsonEncode(wagglyResponseDto));
     // return wagglyResponseDto;
+  }
+
+  Future<void> deleteComment(int commentId) async {
+    await _postProvider.deleteComment(commentId);
   }
 }
