@@ -13,6 +13,7 @@ import 'package:waggly/components/notification/notification.dart';
 import 'package:waggly/controller/home/home_controller.dart';
 import 'package:waggly/controller/post/post_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
+import 'package:waggly/hive/post_search_history.dart';
 import 'package:waggly/hive/search_history.dart';
 import 'package:waggly/hive/user.dart';
 import 'package:waggly/screens/chat/chat.dart';
@@ -49,8 +50,10 @@ void main() async {
 
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(SearchHistoryAdapter());
+  Hive.registerAdapter(PostHistoryAdapter());
   await Hive.openBox<User>("user", encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey!)));
   await Hive.openBox<SearchHistory>('searchHistory', encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey)));
+  await Hive.openBox<PostSearchHistory>('postSearchHistory', encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey!)));
   Get.put(HomeController());
   Get.put(SignInController());
   runApp(HeroApp());
