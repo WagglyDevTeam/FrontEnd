@@ -192,7 +192,7 @@ class WritePage extends StatelessWidget {
                       ),
                       child: TextButton(
                         onPressed: () async {
-                          final result = await writePost();
+                          final result = await writePost(Get.parameters['collegeId']);
                           if (result.code == 201) {
                             _postHomeController.updateBoardCollege(Get.parameters['collegeId']);
                             Get.back();
@@ -239,7 +239,7 @@ class WritePage extends StatelessWidget {
         college, file, _imageController.parseToStringList()));
   }
 
-  Future<WagglyResponseDto> writePost() async {
+  Future<WagglyResponseDto> writePost(collegeId) async {
     List<MultipartFile> file = imageToMultipartFile();
     List<String> hashtags = extractHashTags(_hashtag.text);
     final box = Hive.box<User>('user');
@@ -249,7 +249,7 @@ class WritePage extends StatelessWidget {
       PostRequestDto(
         _title.text,
         _content.text,
-        "SOCIAL",
+        collegeId,
         _postController.checkBox.value,
         hashtags,
         file,
@@ -356,6 +356,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                   iconSize: 20.0.sp,
                   onPressed: () {
                     _postHomeController.updateBoardCollege(Get.parameters['collegeId']);
+                    Get.back();
                   },
                 ),
               ),

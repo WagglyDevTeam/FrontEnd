@@ -84,7 +84,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                   color: Palette.gray,
                   iconSize: 20.0.sp,
                   onPressed: () {
-                    _postHomeController.updateBoardCollege(Get.parameters['collegeId']);
+                    // _postHomeController.updateBoardCollege(Get.parameters['collegeId']);
                     Get.back();
                   },
                 ),
@@ -113,6 +113,7 @@ class DetailHiddenBtn extends StatefulWidget {
 
 class _DetailHiddenBtnState extends State<DetailHiddenBtn> {
   final PostDetailController _postDetailX = Get.put(PostDetailController());
+  final PostHomeController _postHomeController = Get.put(PostHomeController());
   String postId = "${Get.parameters['postId']}";
   final int? loginUserId = Hive.box<User>('user').get('user')?.id;
 
@@ -123,8 +124,16 @@ class _DetailHiddenBtnState extends State<DetailHiddenBtn> {
 
   @override
   void initState() {
+    print(_postDetailX.modalOpen);
+    // print(_postHomeController.selectIndex.value);
     waitForData();
     super.initState();
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+
+    super.setState(fn);
   }
 
   @override
@@ -141,7 +150,9 @@ class _DetailHiddenBtnState extends State<DetailHiddenBtn> {
 
     PostModal modalOn = PostModal(context: context, contents: buttons(context, widget.pageContext, loginUserId), height: modalHeight, title: title);
     return GestureDetector(
-      onTap: () => {modalOn.ModalOn()},
+      onTap: (){
+        modalOn.ModalOn();
+      },
       child: Container(
           margin: EdgeInsets.only(right: 16.w),
           child: SvgPicture.asset(
@@ -168,6 +179,7 @@ class _DetailHiddenBtnState extends State<DetailHiddenBtn> {
           ModalButton(
               title: '수정하기',
               event: () {
+                Navigator.pop(context);
                 Get.toNamed("/editPage/param?postId=${_postDetailX.postDetail.value.postId ?? 0}&collegeName=${Get.parameters['collegeName']}&collegeId=${Get.parameters['collegeId']}");
               }),
         if (_postDetailX.postDetail.value.authorId != loginUserId)

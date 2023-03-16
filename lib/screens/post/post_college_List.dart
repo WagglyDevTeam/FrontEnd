@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
 import 'package:waggly/widgets/imageIndicator/index.dart';
 
 import '../../controller/post/post_home_controller.dart';
+import '../../hive/user.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
 
@@ -75,6 +77,7 @@ class _PostCollegeList extends State<PostCollegeList> {
                         itemCount: _postDetailX.postCollegeData.length + 1,
                         itemBuilder: (BuildContext context, int index) {
                           int postInt = index - 1;
+                          int selectIndex = _postDetailX.selectIndex.value;
                           if (index == 0) {
                             /**인기 글*/
                             return Container(
@@ -179,10 +182,10 @@ class _PostCollegeList extends State<PostCollegeList> {
                           } else {
                             /**일반 글*/
                             return GestureDetector(
-                                onTap: () => {
-                                      Get.toNamed(
-                                          "/postDetail/param?postId=${_postDetailX.postCollegeData[postInt].postId ?? 0}&collegeName=$_pageTitle&collegeId=${Get.parameters['collegeId']}")
-                                    },
+                                onTap: (){
+                                  _postDetailX.selectIndex.value = index;
+                                  Get.toNamed("/postDetail/param?postId=${_postDetailX.postCollegeData[postInt].postId ?? 0}&collegeName=$_pageTitle&collegeId=${Get.parameters['collegeId']}");
+                                },
                                 child: Container(
                                   padding: EdgeInsets.only(
                                       top: 16, bottom: 16, left: 26, right: 26),
@@ -251,7 +254,7 @@ class _PostCollegeList extends State<PostCollegeList> {
 class TopAppBar extends StatelessWidget with PreferredSizeWidget {
   final _postDetailX = Get.put(PostHomeController());
   final String postName = Get.parameters['collegeName'] ?? "";
-
+  final box = Hive.box<User>('user');
   @override
   Size get preferredSize => Size.fromHeight(68.h);
 
@@ -313,6 +316,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  if(box.get('user')!.college == Get.parameters['collegeId'])
                   ActionButton(
                       event: () {
                         Get.toNamed("/writePage/param?&collegeId=${Get.parameters['collegeId']}");
@@ -322,6 +326,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                         color: Palette.gray,
                         size: 18.w,
                       )),
+                  if(box.get('user')!.college == Get.parameters['collegeId'])
                   line(),
                   ActionButton(
                       //글 검색 페이지 필요함

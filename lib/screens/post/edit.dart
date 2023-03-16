@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:hashtagable/hashtagable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:waggly/hive/user.dart';
+import 'package:waggly/model/post/dtos/post_college_dto.dart';
 import 'package:waggly/widgets/button/rules_button.dart';
 import 'package:waggly/widgets/textFormField/custom_text_form_field.dart';
 import 'package:waggly/widgets/textFormField/input_hashtag_field.dart';
@@ -20,6 +21,7 @@ import '../../controller/post/image_controller.dart';
 import '../../controller/post/post_controller.dart';
 import '../../controller/post/post_home_controller.dart';
 import '../../controller/postDetail/post_edit_controller.dart';
+import '../../model/post/dtos/post_detail_dto.dart';
 import '../../model/post/dtos/post_request_dto.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -201,8 +203,10 @@ class EditMyPost extends StatelessWidget {
                           ),
                           child: TextButton(
                             onPressed: () async {
-                              final result = await editPost(_title.text, _content.text, "SOCIAL");
+                              final result = await editPost(_title.text, _content.text, Get.parameters['collegeId']);
                               if (result.code == 200) {
+                                PostDetailData postDetailData = PostDetailData.fromJson(result.datas);
+                                _postHomeController.updateBoard(PostSpecificData.fromPostDetailData(postDetailData));
                                 Get.back();
                               } else {
                                 CustomSnackBar.messageSnackbar(
@@ -246,6 +250,7 @@ class EditMyPost extends StatelessWidget {
     List<MultipartFile> file = imageToMultipartFile();
     final result = await postDetailController.editBoard(PostEditRequestDto(title, description,
         college, file, _imageController.parseToStringList()));
+
     return result;
   }
 
