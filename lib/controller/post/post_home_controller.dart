@@ -31,6 +31,9 @@ class PostHomeController extends GetxController {
   /// 특정학부 페이지 인기글 로드 상태데이터
   final normalPostOn = false.obs;
 
+  // 게시물 상세 선택 인덱스
+  final selectIndex = 0.obs;
+
   @override
   void onInit() async {
     super.onInit();
@@ -61,7 +64,6 @@ class PostHomeController extends GetxController {
         List<PostSpecificData> postData = List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
         bestPostCollegeData.value = bestPostData;
         postCollegeData.value = postData;
-        postPage.value++;
         bestPostOn.value = true;
       }
     } else {
@@ -78,10 +80,11 @@ class PostHomeController extends GetxController {
   }
 
 
+
+
   Future<void> updateBoardCollege(String? collegeId) async {
-    PostCollegeDto college = PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
+    PostCollegeDto college = PostCollegeDto(college: collegeId, page: 1, size: 10);
     WagglyResponsePaginationDto result = await _postRepository.getBoardCollege(college);
-    print(result.code);
     dynamic bestJson = result.datas["bestPost"];
     dynamic postJson = result.datas["posts"];
     if (result.status == '200') {
@@ -101,17 +104,13 @@ class PostHomeController extends GetxController {
     } else {
       bestPostOn.value = false;
     }
-    // if (postJson != []) {
-    //   List<PostSpecificData> postData = List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
-    //   postCollegeData.value = postData;
-    //   postCollegeData.refresh();
-    //   normalPostOn.value = true;
-    // } else {
-    //   normalPostOn.value = false;
-    // }
   }
 
+  Future<void> updateBoard(PostSpecificData data) async{
+    postCollegeData[selectIndex.value - 1] = data;
+    postCollegeData.refresh();
 
+  }
 
   /// 게시판 페이징 get
   Future<void> getBoardPaging(String? collegeId) async {

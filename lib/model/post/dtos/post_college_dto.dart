@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 
 class PostListData {
   String majorName;
@@ -90,6 +91,21 @@ class PostSpecificData {
         postTitle: json["postTitle"],
         postCreatedAt: formatter.format(DateTime.parse(json["postCreatedAt"])),
         postId: json["postId"]);
+  }
+
+  factory PostSpecificData.fromPostDetailData(PostDetailData postDetailData){
+    final DateFormat formatter = DateFormat('MM/dd HH:mm');
+    return PostSpecificData(
+        postDesc: postDetailData.postDesc,
+        postImageCnt: postDetailData.postImages!.length,
+        postLikeCnt: postDetailData.postLikeCnt,
+        postCommentCnt: postDetailData.postCommentCnt,
+        isLikedByMe: postDetailData.isLikedByMe,
+        isBlind: postDetailData.isBlind,
+        authorMajor: postDetailData.authorMajor,
+        postTitle: postDetailData.postTitle,
+        postCreatedAt: postDetailData.postCreatedAt!,
+        postId: postDetailData.postId);
   }
 }
 

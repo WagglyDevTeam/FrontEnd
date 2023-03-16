@@ -15,13 +15,16 @@ class User {
   @HiveField(4)
   final String? major;
   @HiveField(5)
-  final String? gender;
+  String? college;
   @HiveField(6)
-  String? profileImg;
+  final String? gender;
   @HiveField(7)
-  final String? introduction;
+  String? profileImg;
   @HiveField(8)
+  final String? introduction;
+  @HiveField(9)
   String? jwtToken;
+
 
   User(
       {this.id,
@@ -29,6 +32,7 @@ class User {
       this.university,
       this.classNumber,
       this.major,
+        this.college,
       this.gender,
       this.profileImg,
       this.introduction,
@@ -41,6 +45,7 @@ class User {
       university: json['university'],
       classNumber: json['classNumber'],
       major: json['major'],
+      college: json['college'],
       gender: json['gender'],
       profileImg: json['profileImg'],
       introduction: json['introduction'],
@@ -53,6 +58,7 @@ class User {
         'university': university,
         'classNumber': classNumber,
         'major': major,
+    'college': college,
         'gender': gender,
         'profileImg': profileImg,
         'introduction': introduction,
@@ -66,6 +72,7 @@ class User {
       university: dto.datas['university'],
       classNumber: dto.datas['classNumber'],
       major: dto.datas['major'],
+      college: dto.datas['college'],
       gender: dto.datas['gender'],
       profileImg: dto.datas['profileImg'],
       introduction: dto.datas['introduction'],
