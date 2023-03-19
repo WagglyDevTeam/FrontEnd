@@ -138,9 +138,11 @@ class SignInHeader extends StatelessWidget {
           Container(
             // width: MediaQuery.of(context).size.width,
             alignment: Alignment.topCenter,
-            child: SvgPicture.asset(
-              'assets/icons/wagleLoginBg.svg',
-              width: MediaQuery.of(context).size.width < 850 ? 270 : 500,
+            padding: EdgeInsets.only(top: 75.h),
+            child: Image.asset(
+              'assets/images/logo.png',
+              width: MediaQuery.of(context).size.width < 850 ? 211 : 300,
+              height: MediaQuery.of(context).size.height < 850 ? 210 : 310,
             ),
           )
         ],
