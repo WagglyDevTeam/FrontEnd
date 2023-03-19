@@ -83,6 +83,8 @@ class PostSearchScreen extends StatelessWidget {
                       if (postSearchController.historyList.isNotEmpty == true) {
                         final prevItem = searchList.getAt(searchList.length - 1);
                         id = prevItem!.id + 1;
+
+                        postSearchController.getSearchPost(_searchKeyword.text);
                       }
 
                         postSearchController.postSearchHistoryBox.value

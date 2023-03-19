@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:waggly/model/post/dtos/post_detail_dto.dart';
+import 'package:waggly/model/post/dtos/post_search_dto.dart';
 import 'package:waggly/model/post/dtos/waggly_response_pagination_dto.dart';
 import 'package:waggly/provider/post_provider.dart';
 
@@ -123,6 +124,16 @@ class PostRepository {
     // WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
     // print(jsonEncode(wagglyResponseDto));
     // return wagglyResponseDto;
+  }
+
+  ///post search
+  Future<WagglyResponsePaginationDto> searchBoard(PostSearchRequestDto props) async {
+    Response response = await _postProvider.searchPost(props.keyword!, props.page!, props.size!);
+    dynamic body = response.body;
+    print('reuslt search $body');
+    WagglyResponsePaginationDto wagglyResponseDto = WagglyResponsePaginationDto.fromJson(body);
+    return wagglyResponseDto;
+
   }
 
   Future<void> deleteComment(int commentId) async {

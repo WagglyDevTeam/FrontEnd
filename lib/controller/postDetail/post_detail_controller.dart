@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:waggly/controller/post/post_home_controller.dart';
 import 'package:waggly/model/post/dtos/post_detail_dto.dart';
+import 'package:waggly/model/post/dtos/post_response_dto.dart';
+import 'package:waggly/model/post/dtos/post_search_dto.dart';
 import '../../components/post/post_modal.dart';
 import '../../model/post/dtos/post_edit_request_dto.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
@@ -20,6 +22,8 @@ class PostDetailController extends GetxController {
   ).obs;
   final reCommentInputOn = false.obs;
   var modalOpen = PostModal;
+  final postSearch = PostResponseDto().obs;
+  final keyword = "".obs;
 
   @override
   void onClose() {
@@ -139,4 +143,5 @@ class PostDetailController extends GetxController {
     postDetail.refresh();
     return response;
   }
+
 }
