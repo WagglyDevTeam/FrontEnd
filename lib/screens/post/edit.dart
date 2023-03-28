@@ -27,6 +27,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
+import '../../widgets/textFormField/post_custom_text_field.dart';
 
 const double _dividerHeight = 25.0;
 const double _titleAreaHeight = 30.0;
@@ -51,8 +52,16 @@ class EditMyPost extends StatelessWidget {
 
   EditMyPost(this.type, {Key? key}) : super(key: key);
 
-  void buttonActivateCheck(String text) {
+  void buttonActivateCheck(TextEditingController main, TextEditingController sub) {
+    String mainStr = main.text;
+    String subStr = sub.text;
 
+    if(mainStr.isEmpty || subStr.isEmpty){
+      _postController.isButtonActivate.value = false;
+    }
+    else{
+      _postController.isButtonActivate.value = true;
+    }
   }
 
   @override
@@ -99,9 +108,10 @@ class EditMyPost extends StatelessWidget {
                     Expanded(
                       child: SizedBox(
                         height: _titleAreaHeight.h,
-                        child: CustomTextFormField(
+                        child: PostCustomTextField(
                           onChanged: buttonActivateCheck,
-                          controller: _title,
+                          mainController: _title,
+                          subController: _content,
                           hint: "제목을 입력하세요.",
                           focus: true,
                         ),
@@ -127,11 +137,12 @@ class EditMyPost extends StatelessWidget {
               Divider(height: _dividerHeight.h),
               Padding(
                 padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
-                child: CustomTextFormField(
+                child: PostCustomTextField(
                   onChanged: buttonActivateCheck,
                   // onEditingComplete: ,
                   maxLines: 15,
-                  controller: _content,
+                  mainController: _content,
+                  subController: _title,
                   hint: "내용을 입력하세요.",
                   focus: true,
                 ),
@@ -203,6 +214,15 @@ class EditMyPost extends StatelessWidget {
                           ),
                           child: TextButton(
                             onPressed: () async {
+                              if(!_postController.isButtonActivate.value){
+                                CustomSnackBar.messageSnackbar(
+                                  context,
+                                  "제목과 본문을 입력해주세요.",
+                                  EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                                );
+                                return;
+                              }
+
                               final result = await editPost(_title.text, _content.text, Get.parameters['collegeId']);
                               if (result.code == 200) {
                                 PostDetailData postDetailData = PostDetailData.fromJson(result.datas);
