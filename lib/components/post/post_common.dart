@@ -30,18 +30,18 @@ class PostDifferentList extends StatelessWidget {
   }
 }
 
-class CommentSide extends StatelessWidget {
-  int? imgCnt;
-  int? likeCnt;
-  int? commentCnt;
-  bool? active;
+class CommentSideBox extends StatelessWidget {
+  final int? imgCnt;
+  final int? likeCnt;
+  final int? commentCnt;
+  final bool? active;
 
-  CommentSide({
+  CommentSideBox({
     Key? key,
     this.imgCnt,
     this.likeCnt,
     this.commentCnt,
-    this.active,
+    required bool this.active,
   }) : super(key: key);
 
   @override
@@ -53,7 +53,7 @@ class CommentSide extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if(imgCnt != 0 )
+            if(imgCnt != 0)
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -67,12 +67,12 @@ class CommentSide extends StatelessWidget {
               padding: const EdgeInsets.only(top:2.0),
               child: Text(imgCnt?.toString() ?? '', style: CommonText.BodyEngMain11),
             ),
-            SizedBox(
-              width: 5.w,
-            ),
+            // SizedBox(
+            //   width: 5.w,
+            // ),
           ],
         ),
-            if(likeCnt != 0 && active!)
+            if(likeCnt != 0)
               Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -88,7 +88,7 @@ class CommentSide extends StatelessWidget {
             ),
           ],
         ),
-            if( commentCnt != 0 )
+        if(commentCnt != 0)
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -103,12 +103,6 @@ class CommentSide extends StatelessWidget {
               child: Text(commentCnt?.toString() ?? '', style: CommonText.BodyEngMain11),
             ),
           ],
-        ),
-        SizedBox(
-          width: 5.w,
-        ),
-        SizedBox(
-          width: 3.w,
         ),
       ]),
     );
@@ -264,7 +258,7 @@ class CommentBox extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (isShape())
-              Container(
+              SizedBox(
                   width: 25.w,
                   child: Padding(
                     padding: EdgeInsets.only(top: 6, right: 3),
@@ -276,7 +270,7 @@ class CommentBox extends StatelessWidget {
                       color: Palette.lightGray,
                     ),
                   )),
-            Container(
+            SizedBox(
                 width: isShape() ? 300.w : 325.w,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -381,7 +375,7 @@ class CommentBox extends StatelessWidget {
                           commentCreatedAt,
                           style: CommonText.BodyEngGray,
                         ),
-                        if (!isMaster())
+                        if (!isMaster() && commentLikeCnt != 0)
                           Row(
                             children: [
                               SvgPicture.asset(

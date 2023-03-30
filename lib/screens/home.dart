@@ -276,6 +276,7 @@ class MajorAreaLogin extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              if(post.postImageCnt != 0)
               Row(
                 children: [
                   Icon(
@@ -295,6 +296,7 @@ class MajorAreaLogin extends StatelessWidget {
               SizedBox(
                 width: 5.w,
               ),
+              if(post.postLikeCnt != 0)
               Row(
                 children: [
                   Icon(
@@ -314,6 +316,7 @@ class MajorAreaLogin extends StatelessWidget {
               SizedBox(
                 width: 5.w,
               ),
+              if(post.postCommentCnt != 0)
               Row(
                 children: [
                   Icon(

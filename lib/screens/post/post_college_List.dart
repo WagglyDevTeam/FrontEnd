@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:waggly/components/Post/post_common.dart';
+import 'package:waggly/components/post/post_common.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
 import 'package:waggly/widgets/imageIndicator/index.dart';
@@ -48,7 +48,7 @@ class _PostCollegeList extends State<PostCollegeList> {
   Widget build(BuildContext context) {
     final String postName = Get.parameters['collegeName'] ?? "";
     var _page = Status.boardTitle;
-    var _pageTitle = _postDetailX.bestPostOn.value ? "로딩 중" : postName;
+    var _pageTitle = _postDetailX.bestPostOn.value ? postName : postName;
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: TopAppBar(),
@@ -328,10 +328,11 @@ class PostContext extends StatelessWidget {
               Text(authorMajor ?? "", style: CommonText.BodyEngGray),
               // postCommentCnt == 0 && postLikeCnt == 0 && postImageCnt == 0 ?
               // SizedBox(width: 10.w) :
-              CommentSide(
-                commentCnt: postCommentCnt ?? 0,
-                likeCnt: postLikeCnt ?? 0,
-                imgCnt: postImageCnt ?? 0,
+              CommentSideBox(
+                imgCnt: postImageCnt,
+                likeCnt : postLikeCnt ?? 0,
+                commentCnt : postCommentCnt ?? 0,
+                active: isLikedByMe ?? false,
               )
             ],
           )

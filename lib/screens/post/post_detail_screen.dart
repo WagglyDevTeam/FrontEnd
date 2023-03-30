@@ -193,6 +193,7 @@ class _DetailContext extends State<DetailContext> {
 
   @override
   initState() {
+    print(_postDetailX.postDetail.value);
     super.initState();
     _postDetailX.updatePostId(postId);
     _postDetailX.getDetailBoard(postId);
@@ -345,7 +346,7 @@ class _DetailContext extends State<DetailContext> {
                                                           )),
                                                     ],
                                                   ),
-                                                  Obx(() => CommentSide(
+                                                  Obx(() => CommentSideBox(
                                                         imgCnt: _postDetailX.postDetail.value.postImages?.length ?? 0,
                                                         likeCnt: _postDetailX.postDetail.value.postLikeCnt ?? 0,
                                                         commentCnt: _postDetailX.postDetail.value.postCommentCnt ?? 0,
