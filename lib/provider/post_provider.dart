@@ -125,7 +125,7 @@ class PostProvider extends GetConnect {
   ///Post search APi
   Future<Response> searchPost(String keyword, int page, int size) {
     return get(
-      "${dotenv.get('BASE_URL')}/board?keyword=$keyword&page=$page&size=$size",
+      "${dotenv.get('BASE_URL')}/board/search?keyword=$keyword&page=$page&size=$size",
       headers: {"Authorization": _token!},
     );
   }

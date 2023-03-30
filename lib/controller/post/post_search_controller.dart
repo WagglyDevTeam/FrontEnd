@@ -13,6 +13,9 @@ class PostSearchController extends GetxController {
 
   final PostRepository _postRepository = PostRepository();
   final postPage = 0.obs;
+  final searchedPost = [].obs;
+  final selectIndex = 0.obs;
+  final searchResult = false.obs;
 
 
   getHistoryList(int userId){
@@ -49,9 +52,20 @@ class PostSearchController extends GetxController {
   ///search post
  Future<void> getSearchPost(String? keyword) async {
    PostSearchRequestDto searchPost = PostSearchRequestDto(keyword: keyword, page: postPage.value, size: 10 );
-   print('searchpost $keyword $postPage.value');
    WagglyResponsePaginationDto result = await _postRepository.searchBoard(searchPost);
    dynamic postJson = result.datas["posts"];
    print('post = ${postJson}');
+   searchResult.value == true;
+   if(result.status == '200'){
+     print('result value = ${searchResult.value}');
+     if(postJson != []){
+       List<PostSearchData> postData = List<PostSearchData>.from(postJson.map((x) => PostSearchData.fromJson(x)).toList());
+       searchedPost.value = postData;
+       // update();
+       // searchedPost.refresh();
+     }
+   }
+
+
  }
 }
