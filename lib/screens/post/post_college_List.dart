@@ -56,7 +56,7 @@ class _PostCollegeList extends State<PostCollegeList> {
   Widget build(BuildContext context) {
     final String postName = Get.parameters['collegeName'] ?? "";
     var _page = Status.boardTitle;
-    var _pageTitle = _postDetailX.bestPostOn.value ? "로딩 중" : postName;
+    var _pageTitle = _postDetailX.bestPostOn.value ? postName : postName;
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: TopAppBar(),
@@ -68,7 +68,13 @@ class _PostCollegeList extends State<PostCollegeList> {
                 if (snapshot.connectionState != ConnectionState.done) {
                   return SizedBox(
                     height: MediaQuery.of(context).size.height - 200.h,
-                    child: ImageIndicator(),
+                    child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ImageIndicator(),
+                    ],
+                  ),
                   );
                 } else {
                   return Obx(() => ListView.builder(
