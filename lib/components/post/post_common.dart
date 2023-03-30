@@ -50,8 +50,10 @@ class CommentSide extends StatelessWidget {
     return SizedBox(
       height: 20.h,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            if(imgCnt != 0 )
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -70,7 +72,8 @@ class CommentSide extends StatelessWidget {
             ),
           ],
         ),
-        Row(
+            if(likeCnt != 0 && active!)
+              Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(
@@ -85,9 +88,7 @@ class CommentSide extends StatelessWidget {
             ),
           ],
         ),
-        // SizedBox(
-        //   width: 5.w,
-        // ),
+            if( commentCnt != 0 )
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

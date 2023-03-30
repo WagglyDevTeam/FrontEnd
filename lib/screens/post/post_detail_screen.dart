@@ -468,7 +468,7 @@ class _PostDetailTextarea extends State<PostDetailTextarea> {
           widget.scrollController.animateTo(
             position,
             duration: Duration(milliseconds: 400),
-            curve: Curves.easeOut,
+            curve: Curves.easeInOut,
           );
         }
       }
