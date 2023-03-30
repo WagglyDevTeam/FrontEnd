@@ -330,7 +330,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                   line(),
                   ActionButton(
                       //글 검색 페이지 필요함
-                      event: () => Get.toNamed("/chatSearch"),
+                      event: () => Get.toNamed("/searchPost"),
                       isIcon: Icon(
                         Icons.search,
                         color: Palette.gray,
