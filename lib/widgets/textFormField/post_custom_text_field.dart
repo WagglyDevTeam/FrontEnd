@@ -1,37 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:waggly/utils/text_frame.dart';
 
-class CustomTextFormField extends StatelessWidget {
+class PostCustomTextField extends StatelessWidget {
   final String hint;
   final int? maxLines;
   final validator;
   final String? initialValue;
-  final controller;
+  final mainController;
+  final subController;
   final onEditingComplete;
   final onChanged;
   final focus;
+  final isActive;
 
-  CustomTextFormField({Key? key,
+  PostCustomTextField({Key? key,
     required this.hint,
     this.validator,
     this.initialValue,
-    this.controller,
+    this.mainController,
+    this.subController,
     this.maxLines,
     this.onEditingComplete,
     this.onChanged,
     this.focus,
+    this.isActive
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       style: CommonText.BodyM,
-      controller: controller,
+      controller: mainController,
       maxLines: maxLines ?? 1,
       initialValue: initialValue,
       validator: validator,
       onChanged: (value) {
-        onChanged;
+        onChanged(mainController, subController);
       },
       onEditingComplete: () {
         onEditingComplete;

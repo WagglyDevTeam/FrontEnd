@@ -52,6 +52,10 @@ class PostModal {
       },
     );
   }
+
+  ModalOff(){
+    return;
+  }
 }
 
 class ModalButton extends StatelessWidget {

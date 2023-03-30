@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:waggly/controller/chat/chat_search_controller.dart';
+import 'package:waggly/controller/post/post_search_controller.dart';
 import 'package:waggly/controller/myPage/my_profile_controller.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
+import 'package:waggly/hive/post_search_history.dart';
 import 'package:waggly/hive/user.dart';
 import 'package:waggly/provider/my_comment_provider.dart';
 import 'package:waggly/utils/colors.dart';
@@ -17,13 +18,13 @@ class PostSearchScreen extends StatelessWidget {
 
   final _searchKeyword = TextEditingController();
   final SignInController signInController = Get.put(SignInController());
-  //게시판꺼 나오면 게시판꺼로 변경해야함
-  final ChatSearchController chatSearchController = Get.put(ChatSearchController());
+  final PostSearchController postSearchController = Get.put(PostSearchController());
 
   @override
   Widget build(BuildContext context) {
     var box = Hive.box<User>('user');
     var userId = box.get('user')?.id;
+    postSearchController.toList(userId!);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -69,8 +70,7 @@ class PostSearchScreen extends StatelessWidget {
                 InkWell(
                   onTap: () async {
                     // 게시글 검색어 입력 부분, 아래 주석은 채팅 검색에서 카피한 것
-                    // final searchList = chatSearchController.searchHistoryBox.value;
-                    //
+                    final searchList = postSearchController.postSearchHistoryBox.value;
                     if (_searchKeyword.text.isEmpty) {
                       CustomSnackBar.messageSnackbar(
                         context,
@@ -79,16 +79,16 @@ class PostSearchScreen extends StatelessWidget {
                       );
                     } else {
                       int id = 0;
-                      // if (chatSearchController.historyList.isNotEmpty == true) {
-                      //   final prevItem = searchList.getAt(searchList.length - 1);
-                      //   id = prevItem!.id + 1;
-                      // }
-                      //
-                      //   chatSearchController.searchHistoryBox.value
-                      //       .add(SearchHistory(id: id, userId: userId, keyword: _searchKeyword.text));
-                      //   chatSearchController.toList(userId);
-                      //
-                      _searchKeyword.text = '';
+                      if (postSearchController.historyList.isNotEmpty == true) {
+                        final prevItem = searchList.getAt(searchList.length - 1);
+                        id = prevItem!.id + 1;
+                      }
+                        postSearchController.getSearchPost(_searchKeyword.text);
+                        postSearchController.postSearchHistoryBox.value
+                            .add(PostSearchHistory(id: id, userId: userId, keyword: _searchKeyword.text));
+                        postSearchController.toList(userId);
+                       _searchKeyword.text = '';
+                       postSearchController.searchResult.value == true;
                     }
                   },
                   child: Container(
@@ -105,14 +105,15 @@ class PostSearchScreen extends StatelessWidget {
             ),
           ), // 검색영역
           SizedBox(height: 24.0.h),
-          SizedBox(
-            height: 65.h,
-            child: SearchHistoryBox(
+          Obx (() =>  postSearchController.searchedPost.length == 0 ? SizedBox(
+              height: 64.h,
+              child: SearchHistoryBox(
               text: "최근 검색어",
-              itemList: chatSearchController.historyList,
-              // itemList: chatSearchController.getHistoryList(userId),
-            ),
-          ), // 최근 검색어
+              itemList: postSearchController.historyList,
+          )):SizedBox(
+            height: MediaQuery.of(context).size.height - 180.h,
+            child: SearchPostList(),
+          ),),
         ],
       ),
     );
@@ -225,15 +226,12 @@ class SearchHistoryBox extends StatelessWidget {
   final String text;
   final itemList;
   SignInController signInController = Get.find();
-  //chat search history
-  ChatSearchController controller = Get.find();
-
-  //dummy search list
-  //final list = ['job', 'work', 'cake'];
-  final list = [];
+  PostSearchController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    int? userId = Hive.box<User>('user').get('user')?.id;
+
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Padding(
         padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
@@ -246,122 +244,116 @@ class SearchHistoryBox extends StatelessWidget {
         ),
       ), // 타이틀
       SizedBox(height: 10.0.h),
-      if (list.isNotEmpty)
-        SizedBox(
+      Obx(() => itemList.isEmpty == true ? Padding(
+        padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
+        child: Container(
+          alignment: Alignment.centerLeft,
           height: 24.0.h,
-          child: ListView.separated(
-            itemBuilder: (item, index) {
-              return Row(
-                children: [
-                  if (index == 0) SizedBox(width: 20.0.w),
-                  Container(
-                    alignment: AlignmentDirectional(0.w, 0.h),
-                    height: 24.0.h,
-                    padding: EdgeInsets.only(left: 15.w, right: 15.w),
-                    decoration: BoxDecoration(
-                      color: Palette.candy,
-                      borderRadius: BorderRadius.circular(25.0),
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          list[index],
-                          style: CommonText.BodyM,
-                        ),
-                        SizedBox(
-                          width: 4.0.w,
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
-                            alignment: AlignmentDirectional(0.w, 0.15.h),
-                            child: Icon(Icons.close, size: 10.w),
-                          ),
-                        ),
-                      ],
-                    ),
+          child: Text(
+            '검색 내역이 존재하지 않습니다.',
+            style: CommonText.BodyMediumGray,
+          ),
+        ),
+      ):  SizedBox(
+        height: 24.0.h,
+        child: ListView.separated(
+          separatorBuilder: (BuildContext context, int index) {
+            return SizedBox(width: 7.0.h);
+          },
+          scrollDirection: Axis.horizontal,
+          itemCount: itemList.length,
+          itemBuilder: (item, index) {
+            return Row(
+              children: [
+                if (index == 0) SizedBox(width: 20.0.w),
+                Container(
+                  alignment: AlignmentDirectional(0.w, 0.h),
+                  height: 24.0.h,
+                  padding: EdgeInsets.only(left: 15.w, right: 15.w),
+                  decoration: BoxDecoration(
+                    color: Palette.candy,
+                    borderRadius: BorderRadius.circular(25.0),
                   ),
-                  if (index == list.length - 1)
-                    SizedBox(
-                      width: 20.w,
-                    )
-                ],
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return SizedBox(width: 7.0.h);
-            },
-            itemCount: list.length,
-            scrollDirection: Axis.horizontal,
-          ),
-        )
-      else if (list.isEmpty)
-        Padding(
-          padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
-          child: Container(
-            alignment: Alignment.centerLeft,
-            height: 24.0.h,
-            child: Text(
-              '검색 내역이 존재하지 않습니다.',
-              style: CommonText.BodyMediumGray,
-            ),
-          ),
-        )
+                  child: Row(
+                    children: [
+                      Text(
+                        itemList[index],
+                        style: CommonText.BodyM,
+                      ),
+                      SizedBox(
+                        width: 4.0.w,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          controller.deleteSearchHistory(index);
+                          controller.toList(userId!);
+                        },
+                        child: Container(
+                          alignment: AlignmentDirectional(0.w, 0.15.h),
+                          child: Icon(Icons.close, size: 10.w),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (index == itemList.length - 1)
+                  SizedBox(
+                    width: 20.w,
+                  )
+              ],
+            );
+          },
+        ),
+      ))
     ]);
   }
 }
 
 class SearchPostList extends StatelessWidget {
   SearchPostList({Key? key});
+  final ScrollController _scrollController = ScrollController();
+  final postDetail = Get.put(PostSearchController());
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        // padding: EdgeInsets.only(
-        //     top: 16, bottom: 16, left: 26, right: 26),
-        // decoration: BoxDecoration(
-        //     color: Colors.white,
-        //     border: Border(
-        //       top: BorderSide(
-        //           color: Palette.paper,
-        //           style: BorderStyle.solid,
-        //           width: 1),
-        //     )),
-        // child: Obx(() => PostContext(
-        //   postId:
-        //   _postDetailX.postCollegeData[postInt].postId ??
-        //       0,
-        //   postTitle: _postDetailX
-        //       .postCollegeData[postInt].postTitle ??
-        //       '',
-        //   postDesc: _postDetailX
-        //       .postCollegeData[postInt].postDesc ??
-        //       '',
-        //   postCreatedAt: _postDetailX
-        //       .postCollegeData[postInt].postCreatedAt ??
-        //       '',
-        //   authorMajor: _postDetailX
-        //       .postCollegeData[postInt].authorMajor ??
-        //       '',
-        //   postImageCnt: _postDetailX
-        //       .postCollegeData[postInt].postImageCnt ??
-        //       0,
-        //   postLikeCnt: _postDetailX
-        //       .postCollegeData[postInt].postLikeCnt ??
-        //       0,
-        //   postCommentCnt: _postDetailX
-        //       .postCollegeData[postInt].postCommentCnt ??
-        //       0,
-        //   isLikedByMe: _postDetailX
-        //       .postCollegeData[postInt].isLikedByMe ??
-        //       false,
-        //   isBlind:
-        //   _postDetailX.postCollegeData[postInt].isBlind ??
-        //       false,
-        //   postName: postName,
-        //   collegeType: _pageTitle,
-        // )),
+    return Obx(() => ListView.builder(
+      controller: _scrollController,
+      scrollDirection: Axis.vertical,
+      itemCount: postDetail.searchedPost.length,
+      itemBuilder: (BuildContext context, int index){
+        return GestureDetector(
+          child: Container(
+              padding: EdgeInsets.only(
+                  top: 16.h, bottom: 16.h, left: 26.w, right: 26.w),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    bottom: BorderSide(
+                        color: Palette.paper,
+                        style: BorderStyle.solid,
+                        width: 1),
+                  )),
+              child: Obx(() => PostContext(
+                postId: postDetail.searchedPost[index].postId ?? 0,
+                postTitle: postDetail.searchedPost[index].postTitle ?? '',
+                postDesc: postDetail.searchedPost[index].postDesc ?? '',
+                postCreatedAt: postDetail.searchedPost[index].postCreatedAt ?? '',
+                authorMajor: postDetail.searchedPost[index].authorMajor ?? '',
+                postImageCnt: postDetail.searchedPost[index].postImageCnt ?? 0,
+                postLikeCnt: postDetail.searchedPost[index].postLikeCnt ?? 0,
+                postCommentCnt: postDetail.searchedPost[index].postCommentCnt ?? 0,
+                isLikedByMe: postDetail.searchedPost[index].isLikedByMe ?? false,
+                isBlind: postDetail.searchedPost[index].isBlind ?? false,
+                isAnonymous: postDetail.searchedPost[index].isAnonymous ?? false,
+              )),
+            ),
+          onTap: (){
+            postDetail.selectIndex.value = index;
+            // Get.toNamed("/postDetail/param?postId=$postId&collegeName=$collegeType")
+          },
         );
+      },
+    ));
   }
 }
 
@@ -371,13 +363,14 @@ class PostContext extends StatelessWidget {
   int? postLikeCnt;
   int? postCommentCnt;
   bool? isLikedByMe;
+  bool? isAnonymous;
   bool? isBlind;
   String? authorMajor;
   String? postTitle;
   String? postCreatedAt;
   int? postId;
-  String? postName;
-  String? collegeType;
+  // String? postName;
+  // String? collegeType;
 
   PostContext(
       {Key? key,
@@ -390,15 +383,17 @@ class PostContext extends StatelessWidget {
       this.postLikeCnt,
       this.postCommentCnt,
       this.isLikedByMe,
+        this.isAnonymous,
       this.isBlind,
-      this.postName,
-      this.collegeType})
+      })
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {Get.toNamed("/postDetail/param?postId=$postId&collegeName=$collegeType")},
+      onTap: () => {
+       // Get.toNamed("/postDetail/param?postId=$postId&collegeName=$collegeType")
+      },
       child: Column(
         children: [
           Row(

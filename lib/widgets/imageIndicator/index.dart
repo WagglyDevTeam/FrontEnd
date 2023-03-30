@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:waggly/utils/colors.dart';
 
 class ImageIndicator extends StatefulWidget {
   ImageIndicator({Key? key}) : super(key: key);
@@ -10,45 +12,55 @@ class ImageIndicator extends StatefulWidget {
   _ImageIndicatorState createState() => _ImageIndicatorState();
 }
 
-class _ImageIndicatorState extends State<ImageIndicator> {
-  int _count = 0;
-  var imgList = [
-    "https://blog.kakaocdn.net/dn/lqgEB/btrHZpYXw7z/BhhbhA1nwpEngejDq7TVA0/img.png",
-    "https://blog.kakaocdn.net/dn/cAzaaO/btrHZD3Jlvo/P4Rec5yBcmASmqu8TVZ8xk/img.png",
-    "https://blog.kakaocdn.net/dn/dBeQ2Y/btrH1bLIQ6A/cPCBj2thwNsc94EAQvqxH0/img.png",
-    "https://blog.kakaocdn.net/dn/tklol/btrH0wW6GEw/WWmTM0sn0fVIzqFFR0iO11/img.png"
-  ];
-
-  Timer? timer;
+class _ImageIndicatorState extends State<ImageIndicator>
+  with TickerProviderStateMixin {
+  late AnimationController controller;
 
   @override
   void initState() {
-    if (mounted) {
-      Timer.periodic(const Duration(milliseconds: 500), (Timer t) {
-        final isLast = _count == imgList.length - 1;
-        setState(() => _count = isLast ? 0 : _count + 1);
-      });
-    }
-    super.initState();
+  controller = AnimationController(
+  /// [AnimationController]s can be created with `vsync: this` because of
+  /// [TickerProviderStateMixin].
+  vsync: this,
+  duration: const Duration(seconds: 5),
+  )..addListener(() {
+  setState(() {});
+  });
+  controller.repeat(reverse: true);
+  super.initState();
+  }
+
+  @override
+  void dispose() {
+  controller.dispose();
+  super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        AnimatedSwitcher(
-          duration: Duration(milliseconds: 50),
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return FadeTransition(child: child, opacity: animation);
-          },
-          child: Container(
-            child: SizedBox(width: 50.0, height: 50.0, child: Image.network(imgList[_count])),
-            key: ValueKey<int>(_count),
+    return Container(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Image.asset('assets/images/loading.png',  width: 80,),
+          SizedBox(height: 20.h),
+      Container(
+        width: MediaQuery.of(context).size.width - 200,
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(40.0))),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          child: LinearProgressIndicator(
+            backgroundColor: Palette.paper,
+            valueColor: AlwaysStoppedAnimation<Color>(Palette.purple),
+            color: Palette.purple,
+            value: controller.value,
+            minHeight: 9,
           ),
         ),
-      ],
-    );
+      ),
+    ]));
   }
 }

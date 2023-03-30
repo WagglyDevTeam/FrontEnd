@@ -18,14 +18,16 @@ import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
 import '../../controller/post/image_controller.dart';
 import '../../controller/post/post_controller.dart';
+import '../../controller/post/post_home_controller.dart';
 import '../../controller/postDetail/post_edit_controller.dart';
 import '../../model/post/dtos/post_request_dto.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
+import '../../widgets/textFormField/post_custom_text_field.dart';
 
-const double _dividerHeight = 18.0;
+const double _dividerHeight = 25.0;
 const double _titleAreaHeight = 30.0;
 const double _hashtagAreaHeight = 30.0;
 const double _buttonAreaHeight = 41.0;
@@ -38,22 +40,24 @@ const double _bottomButtonPaddingBottom = 15.0;
 class WritePage extends StatelessWidget {
   final ImageController _imageController = Get.put(ImageController());
   final PostController _postController = Get.put(PostController());
-
+  final PostHomeController _postHomeController = Get.put(PostHomeController());
   final _hashtag = SocialTextEditingController();
-  var _content = TextEditingController();
-  var _title = TextEditingController();
+  final _content = TextEditingController();
+  final _title = TextEditingController();
   final String type;
   final loginUser = Hive.box<User>('user').get('user');
 
   WritePage(this.type, {Key? key}) : super(key: key);
 
-  void buttonActivateCheck() {
-    if (_title.text.isBlank == true || _content.text.isBlank == true) {
+  void buttonActivateCheck(TextEditingController main, TextEditingController sub) {
+    String mainStr = main.text;
+    String subStr = sub.text;
+
+    if(mainStr.isEmpty || subStr.isEmpty){
       _postController.isButtonActivate.value = false;
-      // print(_postController.isButtonActivate.value);
-    } else {
+    }
+    else{
       _postController.isButtonActivate.value = true;
-      // print(_postController.isButtonActivate.value);
     }
   }
 
@@ -92,10 +96,13 @@ class WritePage extends StatelessWidget {
                     Expanded(
                       child: SizedBox(
                         height: _titleAreaHeight.h,
-                        child: CustomTextFormField(
+                        child: PostCustomTextField(
                           onChanged: buttonActivateCheck,
-                          controller: _title,
+                          mainController: _title,
+                          subController: _content,
                           hint: "제목을 입력하세요.",
+                          focus: true,
+                          isActive: _postController.isButtonActivate.value,
                         ),
                       ),
                     ),
@@ -103,28 +110,31 @@ class WritePage extends StatelessWidget {
                   ],
                 ),
               ), // 제목 영역
+              // Divider(height: _dividerHeight.h),
+              // Padding(
+              //   padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
+              //   child: SizedBox(
+              //     height: _hashtagAreaHeight.h,
+              //     child: InputHashtagField(
+              //       // onChanged: buttonActivateCheck,
+              //       controller: _hashtag,
+              //       hintText: "#해시태그를 이용하여 게시글을 소개해주세요.",
+              //       // height: hashtagAreaHeight,
+              //     ),
+              //   ),
+              // ), // 해시태그 영역
               Divider(height: _dividerHeight.h),
               Padding(
                 padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
-                child: SizedBox(
-                  height: _hashtagAreaHeight.h,
-                  child: InputHashtagField(
-                    // onChanged: buttonActivateCheck,
-                    controller: _hashtag,
-                    hintText: "#해시태그를 이용하여 게시글을 소개해주세요.",
-                    // height: hashtagAreaHeight,
-                  ),
-                ),
-              ), // 해시태그 영역
-              Divider(height: _dividerHeight.h),
-              Padding(
-                padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
-                child: CustomTextFormField(
+                child: PostCustomTextField(
                   onChanged: buttonActivateCheck,
                   // onEditingComplete: ,
                   maxLines: 15,
-                  controller: _content,
+                  subController: _title,
+                  mainController: _content,
                   hint: "내용을 입력하세요.",
+                  focus: true,
+                  isActive: _postController.isButtonActivate.value,
                 ),
               ), // 내용 영역
               Padding(
@@ -188,9 +198,27 @@ class WritePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(40),
                       ),
                       child: TextButton(
-                        onPressed: () {
-                          final result = writePost();
-                          print(result);
+                        onPressed: () async {
+                          if(!_postController.isButtonActivate.value){
+                            CustomSnackBar.messageSnackbar(
+                              context,
+                              "제목과 본문을 입력해주세요.",
+                              EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                            );
+                            return;
+                          }
+
+                          final result = await writePost(Get.parameters['collegeId']);
+                          if (result.code == 201) {
+                            _postHomeController.updateBoardCollege(Get.parameters['collegeId']);
+                            Get.back();
+                          } else {
+                            CustomSnackBar.messageSnackbar(
+                              context,
+                              result.message,
+                              EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                            );
+                          }
                         },
                         child: Text(
                           "게시글 작성하기",
@@ -227,7 +255,7 @@ class WritePage extends StatelessWidget {
         college, file, _imageController.parseToStringList()));
   }
 
-  Future<WagglyResponseDto> writePost() async {
+  Future<WagglyResponseDto> writePost(collegeId) async {
     List<MultipartFile> file = imageToMultipartFile();
     List<String> hashtags = extractHashTags(_hashtag.text);
     final box = Hive.box<User>('user');
@@ -237,7 +265,7 @@ class WritePage extends StatelessWidget {
       PostRequestDto(
         _title.text,
         _content.text,
-        "SOCIAL",
+        collegeId,
         _postController.checkBox.value,
         hashtags,
         file,
@@ -315,7 +343,7 @@ class PhotoWidget extends StatelessWidget {
 
 class TopAppBar extends StatelessWidget with PreferredSizeWidget {
   TopAppBar(type, {Key? key}) : super(key: key);
-
+  final PostHomeController _postHomeController = Get.put(PostHomeController());
   @override
   Size get preferredSize => Size.fromHeight(68.h);
 
@@ -333,23 +361,19 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1.0, color: Palette.lightGray),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    color: Palette.gray,
-                    iconSize: 20.0.sp,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1.0, color: Palette.lightGray),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  color: Palette.gray,
+                  iconSize: 20.0.sp,
+                  onPressed: () {
+                    _postHomeController.updateBoardCollege(Get.parameters['collegeId']);
+                    Get.back();
+                  },
                 ),
               ),
               SizedBox(

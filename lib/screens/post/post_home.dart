@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
-import 'package:waggly/provider/my_comment_provider.dart';
 import 'package:waggly/screens/home.dart';
 import 'package:waggly/utils/text_frame.dart';
 import '../../controller/post/post_home_controller.dart';
@@ -30,8 +29,7 @@ class PostScreen extends StatelessWidget {
         appBar: TopAppBar(),
         body: Container(
           padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 6.h, bottom: 6.h),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: <Widget>[
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: <Widget>[
             SizedBox(height: 10.h),
             Row(
               children: [
@@ -104,25 +102,14 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                 width: 155.0.w,
                 height: 36.0.h,
                 decoration: BoxDecoration(
-                  borderRadius:
-                      const BorderRadius.all(Radius.circular(40.0) // POINT
-                          ),
+                  borderRadius: const BorderRadius.all(Radius.circular(40.0) // POINT
+                      ),
                   border: Border.all(width: 1.0, color: Palette.lightGray),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    ActionButton(
-                        event: () {
-                          Get.toNamed("/writePage");
-                        },
-                        isIcon: Icon(
-                          Icons.add,
-                          color: Palette.gray,
-                          size: 18.w,
-                        )),
-                    line(),
                     ActionButton(
                         event: () => Get.toNamed("/searchPost"),
                         isIcon: Icon(
@@ -134,8 +121,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                     ActionButton(
                         event: () async {
                           // 알림 페이지로 이동
-                          await Get.put(NotificationController())
-                              .getNotification();
+                          await Get.put(NotificationController()).getNotification();
                           Get.toNamed('/notification');
                         },
                         isIcon: Icon(
@@ -148,7 +134,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
               ),
             if (signInController.checkLoggedIn().value != true)
               Container(
-                margin: EdgeInsets.only(right: 16.0.w, top: 10.h , bottom: 10.h),
+                margin: EdgeInsets.only(right: 16.0.w, top: 10.h, bottom: 10.h),
                 alignment: Alignment.center,
                 width: 60.0.w,
                 height: 24.0.h,
@@ -185,7 +171,6 @@ line() {
     ),
   );
 }
-
 
 class PostCard extends StatelessWidget {
   SignInController signInController = Get.put(SignInController());
@@ -232,9 +217,7 @@ class PostCard extends StatelessWidget {
           width: 250.w,
           padding: EdgeInsets.only(left: 15.w, top: 12.h, right: 15.h, bottom: 12.w),
           decoration: BoxDecoration(
-              color: on ? Palette.paper : Colors.white,
-              borderRadius: BorderRadius.circular(30.0),
-              border: Border.all(color: on ? Palette.paper : Palette.light, style: BorderStyle.solid, width: 1)),
+              color: on ? Palette.paper : Colors.white, borderRadius: BorderRadius.circular(30.0), border: Border.all(color: on ? Palette.paper : Palette.light, style: BorderStyle.solid, width: 1)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -247,13 +230,16 @@ class PostCard extends StatelessWidget {
                   padding: const EdgeInsets.all(5),
                   itemCount: postList?.length,
                   itemBuilder: (BuildContext context, int index) {
+                    final hourDiff = postList?[index].postCreatedAt?.difference(DateTime.now()).inHours;
                     if (page == "login") {
                       return Stack(
                         children: [
                           ListItem(
-                              category: postList?[index].majorName,
-                              title: postList?[index].postTitle,
-                              id: postList?[index].postId),
+                            category: postList?[index].majorName,
+                            title: postList?[index].postTitle,
+                            id: postList?[index].postId,
+                            hourDiff: hourDiff,
+                          ),
                           Positioned(
                               top: 1,
                               left: 1,
@@ -265,14 +251,23 @@ class PostCard extends StatelessWidget {
                                   child: Container(color: Colors.white.withOpacity(0.1)),
                                 ),
                               )),
-                          Positioned(top: 1, right: -160, child: SizedBox(height: 20, width: 200, child: NewItem()))
+                          Positioned(
+                              top: 1,
+                              right: -160,
+                              child: SizedBox(
+                                height: 20,
+                                width: 200,
+                                child: NewItem(),
+                              ))
                         ],
                       );
                     } else {
                       return ListItem(
-                          category: postList?[index].majorName,
-                          title: postList?[index].postTitle,
-                          id: postList?[index].postId);
+                        category: postList?[index].majorName,
+                        title: postList?[index].postTitle,
+                        id: postList?[index].postId,
+                        hourDiff: hourDiff,
+                      );
                     }
                   },
                 ),
@@ -285,42 +280,43 @@ class PostCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(26.0),
                 ),
                 child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 100.h,
-                        width: 120.w,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              postName!,
-                              style: on ? CommonText.TitleM : CommonText.TitleMediumWhite,
-                            ),
-                            Text(
-                              "게시판 보러가기",
-                              style: on ? CommonText.BodyS : CommonText.BodySmallWhite,
-                            )
-                          ],
-                        ),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 100.h,
+                      width: 120.w,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            postName!,
+                            style: on ? CommonText.TitleM : CommonText.TitleMediumWhite,
+                          ),
+                          Text(
+                            "게시판 보러가기",
+                            style: on ? CommonText.BodyS : CommonText.BodySmallWhite,
+                          )
+                        ],
                       ),
-                      Container(
-                        width: 45.w,
-                        height: 45.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(color: Palette.main, style: BorderStyle.solid, width: 1),
-                          color: Colors.white,
-                        ),
-                        child: Icon(
-                          Icons.play_arrow_rounded,
-                          color: Palette.main,
-                          size: 40.w,
-                        ),
-                      )
-                    ]),
+                    ),
+                    Container(
+                      width: 45.w,
+                      height: 45.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(color: Palette.main, style: BorderStyle.solid, width: 1),
+                        color: Colors.white,
+                      ),
+                      child: Icon(
+                        Icons.play_arrow_rounded,
+                        color: Palette.main,
+                        size: 40.w,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ],
           ),
@@ -330,10 +326,17 @@ class PostCard extends StatelessWidget {
 
 class ListItem extends StatelessWidget {
   SignInController signInController = Get.put(SignInController());
-  ListItem({Key? key, @required this.category, @required this.title, @required this.id}) : super(key: key);
+  ListItem({
+    Key? key,
+    @required this.category,
+    @required this.title,
+    @required this.id,
+    @required this.hourDiff,
+  }) : super(key: key);
   final category;
   final title;
   final id;
+  final hourDiff;
 
   @override
   Widget build(BuildContext context) {
@@ -354,7 +357,7 @@ class ListItem extends StatelessWidget {
                   strutStyle: StrutStyle(fontSize: 12.0.sp),
                   text: TextSpan(text: title, style: CommonText.BodyS),
                 )),
-            NewItem(),
+            if (hourDiff > -24) NewItem(),
           ]),
         ));
   }
@@ -389,8 +392,14 @@ class NewItem extends StatelessWidget {
             Positioned(
                 left: 3.w,
                 top: 5.h,
-                child:
-                    Text("N", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10.sp, color: Palette.violet))),
+                child: Text(
+                  "N",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 10.sp,
+                    color: Palette.violet,
+                  ),
+                )),
           ],
         ));
   }

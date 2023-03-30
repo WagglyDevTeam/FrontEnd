@@ -1,23 +1,28 @@
 import 'package:intl/intl.dart';
+import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 
 class PostListData {
   String majorName;
   String postTitle;
   int postId;
+  DateTime? postCreatedAt;
 
-  PostListData(
-      {required this.majorName, required this.postTitle, required this.postId});
+  PostListData({required this.majorName, required this.postTitle, required this.postId, required this.postCreatedAt});
 
-  factory PostListData.fromJson(Map<String, dynamic> json) => PostListData(
-        majorName: json["majorName"],
-        postTitle: json["postTitle"],
-        postId: json["postId"],
-      );
+  factory PostListData.fromJson(Map<String, dynamic> json) {
+    return PostListData(
+      majorName: json["majorName"],
+      postTitle: json["postTitle"],
+      postId: json["postId"],
+      postCreatedAt: DateTime.parse(json["postCreatedAt"]),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "majorName": majorName,
         "postTitle": postTitle,
         "postId": postId,
+        "postCreatedAt": postCreatedAt,
       };
 
   static fromMap(Map<String, Object> map) {}
@@ -34,10 +39,8 @@ class PostCollegeData {
     required this.collegeTypeName,
   });
 
-  factory PostCollegeData.fromJson(Map<String, dynamic> json) =>
-      PostCollegeData(
-        posts: List<PostListData>.from(
-            json["posts"].map((x) => PostListData.fromJson(x))),
+  factory PostCollegeData.fromJson(Map<String, dynamic> json) => PostCollegeData(
+        posts: List<PostListData>.from(json["posts"].map((x) => PostListData.fromJson(x))),
         collegeType: json["collegeType"],
         collegeTypeName: json["collegeTypeName"],
       );
@@ -61,17 +64,18 @@ class PostSpecificData {
   String? postCreatedAt;
   int? postId;
 
-  PostSpecificData(
-      {this.postDesc,
-      this.postImageCnt,
-      this.postLikeCnt,
-      this.postCommentCnt,
-      this.isLikedByMe,
-      this.isBlind,
-      this.authorMajor,
-      this.postTitle,
-      this.postCreatedAt,
-      this.postId});
+  PostSpecificData({
+    this.postDesc,
+    this.postImageCnt,
+    this.postLikeCnt,
+    this.postCommentCnt,
+    this.isLikedByMe,
+    this.isBlind,
+    this.authorMajor,
+    this.postTitle,
+    this.postCreatedAt,
+    this.postId,
+  });
 
   factory PostSpecificData.fromJson(Map<String, dynamic> json) {
     final DateFormat formatter = DateFormat('MM/dd HH:mm');
@@ -88,6 +92,21 @@ class PostSpecificData {
         postCreatedAt: formatter.format(DateTime.parse(json["postCreatedAt"])),
         postId: json["postId"]);
   }
+
+  factory PostSpecificData.fromPostDetailData(PostDetailData postDetailData){
+    final DateFormat formatter = DateFormat('MM/dd HH:mm');
+    return PostSpecificData(
+        postDesc: postDetailData.postDesc,
+        postImageCnt: postDetailData.postImages!.length,
+        postLikeCnt: postDetailData.postLikeCnt,
+        postCommentCnt: postDetailData.postCommentCnt,
+        isLikedByMe: postDetailData.isLikedByMe,
+        isBlind: postDetailData.isBlind,
+        authorMajor: postDetailData.authorMajor,
+        postTitle: postDetailData.postTitle,
+        postCreatedAt: postDetailData.postCreatedAt!,
+        postId: postDetailData.postId);
+  }
 }
 
 class PostCollegeDto {
@@ -96,7 +115,13 @@ class PostCollegeDto {
   int? size;
   PostCollegeDto({this.college, this.page, this.size});
   factory PostCollegeDto.fromJson(Map<String, dynamic> json) => PostCollegeDto(
-      college: json["college"], page: json["page"], size: json["size"]);
-  Map<String, dynamic> toJson() =>
-      {"college": college, "page": page, "size": size};
+        college: json["college"],
+        page: json["page"],
+        size: json["size"],
+      );
+  Map<String, dynamic> toJson() => {
+        "college": college,
+        "page": page,
+        "size": size,
+      };
 }

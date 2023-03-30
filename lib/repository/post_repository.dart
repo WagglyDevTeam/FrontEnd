@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:waggly/model/post/dtos/post_detail_dto.dart';
+import 'package:waggly/model/post/dtos/post_search_dto.dart';
 import 'package:waggly/model/post/dtos/waggly_response_pagination_dto.dart';
 import 'package:waggly/provider/post_provider.dart';
 
@@ -29,7 +30,7 @@ class PostRepository {
   Future<WagglyResponseDto> writeBoard(FormData data) async {
     Response response = await _postProvider.writeBoard(data);
     dynamic body = response.body;
-    print(body);
+    // print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
     return wagglyResponseDto;
   }
@@ -73,7 +74,7 @@ class PostRepository {
   Future<WagglyResponseDto> postComment(String? postId, CommentRequestDto data) async {
     Response response = await _postProvider.postComment(postId, data);
     dynamic body = response.body;
-    print(body);
+    // print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
 
     return wagglyResponseDto;
@@ -82,7 +83,7 @@ class PostRepository {
   Future<WagglyResponseDto> putCommentLike(int commentId, CommentLikeRequestDto data) async {
     Response response = await _postProvider.putCommentLike(commentId, data);
     dynamic body = response.body;
-    print(body);
+    // print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
     return wagglyResponseDto;
   }
@@ -90,7 +91,7 @@ class PostRepository {
   Future<WagglyResponseDto> postReComment(int commentId, ReCommentRequestDto data) async {
     Response response = await _postProvider.postReComment(commentId, data);
     dynamic body = response.body;
-    print(body);
+    // print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
 
     return wagglyResponseDto;
@@ -99,7 +100,7 @@ class PostRepository {
   Future<WagglyResponseDto> likeDetailPost(int postId, likeDetailRequestDto data) async {
     Response response = await _postProvider.likeDetailPost(postId, data);
     dynamic body = response.body;
-    print(body);
+    // print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
 
     return wagglyResponseDto;
@@ -108,18 +109,35 @@ class PostRepository {
   Future<WagglyResponseDto> PostDelete(int postId) async {
     Response response = await _postProvider.PostDelete(postId);
     dynamic body = response.body;
-    print(body);
+    // print(body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
 
     return wagglyResponseDto;
   }
 
-  Future<void> editBoard(FormData data, dynamic value) async {
+  Future<WagglyResponseDto> editBoard(FormData data, dynamic value) async {
     Response response = await _postProvider.editBoard(data, value);
     dynamic body = response.body;
-    print(body);
+    // print(body);
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+
+    return wagglyResponseDto;
     // WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
     // print(jsonEncode(wagglyResponseDto));
     // return wagglyResponseDto;
+  }
+
+  ///post search
+  Future<WagglyResponsePaginationDto> searchBoard(PostSearchRequestDto props) async {
+    Response response = await _postProvider.searchPost(props.keyword!, props.page!, props.size!);
+    dynamic body = response.body;
+    print('reuslt search $body');
+    WagglyResponsePaginationDto wagglyResponseDto = WagglyResponsePaginationDto.fromJson(body);
+    return wagglyResponseDto;
+
+  }
+
+  Future<void> deleteComment(int commentId) async {
+    await _postProvider.deleteComment(commentId);
   }
 }

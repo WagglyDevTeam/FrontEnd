@@ -1,12 +1,9 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/hive/user.dart';
 import 'package:waggly/model/post/dtos/post_detail_dto.dart';
 
-final SignInController _signInController = Get.put(SignInController());
 final _token = Hive.box<User>('user').get('user')?.jwtToken;
 final _userId = Hive.box<User>('user').get('user')?.id;
 
@@ -42,7 +39,7 @@ class PostProvider extends GetConnect {
   /// GET 특정 학과 페이지 API
   Future<Response> getBoardCollege(String college, int page, int size) {
     final box = Hive.box<User>('user');
-    print(box);
+    // print(box);
     var token = box.get('user')?.jwtToken;
     return get(
       "${dotenv.get('BASE_URL')}/board?college=$college&page=$page&size=$size",
@@ -121,6 +118,23 @@ class PostProvider extends GetConnect {
       "${dotenv.get('BASE_URL')}/board/$value",
       data,
       headers: {"Authorization": token!},
+    );
+  }
+
+
+  ///Post search APi
+  Future<Response> searchPost(String keyword, int page, int size) {
+    return get(
+      "${dotenv.get('BASE_URL')}/board/search?keyword=$keyword&page=$page&size=$size",
+      headers: {"Authorization": _token!},
+    );
+  }
+
+
+  Future<Response> deleteComment(int commentId) {
+    return delete(
+      "${dotenv.get('BASE_URL')}/comment/$commentId",
+      headers: {"Authorization": _token!},
     );
   }
 }

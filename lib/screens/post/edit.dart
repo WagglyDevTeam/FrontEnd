@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:hashtagable/hashtagable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:waggly/hive/user.dart';
+import 'package:waggly/model/post/dtos/post_college_dto.dart';
 import 'package:waggly/widgets/button/rules_button.dart';
 import 'package:waggly/widgets/textFormField/custom_text_form_field.dart';
 import 'package:waggly/widgets/textFormField/input_hashtag_field.dart';
@@ -18,14 +19,17 @@ import 'package:waggly/model/post/dtos/waggly_response_dto.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
 import '../../controller/post/image_controller.dart';
 import '../../controller/post/post_controller.dart';
+import '../../controller/post/post_home_controller.dart';
 import '../../controller/postDetail/post_edit_controller.dart';
+import '../../model/post/dtos/post_detail_dto.dart';
 import '../../model/post/dtos/post_request_dto.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/colors.dart';
 import '../../utils/text_frame.dart';
+import '../../widgets/textFormField/post_custom_text_field.dart';
 
-const double _dividerHeight = 18.0;
+const double _dividerHeight = 25.0;
 const double _titleAreaHeight = 30.0;
 const double _hashtagAreaHeight = 30.0;
 const double _buttonAreaHeight = 41.0;
@@ -38,6 +42,7 @@ const double _bottomButtonPaddingBottom = 15.0;
 class EditMyPost extends StatelessWidget {
   final ImageController _imageController = Get.put(ImageController());
   final PostController _postController = Get.put(PostController());
+  final PostHomeController _postHomeController = Get.put(PostHomeController());
 
   final _hashtag = SocialTextEditingController();
   var _content = TextEditingController();
@@ -47,10 +52,14 @@ class EditMyPost extends StatelessWidget {
 
   EditMyPost(this.type, {Key? key}) : super(key: key);
 
-  void buttonActivateCheck() {
-    if (_title.text.isBlank == true || _content.text.isBlank == true) {
+  void buttonActivateCheck(TextEditingController main, TextEditingController sub) {
+    String mainStr = main.text;
+    String subStr = sub.text;
+
+    if(mainStr.isEmpty || subStr.isEmpty){
       _postController.isButtonActivate.value = false;
-    } else {
+    }
+    else{
       _postController.isButtonActivate.value = true;
     }
   }
@@ -60,6 +69,7 @@ class EditMyPost extends StatelessWidget {
     var _page = Status.edit;
     var _os = Platform.operatingSystem;
     var _postName = "게시글 수정";
+    var isButtonActivate = true;
     final PostDetailController postDetailController = Get.put(
         PostEditController());
     _imageController.getImagesUrl(
@@ -68,6 +78,8 @@ class EditMyPost extends StatelessWidget {
         text: postDetailController.postDetail.value.postTitle);
     _content = TextEditingController(
         text: postDetailController.postDetail.value.postDesc);
+
+    _postController.isButtonActivate.value = true;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       // appBar: PageAppbar(
@@ -96,10 +108,12 @@ class EditMyPost extends StatelessWidget {
                     Expanded(
                       child: SizedBox(
                         height: _titleAreaHeight.h,
-                        child: CustomTextFormField(
+                        child: PostCustomTextField(
                           onChanged: buttonActivateCheck,
-                          controller: _title,
+                          mainController: _title,
+                          subController: _content,
                           hint: "제목을 입력하세요.",
+                          focus: true,
                         ),
                       ),
                     ),
@@ -107,28 +121,30 @@ class EditMyPost extends StatelessWidget {
                   ],
                 ),
               ), // 제목 영역
+              // Divider(height: _dividerHeight.h),
+              // Padding(
+              //   padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
+              //   child: SizedBox(
+              //     height: _hashtagAreaHeight.h,
+              //     child: InputHashtagField(
+              //       // onChanged: buttonActivateCheck,
+              //       controller: _hashtag,
+              //       hintText: "#해시태그를 이용하여 게시글을 소개해주세요.",
+              //       // height: hashtagAreaHeight,
+              //     ),
+              //   ),
+              // ), // 해시태그 영역
               Divider(height: _dividerHeight.h),
               Padding(
                 padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
-                child: SizedBox(
-                  height: _hashtagAreaHeight.h,
-                  child: InputHashtagField(
-                    // onChanged: buttonActivateCheck,
-                    controller: _hashtag,
-                    hintText: "#해시태그를 이용하여 게시글을 소개해주세요.",
-                    // height: hashtagAreaHeight,
-                  ),
-                ),
-              ), // 해시태그 영역
-              Divider(height: _dividerHeight.h),
-              Padding(
-                padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
-                child: CustomTextFormField(
+                child: PostCustomTextField(
                   onChanged: buttonActivateCheck,
                   // onEditingComplete: ,
                   maxLines: 15,
-                  controller: _content,
+                  mainController: _content,
+                  subController: _title,
                   hint: "내용을 입력하세요.",
+                  focus: true,
                 ),
               ), // 내용 영역
               Padding(
@@ -197,8 +213,28 @@ class EditMyPost extends StatelessWidget {
                             borderRadius: BorderRadius.circular(40),
                           ),
                           child: TextButton(
-                            onPressed: () {
-                              editPost(_title.text, _content.text, "SOCIAL");
+                            onPressed: () async {
+                              if(!_postController.isButtonActivate.value){
+                                CustomSnackBar.messageSnackbar(
+                                  context,
+                                  "제목과 본문을 입력해주세요.",
+                                  EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                                );
+                                return;
+                              }
+
+                              final result = await editPost(_title.text, _content.text, Get.parameters['collegeId']);
+                              if (result.code == 200) {
+                                PostDetailData postDetailData = PostDetailData.fromJson(result.datas);
+                                _postHomeController.updateBoard(PostSpecificData.fromPostDetailData(postDetailData));
+                                Get.back();
+                              } else {
+                                CustomSnackBar.messageSnackbar(
+                                  context,
+                                  result.message,
+                                  EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                                );
+                              }
                             },
                             child: Text(
                               "게시글 수정하기",
@@ -227,13 +263,15 @@ class EditMyPost extends StatelessWidget {
     return file;
   }
 
-  Future<void> editPost(title, description, college) async {
+  Future<WagglyResponseDto> editPost(title, description, college) async {
     final PostDetailController postDetailController =
     Get.put(PostEditController());
 
     List<MultipartFile> file = imageToMultipartFile();
-    await postDetailController.editBoard(PostEditRequestDto(title, description,
+    final result = await postDetailController.editBoard(PostEditRequestDto(title, description,
         college, file, _imageController.parseToStringList()));
+
+    return result;
   }
 
   Future<WagglyResponseDto> writePost() async {
@@ -431,7 +469,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              InkWell(
+              GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
                 },

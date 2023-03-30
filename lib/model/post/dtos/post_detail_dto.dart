@@ -91,6 +91,7 @@ class PostDetailData {
 class ReCommentData {
   int? replyId;
   String? replyCreatedAt;
+  String? replyDeletedAt;
   late int? replyLikeCnt;
   String? replyDesc;
   bool? isLikedByMe;
@@ -99,10 +100,12 @@ class ReCommentData {
   String? authorNickname;
   String? authorProfileImg;
   bool? isBlind;
+  bool? isAnonymous;
 
   ReCommentData({
     this.replyId,
     this.replyCreatedAt,
+    this.replyDeletedAt,
     this.replyLikeCnt,
     this.replyDesc,
     this.isLikedByMe,
@@ -111,6 +114,7 @@ class ReCommentData {
     this.authorNickname,
     this.authorProfileImg,
     this.isBlind,
+    this.isAnonymous
   });
 
   factory ReCommentData.fromJson(Map<String, dynamic> json) {
@@ -119,6 +123,7 @@ class ReCommentData {
     return ReCommentData(
         replyId: json["replyId"] as int,
         replyCreatedAt: formatter.format(DateTime.parse(json["replyCreatedAt"])),
+        replyDeletedAt: json["replyDeletedAt"] != null ? formatter.format(DateTime.parse(json["replyDeletedAt"])) : null,
         replyLikeCnt: json["replyLikeCnt"] as int,
         replyDesc: json["replyDesc"] as String,
         isLikedByMe: json["isLikedByMe"] as bool,
@@ -126,13 +131,15 @@ class ReCommentData {
         authorMajor: json["authorMajor"] as String,
         authorNickname: json["authorNickname"] as String,
         authorProfileImg: json["authorProfileImg"] as String,
-        isBlind: json["isBlind"] as bool);
+        isBlind: json["isBlind"] as bool,
+        isAnonymous: json["isAnonymous"] as bool);
   }
 }
 
 class CommentData {
   int? commentId;
   String? commentCreatedAt;
+  String? commentDeletedAt;
   late int? commentLikeCnt;
   String? commentDesc;
   bool? isLikedByMe;
@@ -141,11 +148,13 @@ class CommentData {
   String? authorNickname;
   String? authorProfileImg;
   bool? isBlind;
+  bool? isAnonymous;
   List<ReCommentData>? replies;
 
   CommentData({
     this.commentId,
     this.commentCreatedAt,
+    this.commentDeletedAt,
     this.commentLikeCnt,
     this.commentDesc,
     this.isLikedByMe,
@@ -155,6 +164,7 @@ class CommentData {
     this.authorNickname,
     this.authorProfileImg,
     this.isBlind,
+    this.isAnonymous
   });
 
   factory CommentData.fromJson(Map<String, dynamic> json) {
@@ -163,6 +173,7 @@ class CommentData {
     return CommentData(
       commentId: json["commentId"] as int,
       commentCreatedAt: formatter.format(DateTime.parse(json["commentCreatedAt"])),
+      commentDeletedAt: json["commentDeletedAt"] != null ? formatter.format(DateTime.parse(json["commentDeletedAt"])) : null,
       commentLikeCnt: json["commentLikeCnt"] as int,
       commentDesc: json["commentDesc"] as String,
       isLikedByMe: json["isLikedByMe"] as bool,
@@ -171,6 +182,7 @@ class CommentData {
       authorNickname: json["authorNickname"] as String,
       authorProfileImg: json["authorProfileImg"] as String,
       isBlind: json["isBlind"] as bool,
+      isAnonymous: json["isAnonymous"] as bool,
       replies: List<ReCommentData>.from(
          json["replies"].map((x) => ReCommentData.fromJson(x))));
   }
