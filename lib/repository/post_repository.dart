@@ -65,6 +65,7 @@ class PostRepository {
   Future<WagglyResponseDto> getDetailBoard(String boardId) async {
     Response response = await _postProvider.getDetailBoard(boardId);
     dynamic body = response.body;
+    print(response.body);
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
 
     return wagglyResponseDto;

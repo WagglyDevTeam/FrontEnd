@@ -52,8 +52,8 @@ class _SignInState extends State<SignInScreen> {
             child: Column(
               children: [
                 SignInHeader(),
-                RenderTextFormField(placeholder: '학교 이메일', controller: _emailController),
-                RenderTextFormField(placeholder: '비밀번호', controller: _passwordController),
+                RenderTextFormField(label: '학교 이메일', placeholder: 'abc@example.com', controller: _emailController),
+                RenderTextFormField(label: '비밀번호', placeholder: '비밀번호', controller: _passwordController),
                 // CustomCheckbox(text: '자동로그인'),
                 Padding(
                   padding: EdgeInsets.fromLTRB(18, 8, 18, 0),
@@ -137,10 +137,13 @@ class SignInHeader extends StatelessWidget {
           ),
           Container(
             // width: MediaQuery.of(context).size.width,
-            alignment: Alignment.topCenter,
-            child: SvgPicture.asset(
-              'assets/icons/wagleLoginBg.svg',
-              width: MediaQuery.of(context).size.width < 850 ? 270 : 500,
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(top:50.h),
+            height: 250.h,
+            child: Image.asset(
+              'assets/images/logo.png',
+             width: 211.w,
+             //width: MediaQuery.of(context).size.width < 850 ? 270 : 300,
             ),
           )
         ],

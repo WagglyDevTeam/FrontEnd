@@ -441,10 +441,13 @@ class PostContext extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(authorMajor ?? "", style: CommonText.BodyEngGray),
-              CommentSide(
-                commentCnt: postCommentCnt ?? 0,
-                likeCnt: postLikeCnt ?? 0,
-                imgCnt: postImageCnt ?? 0,
+              // postCommentCnt == 0 && postLikeCnt == 0 && postImageCnt == 0 ?
+              // SizedBox(width: 10.w) :
+              CommentSideBox(
+                imgCnt: postImageCnt,
+                likeCnt : postLikeCnt ?? 0,
+                commentCnt : postCommentCnt ?? 0,
+                active: isLikedByMe ?? false,
               )
             ],
           )
