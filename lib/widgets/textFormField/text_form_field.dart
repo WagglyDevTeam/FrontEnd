@@ -44,10 +44,13 @@ class RenderTextFormField extends StatelessWidget {
     return "${time % 60}";
   }
 
+
   @override
   Widget build(BuildContext context) {
     SignUpController _signUpController = Get.put(SignUpController());
     SignInController _signInController = Get.put(SignInController());
+    final textFieldFocusNode = FocusNode();
+
     if (mode == 'withButtonAndLabel') {
       if (label == '학교 이메일') {
         return Container(
@@ -74,7 +77,7 @@ class RenderTextFormField extends StatelessWidget {
                           controller: controller,
                           decoration: InputDecoration(
                               isDense: true,
-                              contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
+                              contentPadding: EdgeInsets.fromLTRB(5.w, 12.h, 12.w, 12.h),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                     color: _signUpController.emailValidateSuccess.value == true
@@ -88,7 +91,12 @@ class RenderTextFormField extends StatelessWidget {
                                           : Colors.red),
                                   borderRadius: BorderRadius.circular(4)),
                               hintText: placeholder,
-                              hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
+                              hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp),
+                            suffixIcon: IconButton(
+                              onPressed: controller.clear,
+                              icon: Icon(Icons.clear),
+                              color: Color.fromRGBO(218, 175, 254, 1),
+                            ),),
                           onChanged: (val) {
                             if (controller.text.isEmpty == true) {
                               _signUpController.emailInputEmpty.value = true;
@@ -102,11 +110,11 @@ class RenderTextFormField extends StatelessWidget {
                     ),
                     Obx(
                       () => Container(
-                        width: 70.w,
+                        width: 60.w,
                         margin: EdgeInsets.fromLTRB(8.w, 0.h, 0.w, 0.h),
-                        padding: EdgeInsets.fromLTRB(0.w, 3.h, 0.w, 3.h),
+                        padding: EdgeInsets.fromLTRB(0.w, 2.h, 0.w, 2.h),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(20.r),
                           border: Border.all(
                               color: _signUpController.emailInputEmpty.value == false
                                   ? Palette.main
@@ -237,7 +245,7 @@ class RenderTextFormField extends StatelessWidget {
                           controller: controller,
                           decoration: InputDecoration(
                               isDense: true,
-                              contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
+                              contentPadding: EdgeInsets.fromLTRB(6.w, 12.h, 12.w, 12.h),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                     color: _signUpController.nicknameValidateSuccess.value == true &&
@@ -269,7 +277,7 @@ class RenderTextFormField extends StatelessWidget {
                       margin: EdgeInsets.fromLTRB(8.w, 0.h, 0.w, 0.h),
                       padding: EdgeInsets.fromLTRB(0.w, 3.h, 0.w, 3.h),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(20.r),
                         border: Border.all(
                           color: Palette.main,
                         ),
@@ -421,8 +429,8 @@ class RenderTextFormField extends StatelessWidget {
                     : false,
                 decoration: InputDecoration(
                     isDense: true,
-                    contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
-                    focusedBorder: OutlineInputBorder(
+                    contentPadding: EdgeInsets.fromLTRB(5.w, 12.h, 12.w, 12.h),
+                    focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                           color: label == '인증번호'
                               ? _signUpController.certiNumValidateSuccess.value == true
@@ -450,7 +458,7 @@ class RenderTextFormField extends StatelessWidget {
                                                       : Colors.red
                                                   : Color.fromRGBO(218, 175, 254, 1)),
                     ),
-                    enabledBorder: OutlineInputBorder(
+                    enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: label == '인증번호'
                               ? _signUpController.certiNumValidateSuccess.value == true
@@ -478,7 +486,12 @@ class RenderTextFormField extends StatelessWidget {
                         ),
                         borderRadius: BorderRadius.circular(4)),
                     hintText: label == '학교' ? null : placeholder,
-                    hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp)),
+                    hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.sp),
+                  suffixIcon: IconButton(
+                    onPressed: controller.clear,
+                    icon: Icon(Icons.clear),
+                    color: Color.fromRGBO(218, 175, 254, 1),
+                  ),),
                 onTap: () {
                   if (label == '비밀번호 확인') {
                     if (_signUpController.passwordConfirmInputValue.value !=
@@ -627,6 +640,7 @@ class RenderTextFormField extends StatelessWidget {
           child: Column(
             children: [
               TextFormField(
+                focusNode: textFieldFocusNode,
                 obscureText: placeholder == '비밀번호' ? true : false,
                 autofocus: label == '학교' || label == '비밀번호' ? true : false,
                 controller: controller,
@@ -660,13 +674,15 @@ class RenderTextFormField extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4)),
                     hintText: placeholder,
                     hintStyle: TextStyle(color: Color.fromRGBO(182, 182, 182, 1), fontSize: 12.h),
-                  suffixIcon: IconButton(
+                  suffixIcon: controller.text.isEmpty == false ? IconButton(
                     onPressed: controller.clear,
                     icon: Icon(Icons.clear),
-                      color: controller.text.isEmpty == true ? Color.fromRGBO(218, 175, 254, 1) : Color.fromRGBO(218, 175, 254, 0.5),
-                  )),
-              ),
-            ],
+                      color: Color.fromRGBO(218, 175, 254, 1),
+                  ) : IconButton(
+                    onPressed: controller.clear,
+                    icon: Icon(Icons.clear),
+                    color: Palette.paper),
+                ))],
           ),
         ),
         SizedBox(
