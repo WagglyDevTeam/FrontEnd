@@ -96,7 +96,7 @@ class myNotification extends StatelessWidget {
                                     child: Checkbox(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(5)),
+                                              BorderRadius.circular(4.r)),
                                       value: controller.isAllChecked.value,
                                       onChanged: (value) {
                                         controller.changeIsAllChecked(value,
@@ -116,9 +116,8 @@ class myNotification extends StatelessWidget {
                           )
                         : Container(),
                     Container(
-                      width: 66.0.w,
-                      height: 22.0.h,
                       margin: EdgeInsets.only(left: 16.w, right: 16.w),
+                      padding: EdgeInsets.only(left: 6.w, right: 6.w, top: 3.h, bottom: 3.h),
                       child: ElevatedButton(
                         child: Text(
                           controller.isEdit.value ? "삭제하기" : "편집하기",
