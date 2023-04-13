@@ -6,8 +6,9 @@ class PostEditRequestDto{
   final String college;
   final List<MultipartFile> file;
   final List<String> deleteTargetUrl;
+  final bool? isAnonymous;
 
-  PostEditRequestDto(this.title, this.description, this.college, this.file, this.deleteTargetUrl);
+  PostEditRequestDto(this.title, this.description, this.college, this.file, this.deleteTargetUrl, this.isAnonymous);
 
   Map<String, dynamic> toJson() => {
     "title": title,
@@ -15,5 +16,6 @@ class PostEditRequestDto{
     "college": college,
     "file": file,
     "deleteTargetUrl": deleteTargetUrl,
+    "isAnonymous": isAnonymous ?? false
   };
 }

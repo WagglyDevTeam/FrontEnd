@@ -33,7 +33,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
                       borderRadius: BorderRadius.circular(3.0.w),
                     ),
                     activeColor: Palette.main,
-                    value: isChecked,
+                    value: widget.controller.checkBox.value,
                     onChanged: (value) {
                       setState(() {
                         isChecked = value!;

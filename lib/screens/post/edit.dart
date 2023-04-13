@@ -78,7 +78,7 @@ class EditMyPost extends StatelessWidget {
         text: postDetailController.postDetail.value.postTitle);
     _content = TextEditingController(
         text: postDetailController.postDetail.value.postDesc);
-
+    _postController.checkBox.value = postDetailController.postDetail.value.isAnonymous ?? false;
     _postController.isButtonActivate.value = true;
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -117,7 +117,7 @@ class EditMyPost extends StatelessWidget {
                         ),
                       ),
                     ),
-                    CustomCheckbox(controller: _postController, text: '익명'),
+                    // CustomCheckbox(controller: _postController, text: '익명'),
                   ],
                 ),
               ), // 제목 영역
@@ -269,7 +269,7 @@ class EditMyPost extends StatelessWidget {
 
     List<MultipartFile> file = imageToMultipartFile();
     final result = await postDetailController.editBoard(PostEditRequestDto(title, description,
-        college, file, _imageController.parseToStringList()));
+        college, file, _imageController.parseToStringList(), _postController.checkBox.value));
 
     return result;
   }

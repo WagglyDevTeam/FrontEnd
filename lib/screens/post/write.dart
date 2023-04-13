@@ -246,15 +246,6 @@ class WritePage extends StatelessWidget {
     return file;
   }
 
-  Future<void> editPost(title, description, college) async {
-    final PostDetailController postDetailController =
-        Get.put(PostEditController());
-
-    List<MultipartFile> file = imageToMultipartFile();
-    await postDetailController.editBoard(PostEditRequestDto(title, description,
-        college, file, _imageController.parseToStringList()));
-  }
-
   Future<WagglyResponseDto> writePost(collegeId) async {
     List<MultipartFile> file = imageToMultipartFile();
     List<String> hashtags = extractHashTags(_hashtag.text);
