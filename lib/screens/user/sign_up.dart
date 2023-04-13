@@ -340,7 +340,7 @@ class _InputState extends State<Input> {
                 mode: 'withButtonAndLabel',
                 label: '학교 이메일',
                 placeholder: 'abc@email.com',
-                buttonText: '인증하기',
+                buttonText: _signUpController.emailValidateSuccess.value == false? '재전송' : '인증하기',
                 controller: _emailInput,
                 onclick: () async {
                   final String validResult = validateEmail(_emailInput.text);

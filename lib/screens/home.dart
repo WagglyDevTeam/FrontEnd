@@ -52,12 +52,12 @@ class HomeScreen extends StatelessWidget {
           children: [
             AdvertisementArea(), // 광고영역
             SizedBox(height: 24.h),
+            TipBoxArea(),
+            SizedBox(height: 24.h),
             Obx(() => PostTitleArea(_homeController.college.value)),
             Obx(() => PostBoxArea(post: _homeController.collegeBestPost.value)),
             SizedBox(height: 24.h),
-            GroupChatRecommendTitleArea(),
-            GroupChatRecommendBoxArea(),
-            SizedBox(height: 24.h),
+            // GroupChatRecommendTitleArea(),
             PostTitleArea("다른 계열"),
             Obx(() => PostBoxArea(post: _homeController.othersBestPost.value)),
           ],
@@ -467,6 +467,102 @@ class PostTitleArea extends StatelessWidget {
           Icon(Icons.auto_awesome, color: Palette.main, size: 20.h),
         ],
       ),
+    );
+  }
+}
+class TipBoxArea extends StatelessWidget {
+  // final File? image;
+  TipBoxArea({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+     RxBool isLoggedIn = Get.put(SignInController()).isLoggedIn;
+
+    return SizedBox(
+      height: 180.h,
+      child: ListView.separated(
+          separatorBuilder: (BuildContext context, int index) {
+            return SizedBox(width: 16.0.w);
+          },
+          scrollDirection: Axis.horizontal,
+          itemCount: groupChatItem.length,
+          itemBuilder: (ctx, index) {
+            return Row(
+              children: [
+                if (index == 0) SizedBox(width: 20.0.w),
+                Container(
+                  height: 180.0.h,
+                  width: 155.0.w,
+                  padding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
+                  decoration: BoxDecoration(
+                    // color: Colors.red,
+                    borderRadius: BorderRadius.circular(20.0.r),
+                    border: Border.all(
+                      width: 0.8,
+                      color: Palette.lightGray,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.fromLTRB(5.0.w, 3.0.h, 5.0.w, 3.0.h),
+                        width: 30.w,
+                        height: 18.h,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Color(0xffFFECBC),
+                          borderRadius: BorderRadius.circular(20.0.r),
+                        ),
+                        child: Text(
+                          "꿀팁",
+                          style: TextStyle(color: Color(0xffff7a00), fontSize: 10.0.sp, fontFamily: 'NotoSansKR',),
+                        ),
+                      ),// 참여자 수 얼굴
+                      SizedBox(height: 7.h),
+                      SizedBox(
+                        child: GestureDetector(
+                          onTap: (){print('click tip');},
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                      "공강시간에 뭐할까?",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: CommonText.BodyL,
+                                    ),
+                              SizedBox(height: 5.h,),
+                              Text(
+                                "선배가 알려주는 알차게 공강 활용하는 방법",
+                                style: TextStyle(color: Color(0xff959595), fontSize: 12.0.sp, fontFamily: 'NotoSansKR',),
+                              ),
+                              SizedBox(height: 60.h,),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      // POINT
+                                      color: Palette.data,
+                                      width: 1.0,
+                                    ),),
+                                ),
+                                child: Text(
+                                  "자세히보기",
+                                  style: TextStyle(color: Palette.data, fontSize: 10.0.sp, fontFamily: 'NotoSansKR',),
+                                ),
+                              ),
+                                ],
+                              ),
+                        ),
+                      ), // 카테고리, 채팅방이름
+                    ],
+                  ),
+                ),
+                if (index == groupChatItem.length - 1) SizedBox(width: 20.0.w),
+              ],
+            );
+          }),
     );
   }
 }
