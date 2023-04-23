@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:stomp_dart_client/stomp.dart';
+import 'package:stomp_dart_client/stomp_config.dart';
+import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:waggly/components/chat/chat_bubble.dart';
 import 'package:waggly/hive/user.dart';
 import 'package:waggly/widgets/snackbar/custom_snack_bar.dart';
@@ -12,6 +17,8 @@ import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
+
+
 
 Chat chat1 = Chat(senderId: 1, message: "잘 가는거 맞나여", messageTime: DateTime(2022, 1, 2, 12, 34, 01));
 Chat chat2 = Chat(senderId: 1, message: "두번째 메시지 잘 가나여 유저1", messageTime: DateTime(2022, 1, 2, 12, 34, 02));
@@ -43,6 +50,7 @@ List<User> participantList = [];
 
 TextEditingController _chatMessageController = TextEditingController();
 User loginUser = Hive.box<User>('user').get('user')!;
+var token = loginUser.jwtToken;
 bool isOverFlow = false;
 int selectedUserId = 0;
 
@@ -61,13 +69,57 @@ class ChatRoomScreen extends StatefulWidget {
 }
 
 class _ChatRoomScreenState extends State<ChatRoomScreen> {
+
+  //chat
+  StompClient? stompClient;
+
+  final socketUrl = 'http://52.79.86.167:8080/ws-stomp';
+
+  void onConnect(StompFrame frame) {
+    print('onConnect  $frame');
+    stompClient!.subscribe( //api 구독 중이라는 뜻, unSubscribe는 챗방에서 나갈 때
+        destination: '/sub/chat/message/room/1', //roomId는 계속 바뀜
+        callback: (StompFrame frame) {  //frame 안에 저장되어있는 것들을 계속 받음. json형태로 들어옴
+          print(frame);
+          if (frame.body != null) {
+            Map<String, dynamic> obj = json.decode(frame.body!); //json형태라서 decode함
+            Message message = Message.fromJson(obj);
+            print('message  $message');
+          }});
+  }
+
+  sendMessage(){
+   var text = _chatMessageController.value.text;
+   print('text $text');
+   var sendMsg = SendMessage(roomId: 1, message: text, token: token);
+   var json = sendMsg.toJson();
+   stompClient?.send(destination: '/pub/chat/message', body: jsonEncode(json));
+  }
+
+  //이미지 보내느거 따로 하나
+
+
+
   @override
   initState() {
     super.initState();
     chatList = [chat1, chat2, chat3, chat4, chat5, chat6, chat7, chat8, chat9];
     participantList = [user1, user2];
     // print(loginUser.id);
+
+    //chat
+    //stompClient 연결안되어이씅면 실행됨
+    if (stompClient == null) {
+      stompClient = StompClient(
+          config: StompConfig.SockJS(
+            url: socketUrl, //sever url
+            onConnect: onConnect, //url 연결되면 실행되는 함수
+            onWebSocketError: (dynamic error) => print(error.toString()),
+          ));
+      stompClient!.activate(); //정상화된걸 알려줌
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -312,15 +364,16 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                               EdgeInsets.only(bottom: 45.h, left: 20.w, right: 20.w),
                             );
                           } else {
+                            sendMessage();
                             // print(chatList);
-                            Chat newChat = Chat(
-                              senderId: loginUser.id,
-                              message: _chatMessageController.text,
-                              messageTime: DateTime.now(),
-                            );
-                            setState(() {
-                              chatList.add(newChat);
-                            });
+                            // Chat newChat = Chat(
+                            //   senderId: loginUser.id,
+                            //   message: _chatMessageController.text,
+                            //   messageTime: DateTime.now(),
+                            // );
+                            // setState(() {
+                            //   chatList.add(newChat);
+                            // });
                             _chatMessageController.text = '';
                           }
                         },

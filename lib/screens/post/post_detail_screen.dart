@@ -229,6 +229,7 @@ class _DetailContext extends State<DetailContext> {
       );
     }
 
+
     return SizedBox(
         width: contentsWidth.w,
         child: FutureBuilder(
@@ -282,6 +283,8 @@ class _DetailContext extends State<DetailContext> {
                                                         shape: Shape.posting,
                                                         isMaster: false,
                                                         isAnonymous: _postDetailX.postDetail.value.isAnonymous,
+                                                    isBlind: _postDetailX.postDetail.value.isBlind,
+                                                    authorId: _postDetailX.postDetail.value.authorId,
                                                       )),
                                                   Obx(() => Text(_postDetailX.postDetail.value.postCreatedAt ?? '', style: CommonText.BodyEngGray)),
                                                 ],

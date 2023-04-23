@@ -76,6 +76,9 @@ dependencies:
   searchfield: ^0.7.0
   flutter_typeahead: ^4.1.0
 
+  #chat
+  stomp_dart_client: ^0.4.4
+
   #env
   flutter_dotenv: ^5.0.2
   easy_image_viewer: ^1.2.0

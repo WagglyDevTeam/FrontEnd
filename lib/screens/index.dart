@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/screens/chat/chat.dart';
 import 'package:waggly/screens/chat/chat_edit.dart';
+import 'package:waggly/screens/chat/chat_room_screen.dart';
 import 'package:waggly/screens/home.dart';
 import 'package:waggly/screens/user/my_page.dart';
 import 'package:waggly/screens/post/post_home.dart';
@@ -33,7 +34,7 @@ class _ScreenState extends State<Screen> {
     HomeScreen(),
     ChatEditScreen(),
     // ChatSearchScreen(),
-    ChatScreen(),
+    ChatRoomScreen(),
     // ChatRoomScreen(),
     PostScreen(),
     MyPageScreen(),
