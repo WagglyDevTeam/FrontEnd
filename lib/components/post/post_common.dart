@@ -23,7 +23,7 @@ class PostDifferentList extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemCount: widgetList.length,
           itemBuilder: (context, index) {
-        return widgetList[index];
+            return widgetList[index];
           },
         ));
   }
@@ -45,65 +45,69 @@ class CommentSideBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return SizedBox(
       height: 20.h,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if(imgCnt != 0)
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/icons/imgs.svg',
-              fit: BoxFit.scaleDown,
-              width: 16.w,
-              height: 16.h,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top:2.0),
-              child: Text(imgCnt?.toString() ?? '', style: CommonText.BodyEngMain11),
-            ),
-            // SizedBox(
-            //   width: 5.w,
-            // ),
-          ],
-        ),
-            if(likeCnt != 0)
+            if (imgCnt != 0)
               Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              active! ? 'assets/icons/sentiment_fill.svg': 'assets/icons/sentiment.svg',
-              fit: BoxFit.scaleDown,
-              width: 16.w,
-              height: 16.h,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top:2.0),
-              child: Text(likeCnt?.toString() ?? '', style: CommonText.BodyEngMain11),
-            ),
-          ],
-        ),
-        if(commentCnt != 0)
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/icons/commentRectangle.svg',
-              fit: BoxFit.scaleDown,
-              width: 16.w,
-              height: 16.h,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 2.0),
-              child: Text(commentCnt?.toString() ?? '', style: CommonText.BodyEngMain11),
-            ),
-          ],
-        ),
-      ]),
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons/imgs.svg',
+                    fit: BoxFit.scaleDown,
+                    width: 16.w,
+                    height: 16.h,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2.0),
+                    child: Text(imgCnt?.toString() ?? '',
+                        style: CommonText.BodyEngMain11),
+                  ),
+                  // SizedBox(
+                  //   width: 5.w,
+                  // ),
+                ],
+              ),
+            if (likeCnt != 0)
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    active!
+                        ? 'assets/icons/sentiment_fill.svg'
+                        : 'assets/icons/sentiment.svg',
+                    fit: BoxFit.scaleDown,
+                    width: 16.w,
+                    height: 16.h,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2.0),
+                    child: Text(likeCnt?.toString() ?? '',
+                        style: CommonText.BodyEngMain11),
+                  ),
+                ],
+              ),
+            if (commentCnt != 0)
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons/commentRectangle.svg',
+                    fit: BoxFit.scaleDown,
+                    width: 16.w,
+                    height: 16.h,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2.0),
+                    child: Text(commentCnt?.toString() ?? '',
+                        style: CommonText.BodyEngMain11),
+                  ),
+                ],
+              ),
+          ]),
     );
   }
 }
@@ -127,6 +131,8 @@ class CommentBox extends StatelessWidget {
   final bool isLikedByMe;
   final CommentShape shape;
   final int postAuthorId;
+  final bool postAnonymous;
+
   CommentBox({
     Key? key,
     required this.authorId,
@@ -143,6 +149,7 @@ class CommentBox extends StatelessWidget {
     required this.isLikedByMe,
     required this.shape,
     required this.postAuthorId,
+    required this.postAnonymous,
   }) : super(key: key);
 
   /// 댓글 , 대댓글 구분
@@ -179,7 +186,10 @@ class CommentBox extends StatelessWidget {
   /// 댓글 or 대댓글 좋아요 이벤트
   void commentLike() {
     if (!isShape()) {
-      _postDetailX.updateLikeBoardComment(commentId: commentId, commentLikeCnt: commentLikeCnt, isLikedByMe: isLikedByMe);
+      _postDetailX.updateLikeBoardComment(
+          commentId: commentId,
+          commentLikeCnt: commentLikeCnt,
+          isLikedByMe: isLikedByMe);
     } else {
       _postDetailX.updateLikeBoardCommentReply(commentId: commentId);
     }
@@ -205,7 +215,8 @@ class CommentBox extends StatelessWidget {
     if (_postDetailX.selectCommentEvent.value.commentId == commentId) {
       _postDetailX.selectCommentReplyOn(commentId: 0, name: '');
     } else {
-      _postDetailX.selectCommentReplyOn(commentId: commentId, name: authorNickname);
+      _postDetailX.selectCommentReplyOn(
+          commentId: commentId, name: authorNickname);
     }
   }
 
@@ -230,25 +241,50 @@ class CommentBox extends StatelessWidget {
   Widget ButtonList(BuildContext context) {
     return Column(
       children: [
-        if (isAuthor()) ModalButton(title: '삭제하기', event: () => commentDelete(context)),
+        if (isAuthor())
+          ModalButton(title: '삭제하기', event: () => commentDelete(context)),
         if (isMaster()) ModalButton(title: '신고하기', event: commentReport),
       ],
     );
+  }
+
+  bool Withdrawal() {
+    if (authorNickname == '탈퇴자') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool shapePostion() {
+    if (shape == Shape.posting) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     double modalHeight = modalTop();
     String title = '더보기';
-    PostModal modalOn = PostModal(context: context, contents: ButtonList(context), height: modalHeight, title: title);
+    PostModal modalOn = PostModal(
+        context: context,
+        contents: ButtonList(context),
+        height: modalHeight,
+        title: title);
     if (commentDeletedAt == null) {
       return Obx(() => Container(
-          padding: EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
+          padding:
+              EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
           width: 380.w,
           decoration: BoxDecoration(
               color: changeColor(),
               border: Border(
-                top: BorderSide(color: isShape() ? Colors.white : Palette.paper, style: BorderStyle.solid, width: 1),
+                top: BorderSide(
+                    color: isShape() ? Colors.white : Palette.paper,
+                    style: BorderStyle.solid,
+                    width: 1),
               )),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,83 +311,119 @@ class CommentBox extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          AuthorForm(
-                            image: authorProfileImg,
-                            nickName: authorNickname,
-                            major: authorMajor,
-                            shape: Shape.comment,
-                            isMaster: isMaster(),
-                            isAnonymous: isAnonymous,
+                          //댓글 글쓴이 이름부분
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: shapePostion() ? 15 : 13,
+                                backgroundImage: Withdrawal()
+                                    ? null
+                                    : NetworkImage(authorProfileImg!),
+                                backgroundColor: Palette.data,
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                  Withdrawal()
+                                      ? '(알수없음)'
+                                      : isMaster()
+                                          ? postAnonymous == true
+                                              ? '익명(글쓴이)'
+                                              : '글쓴이'
+                                          : authorNickname!,
+                                  style: Withdrawal()
+                                      ? CommonText.BodyM
+                                      : shapePostion()
+                                          ? CommonText.TitleS
+                                          : isMaster()
+                                              ? CommonText.BodyMediumPurple
+                                              : CommonText.BodyM),
+                              SizedBox(
+                                width: 6,
+                              ),
+                              Text(authorMajor!,
+                                  style: shapePostion()
+                                      ? CommonText.LabelGray
+                                      : CommonText.BodyXSmallGray),
+                            ],
                           ),
                           Container(
                             width: !isShape() ? 76.w : 50.w,
-                            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 3.w, vertical: 2.h),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              border: Border.all(width: 1.0, color: Palette.lightGray),
+                              border: Border.all(
+                                  width: 1.0, color: Palette.lightGray),
                               borderRadius: BorderRadius.circular(30),
                             ),
-                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                              //*좋아요 기능*/
-                              SizedBox(
-                                  width: 16,
-                                  height: 16,
-                                  child: IconButton(
-                                    padding: EdgeInsets.all(0),
-                                    icon: SvgPicture.asset(
-                                      'assets/icons/sentiment.svg',
-                                      fit: BoxFit.scaleDown,
-                                      width: 10,
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  //*좋아요 기능*/
+                                  SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: IconButton(
+                                        padding: EdgeInsets.all(0),
+                                        icon: SvgPicture.asset(
+                                          'assets/icons/sentiment.svg',
+                                          fit: BoxFit.scaleDown,
+                                          width: 10,
+                                          height: 10,
+                                          color: Palette.violet,
+                                        ),
+                                        onPressed: commentLike,
+                                      )),
+                                  if (!isShape())
+                                    Container(
+                                      width: 1,
                                       height: 10,
-                                      color: Palette.violet,
+                                      color: Palette.lightGray,
                                     ),
-                                    onPressed: commentLike,
-                                  )),
-                              if (!isShape())
-                                Container(
-                                  width: 1,
-                                  height: 10,
-                                  color: Palette.lightGray,
-                                ),
-                              //*대댓글 기능*/
-                              if (!isShape())
-                                SizedBox(
-                                    width: 16,
-                                    height: 16,
+                                  //*대댓글 기능*/
+                                  if (!isShape())
+                                    SizedBox(
+                                        width: 16,
+                                        height: 16,
+                                        child: IconButton(
+                                          padding: EdgeInsets.all(0),
+                                          icon: SvgPicture.asset(
+                                            'assets/icons/commentRectangle.svg',
+                                            fit: BoxFit.scaleDown,
+                                            width: 10,
+                                            height: 10,
+                                            color: Palette.violet,
+                                          ),
+                                          onPressed: () {
+                                            replyEventOn();
+                                            inputOn();
+                                          },
+                                        )),
+                                  Container(
+                                    width: 1,
+                                    height: 10,
+                                    color: Palette.lightGray,
+                                  ),
+                                  //*댓글 more 기능*/
+                                  SizedBox(
+                                    width: 10,
+                                    height: 10,
                                     child: IconButton(
                                       padding: EdgeInsets.all(0),
-                                      icon: SvgPicture.asset(
-                                        'assets/icons/commentRectangle.svg',
-                                        fit: BoxFit.scaleDown,
-                                        width: 10,
-                                        height: 10,
-                                        color: Palette.violet,
-                                      ),
+                                      icon: Icon(Icons.more_horiz),
+                                      iconSize: 10,
+                                      color: Palette.violet,
                                       onPressed: () {
-                                        replyEventOn();
-                                        inputOn();
+                                        modalOn.ModalOn();
                                       },
-                                    )),
-                              Container(
-                                width: 1,
-                                height: 10,
-                                color: Palette.lightGray,
-                              ),
-                              //*댓글 more 기능*/
-                              SizedBox(
-                                width: 10,
-                                height: 10,
-                                child: IconButton(
-                                  padding: EdgeInsets.all(0),
-                                  icon: Icon(Icons.more_horiz),
-                                  iconSize: 10,
-                                  color: Palette.violet,
-                                  onPressed: () {
-                                    modalOn.ModalOn();
-                                  },
-                                ),
-                              )
-                            ]),
+                                    ),
+                                  )
+                                ]),
                           )
                         ],
                       ),
@@ -396,12 +468,16 @@ class CommentBox extends StatelessWidget {
           )));
     } else {
       return Obx(() => Container(
-          padding: EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
+          padding:
+              EdgeInsets.only(top: 12.h, bottom: 12.h, left: 16.w, right: 16.w),
           width: 380.w,
           decoration: BoxDecoration(
               color: changeColor(),
               border: Border(
-                top: BorderSide(color: isShape() ? Colors.white : Palette.paper, style: BorderStyle.solid, width: 1),
+                top: BorderSide(
+                    color: isShape() ? Colors.white : Palette.paper,
+                    style: BorderStyle.solid,
+                    width: 1),
               )),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -482,7 +558,10 @@ class AuthorForm extends StatelessWidget {
         SizedBox(
           width: 6,
         ),
-        Text(major!, style: shapePostion() ? CommonText.LabelGray : CommonText.BodyXSmallGray),
+        Text(major!,
+            style: shapePostion()
+                ? CommonText.LabelGray
+                : CommonText.BodyXSmallGray),
       ],
     );
   }

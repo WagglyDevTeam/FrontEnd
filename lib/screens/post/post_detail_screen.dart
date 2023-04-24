@@ -398,6 +398,7 @@ class _DetailContext extends State<DetailContext> {
                                                 isLikedByMe: _postDetailX.boardComment[commentInt].isLikedByMe ?? false,
                                                 shape: CommentShape.top,
                                                 postAuthorId: _postDetailX.postDetail.value.authorId ?? 0,
+                                            postAnonymous: _postDetailX.postDetail.value.isAnonymous ?? false,
                                               )),
                                           Obx(
                                             () => ListView.builder(
@@ -426,6 +427,7 @@ class _DetailContext extends State<DetailContext> {
                                                         isLikedByMe: _postDetailX.boardComment[commentInt].replies?[repliesInt].isLikedByMe ?? false,
                                                         shape: CommentShape.bottom,
                                                         postAuthorId: _postDetailX.postDetail.value.authorId ?? 0,
+                                                        postAnonymous: _postDetailX.postDetail.value.isAnonymous ?? false,
                                                       ));
                                                 }),
                                           ),
