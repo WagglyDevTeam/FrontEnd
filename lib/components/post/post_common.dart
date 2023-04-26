@@ -282,6 +282,8 @@ class CommentBox extends StatelessWidget {
                             shape: Shape.comment,
                             isMaster: isMaster(),
                             isAnonymous: isAnonymous,
+                            isBlind: isBlind,
+                            authorId: authorId,
                           ),
                           Container(
                             width: !isShape() ? 76.w : 50.w,
@@ -440,6 +442,8 @@ class AuthorForm extends StatelessWidget {
   final Shape? shape;
   final bool? isMaster;
   final bool? isAnonymous;
+  final bool? isBlind;
+  final int? authorId;
 
   AuthorForm({
     Key? key,
@@ -449,7 +453,15 @@ class AuthorForm extends StatelessWidget {
     required this.shape,
     required this.isMaster,
     required this.isAnonymous,
+    required this.isBlind,
+    required this.authorId,
   }) : super(key: key);
+
+  bool isAuthor() {
+    final box = Hive.box<User>('user');
+    var meId = box.get('user')?.id;
+    return meId == authorId ? true : false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -465,13 +477,10 @@ class AuthorForm extends StatelessWidget {
           width: 8,
         ),
         Text(
+          //탈퇴자라면?
             Withdrawal()
-                ? '(알수없음)'
-                : isMaster!
-                    ? isAnonymous == true
-                        ? nickName!
-                        : '글쓴이'
-                    : nickName!,
+                ? '(알수없음)' :
+            nickName == '익명' ? isMaster! ? '익명(글쓴이)' : '글쓴이' : nickName!,
             style: Withdrawal()
                 ? CommonText.BodyM
                 : shapePostion()
