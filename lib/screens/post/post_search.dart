@@ -44,9 +44,11 @@ class PostSearchScreen extends StatelessWidget {
                     style: CommonText.BodyM,
                     controller: _searchKeyword,
                     maxLines: 1,
+                    maxLength: 10,
                     onEditingComplete: () {},
                     autocorrect: false,
                     decoration: InputDecoration(
+                      counterText:'',
                       contentPadding: EdgeInsets.only(
                         left: 10.0.w,
                         right: 20.0.w,
@@ -109,7 +111,7 @@ class PostSearchScreen extends StatelessWidget {
               height: 64.h,
               child: SearchHistoryBox(
               text: "최근 검색어",
-              itemList: postSearchController.historyList,
+              itemList:postSearchController.historyList,
           )):SizedBox(
             height: MediaQuery.of(context).size.height - 180.h,
             child: SearchPostList(),
@@ -119,6 +121,7 @@ class PostSearchScreen extends StatelessWidget {
     );
   }
 }
+
 
 class TopAppBar extends StatelessWidget with PreferredSizeWidget {
   TopAppBar({super.key});
@@ -228,6 +231,7 @@ class SearchHistoryBox extends StatelessWidget {
   SignInController signInController = Get.find();
   PostSearchController controller = Get.find();
 
+
   @override
   Widget build(BuildContext context) {
     int? userId = Hive.box<User>('user').get('user')?.id;
@@ -285,7 +289,7 @@ class SearchHistoryBox extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          controller.deleteSearchHistory(index);
+                          controller.deleteSearchHistory(itemList.length - 1 - index);
                           controller.toList(userId!);
                         },
                         child: Container(

@@ -17,31 +17,33 @@ class PostSearchController extends GetxController {
   final selectIndex = 0.obs;
   final searchResult = false.obs;
 
-
-  getHistoryList(int userId){
-    return postSearchHistoryBox.value.values.where((el) => el.userId == userId).toList();
-  }
-
-  void addSearchHistory(int id, int userId, String keyword) async {
-    await postSearchHistoryBox.value.add(PostSearchHistory(id: id, userId: userId, keyword: keyword));
-  }
+  //
+  // getHistoryList(int userId){
+  //   return postSearchHistoryBox.value.values.where((el) => el.userId == userId).toList();
+  // }
+  //
+  // void addSearchHistory(int id, int userId, String keyword) async {
+  //   await postSearchHistoryBox.value.add(PostSearchHistory(id: id, userId: userId, keyword: keyword));
+  // }
 
   void deleteSearchHistory(int id) async{
+    print('id $id');
     await postSearchHistoryBox.value.deleteAt(id);
   }
 
   void toList(int userId){
     historyList.clear();
     for(var item in postSearchHistoryBox.value.values.where((element) => element.userId == userId)){
-      historyList.add(item.keyword);
-      historyList.reversed;
+      print('길이 $historyList');
+      historyList.insert(0, item.keyword);
+      historyList;
     }
   }
 
-  void updateList(int userId) async{
-    historyList.clear();
-    toList(userId);
-  }
+  // void updateList(int userId) async{
+  //   historyList.clear();
+  //   toList(userId);
+  // }
 
   @override
   void onInit() async {
@@ -54,7 +56,7 @@ class PostSearchController extends GetxController {
    PostSearchRequestDto searchPost = PostSearchRequestDto(keyword: keyword, page: postPage.value, size: 10 );
    WagglyResponsePaginationDto result = await _postRepository.searchBoard(searchPost);
    dynamic postJson = result.datas["posts"];
-   print('post = ${postJson}');
+
    searchResult.value == true;
    if(result.status == '200'){
      print('result value = ${searchResult.value}');
