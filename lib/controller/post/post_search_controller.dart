@@ -34,7 +34,9 @@ class PostSearchController extends GetxController {
   void toList(int userId){
     historyList.clear();
     for(var item in postSearchHistoryBox.value.values.where((element) => element.userId == userId)){
-      print('길이 $historyList');
+      if(historyList.length == 10){
+        historyList.removeLast();
+      }
       historyList.insert(0, item.keyword);
       historyList;
     }

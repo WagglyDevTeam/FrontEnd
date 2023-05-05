@@ -85,12 +85,15 @@ class PostSearchScreen extends StatelessWidget {
                         final prevItem = searchList.getAt(searchList.length - 1);
                         id = prevItem!.id + 1;
                       }
+                        //검색어 찾아오기
                         postSearchController.getSearchPost(_searchKeyword.text);
+                        //검색어 하이브에 더하기
                         postSearchController.postSearchHistoryBox.value
                             .add(PostSearchHistory(id: id, userId: userId, keyword: _searchKeyword.text));
+                        //검색어 가져오기
                         postSearchController.toList(userId);
                        _searchKeyword.text = '';
-                       postSearchController.searchResult.value == true;
+                        postSearchController.searchResult.value == true;
                     }
                   },
                   child: Container(
