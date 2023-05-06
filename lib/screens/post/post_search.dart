@@ -8,7 +8,6 @@ import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
 import 'package:waggly/hive/post_search_history.dart';
 import 'package:waggly/hive/user.dart';
-import 'package:waggly/provider/my_comment_provider.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/snackbar/custom_snack_bar.dart';
@@ -25,6 +24,7 @@ class PostSearchScreen extends StatelessWidget {
     var box = Hive.box<User>('user');
     var userId = box.get('user')?.id;
     postSearchController.toList(userId!);
+    postSearchController.searchResult.value = false;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -37,7 +37,7 @@ class PostSearchScreen extends StatelessWidget {
             child: Row(
               children: [
                 SizedBox(
-                  width: 250.0.w,
+                  width: MediaQuery.of(context).size.width - 80.w,
                   height: 36.0.h,
                   child: TextField(
                     textAlignVertical: TextAlignVertical.center,
@@ -49,6 +49,7 @@ class PostSearchScreen extends StatelessWidget {
                     autocorrect: false,
                     decoration: InputDecoration(
                       counterText:'',
+                      hintText: '게시글 검색',
                       contentPadding: EdgeInsets.only(
                         left: 10.0.w,
                         right: 20.0.w,
@@ -56,69 +57,83 @@ class PostSearchScreen extends StatelessWidget {
                       ),
                       isDense: true,
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Palette.paperLow,
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Palette.main, width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(color: Palette.lightGray, width: 1.0),
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Palette.lavender, width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(color: Palette.lightGray, width: 1.0),
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
                   ),
                 ),
                 Expanded(child: SizedBox()),
-                InkWell(
-                  onTap: () async {
-                    // 게시글 검색어 입력 부분, 아래 주석은 채팅 검색에서 카피한 것
-                    final searchList = postSearchController.postSearchHistoryBox.value;
-                    if (_searchKeyword.text.isEmpty) {
-                      CustomSnackBar.messageSnackbar(
-                        context,
-                        "검색어를 입력해주세요.",
-                        EdgeInsets.only(bottom: 60.h, left: 20.w, right: 20.w),
-                      );
-                    } else {
-                      int id = 0;
-                      if (postSearchController.historyList.isNotEmpty == true) {
-                        final prevItem = searchList.getAt(searchList.length - 1);
-                        id = prevItem!.id + 1;
-                      }
-                        //검색어 찾아오기
-                        postSearchController.getSearchPost(_searchKeyword.text);
-                        //검색어 하이브에 더하기
-                        postSearchController.postSearchHistoryBox.value
-                            .add(PostSearchHistory(id: id, userId: userId, keyword: _searchKeyword.text));
-                        //검색어 가져오기
-                        postSearchController.toList(userId);
-                       _searchKeyword.text = '';
-                        postSearchController.searchResult.value == true;
-                    }
-                  },
-                  child: Container(
+                  Container(
                       alignment: Alignment.center,
-                      width: 70.0.w,
+                      width: 36.0.w,
                       height: 36.0.h,
                       decoration: BoxDecoration(
-                        border: Border.all(width: 1.0, color: Palette.lavender),
-                        borderRadius: BorderRadius.circular(10.0),
+                        color: Palette.purple,
+                        border: Border.all(color: Palette.purple),
+                        shape: BoxShape.circle,
                       ),
-                      child: Text("검색하기", style: CommonText.BodyMediumMain)),
+                      //child: Text("검색하기", style: CommonText.BodyMediumMain)),
+                    child: IconButton(
+                        onPressed: (){
+                          postSearchController.getInPage.value = false;
+                          final searchList = postSearchController.postSearchHistoryBox.value;
+                          if (_searchKeyword.text.isEmpty) {
+                            CustomSnackBar.messageSnackbar(
+                              context,
+                              "검색어를 입력해주세요.",
+                              EdgeInsets.only(bottom: 60.h, left: 20.w, right: 20.w),
+                            );
+                          } else {
+
+                            int id = 0;
+                            if (postSearchController.historyList.isNotEmpty == true) {
+                              final prevItem = searchList.getAt(searchList.length - 1);
+                              id = prevItem!.id + 1;
+                            }
+                            //검색어 찾아오기
+                            postSearchController.getSearchPost(_searchKeyword.text);
+                            //검색어 하이브에 더하기
+                            postSearchController.postSearchHistoryBox.value
+                                .add(PostSearchHistory(id: id, userId: userId, keyword: _searchKeyword.text));
+                            //검색어 가져오기
+                            postSearchController.toList(userId);
+                            _searchKeyword.text = '';
+                          }
+                        },
+                        icon: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: 18.w,
+                    )),
                 ),
               ],
             ),
           ), // 검색영역
-          SizedBox(height: 24.0.h),
-          Obx (() =>  postSearchController.searchedPost.length == 0 ? SizedBox(
-              height: 64.h,
+          SizedBox(height: 15.0.h),
+          Obx(() => postSearchController.getInPage.value == true ? SizedBox(
+              height: postSearchController.historyList.length == 0 ? MediaQuery.of(context).size.height - 250.h : 30.h,
               child: SearchHistoryBox(
-              text: "최근 검색어",
               itemList:postSearchController.historyList,
-          )):SizedBox(
-            height: MediaQuery.of(context).size.height - 180.h,
-            child: SearchPostList(),
-          ),),
+          )):
+              SizedBox(
+                height: MediaQuery.of(context).size.height - 180.h,
+                child: postSearchController.searchedPost.length == 0 ? SearchBlank() :SearchPostList(),),),
+         //  Obx (() =>
+         // SizedBox(
+         //     height: MediaQuery.of(context).size.height - 180.h,
+         //     child: postSearchController.searchedPost.length == 0 ? SearchBlank() :SearchPostList(),),
+         //  // SizedBox(
+         //  //   height: MediaQuery.of(context).size.height - 180.h,
+         //  //   child: SearchPostList(),
+         //  // ),
+         //  ),
         ],
       ),
     );
@@ -225,11 +240,9 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
 class SearchHistoryBox extends StatelessWidget {
   SearchHistoryBox({
     Key? key,
-    required this.text,
     required this.itemList,
   }) : super(key: key);
 
-  final String text;
   final itemList;
   SignInController signInController = Get.find();
   PostSearchController controller = Get.find();
@@ -240,25 +253,13 @@ class SearchHistoryBox extends StatelessWidget {
     int? userId = Hive.box<User>('user').get('user')?.id;
 
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Padding(
-        padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
-        child: Container(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            text,
-            style: CommonText.TitleS,
-          ),
-        ),
-      ), // 타이틀
-      SizedBox(height: 10.0.h),
       Obx(() => itemList.isEmpty == true ? Padding(
         padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
         child: Container(
-          alignment: Alignment.centerLeft,
-          height: 24.0.h,
+          alignment: Alignment.center,
           child: Text(
             '검색 내역이 존재하지 않습니다.',
-            style: CommonText.BodyMediumGray,
+            style: CommonText.BodyB,
           ),
         ),
       ):  SizedBox(
@@ -362,6 +363,25 @@ class SearchPostList extends StatelessWidget {
       },
     ));
   }
+}
+
+
+class SearchBlank extends StatelessWidget{
+  SearchBlank({Key? key});
+  final ScrollController _scrollController = ScrollController();
+  final postDetail = Get.put(PostSearchController());
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Text('찾으시는 검색 결과가 없어요', style: CommonText.BodyB ),
+        ],
+      ),
+    );
+  }
+
 }
 
 class PostContext extends StatelessWidget {

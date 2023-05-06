@@ -16,6 +16,7 @@ class PostSearchController extends GetxController {
   final searchedPost = [].obs;
   final selectIndex = 0.obs;
   final searchResult = false.obs;
+  final getInPage = true.obs;
 
   //
   // getHistoryList(int userId){
@@ -50,6 +51,7 @@ class PostSearchController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    getInPage.value = true;
   }
 
 
@@ -59,7 +61,6 @@ class PostSearchController extends GetxController {
    WagglyResponsePaginationDto result = await _postRepository.searchBoard(searchPost);
    dynamic postJson = result.datas["posts"];
 
-   searchResult.value == true;
    if(result.status == '200'){
      print('result value = ${searchResult.value}');
      if(postJson != []){
