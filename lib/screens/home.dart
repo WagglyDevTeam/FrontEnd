@@ -32,9 +32,6 @@ double appbarHeight = 68.0.h;
 class HomeScreen extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
 
-  // final String _pageTitle = "와글리";
-  // final Status _page = Status.editAlarmOnly;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
