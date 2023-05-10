@@ -5,6 +5,7 @@ import 'package:waggly/screens/chat/chat.dart';
 import 'package:waggly/screens/chat/chat_edit.dart';
 import 'package:waggly/screens/chat/chat_room_screen.dart';
 import 'package:waggly/screens/home.dart';
+import 'package:waggly/screens/matchFilter/filter.dart';
 import 'package:waggly/screens/user/my_page.dart';
 import 'package:waggly/screens/post/post_home.dart';
 import 'package:waggly/utils/colors.dart';
@@ -32,7 +33,8 @@ class _ScreenState extends State<Screen> {
   int screenIndex = 0;
   List<Widget> screenList = <Widget>[
     HomeScreen(),
-    ChatEditScreen(),
+    //ChatEditScreen(),
+    FilterScreen(),
     // ChatSearchScreen(),
     ChatRoomScreen(),
     // ChatRoomScreen(),
