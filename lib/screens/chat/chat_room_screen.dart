@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:waggly/components/chat/chat_bubble.dart';
 import 'package:waggly/hive/user.dart';
+import 'package:waggly/screens/chat/chat_room_detail_screen.dart';
 import 'package:waggly/widgets/snackbar/custom_snack_bar.dart';
 import 'package:waggly/controller/post/image_controller.dart';
 import 'package:waggly/model/chat/chat.dart';
@@ -18,25 +19,14 @@ Chat chat2 = Chat(senderId: 1, message: "두번째 메시지 잘 가나여 유�
 Chat chat3 = Chat(senderId: 25, message: "유저2 메시지 첫번째", messageTime: DateTime(2022, 1, 2, 12, 34, 03));
 Chat chat4 = Chat(senderId: 25, message: "시간 잘 뜨나요?", messageTime: DateTime(2022, 1, 2, 12, 34, 04));
 Chat chat5 = Chat(senderId: 25, message: "잘 없어지나요 시간?", messageTime: DateTime(2022, 1, 2, 12, 35, 05));
-Chat chat6 =
-    Chat(senderId: 25, message: "테스트트테스트트 긴 텍스트 테스트트트트 너비 잘 나오나 테스트트트?", messageTime: DateTime(2022, 1, 2, 12, 36, 06));
+Chat chat6 = Chat(senderId: 25, message: "테스트트테스트트 긴 텍스트 테스트트트트 너비 잘 나오나 테스트트트?", messageTime: DateTime(2022, 1, 2, 12, 36, 06));
 Chat chat7 = Chat(senderId: 1, message: "이제 그만 보내", messageTime: DateTime(2022, 1, 2, 12, 37, 07));
 Chat chat8 = Chat(senderId: 1, message: "그만 보내라고", messageTime: DateTime(2022, 1, 2, 12, 37, 08));
 Chat chat9 = Chat(senderId: 25, message: "알았써 ð", messageTime: DateTime(2022, 1, 2, 12, 38, 56));
 User user1 = User(
-    id: 1,
-    nickName: "유저1",
-    university: "가나다대학교",
-    classNumber: 22,
-    major: "소맥황금비율학과",
-    profileImg: "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/08fdac1f-1577-486b-84e7-06d235cdd3eb.png");
+    id: 1, nickName: "유저1", university: "가나다대학교", classNumber: 22, major: "소맥황금비율학과", profileImg: "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/08fdac1f-1577-486b-84e7-06d235cdd3eb.png");
 User user2 = User(
-    id: 25,
-    nickName: "유저2",
-    university: "가나다대학교",
-    classNumber: 22,
-    major: "주정차단속학과",
-    profileImg: "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/cfa56b43-a2c3-45b7-ae3b-9f5be44f1692.png");
+    id: 25, nickName: "유저2", university: "가나다대학교", classNumber: 22, major: "주정차단속학과", profileImg: "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/cfa56b43-a2c3-45b7-ae3b-9f5be44f1692.png");
 
 List<Chat> chatList = [];
 List<User> participantList = [];
@@ -77,7 +67,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: TopAppBar(),
-      endDrawer: endDrawer(),
       body: SafeArea(
         child: Column(
           children: [
@@ -205,8 +194,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                               datetime: chatList[index].messageTime!,
                               isMyMessage: loginUser.id == chatList[index].senderId,
                               isSameTime: chatList[index].senderId == chatList[index - 1].senderId &&
-                                  DateFormat('MM/dd HH:mm').format(chatList[index].messageTime!) ==
-                                      DateFormat('MM/dd HH:mm').format(chatList[index - 1].messageTime!),
+                                  DateFormat('MM/dd HH:mm').format(chatList[index].messageTime!) == DateFormat('MM/dd HH:mm').format(chatList[index - 1].messageTime!),
                               isSamePerson: false,
                               isSameDate: false,
                             ),
@@ -223,8 +211,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                               isMyMessage: loginUser.id == chatList[index].senderId,
                               isSameTime: false,
                               isSamePerson: chatList[index].senderId == chatList[index + 1].senderId,
-                              isSameDate:
-                                  chatList[index].messageTime!.weekday == chatList[index + 1].messageTime!.weekday,
+                              isSameDate: chatList[index].messageTime!.weekday == chatList[index + 1].messageTime!.weekday,
                             ),
                           ],
                         );
@@ -237,11 +224,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                               datetime: chatList[index].messageTime!,
                               isMyMessage: loginUser.id == chatList[index].senderId,
                               isSameTime: chatList[index].senderId == chatList[index - 1].senderId &&
-                                  DateFormat('MM/dd HH:mm').format(chatList[index].messageTime!) ==
-                                      DateFormat('MM/dd HH:mm').format(chatList[index - 1].messageTime!),
+                                  DateFormat('MM/dd HH:mm').format(chatList[index].messageTime!) == DateFormat('MM/dd HH:mm').format(chatList[index - 1].messageTime!),
                               isSamePerson: chatList[index].senderId == chatList[index + 1].senderId,
-                              isSameDate:
-                                  chatList[index].messageTime!.weekday == chatList[index + 1].messageTime!.weekday,
+                              isSameDate: chatList[index].messageTime!.weekday == chatList[index + 1].messageTime!.weekday,
                             ),
                           ],
                         );
@@ -550,7 +535,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               InkWell(
-                onTap: (){
+                onTap: () {
                   Navigator.pop(context);
                 },
                 child: Container(
@@ -575,44 +560,43 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
             ],
           ),
           actions: [
-              Container(
-                width: 120.w,
-                // color: Colors.red,
-                padding: EdgeInsets.fromLTRB(10.w, 15.h, 20.w, 5.h),
-                child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(40.0) // POINT
-                      ),
-                      border: Border.all(width: 1.0, color: Palette.lightGray),
+            Container(
+              width: 120.w,
+              // color: Colors.red,
+              padding: EdgeInsets.fromLTRB(10.w, 15.h, 20.w, 5.h),
+              child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(40.0) // POINT
+                        ),
+                    border: Border.all(width: 1.0, color: Palette.lightGray),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ActionButton(
+                            event: () {
+                              // print("여기눌러졌다 검색버튼");
+                            },
+                            isIcon: Icon(
+                              Icons.search,
+                              color: Palette.gray,
+                              size: 18,
+                            )),
+                        Line(),
+                        ActionButton(
+                            event: () => Get.to(ChatRoomDetailScreen()),
+                            isIcon: Icon(
+                              Icons.more_horiz,
+                              color: Palette.gray,
+                              size: 18,
+                            )),
+                      ],
                     ),
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          ActionButton(
-                              event: () {
-                                // print("여기눌러졌다 검색버튼");
-                              },
-                              isIcon: Icon(
-                                Icons.search,
-                                color: Palette.gray,
-                                size: 18,
-                              )),
-                          Line(),
-                          ActionButton(
-                              event: () => Scaffold.of(context).openEndDrawer(),
-                              isIcon: Icon(
-                                Icons.more_horiz,
-                                color: Palette.gray,
-                                size: 18,
-                              )),
-                        ],
-
-                      ),
-                    )),
-              ),
+                  )),
+            ),
           ],
         ),
       ],

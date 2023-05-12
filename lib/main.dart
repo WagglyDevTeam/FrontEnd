@@ -18,6 +18,7 @@ import 'package:waggly/hive/search_history.dart';
 import 'package:waggly/hive/user.dart';
 import 'package:waggly/screens/chat/chat.dart';
 import 'package:waggly/screens/chat/chat_edit.dart';
+import 'package:waggly/screens/chat/chat_room_detail_screen.dart';
 import 'package:waggly/screens/chat/chat_room_screen.dart';
 import 'package:waggly/screens/chat/chat_search.dart';
 import 'package:waggly/screens/groupChat/group_chat_create.dart';
@@ -53,7 +54,7 @@ void main() async {
   Hive.registerAdapter(PostHistoryAdapter());
   await Hive.openBox<User>("user", encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey!)));
   await Hive.openBox<SearchHistory>('searchHistory', encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey)));
-  await Hive.openBox<PostSearchHistory>('postSearchHistory', encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey!)));
+  await Hive.openBox<PostSearchHistory>('postSearchHistory', encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey)));
   Get.put(HomeController());
   Get.put(SignInController());
   runApp(HeroApp());
@@ -137,7 +138,8 @@ class HeroApp extends StatelessWidget {
             GetPage(name: "/findPassword", page: () => FindPasswordScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/chatRoom", page: () => ChatRoomScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/chatCreate", page: () => GroupChatCreatePage(), transition: Transition.rightToLeft),
-            GetPage(name: "/chatSearch", page: () => ChatSearchScreen(), transition: Transition.rightToLeft)
+            GetPage(name: "/chatSearch", page: () => ChatSearchScreen(), transition: Transition.rightToLeft),
+            GetPage(name: "/chatRoomDetail", page: () => ChatRoomDetailScreen(), transition: Transition.rightToLeft)
           ],
         );
       },

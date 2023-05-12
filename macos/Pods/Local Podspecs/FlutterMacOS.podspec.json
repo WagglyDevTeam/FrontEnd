@@ -1,5 +1,5 @@
 {
-  "name": "Flutter",
+  "name": "FlutterMacOS",
   "version": "1.0.0",
   "summary": "A UI toolkit for beautiful and fast apps.",
   "homepage": "https://flutter.dev",
@@ -14,7 +14,7 @@
     "tag": "1.0.0"
   },
   "platforms": {
-    "ios": "11.0"
+    "osx": "10.11"
   },
   "vendored_frameworks": "path/to/nothing"
 }

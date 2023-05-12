@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
-import 'package:waggly/screens/chat/chat.dart';
 import 'package:waggly/screens/chat/chat_edit.dart';
 import 'package:waggly/screens/home.dart';
 import 'package:waggly/screens/user/my_page.dart';
@@ -11,6 +10,7 @@ import 'package:waggly/widgets/snackbar/custom_snack_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../controller/post/post_controller.dart';
+import 'chat/chat_room_screen.dart';
 
 class Screen extends StatefulWidget {
   Screen({Key? key}) : super(key: key);
@@ -33,8 +33,8 @@ class _ScreenState extends State<Screen> {
     HomeScreen(),
     ChatEditScreen(),
     // ChatSearchScreen(),
-    ChatScreen(),
-    // ChatRoomScreen(),
+    // ChatScreen(),
+    ChatRoomScreen(),
     PostScreen(),
     MyPageScreen(),
   ];
