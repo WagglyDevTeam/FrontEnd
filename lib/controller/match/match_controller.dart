@@ -8,6 +8,4 @@ class MatchFilterController extends GetxController{
   final questionTwo = 2.obs;
 
 
-
-
 }

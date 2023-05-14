@@ -54,6 +54,11 @@ class FilterMain extends StatelessWidget {
             fontFamily: 'NotoSansKR_Bold',),),
           SizedBox(height: 30.h,),
           Container(
+            child:Image.asset(
+              'assets/wagglyImg/filter_entrance.png',
+          ),),
+          SizedBox(height: 30.h,),
+          Container(
             width: double.infinity,
             height: 40.h,
             decoration: BoxDecoration(
@@ -120,7 +125,24 @@ class QuestionOne extends StatelessWidget {
               color: Colors.black,
               fontFamily: 'NotoSansKR_Bold',),),
             SizedBox(width: 5.w),
-            Text("icon")
+            Container(
+                width: 17.w,
+                height: 17.h,
+                padding: EdgeInsets.all(0),
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1.0, color: Palette.lightGray),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                      icon: Icon(Icons.question_mark),
+                      color: Palette.gray,
+                      iconSize: 10.0.sp,
+                      onPressed: () {
+                       print('add click event');
+                      },
+                    ),
+              ),
           ],
         ),
         SizedBox(height: 5.h),
@@ -411,13 +433,19 @@ class QuestionTwo extends StatelessWidget {
 class QuestionThree extends StatelessWidget {
   const QuestionThree({Key? key}) : super(key: key);
 
+  final double runSpacing = 4;
+  final double spacing = 12;
+  final int listSize = 7;
+  final columns = 5;
+
   @override
   Widget build(BuildContext context) {
     MatchFilterController controller = Get.put(MatchFilterController());
     List<String> theme = ["학업", "자유", "스터디", "생활", "취업", "취미", "기타"];
 
-    return Expanded(
-      child: Column(
+    final w = (MediaQuery.of(context).size.width - runSpacing * (columns - 1)) / columns;
+
+    return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -441,42 +469,45 @@ class QuestionThree extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 35.h),
-                Expanded(
-                  child: GridView.builder(
-                          padding: EdgeInsets.all(16.0.r),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            mainAxisSpacing: 7.w,
-                            crossAxisSpacing: 7.h,
-                          ),
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              child: Container(
-                                child: Center(
-                                  child: Text(
-                                      theme[index]),
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  border: Border.all(
-                                    width: 1.0.w,
-                                    // color: controller.selected.value == index
-                                    //     ? Palette.main
-                                    //     : Palette.lightGray
-                                      color: Palette.lightGray
+                Center(
+                  child: SingleChildScrollView(
+                    child: Wrap(
+                      runSpacing: runSpacing,
+                      spacing: spacing,
+                      alignment: WrapAlignment.center,
+                      children: List.generate(listSize, (index) {
+                        return InkWell(
+                          child: Container(
+                            width: w,
+                            height: w,
+                            margin: EdgeInsets.only(bottom: 5.h),
+                            child: Center(
+                              child: Text(
+                                  theme[index]),
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              border: Border.all(
+                                  width: 1.0.w,
+                                  // color: controller.selected.value == index
+                                  //     ? Palette.main
+                                  //     : Palette.lightGray
+                                  color: Palette.lightGray
 
-                                  ),
-                                ),
                               ),
-                              onTap: () {
-                              },
-                            );
+                            ),
+                          ),
+                          onTap: () {
+                            print(theme[index]);
                           },
-                          itemCount: theme.length,
-                        ),
-                      ),
-                SizedBox(height: 15.h,),
+                        );
+                      }),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 25.h,),
                 SlideIndicator(),
+                SizedBox(height: 40.h,),
                 Container(
                       width: double.infinity,
                       height: 40.h,
@@ -497,7 +528,6 @@ class QuestionThree extends StatelessWidget {
                       ),
                     ),
               ],
-            ),
     );
   }
 }
