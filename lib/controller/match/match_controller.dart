@@ -7,5 +7,9 @@ class MatchFilterController extends GetxController{
   final questionOne = 1.obs;
   final questionTwo = 2.obs;
 
+  final answerOne = 0.obs;
+  final selectedThemeList = [].obs;
+
+
 
 }

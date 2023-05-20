@@ -173,8 +173,7 @@ class QuestionOne extends StatelessWidget {
               ),
             ),
             onPressed: (){
-              controller.reFilter.value = false;
-              controller.state.value = 2;
+              controller.answerOne.value = 1;
             },
           ),
         ),
@@ -196,8 +195,7 @@ class QuestionOne extends StatelessWidget {
               ),
             ),
             onPressed: (){
-              controller.reFilter.value = true;
-              controller.state.value = 2;
+              controller.answerOne.value = 2;
             },
           ),
         ),
@@ -219,8 +217,7 @@ class QuestionOne extends StatelessWidget {
               ),
             ),
             onPressed: (){
-              controller.reFilter.value = true;
-              controller.state.value = 2;
+              controller.answerOne.value = 3;
             },
           ),
         ),
@@ -283,10 +280,19 @@ class QuestionOne extends StatelessWidget {
 class QuestionTwo extends StatelessWidget {
   const QuestionTwo({Key? key}) : super(key: key);
 
+  final double runSpacing = 4;
+  final double spacing = 12;
+  final int listSize = 4;
+  final columns = 5;
+
   @override
   Widget build(BuildContext context) {
     MatchFilterController controller = Get.put(MatchFilterController());
-    return Column(
+
+    List<String> QuestionTheme = ["학업", "취업", "스터디", "기타"];
+    final w = (MediaQuery.of(context).size.width - runSpacing * (columns - 1)) / columns;
+
+    return controller.answerOne == 1 ? Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -425,6 +431,90 @@ class QuestionTwo extends StatelessWidget {
             ),
           ],
         )
+      ],
+    ) :
+    Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Q2", style: TextStyle(
+          fontSize: 16.0.sp,
+          color: Colors.black,
+          fontFamily: 'NotoSansKR_Bold',),),
+        SizedBox(height: 5.h),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('소통하고 싶은 주제를 골라주세요', style: TextStyle(
+              fontSize: 16.0.sp,
+              color: Colors.black,
+              fontFamily: 'NotoSansKR_Bold',),),
+            SizedBox(height: 5.h),
+            Text('세개까지 중복 선택이 가능해요', style: TextStyle(
+              fontSize: 10.0.sp,
+              color: Palette.gray,
+              fontFamily: 'NotoSansKR',),),
+          ],
+        ),
+        SizedBox(height: 35.h),
+        Center(
+          child: SingleChildScrollView(
+            child: Wrap(
+              runSpacing: runSpacing,
+              spacing: spacing,
+              alignment: WrapAlignment.center,
+              children: List.generate(listSize, (index) {
+                return InkWell(
+                  child: Container(
+                    width: w,
+                    height: w,
+                    margin: EdgeInsets.only(bottom: 5.h),
+                    child: Center(
+                      child: Text(
+                          QuestionTheme[index]),
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      border: Border.all(
+                          width: 1.0.w,
+                          // color: controller.selected.value == index
+                          //     ? Palette.main
+                          //     : Palette.lightGray
+                          color: Palette.lightGray
+
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    print(QuestionTheme[index]);
+                  },
+                );
+              }),
+            ),
+          ),
+        ),
+        SizedBox(height: 25.h,),
+        SlideIndicator(),
+        SizedBox(height: 40.h,),
+        Container(
+          width: double.infinity,
+          height: 40.h,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(26),
+            color: Palette.lightGray,),
+          child: TextButton(
+            child: Text(
+              '선택 완료',
+              style: TextStyle(
+                color:Palette.gray,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            onPressed: (){
+            },
+          ),
+        ),
       ],
     );
   }
