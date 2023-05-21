@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:waggly/components/Post/post_common.dart';
+import 'package:waggly/components/post/post_common.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
 import 'package:waggly/widgets/imageIndicator/index.dart';
@@ -69,12 +69,12 @@ class _PostCollegeList extends State<PostCollegeList> {
                   return SizedBox(
                     height: MediaQuery.of(context).size.height - 200.h,
                     child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ImageIndicator(),
-                    ],
-                  ),
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ImageIndicator(),
+                      ],
+                    ),
                   );
                 } else {
                   return Obx(() => ListView.builder(
@@ -188,9 +188,10 @@ class _PostCollegeList extends State<PostCollegeList> {
                           } else {
                             /**일반 글*/
                             return GestureDetector(
-                                onTap: (){
+                                onTap: () {
                                   _postDetailX.selectIndex.value = index;
-                                  Get.toNamed("/postDetail/param?postId=${_postDetailX.postCollegeData[postInt].postId ?? 0}&collegeName=$_pageTitle&collegeId=${Get.parameters['collegeId']}");
+                                  Get.toNamed(
+                                      "/postDetail/param?postId=${_postDetailX.postCollegeData[postInt].postId ?? 0}&collegeName=$_pageTitle&collegeId=${Get.parameters['collegeId']}");
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(
@@ -261,6 +262,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
   final _postDetailX = Get.put(PostHomeController());
   final String postName = Get.parameters['collegeName'] ?? "";
   final box = Hive.box<User>('user');
+
   @override
   Size get preferredSize => Size.fromHeight(68.h);
 
@@ -322,18 +324,19 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  if(box.get('user')!.college == Get.parameters['collegeId'])
-                  ActionButton(
-                      event: () {
-                        Get.toNamed("/writePage/param?&collegeId=${Get.parameters['collegeId']}");
-                      },
-                      isIcon: Icon(
-                        Icons.add,
-                        color: Palette.gray,
-                        size: 18.w,
-                      )),
-                  if(box.get('user')!.college == Get.parameters['collegeId'])
-                  line(),
+                  if (box.get('user')!.college == Get.parameters['collegeId'])
+                    ActionButton(
+                        event: () {
+                          Get.toNamed(
+                              "/writePage/param?&collegeId=${Get.parameters['collegeId']}");
+                        },
+                        isIcon: Icon(
+                          Icons.add,
+                          color: Palette.gray,
+                          size: 18.w,
+                        )),
+                  if (box.get('user')!.college == Get.parameters['collegeId'])
+                    line(),
                   ActionButton(
                       //글 검색 페이지 필요함
                       event: () => Get.toNamed("/searchPost"),
@@ -445,8 +448,8 @@ class PostContext extends StatelessWidget {
               // SizedBox(width: 10.w) :
               CommentSideBox(
                 imgCnt: postImageCnt,
-                likeCnt : postLikeCnt ?? 0,
-                commentCnt : postCommentCnt ?? 0,
+                likeCnt: postLikeCnt ?? 0,
+                commentCnt: postCommentCnt ?? 0,
                 active: isLikedByMe ?? false,
               )
             ],
