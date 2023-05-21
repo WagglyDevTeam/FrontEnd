@@ -1,9 +1,13 @@
 
 
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:waggly/controller/match/match_controller.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 
@@ -13,34 +17,73 @@ class MatchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> resultList = [{'id': 1,'name': '블루킹', 'sex': 'm', 'image': 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb1uc4y%2FbtsgEcYJewm%2FykOSovJlMrmwZ0TfuidXok%2Fimg.png', 'profileImg': 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F03GIu%2FbtsgTjhD9dk%2FxacFN5SlkNhIlgLEABmbKk%2Fimg.png', 'major': '18학번 컴퓨터공학과', 'purpose': ['학업', '취미', '기타'], 'type':'소통'}];
+    MatchFilterController controller = Get.put(MatchFilterController());
+    final ScrollController _scrollController = ScrollController();
+
+    List<Map> resultList = [
+      {'id': 1,
+        'name': '블루킹',
+        'gender': 'm',
+        'image': 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb1uc4y%2FbtsgEcYJewm%2FykOSovJlMrmwZ0TfuidXok%2Fimg.png',
+        'profileImg': 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F03GIu%2FbtsgTjhD9dk%2FxacFN5SlkNhIlgLEABmbKk%2Fimg.png',
+        'major': '18학번 컴퓨터공학과',
+        'purpose': ['학업', '취미', '기타'],
+       'type':'소통'
+      },
+    ];
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: TopAppBar(),
-      body: Result(),
+      body: SizedBox(
+       height: MediaQuery.of(context).size.height,
+        child: ListView.builder(
+            controller: _scrollController,
+            scrollDirection: Axis.horizontal,
+            itemCount: resultList.length,
+            itemBuilder: (context, index) {
+              return Result(
+                  type: resultList[index]['type'] ?? '',
+                  name: resultList[index]['name']?? '',
+                  image: resultList[index]['image']?? '',
+                  profileImage: resultList[index]['profileImg']?? '',
+                  gender: resultList[index]['gender']?? '',
+              );
+            }
+        ),
+      ),
     );
   }
 }
 
 
-class TopAppBar extends StatelessWidget with PreferredSizeWidget {
-  const TopAppBar({super.key});
+class Result extends StatelessWidget {
+  String? type;
+  String? name;
+  String? image;
+  String? profileImage;
+  String? gender;
 
-  @override
-  Size get preferredSize => Size.fromHeight(68.h);
+
+  Result({Key? key,
+    required this.type,
+    required this.name,
+    required this.image,
+    required this.profileImage,
+    required this.gender,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        AppBar(
-          elevation: 0,
-          centerTitle: false,
-          backgroundColor: Colors.white,
-          automaticallyImplyLeading: false,
-          title: Row(
+    return Container(
+      padding: EdgeInsets.only(right: 16.w, left: 16.w),
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        color: Color(0xffE1F4FF),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -50,8 +93,8 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(width: 1.0, color: Palette.lightGray),
                     borderRadius: BorderRadius.circular(50),
+                    color: Colors.white,
                   ),
                   child: IconButton(
                     icon: Icon(Icons.arrow_back),
@@ -69,72 +112,147 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
               Container(padding: EdgeInsets.only(bottom: 3.h), child: Text("친구 찾기", style: CommonText.BodyL))
             ],
           ),
-        ),
-      ],
-    );
-  }
-}
-
-class Result extends StatelessWidget {
-  const Result({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          children: [
-            Text('소통'),
-            Text('#학업 #취직 #기타'),
-          ],
-        ),
-        Container(
-          child: Text('img'),
-        ),
-        Column(
-          children: [
-            Text('블루킹'),
-            Text('18학번 컴퓨터 공학과'),
-          ],
-        ),
-        Container(
-          child:Column(
+          SizedBox(height: 50.h,),
+          Container(
+            width: 160.w,
+            height: 30.h,
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 40.w,
+                  height: 20.h,
+                  padding: EdgeInsets.only(top: 3.h),
+                  decoration: BoxDecoration(
+                    color: Palette.main,
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                    child: Text(type ?? '', style: TextStyle( color: Colors.white),textAlign: TextAlign.center,)
+                ),
+                SizedBox(width: 5.w,),
+                Row(
+                  children: [
+                    Text('#학업'),
+                    SizedBox(width: 5.w,),
+                    Text('#취직'),
+                    SizedBox(width: 5.w,),
+                    Text('#기타'),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 50.h,),
+          Container(
+                width: MediaQuery.of(context).size.width - 120.w,
+                child: Image.network(image ?? '', ),
+          ),
+          SizedBox(height: 20.h,),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('img'),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text('소통'),
-                          Text('블루킹'),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('#학업'),
-                          Text('#취직'),
-                          Text('#기타'),
-                        ],
-                      )
-                    ],
+                  Text(name ?? '', style: TextStyle(
+                  fontFamily: "NotoSansKR",
+                  fontSize: 30.sp,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.black)),
+                  SizedBox(width: 8.w,),
+                  SizedBox(
+                    width: 18.w,
+                    child: gender == 'm' ?
+                    Image.network('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcpRiY6%2FbtsgDM0jeS8%2FfswSWzcDW6UrgUd7DMeTuk%2Fimg.png')
+                        : Image.network('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FExVRa%2FbtsgFux3o4z%2F0CqXZ6EHWkXbXL4l9hcgG0%2Fimg.png'),
                   )
                 ],
               ),
-              Container(
-                child: TextButton(
-                  onPressed: () {  },
-                  child: Text('신청 보내기'),
-                ),
-              )
+              SizedBox(height: 8.h,),
+              Text('18학번 컴퓨터 공학과'),
             ],
           ),
-        )
+          SizedBox(height: 30.h),
+          Container(
+            width: MediaQuery.of(context).size.width - 32.w,
+            padding: EdgeInsets.only(top:15.h, bottom: 15.h, right: 20.w, left: 20.w),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            child:Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 58.w,
+                      child: Image.network(profileImage ?? ''),
+                    ),
+                    SizedBox(width: 10.w,),
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                                width: 40.w,
+                                height: 20.h,
+                                padding: EdgeInsets.only(top: 3.h),
+                                decoration: BoxDecoration(
+                                  color: Palette.main,
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: Text(type ?? '', style: TextStyle( color: Colors.white),textAlign: TextAlign.center,)
+                            ),
+                            SizedBox(width: 5.w,),
+                            Text(name ?? '', style: CommonText.TitleS,),
+                          ],
+                        ),
+                        SizedBox(height: 5.h,),
+                        Row(
+                          children: [
+                            SizedBox(width: 15.w,),
+                            Text('#학업'),
+                            SizedBox(width: 5.w,),
+                            Text('#취직'),
+                            SizedBox(width: 5.w,),
+                            Text('#기타'),
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                SizedBox(height: 10.h,),
+                Container(
+                  width: double.infinity,
+                  height: 40.h,
+                  decoration: BoxDecoration(
+                    color: Palette.main,
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  child: TextButton(
+                    onPressed: () {  },
+                    child: Text('신청 보내기', style: CommonText.BodyMediumWhite),
+                  ),
+                )
+              ],
+            ),
+          )
 
-      ],
+        ],
+      ),
     );
   }
 }
