@@ -22,6 +22,7 @@ import 'package:waggly/screens/chat/chat_room_screen.dart';
 import 'package:waggly/screens/chat/chat_search.dart';
 import 'package:waggly/screens/groupChat/group_chat_create.dart';
 import 'package:waggly/screens/matchFilter/filter.dart';
+import 'package:waggly/screens/matchFilter/match.dart';
 import 'package:waggly/screens/post/edit.dart';
 import 'package:waggly/screens/post/write.dart';
 import 'package:waggly/screens/post/post_search.dart';
@@ -139,7 +140,8 @@ class HeroApp extends StatelessWidget {
             GetPage(name: "/chatRoom", page: () => ChatRoomScreen(), transition: Transition.rightToLeft),
             GetPage(name: "/chatCreate", page: () => GroupChatCreatePage(), transition: Transition.rightToLeft),
             GetPage(name: "/chatSearch", page: () => ChatSearchScreen(), transition: Transition.rightToLeft),
-            GetPage(name: "/matchFilter", page: () => FilterScreen(), transition: Transition.rightToLeft)
+            GetPage(name: "/matchFilter", page: () => FilterScreen(), transition: Transition.rightToLeft),
+            GetPage(name: "/matchResult", page: () => MatchScreen(), transition: Transition.rightToLeft)
           ],
         );
       },

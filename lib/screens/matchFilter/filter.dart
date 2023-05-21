@@ -53,10 +53,9 @@ class FilterMain extends StatelessWidget {
             color: Colors.black,
             fontFamily: 'NotoSansKR_Bold',),),
           SizedBox(height: 30.h,),
-          Container(
-            child:Image.asset(
-              'assets/wagglyImg/filter_entrance.png',
-          ),),
+          Image.network(
+            'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbET2gR%2FbtsgDMMNDqp%2FB1k6bKkhD7Cye7pVEcsBzK%2Fimg.png',
+          ),
           SizedBox(height: 30.h,),
           Container(
             width: double.infinity,
@@ -156,71 +155,77 @@ class QuestionOne extends StatelessWidget {
           color: Palette.gray,
           fontFamily: 'NotoSansKR',),),
         SizedBox(height: 30.h,),
-        Container(
-          width: double.infinity,
-          height: 40.h,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(26),
-            border: Border.all(width: 1.0, color: Palette.lightGray),
-            color: Colors.white,),
-          child: TextButton(
-            child: Text(
-              '편하게 소통할 수 있는 친구를 찾고 있어요',
-              style: TextStyle(
-                color:Colors.black,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
+        Obx(() => InkWell(
+          child: Container(
+            width: double.infinity,
+            height: 40.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(26),
+              border: Border.all(width: 1.0, color: Palette.lightGray),
+              color: controller.answerOne.value == 1 ? Palette.main : Colors.white),
+            child: TextButton(
+              child: Text(
+                '편하게 소통할 수 있는 친구를 찾고 있어요',
+                style: TextStyle(
+                  color:controller.answerOne.value == 1 ? Colors.white : Colors.black,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
+              onPressed: (){
+                controller.answerOne.value = 1;
+              },
             ),
-            onPressed: (){
-              controller.answerOne.value = 1;
-            },
           ),
-        ),
+        )),
         SizedBox(height: 15.h,),
-        Container(
-          width: double.infinity,
-          height: 40.h,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(26),
-            border: Border.all(width: 1.0, color: Palette.lightGray),
-            color: Colors.white,),
-          child: TextButton(
-            child: Text(
-              '도움을 줄 수 있는 멘토가 되고 싶어요',
-              style: TextStyle(
-                color:Colors.black,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
+        Obx(() => InkWell(
+          child: Container(
+            width: double.infinity,
+            height: 40.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(26),
+              border: Border.all(width: 1.0, color: Palette.lightGray),
+              color:  controller.answerOne.value == 2 ? Palette.main : Colors.white),
+            child: TextButton(
+              child: Text(
+                '도움을 줄 수 있는 멘토가 되고 싶어요',
+                style: TextStyle(
+                  color:controller.answerOne.value == 2? Colors.white : Colors.black,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
+              onPressed: (){
+                controller.answerOne.value = 2;
+              },
             ),
-            onPressed: (){
-              controller.answerOne.value = 2;
-            },
           ),
-        ),
+        ),),
         SizedBox(height: 15.h,),
-        Container(
-          width: double.infinity,
-          height: 40.h,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(26),
-            border: Border.all(width: 1.0, color: Palette.lightGray),
-            color: Colors.white,),
-          child: TextButton(
-            child: Text(
-              '도움을 구할 수 있는 멘토를 찾고 있어요',
-              style: TextStyle(
-                color:Colors.black,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
+        Obx(() =>InkWell(
+          child: Container(
+            width: double.infinity,
+            height: 40.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(26),
+              border: Border.all(width: 1.0, color: Palette.lightGray),
+              color: controller.answerOne.value == 3 ? Palette.main : Colors.white),
+            child: TextButton(
+              child: Text(
+                '도움을 구할 수 있는 멘토를 찾고 있어요',
+                style: TextStyle(
+                  color:controller.answerOne.value == 3 ? Colors.white : Colors.black,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
+              onPressed: (){
+                controller.answerOne.value = 3;
+              },
             ),
-            onPressed: (){
-              controller.answerOne.value = 3;
-            },
           ),
-        ),
+        ),),
         SizedBox(height: 15.h,),
         SlideIndicator(),
         SizedBox(height: 30.h,),
@@ -265,7 +270,11 @@ class QuestionOne extends StatelessWidget {
                     ),
                   ),
                   onPressed: (){
-                    controller.state.value = 2;
+                    if(controller.state.value == 0){
+                      print('선택해주세요');
+                    }else{
+                      controller.state.value = 2;
+                    }
                   },
                 ),
               ),
@@ -289,8 +298,10 @@ class QuestionTwo extends StatelessWidget {
   Widget build(BuildContext context) {
     MatchFilterController controller = Get.put(MatchFilterController());
 
+
     List<String> QuestionTheme = ["학업", "취업", "스터디", "기타"];
     final w = (MediaQuery.of(context).size.width - runSpacing * (columns - 1)) / columns;
+
 
     return controller.answerOne == 1 ? Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -308,7 +319,37 @@ class QuestionTwo extends StatelessWidget {
               fontSize: 16.0.sp,
               color: Colors.black,
               fontFamily: 'NotoSansKR_Bold',),),
-            Text('동성만 찾기')
+            Obx(() => Row(
+                  children: [
+                    Transform.scale(
+                      scale: 0.7.w,
+                      child: Theme(
+                        data: Theme.of(context).copyWith(
+                          unselectedWidgetColor: Palette.main,
+                        ),
+                        child: Checkbox(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)
+                            ),
+                            checkColor: Palette.main,
+                            activeColor: Colors.white,
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            value: controller.isSameSex.value,
+                            onChanged: (value){
+                              controller.changeIsSameSex(value);}
+                        ),
+                      ),
+                    ),
+                    Text(
+                        "동성만 찾기",
+                        style: TextStyle(
+                            fontFamily: "NotoSansKR_Md",
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w500,
+                            color:Colors.black)
+                    )
+                  ],
+                )),
           ],
         ),
         SizedBox(height: 35.h),
@@ -464,30 +505,37 @@ class QuestionTwo extends StatelessWidget {
               spacing: spacing,
               alignment: WrapAlignment.center,
               children: List.generate(listSize, (index) {
-                return InkWell(
-                  child: Container(
-                    width: w,
-                    height: w,
-                    margin: EdgeInsets.only(bottom: 5.h),
-                    child: Center(
-                      child: Text(
-                          QuestionTheme[index]),
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      border: Border.all(
-                          width: 1.0.w,
-                          // color: controller.selected.value == index
-                          //     ? Palette.main
-                          //     : Palette.lightGray
-                          color: Palette.lightGray
+                return Obx(() => InkWell(
+                    child: Container(
+                      width: w,
+                      height: w,
+                      margin: EdgeInsets.only(bottom: 5.h),
+                      child: Center(
+                        child: Text(
+                            QuestionTheme[index],
+                          style: TextStyle(
+                            color:controller.findTheme(QuestionTheme[index]) ? Colors.white : Colors.black,
+                          ),),
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.0),
+                        border: Border.all(
+                            width: 1.0.w,
+                            color: controller.findTheme(QuestionTheme[index])
+                                ? Palette.main
+                                : Palette.lightGray
 
+                        ),
+                          color: controller.findTheme(QuestionTheme[index])
+                              ? Palette.main
+                              : Colors.white
                       ),
                     ),
+                    onTap: () {
+                      print(QuestionTheme[index]);
+                      controller.addThemeList(QuestionTheme[index]);
+                    },
                   ),
-                  onTap: () {
-                    print(QuestionTheme[index]);
-                  },
                 );
               }),
             ),
@@ -496,24 +544,28 @@ class QuestionTwo extends StatelessWidget {
         SizedBox(height: 25.h,),
         SlideIndicator(),
         SizedBox(height: 40.h,),
-        Container(
-          width: double.infinity,
-          height: 40.h,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(26),
-            color: Palette.lightGray,),
-          child: TextButton(
-            child: Text(
-              '선택 완료',
-              style: TextStyle(
-                color:Palette.gray,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w700,
-              ),
+        Obx(() => InkWell(
+    child: Container(
+            width:  MediaQuery.of(context).size.width - 30.w,
+            height: 40.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(26),
+              color: controller.completedBtn.value == true ? Palette.main :Palette.lightGray,
             ),
-            onPressed: (){
-            },
-          ),
+            child: TextButton(
+              child: Text(
+                '선택 완료',
+                style: TextStyle(
+                  color:controller.completedBtn.value == true ? Colors.white : Palette.gray,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              onPressed: (){
+                Get.toNamed('/matchResult');
+              },
+            ),
+          ),),
         ),
       ],
     );
@@ -566,30 +618,33 @@ class QuestionThree extends StatelessWidget {
                       spacing: spacing,
                       alignment: WrapAlignment.center,
                       children: List.generate(listSize, (index) {
-                        return InkWell(
-                          child: Container(
-                            width: w,
-                            height: w,
-                            margin: EdgeInsets.only(bottom: 5.h),
-                            child: Center(
-                              child: Text(
-                                  theme[index]),
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                              border: Border.all(
-                                  width: 1.0.w,
-                                  // color: controller.selected.value == index
-                                  //     ? Palette.main
-                                  //     : Palette.lightGray
-                                  color: Palette.lightGray
+                        return Obx(() => InkWell(
+                            child: Container(
+                              width: w,
+                              height: w,
+                              margin: EdgeInsets.only(bottom: 5.h),
+                              child: Center(
+                                child: Text(
+                                    theme[index],
+                                  style: TextStyle(
+                                    color:controller.findTheme(theme[index]) ? Colors.white : Colors.black,
+                                  ),),
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.0),
+                                border: Border.all(
+                                    width: 1.0.w,
+                                    color: controller.findTheme(theme[index]) ? Palette.main : Palette.lightGray
 
+                                ),
+                                  color: controller.findTheme(theme[index]) ? Palette.main : Colors.white
                               ),
                             ),
+                            onTap: () {
+                              controller.addThemeList(theme[index]);
+
+                            },
                           ),
-                          onTap: () {
-                            print(theme[index]);
-                          },
                         );
                       }),
                     ),
@@ -598,25 +653,28 @@ class QuestionThree extends StatelessWidget {
                 SizedBox(height: 25.h,),
                 SlideIndicator(),
                 SizedBox(height: 40.h,),
-                Container(
-                      width: double.infinity,
-                      height: 40.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(26),
-                        color: Palette.lightGray,),
-                      child: TextButton(
-                        child: Text(
-                          '선택 완료',
-                          style: TextStyle(
-                            color:Palette.gray,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w700,
+                Obx(() => InkWell(
+                  child: Container(
+                    width:  MediaQuery.of(context).size.width - 30.w,
+                        height: 40.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(26),
+                          color: Palette.lightGray,),
+                        child: TextButton(
+                          child: Text(
+                            '선택 완료',
+                            style: TextStyle(
+                              color:Palette.gray,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
+                          onPressed: (){
+                            Get.toNamed('/matchResult');
+                          },
                         ),
-                        onPressed: (){
-                        },
                       ),
-                    ),
+                ),),
               ],
     );
   }
