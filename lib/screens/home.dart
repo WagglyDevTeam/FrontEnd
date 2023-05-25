@@ -13,7 +13,7 @@ import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 import 'package:waggly/widgets/index.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 PageRouteWithAnimation sign = PageRouteWithAnimation(SignInScreen());
 List<dynamic> groupChatItem = [
@@ -48,8 +48,10 @@ class HomeScreen extends StatelessWidget {
         child: ListView(
           children: [
             AdvertisementArea(), // 광고영역
-            SizedBox(height: 24.h),
+            SizedBox(height: 10.h),
             TipBoxArea(),
+            SizedBox(height: 10.h),
+            // CircleIndicator(),
             SizedBox(height: 24.h),
             Obx(() => PostTitleArea(_homeController.college.value)),
             Obx(() => PostBoxArea(post: _homeController.collegeBestPost.value)),
@@ -149,8 +151,10 @@ class PostBoxArea extends StatelessWidget {
                   ),
                   duration: Duration(milliseconds: 1000),
                   behavior: SnackBarBehavior.floating,
-                  margin: EdgeInsets.only(bottom: bottomAppbarHeight + 20, left: 50.w, right: 50.w),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                  margin: EdgeInsets.only(
+                      bottom: bottomAppbarHeight + 20, left: 50.w, right: 50.w),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
                 ),
               )
             : Get.toNamed("/postDetail/param?postId=7&collegeName=인문계열");
@@ -196,7 +200,8 @@ class PostBoxArea extends StatelessWidget {
                     ),
                   ),
                 ],
-              ), // 제목, 날짜
+              ),
+              // 제목, 날짜
               SizedBox(height: 7.h),
               Container(
                 height: 38.h,
@@ -220,7 +225,8 @@ class PostBoxArea extends StatelessWidget {
                               ),
                               Positioned.fill(
                                 child: BackdropFilter(
-                                  filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+                                  filter: ImageFilter.blur(
+                                      sigmaX: 2.5, sigmaY: 2.5),
                                   child: Container(
                                     color: Colors.white.withOpacity(0.5),
                                   ),
@@ -230,11 +236,13 @@ class PostBoxArea extends StatelessWidget {
                           ),
                         ),
                 ),
-              ), // 내용
+              ),
+              // 내용
               SizedBox(height: 7.h),
               Obx(() => signInController.checkLoggedIn().value == true
                   ? MajorAreaLogin(safeWidth: safeWidth, post: post)
-                  : MajorAreaLogout(safeWidth: safeWidth, post: post)), // 학과, 이미지, 좋아요, 코멘트 수
+                  : MajorAreaLogout(safeWidth: safeWidth, post: post)),
+              // 학과, 이미지, 좋아요, 코멘트 수
             ],
           ),
         ),
@@ -273,63 +281,63 @@ class MajorAreaLogin extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              if(post.postImageCnt != 0)
-              Row(
-                children: [
-                  Icon(
-                    Icons.image_outlined,
-                    size: 13.w,
-                    color: Palette.violet,
-                  ),
-                  SizedBox(
-                    width: 2.w,
-                  ),
-                  Text(
-                    "${post.postImageCnt}",
-                    style: CommonText.BodyEngMain.copyWith(fontSize: 10.0.sp),
-                  ),
-                ],
-              ),
+              if (post.postImageCnt != 0)
+                Row(
+                  children: [
+                    Icon(
+                      Icons.image_outlined,
+                      size: 13.w,
+                      color: Palette.violet,
+                    ),
+                    SizedBox(
+                      width: 2.w,
+                    ),
+                    Text(
+                      "${post.postImageCnt}",
+                      style: CommonText.BodyEngMain.copyWith(fontSize: 10.0.sp),
+                    ),
+                  ],
+                ),
               SizedBox(
                 width: 5.w,
               ),
-              if(post.postLikeCnt != 0)
-              Row(
-                children: [
-                  Icon(
-                    Icons.sentiment_satisfied,
-                    size: 13.w,
-                    color: Palette.violet,
-                  ),
-                  SizedBox(
-                    width: 2.w,
-                  ),
-                  Text(
-                    "${post.postLikeCnt}",
-                    style: CommonText.BodyEngMain,
-                  ),
-                ],
-              ),
+              if (post.postLikeCnt != 0)
+                Row(
+                  children: [
+                    Icon(
+                      Icons.sentiment_satisfied,
+                      size: 13.w,
+                      color: Palette.violet,
+                    ),
+                    SizedBox(
+                      width: 2.w,
+                    ),
+                    Text(
+                      "${post.postLikeCnt}",
+                      style: CommonText.BodyEngMain,
+                    ),
+                  ],
+                ),
               SizedBox(
                 width: 5.w,
               ),
-              if(post.postCommentCnt != 0)
-              Row(
-                children: [
-                  Icon(
-                    Icons.mode_comment_outlined,
-                    size: 13.w,
-                    color: Palette.violet,
-                  ),
-                  SizedBox(
-                    width: 2.w,
-                  ),
-                  Text(
-                    "${post.postCommentCnt}",
-                    style: CommonText.BodyEngMain,
-                  ),
-                ],
-              ),
+              if (post.postCommentCnt != 0)
+                Row(
+                  children: [
+                    Icon(
+                      Icons.mode_comment_outlined,
+                      size: 13.w,
+                      color: Palette.violet,
+                    ),
+                    SizedBox(
+                      width: 2.w,
+                    ),
+                    Text(
+                      "${post.postCommentCnt}",
+                      style: CommonText.BodyEngMain,
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
@@ -383,7 +391,8 @@ class MajorAreaLogout extends StatelessWidget {
                         ),
                         Text(
                           "${post.postImageCnt}",
-                          style: CommonText.BodyEngMain.copyWith(fontSize: 10.0.sp),
+                          style: CommonText.BodyEngMain.copyWith(
+                              fontSize: 10.0.sp),
                         ),
                       ],
                     ),
@@ -467,99 +476,222 @@ class PostTitleArea extends StatelessWidget {
     );
   }
 }
+
 class TipBoxArea extends StatelessWidget {
   // final File? image;
   TipBoxArea({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-     RxBool isLoggedIn = Get.put(SignInController()).isLoggedIn;
+    RxBool isLoggedIn = Get.put(SignInController()).isLoggedIn;
+    final _pageController =
+        PageController(viewportFraction: 0.8, keepPage: true);
+
+    List<dynamic> items = [
+      {"id" : 1, "title": "공강시간에 뭐할까?", "type": "꿀팁", "description" : "선배가 알려주는 알차게 공강 활용하는 방법", "img" : 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb7ky6d%2FbtshjvKkLHs%2FOXiQnTwfhVDInGEGd6Abbk%2Fimg.png',},
+      {"id" : 2, "title": "성북구 맛집 탐방", "type": "맛집탐방", "description" : "성북구의 숨겨진 찐 맛집!", "img" : 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fxh4Kb%2FbtshqyMs7Qp%2FN0UMUMkSMvNie1CwGSkgz1%2Fimg.png',},
+      {"id" : 3, "title": "공강시간에 뭐할까?", "type": "꿀팁", "description" : "선배가 알려주는 알차게 공강 활용하는 방법", "img" : 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb7ky6d%2FbtshjvKkLHs%2FOXiQnTwfhVDInGEGd6Abbk%2Fimg.png',},
+      {"id" : 4, "title": "공강시간에 뭐할까?", "type": "꿀팁", "description" : "선배가 알려주는 알차게 공강 활용하는 방법", "img" : 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb7ky6d%2FbtshjvKkLHs%2FOXiQnTwfhVDInGEGd6Abbk%2Fimg.png',},
+      {"id" : 5, "title": "공강시간에 뭐할까?", "type": "꿀팁", "description" : "선배가 알려주는 알차게 공강 활용하는 방법", "img" : 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb7ky6d%2FbtshjvKkLHs%2FOXiQnTwfhVDInGEGd6Abbk%2Fimg.png',},
+    ];
+
+    final pages = List.generate(
+      items.length,
+      (index) => Container(
+        width: 155.0.w,
+        padding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
+        margin: index == 0 ? EdgeInsets.only(left: 16.w) : index == 4 ? EdgeInsets.only(right: 16.w) : EdgeInsets.only(left: 0, right: 0),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: NetworkImage(items[index]['img']),
+              fit: BoxFit.cover),
+          borderRadius: BorderRadius.circular(20.0.r),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(8.0.w, 3.0.h, 8.0.w, 3.0.h),
+              decoration: BoxDecoration(
+                color: items[index]["type"] == '꿀팁' ? Color(0xffFFECBC)  : Colors.white,
+                borderRadius: BorderRadius.circular(20.0.r),
+              ),
+              child: Text(
+                items[index]['type'],
+                style: TextStyle(
+                  color: items[index]["type"] == '꿀팁' ? Color(0xffff7a00) : Colors.red,
+                  fontSize: 10.0.sp,
+                  fontFamily: 'NotoSansKR',
+                ),
+              ),
+            ), // 참여자 수 얼굴
+            SizedBox(height: 7.h),
+            SizedBox(
+              child: GestureDetector(
+                onTap: () {
+                  print('click tip');
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      items[index]['title'],
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: CommonText.BodyL,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    SizedBox(
+                      height: 95.h,
+                      child: Text(
+                        items[index]['description'],
+                        style: TextStyle(
+                          color: Color(0xff959595),
+                          fontSize: 12.0.sp,
+                          fontFamily: 'NotoSansKR',
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            // POINT
+                            color: Palette.data,
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                      child: Text(
+                        "자세히보기",
+                        style: TextStyle(
+                          color: Palette.data,
+                          fontSize: 10.0.sp,
+                          fontFamily: 'NotoSansKR',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ), // 카테고리, 채팅방이름
+          ],
+        ),
+      ),
+    );
 
     return SizedBox(
-      height: 180.h,
-      child: ListView.separated(
-          separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(width: 16.0.w);
-          },
-          scrollDirection: Axis.horizontal,
-          itemCount: groupChatItem.length,
-          itemBuilder: (ctx, index) {
-            return Row(
-              children: [
-                if (index == 0) SizedBox(width: 20.0.w),
-                Container(
-                  height: 180.0.h,
-                  width: 155.0.w,
-                  padding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
-                  decoration: BoxDecoration(
-                    // color: Colors.red,
-                    borderRadius: BorderRadius.circular(20.0.r),
-                    border: Border.all(
-                      width: 0.8,
-                      color: Palette.lightGray,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(5.0.w, 3.0.h, 5.0.w, 3.0.h),
-                        width: 30.w,
-                        height: 18.h,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Color(0xffFFECBC),
-                          borderRadius: BorderRadius.circular(20.0.r),
-                        ),
-                        child: Text(
-                          "꿀팁",
-                          style: TextStyle(color: Color(0xffff7a00), fontSize: 10.0.sp, fontFamily: 'NotoSansKR',),
-                        ),
-                      ),// 참여자 수 얼굴
-                      SizedBox(height: 7.h),
-                      SizedBox(
-                        child: GestureDetector(
-                          onTap: (){print('click tip');},
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                      "공강시간에 뭐할까?",
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: CommonText.BodyL,
-                                    ),
-                              SizedBox(height: 5.h,),
-                              Text(
-                                "선배가 알려주는 알차게 공강 활용하는 방법",
-                                style: TextStyle(color: Color(0xff959595), fontSize: 12.0.sp, fontFamily: 'NotoSansKR',),
-                              ),
-                              SizedBox(height: 60.h,),
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      // POINT
-                                      color: Palette.data,
-                                      width: 1.0,
-                                    ),),
-                                ),
-                                child: Text(
-                                  "자세히보기",
-                                  style: TextStyle(color: Palette.data, fontSize: 10.0.sp, fontFamily: 'NotoSansKR',),
-                                ),
-                              ),
-                                ],
-                              ),
-                        ),
-                      ), // 카테고리, 채팅방이름
-                    ],
-                  ),
-                ),
-                if (index == groupChatItem.length - 1) SizedBox(width: 20.0.w),
-              ],
-            );
-          }),
+      child: SingleChildScrollView(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+            SizedBox(height: 16),
+            SizedBox(
+              height: 200,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(width: 16.0.w);
+                },
+                controller: _pageController,
+                itemCount: pages.length,
+                itemBuilder: (_, index) {
+                  return pages[index % pages.length];
+                },
+              ),
+            ),
+                SizedBox(height: 20.h),
+            SmoothPageIndicator(
+              controller: _pageController,
+              count: 3,
+              effect: const ScrollingDotsEffect(
+                  dotHeight: 8,
+                  dotWidth: 8,
+                  dotColor: Palette.lightGray,
+                  activeDotColor: Palette.main),
+            ),
+          ])),
+    );
+  }
+}
+
+
+
+
+//순수짠거...
+class CircleIndicator extends StatelessWidget {
+  const CircleIndicator({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: _homeController.tipState.value == 1 ? 8.w : 6.w,
+          height: _homeController.tipState.value == 1 ? 8.h : 6.h,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: _homeController.tipState.value == 1
+                ? Palette.purple
+                : Palette.lightGray,
+          ),
+        ),
+        SizedBox(
+          width: 8.w,
+        ),
+        Container(
+          width: _homeController.tipState.value == 2 ? 8.w : 6.w,
+          height: _homeController.tipState.value == 2 ? 8.h : 6.h,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: _homeController.tipState.value == 2
+                ? Palette.purple
+                : Palette.lightGray,
+          ),
+        ),
+        SizedBox(
+          width: 8.w,
+        ),
+        Container(
+          width: _homeController.tipState.value == 3 ? 8.w : 6.w,
+          height: _homeController.tipState.value == 3 ? 8.h : 6.h,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: _homeController.tipState.value == 3
+                ? Palette.purple
+                : Palette.lightGray,
+          ),
+        ),
+        SizedBox(
+          width: 8.w,
+        ),
+        Container(
+          width: _homeController.tipState.value == 4 ? 8.w : 6.w,
+          height: _homeController.tipState.value == 4 ? 8.h : 6.h,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: _homeController.tipState.value == 4
+                ? Palette.purple
+                : Palette.lightGray,
+          ),
+        ),
+        SizedBox(
+          width: 8.w,
+        ),
+        Container(
+          width: _homeController.tipState.value == 5 ? 8.w : 6.w,
+          height: _homeController.tipState.value == 5 ? 8.h : 6.h,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: _homeController.tipState.value == 5
+                ? Palette.purple
+                : Palette.lightGray,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -606,7 +738,8 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
                             height: 48.0.h,
                             child: CircleAvatar(
                               radius: 30.0,
-                              foregroundImage: AssetImage("assets/images/red_face_big.png"),
+                              foregroundImage:
+                                  AssetImage("assets/images/red_face_big.png"),
                             ),
                           ),
                           Positioned(
@@ -629,7 +762,8 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
                             Row(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.fromLTRB(5.0.w, 3.0.h, 5.0.w, 3.0.h),
+                                  padding: EdgeInsets.fromLTRB(
+                                      5.0.w, 3.0.h, 5.0.w, 3.0.h),
                                   height: 14.h,
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
@@ -683,25 +817,30 @@ class GroupChatRecommendBoxArea extends StatelessWidget {
                                             children: [
                                               Text(
                                                 "#도전",
-                                                style: CommonText.BodyXSmallMain,
+                                                style:
+                                                    CommonText.BodyXSmallMain,
                                               ),
                                               SizedBox(width: 3.w),
                                               Text(
                                                 "#취직",
-                                                style: CommonText.BodyXSmallMain,
+                                                style:
+                                                    CommonText.BodyXSmallMain,
                                               ),
                                               SizedBox(width: 3.w),
                                               Text(
                                                 "#파이팅",
-                                                style: CommonText.BodyXSmallMain,
+                                                style:
+                                                    CommonText.BodyXSmallMain,
                                               ),
                                             ],
                                           ),
                                           Positioned.fill(
                                             child: BackdropFilter(
-                                              filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                                              filter: ImageFilter.blur(
+                                                  sigmaX: 2, sigmaY: 2),
                                               child: Container(
-                                                color: Colors.white.withOpacity(0.1),
+                                                color: Colors.white
+                                                    .withOpacity(0.1),
                                               ),
                                             ),
                                           ),

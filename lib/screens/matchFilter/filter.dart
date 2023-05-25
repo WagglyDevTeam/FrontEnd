@@ -53,9 +53,8 @@ class FilterMain extends StatelessWidget {
             color: Colors.black,
             fontFamily: 'NotoSansKR_Bold',),),
           SizedBox(height: 30.h,),
-          Image.network(
-            'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbET2gR%2FbtsgDMMNDqp%2FB1k6bKkhD7Cye7pVEcsBzK%2Fimg.png',
-          ),
+    Image.asset(
+    'assets/wagglyImg/filter_entrance.png',),
           SizedBox(height: 30.h,),
           Container(
             width: double.infinity,

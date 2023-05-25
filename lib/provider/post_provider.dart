@@ -41,6 +41,7 @@ class PostProvider extends GetConnect {
     final box = Hive.box<User>('user');
     // print(box);
     var token = box.get('user')?.jwtToken;
+    print(token);
     return get(
       "${dotenv.get('BASE_URL')}/board?college=$college&page=$page&size=$size",
       headers: {"Authorization": token!},
