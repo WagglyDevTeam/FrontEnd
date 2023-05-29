@@ -498,7 +498,7 @@ class TipBoxArea extends StatelessWidget {
     final pages = List.generate(
       items.length,
       (index) => Container(
-        width: 155.0.w,
+        width: MediaQuery.of(context).size.width / 2 - 24.w,
         padding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
         margin: index == 0 ? EdgeInsets.only(left: 16.w) : index == 4 ? EdgeInsets.only(right: 16.w) : EdgeInsets.only(left: 0, right: 0),
         decoration: BoxDecoration(
@@ -544,7 +544,7 @@ class TipBoxArea extends StatelessWidget {
                       height: 5.h,
                     ),
                     SizedBox(
-                      height: 95.h,
+                      height: 70.h,
                       child: Text(
                         items[index]['description'],
                         style: TextStyle(

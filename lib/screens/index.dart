@@ -46,10 +46,11 @@ class _ScreenState extends State<Screen> {
     Get.put(PostController());
     final bool isLoggedIn = _signInController.isLoggedIn.value;
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: screenList[screenIndex],
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: Colors.transparent,
         ),
         child: Container(
           padding: const EdgeInsets.all(0),

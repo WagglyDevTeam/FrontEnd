@@ -8,6 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:waggly/controller/match/match_controller.dart';
+import 'package:waggly/controller/signIn/sign_in_conroller.dart';
+import 'package:waggly/screens/index.dart';
 import 'package:waggly/utils/colors.dart';
 import 'package:waggly/utils/text_frame.dart';
 
@@ -18,25 +20,38 @@ class MatchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MatchFilterController controller = Get.put(MatchFilterController());
+    final SignInController _signInController = Get.put(SignInController());
+
     final ScrollController _scrollController = ScrollController();
 
     List<Map> resultList = [
       {'id': 1,
         'name': '블루킹',
         'gender': 'm',
+        'backgroundColor' : '',
         'image': 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb1uc4y%2FbtsgEcYJewm%2FykOSovJlMrmwZ0TfuidXok%2Fimg.png',
         'profileImg': 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F03GIu%2FbtsgTjhD9dk%2FxacFN5SlkNhIlgLEABmbKk%2Fimg.png',
         'major': '18학번 컴퓨터공학과',
         'purpose': ['학업', '취미', '기타'],
        'type':'소통'
       },
+      {'id': 2,
+        'name': '그린킹',
+        'gender': 'f',
+        'backgroundColor' : '',
+        'image': 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FchgxyL%2FbtsgEafydJt%2FuIgbnfOLBSm6XsEnUAc8z0%2Fimg.png',
+        'profileImg': 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F6vHam%2FbtsgTjoo6tH%2FHGMbJLq66uVJqn0IYGZKk0%2Fimg.png',
+        'major': '18학번 컴퓨터공학과',
+        'purpose': ['학업', '취미', '기타'],
+        'type':'소통'
+      },
     ];
 
     return Scaffold(
       body: SizedBox(
        height: MediaQuery.of(context).size.height,
-        child: ListView.builder(
-            controller: _scrollController,
+        child: resultList.isNotEmpty ? ListView.builder(
+            // controller: _scrollController,
             scrollDirection: Axis.horizontal,
             itemCount: resultList.length,
             itemBuilder: (context, index) {
@@ -48,8 +63,190 @@ class MatchScreen extends StatelessWidget {
                   gender: resultList[index]['gender']?? '',
               );
             }
+        ) :  Container(
+          padding: EdgeInsets.only(right: 16.w, left: 16.w),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1.0, color: Palette.lightGray),
+                        borderRadius: BorderRadius.circular(50),
+                        color: Colors.white,
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        color: Palette.gray,
+                        iconSize: 20.0.sp,
+                        onPressed: () {
+                          Get.toNamed('/matchFilter');
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8.w,
+                  ),
+                  Container(padding: EdgeInsets.only(bottom: 3.h), child: Text("친구 찾기", style: CommonText.BodyL))
+                ],
+              ),
+              SizedBox(height: 80.h,),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text("찾으시는 친구가 없어요", style: TextStyle(
+                fontSize: 16.0.sp,
+                color: Colors.black,
+                fontFamily: 'NotoSansKR_Bold',),),
+              Text("다시 시도해주세요", style: TextStyle(
+                fontSize: 16.0.sp,
+                color: Colors.black,
+                fontFamily: 'NotoSansKR_Bold',),),
+              SizedBox(height: 30.h,),
+              Image.network(
+                'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbET2gR%2FbtsgDMMNDqp%2FB1k6bKkhD7Cye7pVEcsBzK%2Fimg.png',
+              ),
+              SizedBox(height: 30.h,),
+              Container(
+                width: double.infinity,
+                height: 40.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(26),
+                  color: Palette.purple,),
+                child: TextButton(
+                  child: Text(
+                    '기존 설정으로 진행하기',
+                    style: TextStyle(
+                      color:Colors.white,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  onPressed: (){
+                    controller.reFilter.value = false;
+                    controller.state.value = 1;
+                  },
+                ),
+              ),
+              SizedBox(height: 15.h,),
+              Container(
+                width: double.infinity,
+                height: 40.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(26),
+                  border: Border.all(width: 1.0, color: Palette.purple),
+                  color: Colors.white,),
+                child: TextButton(
+                  child: Text(
+                    '필터 재설정하기',
+                    style: TextStyle(
+                      color:Palette.purple,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  onPressed: (){
+                    controller.reFilter.value = true;
+                    controller.state.value = 1;
+                  },
+                ),
+              ),
+              SizedBox(height: 100.h,),
+            ],
+          )],
+          ),
         ),
+
       ),
+        bottomNavigationBar:  Container(
+          decoration: const BoxDecoration(
+            color: Color(0xffE1F4FF),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+              color: Colors.white,
+              border: Border.all(
+                color: const Color(0xFFE8E8E8),
+                width: 1.0,
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(25.0),
+              child: NavigationBarTheme(
+                data: const NavigationBarThemeData(
+                  backgroundColor: Colors.white,
+                  indicatorColor: Colors.white,
+                  height: 0,
+                ),
+                child: NavigationBar(
+                  height: 55,
+                  selectedIndex: 0,
+                  labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+                  onDestinationSelected: (index) {
+                    // if (isLoggedIn == true || index == 0) {
+                    //   setState(() {
+                    //     screenIndex = index;
+                    //   });
+                    // } else {
+                    //   if (index != 0) {
+                    //     print('index: $index');
+                    //     CustomSnackBar.messageSnackbar(
+                    //       context,
+                    //       "로그인이 필요한 메뉴입니다.",
+                    //       EdgeInsets.only(bottom: 60.h, left: 20.w, right: 20.w),
+                    //     );
+                    //   }
+                    // }
+                  },
+                  destinations: const [
+                    NavigationDestination(
+                        icon: Icon(
+                          Icons.home,
+                          color: Palette.gray,
+                          size: 23,
+                        ),
+                        selectedIcon: Icon(
+                          Icons.home,
+                          color: Palette.main,
+                          size: 23,
+                        ),
+                        label: ''),
+                    NavigationDestination(
+                      icon: Icon(
+                        Icons.add_comment,
+                        color: Palette.gray,
+                        size: 23,
+                      ),
+                      selectedIcon: Icon(Icons.add_comment, color: Palette.main, size: 23),
+                      label: '',
+                    ),
+                    NavigationDestination(icon: Icon(Icons.chat_bubble, color: Palette.gray, size: 23), selectedIcon: Icon(Icons.chat_bubble, color: Palette.main, size: 23), label: ''),
+                    NavigationDestination(
+                      icon: Icon(Icons.view_list, color: Palette.gray, size: 23),
+                      selectedIcon: Icon(Icons.view_list, color: Palette.main, size: 23),
+                      label: '',
+                    ),
+                    NavigationDestination(icon: Icon(Icons.person, color: Palette.gray, size: 23), selectedIcon: Icon(Icons.person, color: Palette.main, size: 23), label: ''),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
     );
   }
 }
@@ -83,6 +280,7 @@ class Result extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(height: 40.h,),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,7 +310,7 @@ class Result extends StatelessWidget {
               Container(padding: EdgeInsets.only(bottom: 3.h), child: Text("친구 찾기", style: CommonText.BodyL))
             ],
           ),
-          SizedBox(height: 50.h,),
+          SizedBox(height: 30.h,),
           Container(
             width: 160.w,
             height: 30.h,
@@ -148,7 +346,7 @@ class Result extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 50.h,),
+          SizedBox(height: 30.h,),
           Container(
                 width: MediaQuery.of(context).size.width - 120.w,
                 child: Image.network(image ?? '', ),
