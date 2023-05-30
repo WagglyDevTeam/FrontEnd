@@ -21,6 +21,7 @@ import 'package:waggly/screens/chat/chat_edit.dart';
 import 'package:waggly/screens/chat/chat_room_screen.dart';
 import 'package:waggly/screens/chat/chat_search.dart';
 import 'package:waggly/screens/groupChat/group_chat_create.dart';
+import 'package:waggly/screens/home.dart';
 import 'package:waggly/screens/matchFilter/filter.dart';
 import 'package:waggly/screens/matchFilter/match.dart';
 import 'package:waggly/screens/post/edit.dart';
@@ -33,6 +34,7 @@ import 'package:waggly/screens/post/post_home.dart';
 import 'package:waggly/screens/user/sign_in.dart';
 import 'package:waggly/components/myPage/profileImg/profile_img.dart';
 import 'package:waggly/components/myPage/active/index.dart';
+import 'controller/home/bottom_nav_controller.dart';
 import 'screens/post/post_detail_screen.dart';
 import 'screens/post/post_college_List.dart';
 
@@ -56,8 +58,6 @@ void main() async {
   await Hive.openBox<User>("user", encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey!)));
   await Hive.openBox<SearchHistory>('searchHistory', encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey)));
   await Hive.openBox<PostSearchHistory>('postSearchHistory', encryptionCipher: HiveAesCipher(base64Url.decode(encryptionKey!)));
-  Get.put(HomeController());
-  Get.put(SignInController());
   runApp(HeroApp());
 }
 
@@ -70,15 +70,20 @@ class HeroApp extends StatelessWidget {
       designSize: const Size(360, 760),
       builder: (context, child) {
         return GetMaterialApp(
+          initialBinding: BindingsBuilder((){
+            Get.put(HomeController());
+            Get.put(SignInController());
+            Get.put(BottomNavController());
+          }),
           debugShowCheckedModeBanner: false,
           title: 'waggly',
-          home: MyApp(),
+          home: Root(),
           initialRoute: "/",
           getPages: [
-            GetPage(name: "/", page: () => Screen(), transition: Transition.rightToLeft),
+            GetPage(name: "/", page: () => HomeScreen(), transition: Transition.rightToLeft),
             GetPage(
                 name: "/home",
-                page: () => Screen(),
+                page: () => HomeScreen(),
                 transition: Transition.rightToLeft,
                 binding: BindingsBuilder<SignInController>(() {
                   Get.put(() {
@@ -149,16 +154,16 @@ class HeroApp extends StatelessWidget {
   }
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Screen(),
-    );
-  }
-}
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       resizeToAvoidBottomInset: false,
+//       body: Screen(),
+//     );
+//   }
+// }
 
 // stless

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:waggly/components/myPage/active/index.dart';
 import 'package:waggly/controller/myPage/my_profile_controller.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/controller/myPage/waggly_img_controller.dart';
@@ -383,7 +385,11 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
                 onTap: () {
-                  Get.toNamed('${myPageIcons[index]['page']}');
+                  Navigator.push(
+                    context, PageTransition(type: PageTransitionType.rightToLeft, child: const ActiveScreen()),
+                    // MaterialPageRoute(builder: (context) => const ActiveScreen(),),
+                  );
+                  // Get.toNamed('${myPageIcons[index]['page']}');
                   myProfileController.removeData();
                 },
               );
