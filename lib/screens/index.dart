@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:waggly/controller/home/bottom_nav_controller.dart';
 import 'package:waggly/controller/signIn/sign_in_conroller.dart';
-import 'package:waggly/screens/chat/chat.dart';
-import 'package:waggly/screens/chat/chat_edit.dart';
 import 'package:waggly/screens/chat/chat_room_screen.dart';
 import 'package:waggly/screens/home.dart';
 import 'package:waggly/screens/matchFilter/filter.dart';
@@ -141,18 +138,6 @@ class Root extends GetView<BottomNavController> {
     final SignInController _signInController = Get.put(SignInController());
     final bool isLoggedIn = _signInController.isLoggedIn.value;
 
-    void getMenu(int index) {
-      if (isLoggedIn != true && index != 0) {
-          CustomSnackBar.messageSnackbar(
-            context,
-            "로그인이 필요한 메뉴입니다.",
-            EdgeInsets.only(bottom: 60.h, left: 20.w, right: 20.w),
-          );
-        }else{
-        controller.changeRootPageIndex;
-      }
-    }
-
     return WillPopScope(
       onWillPop: controller.onWillPop,
       child: Obx(() => Scaffold(
@@ -160,23 +145,24 @@ class Root extends GetView<BottomNavController> {
           index: controller.rootPageIndex.value,
           children: [
             HomeScreen(),
-            // Navigator(
-            //   key: controller.navigatorKey,
-            //   onGenerateRoute: (routeSettings) {
-            //     return MaterialPageRoute(
-            //       builder: (context) => FilterScreen(),
-            //     );
-            //   },
-            // ),
-            FilterScreen(),
-            ChatRoomScreen(),
-            PostScreen(),
             Navigator(
-              key: controller.navigatorKey,
+              key: controller.navigatorKeyFilter,
               onGenerateRoute: (routeSettings) {
-                return MaterialPageRoute( builder: (context) => const MyPageScreen(),);
+                return MaterialPageRoute(
+                  builder: (context) => FilterScreen(),
+                );
               },
             ),
+            ChatRoomScreen(),
+            Navigator(
+              key: controller.navigatorKeyPost,
+              onGenerateRoute: (routeSettings) {
+                return MaterialPageRoute(
+                  builder: (context) => PostScreen(),
+                );
+              },
+            ),
+            MyPageScreen(),
           ],
         ),
         bottomNavigationBar: Container(

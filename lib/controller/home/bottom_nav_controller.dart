@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 class BottomNavController extends GetxController {
   static BottomNavController get to => Get.find();
   RxInt rootPageIndex = 0.obs;
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> navigatorKeyFilter = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> navigatorKeyPost = GlobalKey<NavigatorState>();
   RxBool isCategoryPageOpen = false.obs;
 
   void changeRootPageIndex(int index) {
@@ -14,7 +15,7 @@ class BottomNavController extends GetxController {
 
   Future<bool> onWillPop() async {
     setCategoryPage(false);
-    return !await navigatorKey.currentState!.maybePop();
+    return !await navigatorKeyFilter.currentState!.maybePop();
   }
 
   void setCategoryPage(bool ck) {

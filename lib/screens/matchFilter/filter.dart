@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:waggly/controller/match/match_controller.dart';
+import 'package:waggly/screens/matchFilter/match.dart';
 import 'package:waggly/utils/colors.dart';
 
 
@@ -561,7 +563,10 @@ class QuestionTwo extends StatelessWidget {
                 ),
               ),
               onPressed: (){
-                Get.toNamed('/matchResult');
+                Navigator.push(
+                  context, PageTransition(type: PageTransitionType.rightToLeft, child: MatchScreen()),
+                  // MaterialPageRoute(builder: (context) => const ActiveScreen(),),
+                );
               },
             ),
           ),),
@@ -669,7 +674,10 @@ class QuestionThree extends StatelessWidget {
                             ),
                           ),
                           onPressed: (){
-                            Get.toNamed('/matchResult');
+                            Navigator.push(
+                              context, PageTransition(type: PageTransitionType.rightToLeft, child: MatchScreen()),
+                              // MaterialPageRoute(builder: (context) => const ActiveScreen(),),
+                            );
                           },
                         ),
                       ),

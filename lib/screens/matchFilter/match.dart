@@ -54,7 +54,7 @@ class MatchScreen extends StatelessWidget {
 
     return Scaffold(
       body: SizedBox(
-       height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height,
         child: resultList.isNotEmpty ? ListView.builder(
             // controller: _scrollController,
             scrollDirection: Axis.horizontal,
@@ -95,7 +95,7 @@ class MatchScreen extends StatelessWidget {
                         color: Palette.gray,
                         iconSize: 20.0.sp,
                         onPressed: () {
-                          Get.toNamed('/matchFilter');
+                          Navigator.pop(context);
                         },
                       ),
                     ),
@@ -227,7 +227,7 @@ class Result extends StatelessWidget {
                     color: Palette.gray,
                     iconSize: 20.0.sp,
                     onPressed: () {
-                      Get.toNamed('/matchFilter');
+                      Navigator.pop(context);
                     },
                   ),
                 ),
