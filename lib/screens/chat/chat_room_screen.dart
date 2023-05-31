@@ -9,6 +9,7 @@ import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:waggly/components/chat/chat_bubble.dart';
+import 'package:waggly/controller/chat/chat_controller.dart';
 import 'package:waggly/hive/user.dart';
 import 'package:waggly/widgets/snackbar/custom_snack_bar.dart';
 import 'package:waggly/controller/post/image_controller.dart';
@@ -69,6 +70,7 @@ class ChatRoomScreen extends StatefulWidget {
 }
 
 class _ChatRoomScreenState extends State<ChatRoomScreen> {
+  final ChatController chatController = Get.put(ChatController());
 
   //chat
   StompClient? stompClient;
@@ -103,6 +105,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   @override
   initState() {
     super.initState();
+    chatController.getChat(1);
+
     chatList = [chat1, chat2, chat3, chat4, chat5, chat6, chat7, chat8, chat9];
     participantList = [user1, user2];
     // print(loginUser.id);
