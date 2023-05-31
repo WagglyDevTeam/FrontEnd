@@ -6,13 +6,15 @@ import 'package:waggly/hive/user.dart';
 
 final SignInController _signInController = Get.put(SignInController());
 final _token = _signInController.getToken();
+final _userId = Hive.box<User>('user').get('user')?.id;
+
 
 class HomeProvider extends GetConnect {
   final Map<String, String> authHeaders = _token != null ? {"Authorization": _token!} : {};
 
   final userId = Hive.box<User>('user').get('user')?.id;
   Future<Response> getHome() => get(
-        "${dotenv.get('BASE_URL')}/home?userId=$userId",
+        "${dotenv.get('BASE_URL')}/home?userId=$_userId",
         headers: authHeaders,
       );
 }

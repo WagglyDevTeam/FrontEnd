@@ -25,6 +25,7 @@ class HomeController extends GetxController {
   final college = "".obs;
   final othersBestPost = PostResponseDto().obs;
   final collegeBestPost = PostResponseDto().obs;
+  final tipState = 1.obs;
 
   @override
   void onInit() async {
@@ -43,4 +44,6 @@ class HomeController extends GetxController {
     collegeBestPost.value = PostResponseDto.fromJson(collegeBestData["second"]);
     othersBestPost.value = PostResponseDto.fromJson(othersBestData);
   }
+
+
 }

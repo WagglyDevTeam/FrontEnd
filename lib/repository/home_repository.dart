@@ -10,6 +10,7 @@ class HomeRepository {
   Future<WagglyResponseDto> getHome() async {
     Response response = await _homeProvider.getHome();
     dynamic body = response.body;
+    print('home _ $body');
 
     WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
     return wagglyResponseDto;
