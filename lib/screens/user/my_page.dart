@@ -249,7 +249,7 @@ class _MyPageState extends State<MyPage> {
                     ),
                     SizedBox(
                       width: 50.0.w,
-                      height: 20.0.h,
+                      height: 25.0.h,
                       child: ElevatedButton(
                         child: Text(
                           !myProfileController.nicknameBtn.value ? "수정" : "완료",
@@ -289,104 +289,103 @@ class _MyPageState extends State<MyPage> {
               ),
             ),
             SizedBox(height: 15.h),
-            Divider(thickness: 1, height: 1, color: Palette.paper),
-            SizedBox(height: 15.h),
+            // Divider(thickness: 1, height: 1, color: Palette.paper),
+            // SizedBox(height: 15.h),
             //자기소개 button
-            Container(
-              padding: EdgeInsets.only(left: 15.0.w, right: 15.0.w),
-              child: Obx(
-                () => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Obx(
-                      () => Container(
-                        height: 60.h,
-                        width: MediaQuery.of(context).size.width - 80.w,
-                        padding: EdgeInsets.only(top: 2),
-                        child: !myProfileController.bioBtn.value
-                            ? Obx(
-                                () => myProfileController.bio.value != ''
-                                    ? Text(myProfileController.bio.value,
-                                        style: CommonText.BodyS)
-                                    : TextFormField(
-                                        enabled: false,
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          isDense: true,
-                                          counterText: '',
-                                          contentPadding:
-                                              EdgeInsets.only(top: 2),
-                                          hintText: '다른 친구들에게 자신을 소개해보세요',
-                                          hintStyle: CommonText.BodyMediumGray,
-                                        ),
-                                      ),
-                              )
-                            : Obx(
-                                () => TextFormField(
-                                  controller: _introduction
-                                    ..text = myProfileController.bio.value,
-                                  maxLength: 100,
-                                  maxLines: 2,
-                                  autofocus: true,
-                                  cursorColor: Palette.main,
-                                  style: CommonText.BodyS,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    isDense: true,
-                                    counterText: '',
-                                    contentPadding: EdgeInsets.only(top: 0),
-                                    hintText:
-                                        myProfileController.bio.value != ''
-                                            ? myProfileController.bio.value
-                                            : '다른 친구들에게 자신을 소개해보세요',
-                                    hintStyle: CommonText.BodyMediumGray,
-                                  ),
-                                ),
-                              ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 50.0.w,
-                      height: 20.0.h,
-                      child: ElevatedButton(
-                        child: Obx(
-                          () => Text(
-                            myProfileController.bioBtn.value == false
-                                ? "수정"
-                                : "완료",
-                            style: !myProfileController.bioBtn.value
-                                ? CommonText.BodyXS
-                                : CommonText.BodyXSmallWhite,
-                          ),
-                        ),
-                        onPressed: () async {
-                          if (!myProfileController.bioBtn.value) {
-                            myProfileController.bioBtn.value = true;
-                          } else {
-                            if (_introduction.text.isNotEmpty) {
-                              await myProfileController.changeUserIntroduction(
-                                  Bio(userIntroduction: _introduction.text));
-                            }
-                            myProfileController.bioBtn.value = false;
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: !myProfileController.bioBtn.value
-                              ? Palette.candy
-                              : Palette.main,
-                          onPrimary: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32.0),
-                          ),
-                        ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // Container(
+            //   padding: EdgeInsets.only(left: 15.0.w, right: 15.0.w),
+            //   child: Obx(
+            //     () => Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         Obx(
+            //           () => Container(
+            //             height: 60.h,
+            //             width: MediaQuery.of(context).size.width - 80.w,
+            //             padding: EdgeInsets.only(top: 2),
+            //             child: !myProfileController.bioBtn.value
+            //                 ? Obx(
+            //                     () => myProfileController.bio.value != ''
+            //                         ? Text(myProfileController.bio.value,
+            //                             style: CommonText.BodyS)
+            //                         : TextFormField(
+            //                             enabled: false,
+            //                             decoration: InputDecoration(
+            //                               border: InputBorder.none,
+            //                               isDense: true,
+            //                               counterText: '',
+            //                               contentPadding:
+            //                                   EdgeInsets.only(top: 2),
+            //                               hintText: '다른 친구들에게 자신을 소개해보세요',
+            //                               hintStyle: CommonText.BodyMediumGray,
+            //                             ),
+            //                           ),
+            //                   )
+            //                 : Obx(
+            //                     () => TextFormField(
+            //                       controller: _introduction
+            //                         ..text = myProfileController.bio.value,
+            //                       maxLength: 100,
+            //                       maxLines: 2,
+            //                       autofocus: true,
+            //                       cursorColor: Palette.main,
+            //                       style: CommonText.BodyS,
+            //                       decoration: InputDecoration(
+            //                         border: InputBorder.none,
+            //                         isDense: true,
+            //                         counterText: '',
+            //                         contentPadding: EdgeInsets.only(top: 0),
+            //                         hintText:
+            //                             myProfileController.bio.value != ''
+            //                                 ? myProfileController.bio.value
+            //                                 : '다른 친구들에게 자신을 소개해보세요',
+            //                         hintStyle: CommonText.BodyMediumGray,
+            //                       ),
+            //                     ),
+            //                   ),
+            //           ),
+            //         ),
+            //         SizedBox(
+            //           width: 50.0.w,
+            //           height: 20.0.h,
+            //           child: ElevatedButton(
+            //             child: Obx(
+            //               () => Text(
+            //                 myProfileController.bioBtn.value == false
+            //                     ? "수정"
+            //                     : "완료",
+            //                 style: !myProfileController.bioBtn.value
+            //                     ? CommonText.BodyXS
+            //                     : CommonText.BodyXSmallWhite,
+            //               ),
+            //             ),
+            //             onPressed: () async {
+            //               if (!myProfileController.bioBtn.value) {
+            //                 myProfileController.bioBtn.value = true;
+            //               } else {
+            //                 if (_introduction.text.isNotEmpty) {
+            //                   await myProfileController.changeUserIntroduction(
+            //                       Bio(userIntroduction: _introduction.text));
+            //                 }
+            //                 myProfileController.bioBtn.value = false;
+            //               }
+            //             },
+            //             style: ElevatedButton.styleFrom(
+            //               primary: !myProfileController.bioBtn.value
+            //                   ? Palette.candy
+            //                   : Palette.main,
+            //               onPrimary: Colors.black,
+            //               shape: RoundedRectangleBorder(
+            //                 borderRadius: BorderRadius.circular(32.0),
+            //               ),
+            //             ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             //grid view list
-            SizedBox(height: 15.h),
             Divider(thickness: 1, height: 1, color: Palette.paper),
             SizedBox(height: 15.h),
             Row(

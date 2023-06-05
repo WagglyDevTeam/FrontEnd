@@ -56,6 +56,7 @@ class PostRepository {
   Future<WagglyResponsePaginationDto> getBoardCollege(PostCollegeDto props) async {
     Response response = await _postProvider.getBoardCollege(props.college!, props.page!, props.size!);
     dynamic body = response.body;
+    print('$body body');
     WagglyResponsePaginationDto wagglyResponseDto = WagglyResponsePaginationDto.fromJson(body);
 
     return wagglyResponseDto;
