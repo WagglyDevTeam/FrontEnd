@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:waggly/hive/user.dart';
 import 'package:waggly/utils/colors.dart';
@@ -9,29 +10,36 @@ import 'package:waggly/utils/time_converter.dart';
 class ChatBubble extends StatelessWidget {
   const ChatBubble({
     Key? key,
-    required this.message,
+    required this.senderId,
+    required this.body,
+    required this.type,
+    required this.createAt,
     required this.isMyMessage,
     required this.isSameTime,
-    required this.isSamePerson,
-    required this.user,
-    required this.datetime,
     required this.isSameDate,
+    required this.isSamePerson,
   }) : super(key: key);
 
-  final String message;
-  final DateTime datetime;
+  final String body;
+  final DateTime createAt;
+  final String type;
+  final int senderId;
   final bool isMyMessage;
   final bool isSameTime;
-  final bool isSamePerson;
   final bool isSameDate;
-  final User user;
+  final bool isSamePerson;
 
   @override
   Widget build(BuildContext context) {
+    final _userId = Hive.box<User>('user').get('user')?.id;
+    final _userProfileImg = Hive.box<User>('user').get('user')?.profileImg;
+
     List<String> reasonList = ["욕설/비방", "부적절 컨텐츠", "판매/사기"];
 
+    bool isSameDate = true;
+
     return Column(
-      crossAxisAlignment: isMyMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      crossAxisAlignment: senderId == _userId ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         if (!isSameDate)
           Center(
@@ -39,13 +47,13 @@ class ChatBubble extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 20.0.h, top: 10.0.h),
               child: SizedBox(
                 child: Text(
-                  DateFormat('yyyy.MM.dd ${convertWeekDayToKorean(datetime.weekday)}').format(datetime),
+                  DateFormat('yyyy.MM.dd ${convertWeekDayToKorean(createAt.weekday)}').format(createAt),
                   style: CommonText.BodyMediumGray,
                 ),
               ),
             ),
           ),
-        if (!isSamePerson && !isMyMessage)
+        if (senderId != _userId)
           Padding(
             padding: EdgeInsets.only(top: 10.0.h, bottom: 5.0.h),
             child: Row(
@@ -53,20 +61,20 @@ class ChatBubble extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 14.0,
-                  backgroundImage: NetworkImage(user.profileImg!),
+                  backgroundImage: NetworkImage(_userProfileImg!),
                 ),
                 SizedBox(
                   width: 5.w,
                 ),
                 Text(
-                  user.nickName!,
+                  body!,
                   style: CommonText.BodyM,
                 ),
                 SizedBox(
                   width: 5.w,
                 ),
                 Text(
-                  user.major!,
+                  body!,
                   style: CommonText.BodyMediumGray,
                 ),
               ],
@@ -82,7 +90,7 @@ class ChatBubble extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      convertTimeToKorean(datetime),
+                      convertTimeToKorean(createAt),
                       style: CommonText.Chip,
                     ),
                   ],
@@ -105,7 +113,7 @@ class ChatBubble extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text('${user.nickName}님을 신고하시겠습니까?'),
+                          Text('${senderId}님을 신고하시겠습니까?'),
                           SizedBox(height: 5.h),
                           Divider(thickness: 1, color: Palette.candy),
                           SizedBox(height: 10.h),
@@ -184,7 +192,7 @@ class ChatBubble extends StatelessWidget {
                 // width: 200.w,
                 padding: EdgeInsets.fromLTRB(16.0.w, 10.0.h, 16.0.w, 10.0.h),
                 child: Text(
-                  message,
+                  body,
                   style: TextStyle(
                     color: isMyMessage ? Colors.white : Colors.black,
                   ),
@@ -195,7 +203,7 @@ class ChatBubble extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 7.0.w, bottom: 3.0.h),
                 child: Text(
-                  convertTimeToKorean(datetime),
+                  convertTimeToKorean(createAt),
                   style: CommonText.Chip,
                 ),
               ),

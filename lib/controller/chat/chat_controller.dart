@@ -8,6 +8,14 @@ import 'package:waggly/repository/chat_repository.dart';
 
 class ChatController extends GetxController{
   final ChatRepository _chatRepository = ChatRepository();
+  final myChat = [].obs;
+
+
+  @override
+  void onInit() async{
+    super.onInit();
+    getChat(1);
+  }
 
 
 
@@ -17,7 +25,8 @@ Future<void> getChat(int roomId) async{
   List<dynamic> chatMessageJson = result.datas['messageList'];
   List<ChatMessageDto> convertMessageDtos = chatMessageJson.map((e) => ChatMessageDto.fromJson(e)).toList();
   List<ChatImageDto> convertImageMessageDtos = chatImageJson.map((e) => ChatImageDto.fromJson(e)).toList();
-  print(result.status);
+  print('getChat $chatMessageJson');
+  myChat.value = convertMessageDtos;
 }
 
 
