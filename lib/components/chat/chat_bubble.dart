@@ -10,7 +10,7 @@ import 'package:waggly/utils/time_converter.dart';
 class ChatBubble extends StatelessWidget {
   const ChatBubble({
     Key? key,
-    required this.senderId,
+     this.senderId,
     required this.body,
     required this.type,
     required this.createAt,
@@ -23,7 +23,7 @@ class ChatBubble extends StatelessWidget {
   final String body;
   final DateTime createAt;
   final String type;
-  final int senderId;
+  final int? senderId;
   final bool isMyMessage;
   final bool isSameTime;
   final bool isSameDate;

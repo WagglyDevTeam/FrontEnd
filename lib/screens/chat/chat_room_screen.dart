@@ -65,7 +65,7 @@ List<String> imageUrlList = [
 
 class ChatRoomScreen extends StatelessWidget {
   ChatRoomScreen({Key? key}) : super(key: key);
-  final ChatController chatController = Get.put(ChatController());
+  ChatController chatController = Get.put(ChatController());
 
 
   //chat
@@ -101,9 +101,10 @@ class ChatRoomScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     chatList = [chat1, chat2, chat3, chat4, chat5, chat6, chat7, chat8, chat9];
     participantList = [user1, user2];
+    chatController.getChat(1);
 
     // print(loginUser.id);
-   // chatController.getChat(1);
+
     //chat
     //stompClient 연결안되어이씅면 실행됨
     if (stompClient == null) {
@@ -188,33 +189,7 @@ class ChatRoomScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.0.w),
-                    child: Stack(children: [
-                      Container(
-                        // color: Colors.red,
-                        width: 30.w,
-                        height: 30.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(width: 1.0, color: Palette.lightGray),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      ),
-                      Positioned(
-                        left: 8.w,
-                        top: 8.h,
-                        child: Container(
-                          width: 14.w,
-                          height: 14.h,
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                        ),
-                      ),
-                    ]),
-                  )
+
                 ],
               ),
             ),
@@ -222,83 +197,83 @@ class ChatRoomScreen extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(left: 18.0.w, right: 18.0.w),
-                child: SizedBox(
-                  // constraints: BoxConstraints(maxHeight: 400.0.h),
-                  // height: 300.0.h,
-                  child: ListView.separated(
-                    reverse: true,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(
-                        height: 10.0.w,
-                      );
-                    },
-                    scrollDirection: Axis.vertical,
-                    itemCount: chatList.length,
-                    itemBuilder: (ctx, index) {
-                      if (chatList.isEmpty) {
-                        return Container();
-                      }
-                      if (index == chatList.length - 1) {
-                        // 첫번째 메시지 일 경우
-                        return Column(
-                          children: [
-                            ChatBubble(
-                              senderId: chatController.myChat[index]['senderId']!,
-                              // user: participantList.where((element) => element.id == chatList[index].senderId).first,
-                              body: "${chatController.myChat[index]['body']!} : $index",
-                              createAt: chatController.myChat[index]['createAt']!,
-                              isMyMessage: loginUser.id == chatController.myChat[index]['senderId'],
-                              isSameTime: chatController.myChat[index]['senderId'] == chatController.myChat[index - 1]['senderId'] &&
-                                  DateFormat('MM/dd HH:mm').format(chatController.myChat[index].createAt!) ==
-                                      DateFormat('MM/dd HH:mm').format(chatController.myChat[index].createAt!),
-                              isSamePerson: false,
-                                isSameDate:false,
-                              type: chatController.myChat[index]['type']
-                              // isSameDate: false,
-                            ),
-                          ],
-                        );
-                      } else if (index == 0) {
-                        // 마지막 메시지 일 경우
-                        return Column(
-                          children: [
-                            ChatBubble(
-                             // user: participantList.where((element) => element.id == chatList[index].senderId).first,
-                              senderId: chatController.myChat[index]['senderId']!,
-                              body: "${chatController.myChat[index]['body']!} : $index",
-                              createAt: chatController.myChat[index]['createAt']!,
-                              isMyMessage: loginUser.id == chatController.myChat[index]['senderId'],
-                              isSameTime: false,
-                              isSamePerson: chatController.myChat[index]['senderId'] == chatController.myChat[index + 1]['senderId'],
-                              isSameDate:
-                              chatController.myChat[index]['createAt']!.weekday == chatController.myChat[index + 1]['createAt']!.weekday,
-                                type: chatController.myChat[index]['type']
-                            ),
-                          ],
-                        );
-                      } else {
-                        return Column(
-                          children: [
-                            ChatBubble(
-                              //user: participantList.where((element) => element.id == chatList[index].senderId).first,
-                              senderId: chatController.myChat[index]['senderId']!,
-                              body: "${chatController.myChat[index]['body']!} : $index",
-                              createAt: chatController.myChat[index]['createAt']!,
-                              isMyMessage: loginUser.id == chatController.myChat[index]['senderId'],
-                              isSameTime: chatController.myChat[index]['senderId'] == chatController.myChat[index - 1]['senderId'] &&
-                                  DateFormat('MM/dd HH:mm').format(chatController.myChat[index]['createAt']!) ==
-                                      DateFormat('MM/dd HH:mm').format(chatController.myChat[index - 1]['createAt']!),
-                              isSamePerson: chatController.myChat[index]['senderId'] ==chatController.myChat[index - 1]['senderId'],
-                              isSameDate:
-                              chatController.myChat[index]['createAt']!.weekday == chatController.myChat[index]['createAt']!.weekday,
-                                type: chatController.myChat[index]['type']
-                            ),
-                          ],
-                        );
-                      }
-                    },
-                  ),
-                ),
+                child: Obx (() =>
+                    SizedBox(
+                      // constraints: BoxConstraints(maxHeight: 400.0.h),
+                      // height: 300.0.h,
+                      child: ListView.separated(
+                        separatorBuilder: (BuildContext context, int index) {
+                          return SizedBox(
+                            height: 10.0.w,
+                          );
+                        },
+                        scrollDirection: Axis.vertical,
+                        itemCount: chatController.myChat.length,
+                        itemBuilder: (ctx, index) {
+                          if (chatController.myChat.isEmpty) {
+                            return Container();
+                          }
+                          if (index == chatController.myChat.length - 1) {
+                            // 첫번째 메시지 일 경우
+                            return Column(
+                              children: [
+                                ChatBubble(
+                                    senderId: chatController.myChat[index].senderId!,
+                                    // user: participantList.where((element) => element.id == chatList[index].senderId).first,
+                                    body: chatController.myChat[index].body!,
+                                    createAt: chatController.myChat[index].createAt!,
+                                    isMyMessage: loginUser.id == chatController.myChat[index].senderId,
+                                    isSameTime: chatController.myChat[index].senderId == chatController.myChat[index - 1].senderId &&
+                                        DateFormat('MM/dd HH:mm').format(chatController.myChat[index].createAt!) ==
+                                            DateFormat('MM/dd HH:mm').format(chatController.myChat[index].createAt!),
+                                    isSamePerson: false,
+                                    isSameDate:false,
+                                    type: chatController.myChat[index].type
+                                  // isSameDate: false,
+                                ),
+                              ],
+                            );
+                          } else if (index == 0) {
+                            // 마지막 메시지 일 경우
+                            return Column(
+                              children: [
+                                ChatBubble(
+                                      // user: participantList.where((element) => element.id == chatList[index].senderId).first,
+                                        senderId: chatController.myChat[index].senderId ?? 0,
+                                        body: chatController.myChat[index].body!,
+                                        createAt: chatController.myChat[index].createAt!,
+                                        isMyMessage: loginUser.id == chatController.myChat[index].senderId,
+                                        isSameTime: false,
+                                        isSamePerson: chatController.myChat[index].senderId == chatController.myChat[index + 1].senderId,
+                                        isSameDate:
+                                        chatController.myChat[index].createAt!.weekday == chatController.myChat[index + 1].createAt!.weekday,
+                                        type: chatController.myChat[index].type
+                                    ),
+                              ],
+                            );
+                          } else {
+                            return Column(
+                              children: [
+                                ChatBubble(
+                                      //user: participantList.where((element) => element.id == chatList[index].senderId).first,
+                                    senderId: chatController.myChat[index].senderId ?? 0,
+                                        body: chatController.myChat[index].body!,
+                                        createAt: chatController.myChat[index].createAt!,
+                                        isMyMessage: loginUser.id == chatController.myChat[index].senderId,
+                                        isSameTime: chatController.myChat[index].senderId == chatController.myChat[index - 1].senderId &&
+                                            DateFormat('MM/dd HH:mm').format(chatController.myChat[index].createAt!) ==
+                                                DateFormat('MM/dd HH:mm').format(chatController.myChat[index - 1].createAt!),
+                                        isSamePerson: chatController.myChat[index].senderId ==chatController.myChat[index - 1].senderId,
+                                        isSameDate:
+                                        chatController.myChat[index].createAt!.weekday == chatController.myChat[index].createAt!.weekday,
+                                        type: chatController.myChat[index].type
+                                    ),
+                              ],
+                            );
+                          }
+                        },
+                      ),
+                    ),),
               ),
             ),
             Padding(

@@ -13,8 +13,10 @@ class ChatController extends GetxController{
 
   @override
   void onInit() async{
+    print('chat controller start');
+    await getChat(1);
     super.onInit();
-    getChat(1);
+
   }
 
 
@@ -26,7 +28,7 @@ Future<void> getChat(int roomId) async{
   List<ChatMessageDto> convertMessageDtos = chatMessageJson.map((e) => ChatMessageDto.fromJson(e)).toList();
   List<ChatImageDto> convertImageMessageDtos = chatImageJson.map((e) => ChatImageDto.fromJson(e)).toList();
   print('getChat $chatMessageJson');
-  myChat.value = convertMessageDtos;
+  myChat.value =  convertMessageDtos;
 }
 
 
