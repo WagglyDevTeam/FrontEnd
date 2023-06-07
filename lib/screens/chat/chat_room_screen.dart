@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -21,30 +22,30 @@ import 'package:waggly/widgets/header/page_appbar.dart';
 
 
 
-Chat chat1 = Chat(senderId: 1, message: "잘 가는거 맞나여", messageTime: DateTime(2022, 1, 2, 12, 34, 01));
-Chat chat2 = Chat(senderId: 1, message: "두번째 메시지 잘 가나여 유저1", messageTime: DateTime(2022, 1, 2, 12, 34, 02));
-Chat chat3 = Chat(senderId: 25, message: "유저2 메시지 첫번째", messageTime: DateTime(2022, 1, 2, 12, 34, 03));
-Chat chat4 = Chat(senderId: 25, message: "시간 잘 뜨나요?", messageTime: DateTime(2022, 1, 2, 12, 34, 04));
-Chat chat5 = Chat(senderId: 25, message: "잘 없어지나요 시간?", messageTime: DateTime(2022, 1, 2, 12, 35, 05));
-Chat chat6 =
-    Chat(senderId: 25, message: "테스트트테스트트 긴 텍스트 테스트트트트 너비 잘 나오나 테스트트트?", messageTime: DateTime(2022, 1, 2, 12, 36, 06));
-Chat chat7 = Chat(senderId: 1, message: "이제 그만 보내", messageTime: DateTime(2022, 1, 2, 12, 37, 07));
-Chat chat8 = Chat(senderId: 1, message: "그만 보내라고", messageTime: DateTime(2022, 1, 2, 12, 37, 08));
-Chat chat9 = Chat(senderId: 25, message: "알았써 ð", messageTime: DateTime(2022, 1, 2, 12, 38, 56));
-User user1 = User(
-    id: 1,
-    nickName: "유저1",
-    university: "가나다대학교",
-    classNumber: 22,
-    major: "소맥황금비율학과",
-    profileImg: "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/08fdac1f-1577-486b-84e7-06d235cdd3eb.png");
-User user2 = User(
-    id: 25,
-    nickName: "유저2",
-    university: "가나다대학교",
-    classNumber: 22,
-    major: "주정차단속학과",
-    profileImg: "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/cfa56b43-a2c3-45b7-ae3b-9f5be44f1692.png");
+// Chat chat1 = Chat(senderId: 1, message: "잘 가는거 맞나여", messageTime: DateTime(2022, 1, 2, 12, 34, 01));
+// Chat chat2 = Chat(senderId: 1, message: "두번째 메시지 잘 가나여 유저1", messageTime: DateTime(2022, 1, 2, 12, 34, 02));
+// Chat chat3 = Chat(senderId: 25, message: "유저2 메시지 첫번째", messageTime: DateTime(2022, 1, 2, 12, 34, 03));
+// Chat chat4 = Chat(senderId: 25, message: "시간 잘 뜨나요?", messageTime: DateTime(2022, 1, 2, 12, 34, 04));
+// Chat chat5 = Chat(senderId: 25, message: "잘 없어지나요 시간?", messageTime: DateTime(2022, 1, 2, 12, 35, 05));
+// Chat chat6 =
+//     Chat(senderId: 25, message: "테스트트테스트트 긴 텍스트 테스트트트트 너비 잘 나오나 테스트트트?", messageTime: DateTime(2022, 1, 2, 12, 36, 06));
+// Chat chat7 = Chat(senderId: 1, message: "이제 그만 보내", messageTime: DateTime(2022, 1, 2, 12, 37, 07));
+// Chat chat8 = Chat(senderId: 1, message: "그만 보내라고", messageTime: DateTime(2022, 1, 2, 12, 37, 08));
+// Chat chat9 = Chat(senderId: 25, message: "알았써 ð", messageTime: DateTime(2022, 1, 2, 12, 38, 56));
+// User user1 = User(
+//     id: 1,
+//     nickName: "유저1",
+//     university: "가나다대학교",
+//     classNumber: 22,
+//     major: "소맥황금비율학과",
+//     profileImg: "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/08fdac1f-1577-486b-84e7-06d235cdd3eb.png");
+// User user2 = User(
+//     id: 25,
+//     nickName: "유저2",
+//     university: "가나다대학교",
+//     classNumber: 22,
+//     major: "주정차단속학과",
+//     profileImg: "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/cfa56b43-a2c3-45b7-ae3b-9f5be44f1692.png");
 
 List<Chat> chatList = [];
 List<User> participantList = [];
@@ -74,6 +75,7 @@ class ChatRoomScreen extends StatelessWidget {
   final socketUrl = 'http://52.79.86.167:8080/ws-stomp';
 
   void onConnect(StompFrame frame) {
+  //  moveToScroll();
     print('onConnect  $frame');
     stompClient!.subscribe( //api 구독 중이라는 뜻, unSubscribe는 챗방에서 나갈 때
         destination: '/sub/chat/message/room/1', //roomId는 계속 바뀜
@@ -84,6 +86,8 @@ class ChatRoomScreen extends StatelessWidget {
             Message message = Message.fromJson(obj);
             print('message  $message');
           }});
+   // id: 1, sender:{userid: 7, nickname:test12 , major: 인류학과, profile:https://thandbag.s3.ap-northeast-2.amazonaws.com/newsroom/6d80e81d-075b-40fc-9b1b-7c09cac4ebc5.jpg} , message: tttttttt
+
   }
 
 
@@ -99,11 +103,11 @@ class ChatRoomScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    chatList = [chat1, chat2, chat3, chat4, chat5, chat6, chat7, chat8, chat9];
-    participantList = [user1, user2];
+    chatController.moveToScroll();
     chatController.getChat(1);
+    // chatList = [chat1, chat2, chat3, chat4, chat5, chat6, chat7, chat8, chat9];
+    // participantList = [user1, user2];
 
-    // print(loginUser.id);
 
     //chat
     //stompClient 연결안되어이씅면 실행됨
@@ -118,7 +122,6 @@ class ChatRoomScreen extends StatelessWidget {
     }
 
     ImageController _imageController = Get.put(ImageController());
-    chatList.sort((a, b) => b.messageTime!.compareTo(a.messageTime!));
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -202,6 +205,7 @@ class ChatRoomScreen extends StatelessWidget {
                       // constraints: BoxConstraints(maxHeight: 400.0.h),
                       // height: 300.0.h,
                       child: ListView.separated(
+                        controller: chatController.scrollController.value,
                         separatorBuilder: (BuildContext context, int index) {
                           return SizedBox(
                             height: 10.0.w,
@@ -219,7 +223,7 @@ class ChatRoomScreen extends StatelessWidget {
                               children: [
                                 ChatBubble(
                                     senderId: chatController.myChat[index].senderId!,
-                                    // user: participantList.where((element) => element.id == chatList[index].senderId).first,
+                                    //user: participantList.where((element) => element.id == chatList[index].senderId).first,
                                     body: chatController.myChat[index].body!,
                                     createAt: chatController.myChat[index].createAt!,
                                     isMyMessage: loginUser.id == chatController.myChat[index].senderId,
@@ -338,16 +342,11 @@ class ChatRoomScreen extends StatelessWidget {
                             );
                           } else {
                             sendMessage();
-                            // print(chatList);
-                            // Chat newChat = Chat(
-                            //   senderId: loginUser.id,
-                            //   message: _chatMessageController.text,
-                            //   messageTime: DateTime.now(),
-                            // );
-                            // setState(() {
-                            //   chatList.add(newChat);
-                            // });
+                            var sender = loginUser.id;
+                            chatController.getRealTimeChat(1, sender!, _chatMessageController.text, DateTime.now(), 'normal');
+                            chatController.moveToScroll();
                             _chatMessageController.text = '';
+
                           }
                         },
                         child: Container(
