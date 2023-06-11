@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
@@ -183,7 +185,8 @@ class ChatBubble extends StatelessWidget {
                   }),
                 );
               },
-              child: Container(
+
+              child: (type == 'normal') ? Container(
                 constraints: BoxConstraints(maxWidth: 200.w),
                 decoration: BoxDecoration(
                   color: isMyMessage ? Palette.main : Palette.paper,
@@ -196,6 +199,12 @@ class ChatBubble extends StatelessWidget {
                   style: TextStyle(
                     color: isMyMessage ? Colors.white : Colors.black,
                   ),
+                ),
+              ) :  ClipRRect(
+                borderRadius: BorderRadius.circular(18.0),
+                child: Image.file(
+                  File(body),
+                  fit: BoxFit.fill,
                 ),
               ),
             ),

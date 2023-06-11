@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
@@ -75,7 +76,6 @@ class ChatRoomScreen extends StatelessWidget {
   final socketUrl = 'http://52.79.86.167:8080/ws-stomp';
 
   void onConnect(StompFrame frame) {
-  //  moveToScroll();
     print('onConnect  $frame');
     stompClient!.subscribe( //api 구독 중이라는 뜻, unSubscribe는 챗방에서 나갈 때
         destination: '/sub/chat/message/room/1', //roomId는 계속 바뀜
@@ -86,8 +86,6 @@ class ChatRoomScreen extends StatelessWidget {
             Message message = Message.fromJson(obj);
             print('message  $message');
           }});
-   // id: 1, sender:{userid: 7, nickname:test12 , major: 인류학과, profile:https://thandbag.s3.ap-northeast-2.amazonaws.com/newsroom/6d80e81d-075b-40fc-9b1b-7c09cac4ebc5.jpg} , message: tttttttt
-
   }
 
 
@@ -99,15 +97,10 @@ class ChatRoomScreen extends StatelessWidget {
     stompClient?.send(destination: '/pub/chat/message', body: jsonEncode(json));
   }
 
-  //이미지 보내느거 따로 하나
 
   @override
   Widget build(BuildContext context) {
-    chatController.moveToScroll();
     chatController.getChat(1);
-    // chatList = [chat1, chat2, chat3, chat4, chat5, chat6, chat7, chat8, chat9];
-    // participantList = [user1, user2];
-
 
     //chat
     //stompClient 연결안되어이씅면 실행됨
@@ -214,6 +207,8 @@ class ChatRoomScreen extends StatelessWidget {
                         scrollDirection: Axis.vertical,
                         itemCount: chatController.myChat.length,
                         itemBuilder: (ctx, index) {
+                          print(index);
+                          print(chatController.myChat.value.toString());
                           if (chatController.myChat.isEmpty) {
                             return Container();
                           }
@@ -227,8 +222,7 @@ class ChatRoomScreen extends StatelessWidget {
                                     body: chatController.myChat[index].body!,
                                     createAt: chatController.myChat[index].createAt!,
                                     isMyMessage: loginUser.id == chatController.myChat[index].senderId,
-                                    isSameTime: chatController.myChat[index].senderId == chatController.myChat[index - 1].senderId &&
-                                        DateFormat('MM/dd HH:mm').format(chatController.myChat[index].createAt!) ==
+                                    isSameTime: DateFormat('MM/dd HH:mm').format(chatController.myChat[index].createAt!) ==
                                             DateFormat('MM/dd HH:mm').format(chatController.myChat[index].createAt!),
                                     isSamePerson: false,
                                     isSameDate:false,
@@ -290,7 +284,7 @@ class ChatRoomScreen extends StatelessWidget {
                       padding: EdgeInsets.only(right: 10.0.w),
                       child: InkWell(
                         onTap: () async {
-                          await _imageController.uploadSingleImage();
+                         await chatController.pickedImage(1, loginUser.id!, DateTime.now(), 'image');
                         },
                         child: Container(
                           height: 30.0.h,
@@ -344,7 +338,6 @@ class ChatRoomScreen extends StatelessWidget {
                             sendMessage();
                             var sender = loginUser.id;
                             chatController.getRealTimeChat(1, sender!, _chatMessageController.text, DateTime.now(), 'normal');
-                            chatController.moveToScroll();
                             _chatMessageController.text = '';
 
                           }

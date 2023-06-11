@@ -1,8 +1,9 @@
-import 'dart:ffi';
-
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:waggly/model/chat/chat.dart';
 import 'package:waggly/model/chat/chat_image_dto.dart';
 import 'package:waggly/model/chat/chat_message_dto.dart';
@@ -14,13 +15,15 @@ class ChatController extends GetxController{
   var scrollController = ScrollController().obs;
   var hasMore = false.obs;
   final myChat = [].obs;
-
+  final picker = ImagePicker();
+  final uploadImg = "".obs;
+  final roomId = 1;
+  //File? pickedImage;
 
   @override
   void onInit() async{
     print('chat controller start');
     await getChat(1);
-    moveToScroll();
 
 
     //나중에 데이터 사이즈 컨트롤할거 미리 적어본것
@@ -44,9 +47,9 @@ class ChatController extends GetxController{
   }
 
   //일단 스크롤 제일 마지막으로 위치 보내기
-  void moveToScroll(){
-    scrollController.value.animateTo(scrollController.value.position.maxScrollExtent, duration: Duration(milliseconds: 100), curve: Curves.ease);
-  }
+  // void moveToScroll(){
+  //   scrollController.value.animateTo(scrollController.value.position.maxScrollExtent, duration: Duration(milliseconds: 100), curve: Curves.ease);
+  // }
 
 Future<void> getChat(int roomId) async{
   WagglyResponseDto result = await _chatRepository.getChatMessage(roomId);
@@ -63,5 +66,27 @@ Future<void> getChat(int roomId) async{
   myChat.add(ChatMessageDto(roomId: roomId, senderId: senderId, body: body, createAt: createAt, type: type));
 }
 
+
+Future pickedImage(int roomId, int senderId, DateTime createAt, String type) async{
+    try{
+
+      final pickedImg = await picker.pickImage(source: ImageSource.gallery,  imageQuality: 50,maxHeight: 150);
+      if(pickedImg == null) return;
+
+      uploadImg.value = pickedImg.path;
+      myChat.add(ChatMessageDto(roomId: roomId, senderId: senderId, body: uploadImg.value, createAt: createAt, type: type));
+
+      print(pickedImg);
+      print(pickedImg.path);
+      // final FormData formData = FormData({'image': MultipartFile(File(uploadImg.value), filename: pickedImg.name)});
+      // print('formData $formData');
+
+     Response response = await _chatRepository.postChatImage(roomId, uploadImg.value);
+     print(response);
+
+    } on PlatformException catch(e) {
+      print('failed to Pick image: $e');
+    }
+}
 
 }

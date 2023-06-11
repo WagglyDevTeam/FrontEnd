@@ -17,4 +17,12 @@ class ChatRepository{
     return wagglyResponseDto;
   }
 
+
+   Future postChatImage(int roomId, String image) async{
+    Response response = await _chatProvider.postImageChat(roomId, image);
+    dynamic body= response.body;
+    print('image $body');
+    WagglyResponseDto wagglyResponseDto = WagglyResponseDto.fromJson(body);
+  }
+
 }
