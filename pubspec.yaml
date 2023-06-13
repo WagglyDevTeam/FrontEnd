@@ -82,9 +82,13 @@ dependencies:
   #indicator
   smooth_page_indicator: ^1.1.0
 
+  #bottomNav
+  page_transition: "^2.0.9"
+
   #env
   flutter_dotenv: ^5.0.2
   easy_image_viewer: ^1.2.0
+
 
 dev_dependencies:
   flutter_test:
