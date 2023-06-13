@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
@@ -21,30 +23,30 @@ import 'package:waggly/widgets/header/page_appbar.dart';
 
 
 
-Chat chat1 = Chat(senderId: 1, message: "잘 가는거 맞나여", messageTime: DateTime(2022, 1, 2, 12, 34, 01));
-Chat chat2 = Chat(senderId: 1, message: "두번째 메시지 잘 가나여 유저1", messageTime: DateTime(2022, 1, 2, 12, 34, 02));
-Chat chat3 = Chat(senderId: 25, message: "유저2 메시지 첫번째", messageTime: DateTime(2022, 1, 2, 12, 34, 03));
-Chat chat4 = Chat(senderId: 25, message: "시간 잘 뜨나요?", messageTime: DateTime(2022, 1, 2, 12, 34, 04));
-Chat chat5 = Chat(senderId: 25, message: "잘 없어지나요 시간?", messageTime: DateTime(2022, 1, 2, 12, 35, 05));
-Chat chat6 =
-    Chat(senderId: 25, message: "테스트트테스트트 긴 텍스트 테스트트트트 너비 잘 나오나 테스트트트?", messageTime: DateTime(2022, 1, 2, 12, 36, 06));
-Chat chat7 = Chat(senderId: 1, message: "이제 그만 보내", messageTime: DateTime(2022, 1, 2, 12, 37, 07));
-Chat chat8 = Chat(senderId: 1, message: "그만 보내라고", messageTime: DateTime(2022, 1, 2, 12, 37, 08));
-Chat chat9 = Chat(senderId: 25, message: "알았써 ð", messageTime: DateTime(2022, 1, 2, 12, 38, 56));
-User user1 = User(
-    id: 1,
-    nickName: "유저1",
-    university: "가나다대학교",
-    classNumber: 22,
-    major: "소맥황금비율학과",
-    profileImg: "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/08fdac1f-1577-486b-84e7-06d235cdd3eb.png");
-User user2 = User(
-    id: 25,
-    nickName: "유저2",
-    university: "가나다대학교",
-    classNumber: 22,
-    major: "주정차단속학과",
-    profileImg: "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/cfa56b43-a2c3-45b7-ae3b-9f5be44f1692.png");
+// Chat chat1 = Chat(senderId: 1, message: "잘 가는거 맞나여", messageTime: DateTime(2022, 1, 2, 12, 34, 01));
+// Chat chat2 = Chat(senderId: 1, message: "두번째 메시지 잘 가나여 유저1", messageTime: DateTime(2022, 1, 2, 12, 34, 02));
+// Chat chat3 = Chat(senderId: 25, message: "유저2 메시지 첫번째", messageTime: DateTime(2022, 1, 2, 12, 34, 03));
+// Chat chat4 = Chat(senderId: 25, message: "시간 잘 뜨나요?", messageTime: DateTime(2022, 1, 2, 12, 34, 04));
+// Chat chat5 = Chat(senderId: 25, message: "잘 없어지나요 시간?", messageTime: DateTime(2022, 1, 2, 12, 35, 05));
+// Chat chat6 =
+//     Chat(senderId: 25, message: "테스트트테스트트 긴 텍스트 테스트트트트 너비 잘 나오나 테스트트트?", messageTime: DateTime(2022, 1, 2, 12, 36, 06));
+// Chat chat7 = Chat(senderId: 1, message: "이제 그만 보내", messageTime: DateTime(2022, 1, 2, 12, 37, 07));
+// Chat chat8 = Chat(senderId: 1, message: "그만 보내라고", messageTime: DateTime(2022, 1, 2, 12, 37, 08));
+// Chat chat9 = Chat(senderId: 25, message: "알았써 ð", messageTime: DateTime(2022, 1, 2, 12, 38, 56));
+// User user1 = User(
+//     id: 1,
+//     nickName: "유저1",
+//     university: "가나다대학교",
+//     classNumber: 22,
+//     major: "소맥황금비율학과",
+//     profileImg: "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/08fdac1f-1577-486b-84e7-06d235cdd3eb.png");
+// User user2 = User(
+//     id: 25,
+//     nickName: "유저2",
+//     university: "가나다대학교",
+//     classNumber: 22,
+//     major: "주정차단속학과",
+//     profileImg: "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/cfa56b43-a2c3-45b7-ae3b-9f5be44f1692.png");
 
 List<Chat> chatList = [];
 List<User> participantList = [];
@@ -62,15 +64,11 @@ List<String> imageUrlList = [
   "https://thandbag.s3.ap-northeast-2.amazonaws.com/waggly/cfa56b43-a2c3-45b7-ae3b-9f5be44f1692.png",
 ];
 
-class ChatRoomScreen extends StatefulWidget {
+
+class ChatRoomScreen extends StatelessWidget {
   ChatRoomScreen({Key? key}) : super(key: key);
+  ChatController chatController = Get.put(ChatController());
 
-  @override
-  State<ChatRoomScreen> createState() => _ChatRoomScreenState();
-}
-
-class _ChatRoomScreenState extends State<ChatRoomScreen> {
-  final ChatController chatController = Get.put(ChatController());
 
   //chat
   StompClient? stompClient;
@@ -90,26 +88,19 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           }});
   }
 
+
   sendMessage(){
-   var text = _chatMessageController.value.text;
-   print('text $text');
-   var sendMsg = SendMessage(roomId: 1, message: text, token: token);
-   var json = sendMsg.toJson();
-   stompClient?.send(destination: '/pub/chat/message', body: jsonEncode(json));
+    var text = _chatMessageController.value.text;
+    print('text $text');
+    var sendMsg = SendMessage(roomId: 1, message: text, token: token);
+    var json = sendMsg.toJson();
+    stompClient?.send(destination: '/pub/chat/message', body: jsonEncode(json));
   }
-
-  //이미지 보내느거 따로 하나
-
 
 
   @override
-  initState() {
-    super.initState();
+  Widget build(BuildContext context) {
     chatController.getChat(1);
-
-    chatList = [chat1, chat2, chat3, chat4, chat5, chat6, chat7, chat8, chat9];
-    participantList = [user1, user2];
-    // print(loginUser.id);
 
     //chat
     //stompClient 연결안되어이씅면 실행됨
@@ -122,14 +113,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           ));
       stompClient!.activate(); //정상화된걸 알려줌
     }
-  }
 
-
-  @override
-  Widget build(BuildContext context) {
     ImageController _imageController = Get.put(ImageController());
 
-    chatList.sort((a, b) => b.messageTime!.compareTo(a.messageTime!));
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: TopAppBar(),
@@ -184,11 +170,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                setState(() {
                                   // TODO:59 overflow인지 아닌지 판단할 수 있는 기준이 뭐가 있을까?
                                   isOverFlow = !isOverFlow;
                                   // print(isOverFlow);
-                                });
                               },
                               child: Icon(
                                 size: 20,
@@ -201,33 +185,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.0.w),
-                    child: Stack(children: [
-                      Container(
-                        // color: Colors.red,
-                        width: 30.w,
-                        height: 30.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(width: 1.0, color: Palette.lightGray),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      ),
-                      Positioned(
-                        left: 8.w,
-                        top: 8.h,
-                        child: Container(
-                          width: 14.w,
-                          height: 14.h,
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                        ),
-                      ),
-                    ]),
-                  )
+
                 ],
               ),
             ),
@@ -235,76 +193,85 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(left: 18.0.w, right: 18.0.w),
-                child: SizedBox(
-                  // constraints: BoxConstraints(maxHeight: 400.0.h),
-                  // height: 300.0.h,
-                  child: ListView.separated(
-                    reverse: true,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(
-                        height: 10.0.w,
-                      );
-                    },
-                    scrollDirection: Axis.vertical,
-                    itemCount: chatList.length,
-                    itemBuilder: (ctx, index) {
-                      if (chatList.isEmpty) {
-                        return Container();
-                      }
-                      if (index == chatList.length - 1) {
-                        // 첫번째 메시지 일 경우
-                        return Column(
-                          children: [
-                            ChatBubble(
-                              user: participantList.where((element) => element.id == chatList[index].senderId).first,
-                              message: "${chatList[index].message!} : $index",
-                              datetime: chatList[index].messageTime!,
-                              isMyMessage: loginUser.id == chatList[index].senderId,
-                              isSameTime: chatList[index].senderId == chatList[index - 1].senderId &&
-                                  DateFormat('MM/dd HH:mm').format(chatList[index].messageTime!) ==
-                                      DateFormat('MM/dd HH:mm').format(chatList[index - 1].messageTime!),
-                              isSamePerson: false,
-                              isSameDate: false,
-                            ),
-                          ],
-                        );
-                      } else if (index == 0) {
-                        // 마지막 메시지 일 경우
-                        return Column(
-                          children: [
-                            ChatBubble(
-                              user: participantList.where((element) => element.id == chatList[index].senderId).first,
-                              message: "${chatList[index].message!} : $index",
-                              datetime: chatList[index].messageTime!,
-                              isMyMessage: loginUser.id == chatList[index].senderId,
-                              isSameTime: false,
-                              isSamePerson: chatList[index].senderId == chatList[index + 1].senderId,
-                              isSameDate:
-                                  chatList[index].messageTime!.weekday == chatList[index + 1].messageTime!.weekday,
-                            ),
-                          ],
-                        );
-                      } else {
-                        return Column(
-                          children: [
-                            ChatBubble(
-                              user: participantList.where((element) => element.id == chatList[index].senderId).first,
-                              message: "${chatList[index].message!} : $index",
-                              datetime: chatList[index].messageTime!,
-                              isMyMessage: loginUser.id == chatList[index].senderId,
-                              isSameTime: chatList[index].senderId == chatList[index - 1].senderId &&
-                                  DateFormat('MM/dd HH:mm').format(chatList[index].messageTime!) ==
-                                      DateFormat('MM/dd HH:mm').format(chatList[index - 1].messageTime!),
-                              isSamePerson: chatList[index].senderId == chatList[index + 1].senderId,
-                              isSameDate:
-                                  chatList[index].messageTime!.weekday == chatList[index + 1].messageTime!.weekday,
-                            ),
-                          ],
-                        );
-                      }
-                    },
-                  ),
-                ),
+                child: Obx (() =>
+                    SizedBox(
+                      // constraints: BoxConstraints(maxHeight: 400.0.h),
+                      // height: 300.0.h,
+                      child: ListView.separated(
+                        controller: chatController.scrollController.value,
+                        separatorBuilder: (BuildContext context, int index) {
+                          return SizedBox(
+                            height: 10.0.w,
+                          );
+                        },
+                        scrollDirection: Axis.vertical,
+                        itemCount: chatController.myChat.length,
+                        itemBuilder: (ctx, index) {
+                          print(index);
+                          print(chatController.myChat.value.toString());
+                          if (chatController.myChat.isEmpty) {
+                            return Container();
+                          }
+                          if (index == chatController.myChat.length - 1) {
+                            // 첫번째 메시지 일 경우
+                            return Column(
+                              children: [
+                                ChatBubble(
+                                    senderId: chatController.myChat[index].senderId!,
+                                    //user: participantList.where((element) => element.id == chatList[index].senderId).first,
+                                    body: chatController.myChat[index].body!,
+                                    createAt: chatController.myChat[index].createAt!,
+                                    isMyMessage: loginUser.id == chatController.myChat[index].senderId,
+                                    isSameTime: DateFormat('MM/dd HH:mm').format(chatController.myChat[index].createAt!) ==
+                                            DateFormat('MM/dd HH:mm').format(chatController.myChat[index].createAt!),
+                                    isSamePerson: false,
+                                    isSameDate:false,
+                                    type: chatController.myChat[index].type
+                                  // isSameDate: false,
+                                ),
+                              ],
+                            );
+                          } else if (index == 0) {
+                            // 마지막 메시지 일 경우
+                            return Column(
+                              children: [
+                                ChatBubble(
+                                      // user: participantList.where((element) => element.id == chatList[index].senderId).first,
+                                        senderId: chatController.myChat[index].senderId ?? 0,
+                                        body: chatController.myChat[index].body!,
+                                        createAt: chatController.myChat[index].createAt!,
+                                        isMyMessage: loginUser.id == chatController.myChat[index].senderId,
+                                        isSameTime: false,
+                                        isSamePerson: chatController.myChat[index].senderId == chatController.myChat[index + 1].senderId,
+                                        isSameDate:
+                                        chatController.myChat[index].createAt!.weekday == chatController.myChat[index + 1].createAt!.weekday,
+                                        type: chatController.myChat[index].type
+                                    ),
+                              ],
+                            );
+                          } else {
+                            return Column(
+                              children: [
+                                ChatBubble(
+                                      //user: participantList.where((element) => element.id == chatList[index].senderId).first,
+                                    senderId: chatController.myChat[index].senderId ?? 0,
+                                        body: chatController.myChat[index].body!,
+                                        createAt: chatController.myChat[index].createAt!,
+                                        isMyMessage: loginUser.id == chatController.myChat[index].senderId,
+                                        isSameTime: chatController.myChat[index].senderId == chatController.myChat[index - 1].senderId &&
+                                            DateFormat('MM/dd HH:mm').format(chatController.myChat[index].createAt!) ==
+                                                DateFormat('MM/dd HH:mm').format(chatController.myChat[index - 1].createAt!),
+                                        isSamePerson: chatController.myChat[index].senderId ==chatController.myChat[index - 1].senderId,
+                                        isSameDate:
+                                        chatController.myChat[index].createAt!.weekday == chatController.myChat[index].createAt!.weekday,
+                                        type: chatController.myChat[index].type
+                                    ),
+                              ],
+                            );
+                          }
+                        },
+                      ),
+                    ),),
               ),
             ),
             Padding(
@@ -317,7 +284,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                       padding: EdgeInsets.only(right: 10.0.w),
                       child: InkWell(
                         onTap: () async {
-                          await _imageController.uploadSingleImage();
+                         await chatController.pickedImage(1, loginUser.id!, DateTime.now(), 'image');
                         },
                         child: Container(
                           height: 30.0.h,
@@ -369,16 +336,10 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                             );
                           } else {
                             sendMessage();
-                            // print(chatList);
-                            // Chat newChat = Chat(
-                            //   senderId: loginUser.id,
-                            //   message: _chatMessageController.text,
-                            //   messageTime: DateTime.now(),
-                            // );
-                            // setState(() {
-                            //   chatList.add(newChat);
-                            // });
+                            var sender = loginUser.id;
+                            chatController.getRealTimeChat(1, sender!, _chatMessageController.text, DateTime.now(), 'normal');
                             _chatMessageController.text = '';
+
                           }
                         },
                         child: Container(
@@ -404,6 +365,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
         ),
       ),
     );
+
+
   }
 
   SafeArea endDrawer() {
@@ -470,7 +433,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  setState(() {
                                     if (selectedUserId == 0) {
                                       selectedUserId = participantList[index].id!;
                                     } else {
@@ -480,7 +442,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                         selectedUserId = participantList[index].id!;
                                       }
                                     }
-                                  });
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(top: 3.0.h, bottom: 3.0.h),
@@ -584,6 +545,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
       ),
     );
   }
+
+
 }
 
 class TopAppBar extends StatelessWidget with PreferredSizeWidget {

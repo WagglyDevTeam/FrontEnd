@@ -1,19 +1,25 @@
 class Chat {
   final int? senderId;
+  final int? roomId;
   final String? message;
-  final DateTime? messageTime;
+  final DateTime? createAt;
+  final String? type;
 
   Chat({
     this.senderId,
+    this.roomId,
     this.message,
-    this.messageTime,
+    this.createAt,
+    this.type,
   });
 
   factory Chat.fromJson(Map<String, dynamic> json) {
     return Chat(
       senderId: json['senderId'],
+      roomId: json['roomId'],
       message: json['message'],
-      messageTime: json['messageTime'],
+      createAt: json['createAt'],
+      type: json['type'],
     );
   }
 }

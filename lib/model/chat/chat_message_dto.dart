@@ -4,12 +4,12 @@ class ChatMessageDto{
   final int? senderId;
   final String? body;
   final String? type;
-  final DateTime? createdAt;
+  final DateTime? createAt;
 
   ChatMessageDto({
     this.senderId,
     this.roomId,
-    this.createdAt,
+    this.createAt,
     this.body,
     this.type,
 });
@@ -20,7 +20,7 @@ class ChatMessageDto{
       senderId: json['senderId'],
       body: json['body'],
       type: json['type'],
-      createdAt: json['createdAt'],
+      createAt: DateTime.parse(json['createAt']),
     );
   }
 }
