@@ -7,12 +7,15 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:waggly/components/chat/chat_bubble.dart';
 import 'package:waggly/controller/chat/chat_controller.dart';
 import 'package:waggly/hive/user.dart';
+import 'package:waggly/screens/matchFilter/filter.dart';
+import 'package:waggly/screens/matchFilter/match.dart';
 import 'package:waggly/widgets/snackbar/custom_snack_bar.dart';
 import 'package:waggly/controller/post/image_controller.dart';
 import 'package:waggly/model/chat/chat.dart';
@@ -571,7 +574,10 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
             children: [
               InkWell(
                 onTap: (){
-                  Navigator.pop(context);
+                  ///임시방편으로 매칭완료페이지로 보냄
+                  Navigator.push(
+                    context, PageTransition(type: PageTransitionType.rightToLeft, child: FilterScreen()),
+                  );
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -583,7 +589,9 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                     color: Palette.gray,
                     iconSize: 20.0.sp,
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.push(
+                        context, PageTransition(type: PageTransitionType.rightToLeft, child: FilterScreen()),
+                      );
                     },
                   ),
                 ),
