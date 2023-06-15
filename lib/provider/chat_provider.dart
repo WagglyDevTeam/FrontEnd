@@ -27,9 +27,9 @@ class ChatProvider extends GetConnect{
     headers: {"Authorization": token!},
   );
 
-  Future<Response> postImageChat(int roomId, String image) => post(
-    "${dotenv.get('BASE_URL')}/chat/image",
-    {'roomId': roomId, 'image': image},
+
+  Future<Response> postImageChat(data) => post(
+    "${dotenv.get('BASE_URL')}/chat/image", data,
     headers: {"Authorization": token!},
   );
 }

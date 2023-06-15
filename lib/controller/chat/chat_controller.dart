@@ -76,12 +76,8 @@ Future pickedImage(int roomId, int senderId, DateTime createAt, String type) asy
       uploadImg.value = pickedImg.path;
       myChat.add(ChatMessageDto(roomId: roomId, senderId: senderId, body: uploadImg.value, createAt: createAt, type: type));
 
-      print(pickedImg);
-      print(pickedImg.path);
-      // final FormData formData = FormData({'image': MultipartFile(File(uploadImg.value), filename: pickedImg.name)});
-      // print('formData $formData');
-
-     Response response = await _chatRepository.postChatImage(roomId, uploadImg.value);
+      final formData = FormData({'roomId': roomId, 'image': MultipartFile(File(uploadImg.value),  filename: pickedImg.name)});
+     Response response = await _chatRepository.postChatImage(formData);
      print(response);
 
     } on PlatformException catch(e) {
