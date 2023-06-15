@@ -22,6 +22,8 @@ class MatchFilterController extends GetxController{
   }
 
 
+
+
   void changeIsSameSex(value){
     isSameSex.value = value;
   }

@@ -52,23 +52,31 @@ class MatchScreen extends StatelessWidget {
       },
     ];
 
+    final PageController pageController = PageController(
+      initialPage: 0,
+    );
+
     return Scaffold(
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
-        child: resultList.isNotEmpty ? ListView.builder(
-            // controller: _scrollController,
-            scrollDirection: Axis.horizontal,
-            itemCount: resultList.length,
-            itemBuilder: (context, index) {
+        child: resultList.isNotEmpty ?
+            PageView.builder(
+              controller: pageController,
+              itemCount: resultList.length,
+                itemBuilder: (context, index) {
               return Result(
-                  type: resultList[index]['type'] ?? '',
-                  name: resultList[index]['name']?? '',
-                  image: resultList[index]['image']?? '',
-                  profileImage: resultList[index]['profileImg']?? '',
-                  gender: resultList[index]['gender']?? '',
-              );
-            }
-        ) :  Container(
+                    index: index,
+                    type: resultList[index]['type'] ?? '',
+                    name: resultList[index]['name']?? '',
+                    image: resultList[index]['image']?? '',
+                    profileImage: resultList[index]['profileImg']?? '',
+                    gender: resultList[index]['gender']?? '',
+                    major : resultList[index]['major']?? '',
+                    purpose: resultList[index]['purpose']?? [],
+
+              );}
+            )
+            :  Container(
           padding: EdgeInsets.only(right: 16.w, left: 16.w),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
@@ -76,36 +84,6 @@ class MatchScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: (){
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1.0, color: Palette.lightGray),
-                        borderRadius: BorderRadius.circular(50),
-                        color: Colors.white,
-                      ),
-                      child: IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        color: Palette.gray,
-                        iconSize: 20.0.sp,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 8.w,
-                  ),
-                  Container(padding: EdgeInsets.only(bottom: 3.h), child: Text("친구 찾기", style: CommonText.BodyL))
-                ],
-              ),
               SizedBox(height: 80.h,),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -186,6 +164,9 @@ class Result extends StatelessWidget {
   String? image;
   String? profileImage;
   String? gender;
+  String? major;
+  List? purpose;
+  int? index;
 
 
   Result({Key? key,
@@ -194,6 +175,9 @@ class Result extends StatelessWidget {
     required this.image,
     required this.profileImage,
     required this.gender,
+    required this.purpose,
+    required this.major,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -204,181 +188,246 @@ class Result extends StatelessWidget {
       decoration: BoxDecoration(
         color: Color(0xffE1F4FF),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Stack(
         children: [
-          SizedBox(height: 40.h,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: (){
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.white,
-                  ),
-                  child: IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    color: Palette.gray,
-                    iconSize: 20.0.sp,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 8.w,
-              ),
-              Container(padding: EdgeInsets.only(bottom: 3.h), child: Text("친구 찾기", style: CommonText.BodyL))
-            ],
-          ),
-          SizedBox(height: 30.h,),
-          Container(
-            width: 160.w,
-            height: 30.h,
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30.0),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 40.w,
-                  height: 20.h,
-                  padding: EdgeInsets.only(top: 3.h),
-                  decoration: BoxDecoration(
-                    color: Palette.main,
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                    child: Text(type ?? '', style: TextStyle( color: Colors.white),textAlign: TextAlign.center,)
-                ),
-                SizedBox(width: 5.w,),
+                SizedBox(height: 40.h,),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text('#학업'),
-                    SizedBox(width: 5.w,),
-                    Text('#취직'),
-                    SizedBox(width: 5.w,),
-                    Text('#기타'),
+                    InkWell(
+                      onTap: (){
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: Colors.white,
+                        ),
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_back),
+                          color: Palette.gray,
+                          iconSize: 20.0.sp,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8.w,
+                    ),
+                    Container(padding: EdgeInsets.only(bottom: 3.h), child: Text("친구 찾기", style: CommonText.BodyL))
                   ],
                 ),
-              ],
-            ),
-          ),
-          SizedBox(height: 30.h,),
-          Container(
-                width: MediaQuery.of(context).size.width - 120.w,
-                child: Image.network(image ?? '', ),
-          ),
-          SizedBox(height: 20.h,),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(name ?? '', style: TextStyle(
-                  fontFamily: "NotoSansKR",
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.black)),
-                  SizedBox(width: 8.w,),
-                  SizedBox(
-                    width: 18.w,
-                    child: gender == 'm' ?
-                    Image.network('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcpRiY6%2FbtsgDM0jeS8%2FfswSWzcDW6UrgUd7DMeTuk%2Fimg.png')
-                        : Image.network('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FExVRa%2FbtsgFux3o4z%2F0CqXZ6EHWkXbXL4l9hcgG0%2Fimg.png'),
-                  )
-                ],
-              ),
-              SizedBox(height: 8.h,),
-              Text('18학번 컴퓨터 공학과'),
-            ],
-          ),
-          SizedBox(height: 30.h),
-          Container(
-            width: MediaQuery.of(context).size.width - 32.w,
-            padding: EdgeInsets.only(top:15.h, bottom: 15.h, right: 20.w, left: 20.w),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30.0),
-            ),
-            child:Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                SizedBox(height: 30.h,),
+                Container(
+                  width: 165.w,
+                  height: 30.h,
+                  // padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 40.w,
+                        height: 20.h,
+                        margin: EdgeInsets.only(top: 2.h),
+                        decoration: BoxDecoration(
+                          color: Palette.main,
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                          child: Text(type ?? '', style: TextStyle(
+                              fontFamily: "NotoSansKR",
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),textAlign: TextAlign.center,)
+                      ),
+                      SizedBox(width: 5.w,),
+                      PurposeBox(purpose: purpose,),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 30.h,),
+                SizedBox(
+                      width: MediaQuery.of(context).size.width - 120.w,
+                      child: Image.network(image ?? '', ),
+                ),
+                SizedBox(height: 20.h,),
+                Stack(
                   children: [
-                    Container(
-                      width: 58.w,
-                      child: Image.network(profileImage ?? ''),
-                    ),
-                    SizedBox(width: 10.w,),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                                width: 40.w,
-                                height: 20.h,
-                                padding: EdgeInsets.only(top: 3.h),
-                                decoration: BoxDecoration(
-                                  color: Palette.main,
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                child: Text(type ?? '', style: TextStyle( color: Colors.white),textAlign: TextAlign.center,)
-                            ),
-                            SizedBox(width: 5.w,),
-                            Text(name ?? '', style: CommonText.TitleS,),
+                            Text(name ?? '', style: TextStyle(
+                                fontFamily: "NotoSansKR",
+                                fontSize: 30.sp,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.black)),
+                            SizedBox(width: 8.w,),
+                            SizedBox(
+                              width: 18.w,
+                              child: gender == 'm' ?
+                              Image.network('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcpRiY6%2FbtsgDM0jeS8%2FfswSWzcDW6UrgUd7DMeTuk%2Fimg.png')
+                                  : Image.network('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FExVRa%2FbtsgFux3o4z%2F0CqXZ6EHWkXbXL4l9hcgG0%2Fimg.png'),
+                            )
                           ],
                         ),
-                        SizedBox(height: 5.h,),
-                        Row(
-                          children: [
-                            SizedBox(width: 15.w,),
-                            Text('#학업'),
-                            SizedBox(width: 5.w,),
-                            Text('#취직'),
-                            SizedBox(width: 5.w,),
-                            Text('#기타'),
-                          ],
-                        )
+                        SizedBox(height: 8.h,),
+                        Text( major!, style: TextStyle(
+                          fontFamily: "NotoSansKR",
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,),),
                       ],
+                    ),
+                    index != 0  ?
+                    Positioned(
+                      top: 10,
+                      left: 10,
+                      child: IconButton(
+                          padding: EdgeInsets.zero,
+                          icon: Icon(Icons.arrow_back_ios_new),
+                          color: Palette.main,
+                          iconSize: 20.0.sp,
+                          onPressed: () {
+                            print('index');
+                          },
+                      ),
+                    ) : Positioned(
+                      top: 10,
+                      right: 10,
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: Icon(Icons.arrow_forward_ios),
+                        color: Palette.main,
+                        iconSize: 20.0.sp,
+                        onPressed: () {
+                          print('index');
+                        },
+                      ),
                     )
                   ],
                 ),
-                SizedBox(height: 10.h,),
+                SizedBox(height: 30.h),
                 Container(
-                  width: double.infinity,
-                  height: 40.h,
+                  width: MediaQuery.of(context).size.width - 32.w,
+                  padding: EdgeInsets.only(top:15.h, bottom: 15.h, right: 20.w, left: 20.w),
                   decoration: BoxDecoration(
-                    color: Palette.main,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(30.0),
                   ),
-                  child: TextButton(
-                    onPressed: () {  },
-                    child: Text('신청 보내기', style: CommonText.BodyMediumWhite),
+                  child:Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 58.w,
+                            child: Image.network(profileImage ?? ''),
+                          ),
+                          SizedBox(width: 10.w,),
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                      width: 40.w,
+                                      height: 20.h,
+                                      decoration: BoxDecoration(
+                                        color: Palette.main,
+                                        borderRadius: BorderRadius.circular(20.0),
+                                      ),
+                                      child: Text(type ?? '', style: TextStyle(fontFamily: "NotoSansKR",
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500, color: Colors.white),textAlign: TextAlign.center,)
+                                  ),
+                                  SizedBox(width: 5.w,),
+                                  Text(name ?? '', style: CommonText.TitleS,),
+                                ],
+                              ),
+                              SizedBox(height: 5.h,),
+                              Row(
+                                children: [
+                                  SizedBox(width: 15.w),
+                                  PurposeBox(purpose: purpose,),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 10.h,),
+                      Container(
+                        width: double.infinity,
+                        height: 40.h,
+                        decoration: BoxDecoration(
+                          color: Palette.main,
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: TextButton(
+                          onPressed: () {  },
+                          child: Text('신청 보내기', style: CommonText.BodyMediumWhite),
+                        ),
+                      )
+                    ],
                   ),
                 )
+
               ],
             ),
-          )
-
         ],
       ),
+    );
+  }
+}
+
+
+class PurposeBox extends StatelessWidget {
+  List? purpose;
+
+  PurposeBox({Key? key,
+    required this.purpose
+  }) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text( '#' + purpose![0], style: TextStyle(
+          fontFamily: "NotoSansKR",
+          fontSize: 12.sp,
+          color: Palette.main,
+          fontWeight: FontWeight.w500,),),
+        SizedBox(width: 5.w,),
+        Text('#' + purpose![1], style: TextStyle(
+          fontFamily: "NotoSansKR",
+          fontSize: 12.sp,
+          color: Palette.main,
+          fontWeight: FontWeight.w500,),),
+        SizedBox(width: 5.w,),
+        Text('#' + purpose![2], style: TextStyle(
+          fontFamily: "NotoSansKR",
+          fontSize: 12.sp,
+          color: Palette.main,
+          fontWeight: FontWeight.w500,),),
+      ],
     );
   }
 }
