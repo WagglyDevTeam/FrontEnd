@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class MatchFilterController extends GetxController{
@@ -13,15 +14,22 @@ class MatchFilterController extends GetxController{
   final selectedThemeList = [].obs;
   final isSameSex = false.obs;
   final completedBtn = false.obs;
-
-
+  final selectedIndex = 0.obs;
+  final pageController = PageController().obs;
 
   @override
   void onInit() async{
     super.onInit();
   }
 
+  onPageChange(input){
+    selectedIndex.value = input;
+    pageController.value.jumpToPage(input);
+  }
 
+  resetController(int page) {
+    pageController.value = PageController(initialPage: page);
+  }
 
 
   void changeIsSameSex(value){
