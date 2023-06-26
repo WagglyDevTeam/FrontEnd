@@ -85,6 +85,9 @@ dependencies:
   #bottomNav
   page_transition: "^2.0.9"
 
+  #webview
+  url_launcher: ^6.1.11
+
   #env
   flutter_dotenv: ^5.0.2
   easy_image_viewer: ^1.2.0

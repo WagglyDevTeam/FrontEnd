@@ -59,5 +59,9 @@
     <string>Need to upload image</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Need to upload image</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>https</string>
+    </array>
 </dict>
 </plist>
