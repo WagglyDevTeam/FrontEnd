@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:waggly/hive/user.dart';
 
 import '../../utils/colors.dart';
@@ -31,6 +32,8 @@ class ChatRoomDetailScreen extends StatefulWidget {
 }
 
 class _ChatRoomDetailScreenState extends State<ChatRoomDetailScreen> {
+  bool isToggled = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,18 +148,41 @@ class _ChatRoomDetailScreenState extends State<ChatRoomDetailScreen> {
                   ),
                   itemBuilder: (BuildContext context, int index) {
                     // 마지막 이미지 처리하기
-                    if (index == 3) {
-                      return SizedBox(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          child: Image.network(
-                            imageUrlList[index],
-                            fit: BoxFit.cover,
+                    if (imageUrlList.length > 4 && index == 3) {
+                      return Stack(
+                        children: [
+                          SizedBox(
+                            height: 80.0.h,
+                            width: 80.0.w,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15.0),
+                              child: Image.network(
+                                imageUrlList[index],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                        ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey.withOpacity(0.4),
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: GestureDetector(
+                              onTap: () => print('click'),
+                              child: Center(
+                                child: Icon(
+                                  Icons.camera_alt, // 카메라 아이콘
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       );
                     } else {
                       return SizedBox(
+                        height: 50.h,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
                           child: Image.network(
@@ -172,6 +198,89 @@ class _ChatRoomDetailScreenState extends State<ChatRoomDetailScreen> {
               Divider(
                 color: Palette.lightGray,
                 thickness: 2.0,
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20.0.h, right: 20.0.h, top: 5.0.h),
+                child: SizedBox(
+                  height: 30.0.h,
+                  child: Text("채팅방 설정", style: CommonText.BodyL),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 5.0.h, left: 20.0.h, right: 20.0.h, bottom: 10.0.h),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          '알람 끄기',
+                          style: CommonText.BodyM,
+                        ),
+                        SizedBox(width: 10.w),
+                        FlutterSwitch(
+                          height: 20.0.h,
+                          width: 35.0.w,
+                          padding: 3.0.r,
+                          toggleSize: 15.0,
+                          borderRadius: 30.0,
+                          activeColor: Palette.main,
+                          value: isToggled,
+                          onToggle: (value) {
+                            setState(() {
+                              isToggled = value;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8.0.h,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '채팅 고정',
+                          style: CommonText.BodyM,
+                        ),
+                        SizedBox(width: 10.w),
+                        FlutterSwitch(
+                          height: 20.0.h,
+                          width: 35.0.w,
+                          padding: 3.0.r,
+                          toggleSize: 15.0,
+                          borderRadius: 30.0,
+                          activeColor: Palette.main,
+                          value: isToggled,
+                          onToggle: (value) {
+                            setState(() {
+                              isToggled = value;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Flexible(child: SizedBox(height: double.infinity,)),
+              Padding(
+                padding: EdgeInsets.only(top: 5.0.h, left: 20.0.h, right: 20.0.h, bottom: 20.0.h),
+                child: Container(
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  height: 30.0.h,
+                  decoration: BoxDecoration(
+                    color: Palette.main,
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  child: TextButton(
+                    onPressed: () => { print('채팅 나가기 클릭') },
+                    child: Text(
+                      "채팅 나가기",
+                      style: CommonText.BodyBoldWhite,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
