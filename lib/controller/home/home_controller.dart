@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:waggly/model/myPage/my_post_model.dart';
 import 'package:waggly/repository/home_repository.dart';
 import 'package:waggly/model/post/dtos/post_response_dto.dart';
 import '../../model/post/dtos/waggly_response_dto.dart';
@@ -23,7 +24,8 @@ enum CollegeType {
 class HomeController extends GetxController {
   final HomeRepository _homeRepository = HomeRepository();
   final college = "".obs;
-  final othersBestPost = PostResponseDto().obs;
+  //final othersBestPost = PostResponseDto().obs;
+  final othersBestPost = [].obs;
   final collegeBestPost = PostResponseDto().obs;
   final tipState = 1.obs;
 
@@ -36,13 +38,16 @@ class HomeController extends GetxController {
   Future<void> getHome() async {
     WagglyResponseDto result = await _homeRepository.getHome();
     final collegeBestData = result.datas["bestPostWithCollegeType"];
-    final othersBestData = result.datas["randomBestPostSummary"];
+    List<dynamic> othersBestData = result.datas["randomBestPostSummary"];
+    List<PostResponseDto> convertOthersBestData = othersBestData.map((e) => PostResponseDto.fromJson(e)).toList();
 
-    print('data $othersBestData' );
+    print('convert $othersBestData');
+
     final collegeName = CollegeType.getByKey(collegeBestData['first']);
     college.value = collegeName.displayName;
     collegeBestPost.value = PostResponseDto.fromJson(collegeBestData["second"]);
-    othersBestPost.value = PostResponseDto.fromJson(othersBestData);
+    othersBestPost.value = convertOthersBestData;
+
   }
 
 

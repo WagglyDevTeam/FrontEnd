@@ -14,7 +14,7 @@ class PostHomeController extends GetxController {
   final otherCollegeData = [PostCollegeData(collegeTypeName: '', collegeType: '', posts: [])].obs;
 
   ///  특정학부 페이지 인기글 상테데이터
-  final bestPostCollegeData = PostSpecificData().obs;
+  final bestPostCollegeData = [PostSpecificData()].obs;
 
   /// 특정학부 페이지 인기글 로드 상태데이터
   final bestPostOn = false.obs;
@@ -56,12 +56,12 @@ class PostHomeController extends GetxController {
     print(collegeId);
     PostCollegeDto college = PostCollegeDto(college: collegeId, page: postPage.value, size: 10);
     WagglyResponsePaginationDto result = await _postRepository.getBoardCollege(college);
-    dynamic bestJson = result.datas["bestPost"];
-    dynamic postJson = result.datas["posts"];
+    List<dynamic> bestJson = result.datas["bestPost"];
+    List<dynamic> postJson = result.datas["posts"];
     if (result.status == '200') {
       totalPage.value = result.totalPage ?? 0;
       if (result.totalPage != postPage.value) {
-        PostSpecificData bestPostData = PostSpecificData.fromJson(bestJson);
+        List<PostSpecificData> bestPostData = List<PostSpecificData>.from(bestJson.map((x) => PostSpecificData.fromJson(x)).toList());
         List<PostSpecificData> postData = List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
         bestPostCollegeData.value = bestPostData;
         postCollegeData.value = postData;
@@ -91,7 +91,8 @@ class PostHomeController extends GetxController {
     if (result.status == '200') {
       totalPage.value = result.totalPage ?? 0;
       if (result.totalPage != postPage.value) {
-        PostSpecificData bestPostData = PostSpecificData.fromJson(bestJson);
+        List<PostSpecificData> bestPostData = List<PostSpecificData>.from(bestJson.map((x) => PostSpecificData.fromJson(x)).toList());
+    //  PostSpecificData bestPostData = PostSpecificData.fromJson(bestJson);
         List<PostSpecificData> postData = List<PostSpecificData>.from(postJson.map((x) => PostSpecificData.fromJson(x)).toList());
         bestPostCollegeData.value = bestPostData;
         postCollegeData.value = postData;
@@ -149,7 +150,7 @@ class PostHomeController extends GetxController {
   /// 게시물 리스트 상태값 초기화
   Future<void> postListReset() async {
     postPage.value = 0;
-    bestPostCollegeData.value = PostSpecificData();
+    bestPostCollegeData.value = [PostSpecificData()];
     bestPostOn.value = false;
     postCollegeData.value = [PostSpecificData()];
     normalPostOn.value = false;

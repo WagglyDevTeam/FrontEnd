@@ -61,200 +61,224 @@ class _PostCollegeList extends State<PostCollegeList> {
         backgroundColor: Colors.white,
         appBar: TopAppBar(),
         body: Container(
-          decoration: BoxDecoration(color: Colors.white),
-          child: FutureBuilder(
-              future: _postDetailX.getBoardCollege(Get.parameters['collegeId']),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height - 200.h,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ImageIndicator(),
-                      ],
-                    ),
-                  );
-                } else {
-                  return Obx(() => ListView.builder(
-                        controller: _scrollController,
-                        scrollDirection: Axis.vertical,
-                        itemCount: _postDetailX.postCollegeData.length + 1,
-                        itemBuilder: (BuildContext context, int index) {
-                          int postInt = index - 1;
-                          int selectIndex = _postDetailX.selectIndex.value;
-                          if (index == 0) {
-                            /**인기 글*/
-                            return Container(
-                              padding: EdgeInsets.only(
-                                  left: 16.w,
-                                  right: 16.w,
-                                  top: 8.w,
-                                  bottom: 16.w),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '인기글',
-                                        style: CommonText.BodyL,
-                                      ),
-                                      SizedBox(width: 6.w),
-                                      Icon(
-                                        Icons.auto_awesome,
-                                        color: Palette.main,
-                                        size: 17.w,
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 6,
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.only(
-                                        top: 14,
-                                        bottom: 14,
-                                        left: 10,
-                                        right: 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(15.0),
-                                        border: Border.all(
-                                            color: Palette.light,
-                                            style: BorderStyle.solid,
-                                            width: 1)),
-                                    child: Obx(() => PostContext(
-                                          postId: _postDetailX
-                                                  .bestPostCollegeData
-                                                  .value
-                                                  .postId ??
-                                              0,
-                                          postTitle: _postDetailX
-                                                  .bestPostCollegeData
-                                                  .value
-                                                  .postTitle ??
-                                              '',
-                                          postDesc: _postDetailX
-                                                  .bestPostCollegeData
-                                                  .value
-                                                  .postDesc ??
-                                              '',
-                                          postCreatedAt: _postDetailX
-                                                  .bestPostCollegeData
-                                                  .value
-                                                  .postCreatedAt ??
-                                              '',
-                                          authorMajor: _postDetailX
-                                                  .bestPostCollegeData
-                                                  .value
-                                                  .authorMajor ??
-                                              '',
-                                          postImageCnt: _postDetailX
-                                                  .bestPostCollegeData
-                                                  .value
-                                                  .postImageCnt ??
-                                              0,
-                                          postLikeCnt: _postDetailX
-                                                  .bestPostCollegeData
-                                                  .value
-                                                  .postLikeCnt ??
-                                              0,
-                                          postCommentCnt: _postDetailX
-                                                  .bestPostCollegeData
-                                                  .value
-                                                  .postCommentCnt ??
-                                              0,
-                                          isLikedByMe: _postDetailX
-                                                  .bestPostCollegeData
-                                                  .value
-                                                  .isLikedByMe ??
-                                              false,
-                                          isBlind: _postDetailX
-                                                  .bestPostCollegeData
-                                                  .value
-                                                  .isBlind ??
-                                              false,
-                                          postName: postName,
-                                          collegeType: _pageTitle,
-                                        )),
-                                  )
-                                ],
-                              ),
-                            );
-                          } else {
-                            /**일반 글*/
-                            return GestureDetector(
-                                onTap: () {
-                                  _postDetailX.selectIndex.value = index;
-                                  Get.toNamed(
-                                      "/postDetail/param?postId=${_postDetailX.postCollegeData[postInt].postId ?? 0}&collegeName=$_pageTitle&collegeId=${Get.parameters['collegeId']}");
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                      top: 16, bottom: 16, left: 26, right: 26),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border(
-                                        top: BorderSide(
-                                            color: Palette.paper,
-                                            style: BorderStyle.solid,
-                                            width: 1),
-                                      )),
-                                  child: Obx(() => PostContext(
-                                        postId: _postDetailX
-                                                .postCollegeData[postInt]
-                                                .postId ??
-                                            0,
-                                        postTitle: _postDetailX
-                                                .postCollegeData[postInt]
-                                                .postTitle ??
-                                            '',
-                                        postDesc: _postDetailX
-                                                .postCollegeData[postInt]
-                                                .postDesc ??
-                                            '',
-                                        postCreatedAt: _postDetailX
-                                                .postCollegeData[postInt]
-                                                .postCreatedAt ??
-                                            '',
-                                        authorMajor: _postDetailX
-                                                .postCollegeData[postInt]
-                                                .authorMajor ??
-                                            '',
-                                        postImageCnt: _postDetailX
-                                                .postCollegeData[postInt]
-                                                .postImageCnt ??
-                                            0,
-                                        postLikeCnt: _postDetailX
-                                                .postCollegeData[postInt]
-                                                .postLikeCnt ??
-                                            0,
-                                        postCommentCnt: _postDetailX
-                                                .postCollegeData[postInt]
-                                                .postCommentCnt ??
-                                            0,
-                                        isLikedByMe: _postDetailX
-                                                .postCollegeData[postInt]
-                                                .isLikedByMe ??
-                                            false,
-                                        isBlind: _postDetailX
-                                                .postCollegeData[postInt]
-                                                .isBlind ??
-                                            false,
-                                        postName: postName,
-                                        collegeType: _pageTitle,
-                                      )),
-                                ));
-                          }
-                        },
-                      ));
-                }
-              }),
-        ));
+            decoration: BoxDecoration(color: Colors.white),
+            child: FutureBuilder(
+                future:
+                    _postDetailX.getBoardCollege(Get.parameters['collegeId']),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height - 200.h,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ImageIndicator(),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Obx(() => SizedBox(
+                          child: Column(children: [
+                            // Expanded(
+                            //   child: ListView.builder(
+                            //       controller: _scrollController,
+                            //       scrollDirection: Axis.vertical,
+                            //       itemCount:
+                            //           _postDetailX.bestPostCollegeData.length,
+                            //       itemBuilder: (BuildContext context, int index) {
+                            //         /**인기 글*/
+                            //         return Container(
+                            //           height: 200.h,
+                            //             padding: EdgeInsets.only(
+                            //                 left: 16.w,
+                            //                 right: 16.w,
+                            //                 top: 8.w,
+                            //                 bottom: 16.w),
+                            //             child: Column(
+                            //               mainAxisAlignment:
+                            //                   MainAxisAlignment.start,
+                            //               crossAxisAlignment:
+                            //                   CrossAxisAlignment.start,
+                            //               children: [
+                            //                 Row(
+                            //                   children: [
+                            //                     Text(
+                            //                       '인기글',
+                            //                       style: CommonText.BodyL,
+                            //                     ),
+                            //                     SizedBox(width: 6.w),
+                            //                     Icon(
+                            //                       Icons.auto_awesome,
+                            //                       color: Palette.main,
+                            //                       size: 17.w,
+                            //                     )
+                            //                   ],
+                            //                 ),
+                            //                 SizedBox(
+                            //                   height: 6,
+                            //                 ),
+                            //                 Container(
+                            //                   padding: EdgeInsets.only(
+                            //                       top: 14,
+                            //                       bottom: 14,
+                            //                       left: 10,
+                            //                       right: 10),
+                            //                   decoration: BoxDecoration(
+                            //                       color: Colors.white,
+                            //                       borderRadius:
+                            //                           BorderRadius.circular(15.0),
+                            //                       border: Border.all(
+                            //                           color: Palette.light,
+                            //                           style: BorderStyle.solid,
+                            //                           width: 1)),
+                            //                   child: Obx(() => PostContext(
+                            //                         postId: _postDetailX
+                            //                                 .bestPostCollegeData[
+                            //                                     index]
+                            //                                 .postId ??
+                            //                             0,
+                            //                         postTitle: _postDetailX
+                            //                                 .bestPostCollegeData[
+                            //                                     index]
+                            //                                 .postTitle ??
+                            //                             '',
+                            //                         postDesc: _postDetailX
+                            //                                 .bestPostCollegeData[
+                            //                                     index]
+                            //                                 .postDesc ??
+                            //                             '',
+                            //                         postCreatedAt: _postDetailX
+                            //                                 .bestPostCollegeData[
+                            //                                     index]
+                            //                                 .postCreatedAt ??
+                            //                             '',
+                            //                         authorMajor: _postDetailX
+                            //                                 .bestPostCollegeData[
+                            //                                     index]
+                            //                                 .authorMajor ??
+                            //                             '',
+                            //                         postImageCnt: _postDetailX
+                            //                                 .bestPostCollegeData[
+                            //                                     index]
+                            //                                 .postImageCnt ??
+                            //                             0,
+                            //                         postLikeCnt: _postDetailX
+                            //                                 .bestPostCollegeData[
+                            //                                     index]
+                            //                                 .postLikeCnt ??
+                            //                             0,
+                            //                         postCommentCnt: _postDetailX
+                            //                                 .bestPostCollegeData[
+                            //                                     index]
+                            //                                 .postCommentCnt ??
+                            //                             0,
+                            //                         isLikedByMe: _postDetailX
+                            //                                 .bestPostCollegeData[
+                            //                                     index]
+                            //                                 .isLikedByMe ??
+                            //                             false,
+                            //                         isBlind: _postDetailX
+                            //                                 .bestPostCollegeData[
+                            //                                     index]
+                            //                                 .isBlind ??
+                            //                             false,
+                            //                         isAnonymous: _postDetailX
+                            //                                 .bestPostCollegeData[
+                            //                                     index]
+                            //                                 .isAnonymous ??
+                            //                             false,
+                            //                         postName: postName,
+                            //                         collegeType: _pageTitle,
+                            //                       )),
+                            //                 )
+                            //               ],
+                            //             ));
+                            //       }),
+                            // ),
+                            Expanded(
+                                child: BestPostBox()),
+                            Expanded(
+                              child: ListView.builder(
+                                  controller: _scrollController,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: _postDetailX.postCollegeData.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    int postInt = index;
+                                    /**일반 글*/
+                                    return GestureDetector(
+                                      onTap: () {
+                                        _postDetailX.selectIndex.value = index;
+                                        Get.toNamed(
+                                            "/postDetail/param?postId=${_postDetailX.postCollegeData[postInt].postId ?? 0}&collegeName=$_pageTitle&collegeId=${Get.parameters['collegeId']}");
+                                      },
+                                      child: Container(
+                                          padding: EdgeInsets.only(
+                                              top: 16,
+                                              bottom: 16,
+                                              left: 26,
+                                              right: 26),
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              border: Border(
+                                                top: BorderSide(
+                                                    color: Palette.paper,
+                                                    style: BorderStyle.solid,
+                                                    width: 1),
+                                              )),
+                                          child: Obx(
+                                            () => PostContext(
+                                              postId: _postDetailX
+                                                      .postCollegeData[postInt]
+                                                      .postId ??
+                                                  0,
+                                              postTitle: _postDetailX
+                                                      .postCollegeData[postInt]
+                                                      .postTitle ??
+                                                  '',
+                                              postDesc: _postDetailX
+                                                      .postCollegeData[postInt]
+                                                      .postDesc ??
+                                                  '',
+                                              postCreatedAt: _postDetailX
+                                                      .postCollegeData[postInt]
+                                                      .postCreatedAt ??
+                                                  '',
+                                              authorMajor: _postDetailX
+                                                      .postCollegeData[postInt]
+                                                      .authorMajor ??
+                                                  '',
+                                              postImageCnt: _postDetailX
+                                                      .postCollegeData[postInt]
+                                                      .postImageCnt ??
+                                                  0,
+                                              postLikeCnt: _postDetailX
+                                                      .postCollegeData[postInt]
+                                                      .postLikeCnt ??
+                                                  0,
+                                              postCommentCnt: _postDetailX
+                                                      .postCollegeData[postInt]
+                                                      .postCommentCnt ??
+                                                  0,
+                                              isLikedByMe: _postDetailX
+                                                      .postCollegeData[postInt]
+                                                      .isLikedByMe ??
+                                                  false,
+                                              isBlind: _postDetailX
+                                                      .postCollegeData[postInt]
+                                                      .isBlind ??
+                                                  false,
+                                              postName: postName,
+                                              collegeType: _pageTitle,
+                                            ),
+                                          )),
+                                    );
+                                  }),
+                            ),
+                          ]),
+                        ));
+                  }
+                })));
   }
 }
 
@@ -384,6 +408,168 @@ line() {
     ),
   );
 }
+
+class BestPostBox extends StatelessWidget {
+  const BestPostBox({Key? key}) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    final singleImg = [
+      'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbTVFtg%2Fbtsm4BEHmQN%2FlpLHgW8Tl6NKkwMRuro7d1%2Fimg.png',
+      'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F2lATw%2Fbtsm7wpEaRS%2FSAFZ47NiFjvZDfV1QaZWvK%2Fimg.png',
+      'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FwroVf%2Fbtsm9Ch23op%2F1fWBlh4iMVrwJeGve5fON1%2Fimg.png',
+      'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbW6QXj%2Fbtsm2IRtrUB%2F4XPxKDJ5OkPOnCnqqN0Qn1%2Fimg.png',
+      'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Ft4lre%2Fbtsm9gTOTZz%2FzVQY5QUtEpaAwuddnmNV9K%2Fimg.png',
+    ];
+
+    final _postDetailX = Get.put(PostHomeController());
+    var bestPostList =  _postDetailX.bestPostCollegeData;
+
+    final _pageController =
+    PageController(viewportFraction: 0.8, keepPage: true);
+
+    List<dynamic> singBox = List.generate(bestPostList.length, (index) =>
+    Container(
+      width : MediaQuery.of(context).size.width / 2 - 24.w,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(singleImg[index]), fit: BoxFit.cover),
+          borderRadius: BorderRadius.circular(20.0.r),
+        ),
+      child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: (){},
+            child: Container(
+                padding: EdgeInsets.fromLTRB(8.0.w, 3.0.h, 8.0.w, 3.0.h),
+              child: Column(
+                children: [
+                  Text(
+                    bestPostList[index].postTitle ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: CommonText.BodyL,
+                    ),
+                  Stack(
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              bestPostList[index].authorMajor ?? "",
+                              style: CommonText.BodyXSmallGray,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.image_outlined,
+                                      size: 13.w,
+                                      color: Palette.violet,
+                                    ),
+                                    SizedBox(
+                                      width: 2.w,
+                                    ),
+                                    Text(
+                                      "${bestPostList[index].postImageCnt}",
+                                      style: CommonText.BodyEngMain.copyWith(
+                                          fontSize: 10.0.sp),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.sentiment_satisfied,
+                                      size: 13.w,
+                                      color: Palette.violet,
+                                    ),
+                                    SizedBox(
+                                      width: 2.w,
+                                    ),
+                                    Text(
+                                      "${bestPostList[index].postLikeCnt}",
+                                      style: CommonText.BodyEngMain,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.mode_comment_outlined,
+                                      size: 13.w,
+                                      color: Palette.violet,
+                                    ),
+                                    SizedBox(
+                                      width: 2.w,
+                                    ),
+                                    Text(
+                                      "${bestPostList[index].postCommentCnt}",
+                                      style: CommonText.BodyEngMain,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              )
+            ),
+        ],
+     )
+     ),
+    );
+
+    return SizedBox(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 16.h),
+            SizedBox(
+              height: 200.h,
+              child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  controller: _pageController,
+                  itemBuilder: (_,index){
+                    return singBox[index % singBox.length];
+                  },
+                  separatorBuilder: (BuildContext context, int index){
+                    return SizedBox(width: 16.0.w);
+                  },
+                  itemCount: singBox.length)
+            )
+
+          ],
+        )
+      )
+    );
+  }
+}
+
 
 class PostContext extends StatelessWidget {
   String? postDesc;

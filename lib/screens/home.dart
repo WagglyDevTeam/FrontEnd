@@ -48,7 +48,8 @@ class HomeScreen extends StatelessWidget {
         },
         child: ListView(
           children: [
-            AdvertisementArea(), // 광고영역
+            AdvertisementArea(),
+            // 광고영역
             SizedBox(height: 10.h),
             TipBoxArea(),
             SizedBox(height: 10.h),
@@ -59,7 +60,9 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 24.h),
             // GroupChatRecommendTitleArea(),
             PostTitleArea("다른 계열"),
-            Obx(() => PostBoxArea(post: _homeController.othersBestPost.value)),
+            RandomPostBoxArea(),
+            // Obx(() => PostBoxArea(post: _homeController.othersBestPost.value)),
+
           ],
         ),
       ),
@@ -262,6 +265,155 @@ class PostBoxArea extends StatelessWidget {
     );
   }
 }
+
+class RandomPostBoxArea extends StatelessWidget {
+  const RandomPostBoxArea({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    SignInController signInController = Get.put(SignInController());
+    double safeWidth = Get.width - 72.w;
+    return InkWell(
+        onTap: () {
+          signInController
+              .checkLoggedIn()
+              .value == false
+              ? ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "로그인이 필요합니다.",
+                textAlign: TextAlign.center,
+              ),
+              duration: Duration(milliseconds: 1000),
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.only(
+                  bottom: bottomAppbarHeight + 20, left: 50.w, right: 50.w),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5)),
+            ),
+          )
+              : Get.toNamed("/postDetail/param?postId=7&collegeName=인문계열");
+        },
+        child: Obx(() =>
+            Column(
+              children: [
+            ListView.builder(
+            scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: _homeController.othersBestPost.length,
+                itemBuilder: (context, index) {
+               return Container(
+                  margin: EdgeInsets.only(left: 20.w, right: 20.w),
+                  padding: EdgeInsets.fromLTRB(16.0.w, 12.0.h, 16.0.w, 12.0.h),
+                  height: 120.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    border: Border.all(
+                      width: 0.7,
+                      color: Palette.lavender,
+                    ),
+                  ),
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  child:Skeleton(
+                          isLoading: _homeController.othersBestPost[index]
+                              .postTitle != null ? false : true,
+                          skeleton: SkeletonParagraph(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    width: safeWidth * 0.7,
+                                    child: Text(
+                                      "${_homeController.othersBestPost[index]
+                                          .postTitle}",
+                                      style: CommonText.BodyL,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    width: safeWidth * 0.29,
+                                    child: Text(
+                                      _homeController.othersBestPost[index]
+                                          .postCreatedAt != null
+                                          ? _homeController
+                                          .othersBestPost[index].postCreatedAt!
+                                          : "",
+                                      style: CommonText.BodyEngGray,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              // 제목, 날짜
+                              SizedBox(height: 7.h),
+                              Container(
+                                height: 38.h,
+                                alignment: Alignment.centerLeft,
+                                child: Obx(
+                                      () =>
+                                  signInController
+                                      .checkLoggedIn()
+                                      .value == true
+                                      ? Text(
+                                    "${_homeController.othersBestPost[index]
+                                        .postDesc}",
+                                    style: CommonText.BodyM,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  )
+                                      : ClipRect(
+                                    child: Stack(
+                                      children: [
+                                        Text(
+                                          "${_homeController
+                                              .othersBestPost[index].postDesc}",
+                                          style: CommonText.BodyM,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Positioned.fill(
+                                          child: BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 2.5, sigmaY: 2.5),
+                                            child: Container(
+                                              color: Colors.white.withOpacity(
+                                                  0.5),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              // 내용
+                              SizedBox(height: 7.h),
+                              // Obx(() =>
+                              // signInController
+                              //     .checkLoggedIn()
+                              //     .value == true
+                              //     ? MajorAreaLogin(safeWidth: safeWidth, post: post)
+                              //     : MajorAreaLogout(safeWidth: safeWidth, post: post)),
+                              // 학과, 이미지, 좋아요, 코멘트 수
+                            ],
+                          ),
+                        ));
+                      }
+                  ),
+              ]
+            )
+    ));}
+}
+
 
 class MajorAreaLogin extends StatelessWidget {
   MajorAreaLogin({
@@ -569,121 +721,120 @@ class TipBoxArea extends StatelessWidget {
               borderRadius: BorderRadius.circular(20.0.r),
             ),
             child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 GestureDetector(
-                onTap: ()async {
-          final url = Uri.parse(items[index]['url']);
-          await launchUrl(url);
-          print('click tip $index');
-          },
-            child: Container(
-              padding: EdgeInsets.fromLTRB(8.0.w, 3.0.h, 8.0.w, 3.0.h),
-              decoration: BoxDecoration(
-                color: items[index]["type"] == '꿀팁'
-                    ? Color(0xffFFECBC)
-                    : Colors.white,
-                borderRadius: BorderRadius.circular(20.0.r),
-              ),
-              child: Text(
-                items[index]['type'],
-                style: TextStyle(
-                  color: items[index]["type"] == '꿀팁'
-                      ? Color(0xffff7a00)
-                      : Colors.red,
-                  fontSize: 10.0.sp,
-                  fontFamily: 'NotoSansKR',
-                ),
-              ),
-            ),
-          ), // 참여자 수 얼굴
-      SizedBox(height: 7.h),
-      SizedBox(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              items[index]['title'],
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: CommonText.BodyL,
-            ),
-            SizedBox(
-              height: 5.h,
-            ),
-            SizedBox(
-              height: 70.h,
-              child: Text(
-                items[index]['description'],
-                style: TextStyle(
-                  color: Color(0xff959595),
-                  fontSize: 12.0.sp,
-                  fontFamily: 'NotoSansKR',
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    // POINT
-                    color: Palette.data,
-                    width: 1.0,
+                  onTap: () async {
+                    final url = Uri.parse(items[index]['url']);
+                    await launchUrl(url);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(8.0.w, 3.0.h, 8.0.w, 3.0.h),
+                    decoration: BoxDecoration(
+                      color: items[index]["type"] == '꿀팁'
+                          ? Color(0xffFFECBC)
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(20.0.r),
+                    ),
+                    child: Text(
+                      items[index]['type'],
+                      style: TextStyle(
+                        color: items[index]["type"] == '꿀팁'
+                            ? Color(0xffff7a00)
+                            : Colors.red,
+                        fontSize: 10.0.sp,
+                        fontFamily: 'NotoSansKR',
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              child: Text(
-                "자세히보기",
-                style: TextStyle(
-                  color: Palette.data,
-                  fontSize: 10.0.sp,
-                  fontFamily: 'NotoSansKR',
-                ),
-              ),
+                ), // 참여자 수 얼굴
+                SizedBox(height: 7.h),
+                SizedBox(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        items[index]['title'],
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: CommonText.BodyL,
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      SizedBox(
+                        height: 70.h,
+                        child: Text(
+                          items[index]['description'],
+                          style: TextStyle(
+                            color: Color(0xff959595),
+                            fontSize: 12.0.sp,
+                            fontFamily: 'NotoSansKR',
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              // POINT
+                              color: Palette.data,
+                              width: 1.0,
+                            ),
+                          ),
+                        ),
+                        child: Text(
+                          "자세히보기",
+                          style: TextStyle(
+                            color: Palette.data,
+                            fontSize: 10.0.sp,
+                            fontFamily: 'NotoSansKR',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ), // 카테고리, 채팅방이름
+              ],
             ),
-          ],
-        ),
-      ), // 카테고리, 채팅방이름
-    ],
-    ),
-    ),
+          ),
     );
 
     return SizedBox(
-    child: SingleChildScrollView(
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: <Widget>[
-    SizedBox(height: 16),
-    SizedBox(
-    height: 200,
-    child: ListView.separated(
-    scrollDirection: Axis.horizontal,
-    separatorBuilder: (BuildContext context, int index) {
-    return SizedBox(width: 16.0.w);
-    },
-    controller: _pageController,
-    itemCount: pages.length,
-    itemBuilder: (_, index) {
-    return pages[index % pages.length];
-    },
-    ),
-    ),
-    SizedBox(height: 20.h),
-    SmoothPageIndicator(
-    controller: _pageController,
-    count: 3,
-    effect: const ScrollingDotsEffect(
-    dotHeight: 8,
-    dotWidth: 8,
-    dotColor: Palette.lightGray,
-    activeDotColor: Palette.main),
-    )
-    ,
-    ]
-    )
-    )
-    ,
+      child: SingleChildScrollView(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 16),
+                SizedBox(
+                  height: 200,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(width: 16.0.w);
+                    },
+                    controller: _pageController,
+                    itemCount: pages.length,
+                    itemBuilder: (_, index) {
+                      return pages[index % pages.length];
+                    },
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                SmoothPageIndicator(
+                  controller: _pageController,
+                  count: 3,
+                  effect: const ScrollingDotsEffect(
+                      dotHeight: 8,
+                      dotWidth: 8,
+                      dotColor: Palette.lightGray,
+                      activeDotColor: Palette.main),
+                )
+                ,
+              ]
+          )
+      )
+      ,
     );
   }
 }
