@@ -60,7 +60,8 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 24.h),
             // GroupChatRecommendTitleArea(),
             PostTitleArea("다른 계열"),
-            RandomPostBoxArea(),
+            SizedBox(height: 5.h),
+            Expanded(child: RandomPostBoxArea()),
             // Obx(() => PostBoxArea(post: _homeController.othersBestPost.value)),
 
           ],
@@ -303,7 +304,7 @@ class RandomPostBoxArea extends StatelessWidget {
                 itemCount: _homeController.othersBestPost.length,
                 itemBuilder: (context, index) {
                return Container(
-                  margin: EdgeInsets.only(left: 20.w, right: 20.w),
+                  margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
                   padding: EdgeInsets.fromLTRB(16.0.w, 12.0.h, 16.0.w, 12.0.h),
                   height: 120.h,
                   decoration: BoxDecoration(
@@ -397,12 +398,12 @@ class RandomPostBoxArea extends StatelessWidget {
                               ),
                               // 내용
                               SizedBox(height: 7.h),
-                              // Obx(() =>
-                              // signInController
-                              //     .checkLoggedIn()
-                              //     .value == true
-                              //     ? MajorAreaLogin(safeWidth: safeWidth, post: post)
-                              //     : MajorAreaLogout(safeWidth: safeWidth, post: post)),
+                              Obx(() =>
+                              signInController
+                                  .checkLoggedIn()
+                                  .value == true
+                                  ? MajorAreaLogin(safeWidth: safeWidth, post: _homeController.othersBestPost[index])
+                                  : MajorAreaLogout(safeWidth: safeWidth, post: _homeController.othersBestPost[index])),
                               // 학과, 이미지, 좋아요, 코멘트 수
                             ],
                           ),
@@ -413,7 +414,6 @@ class RandomPostBoxArea extends StatelessWidget {
             )
     ));}
 }
-
 
 class MajorAreaLogin extends StatelessWidget {
   MajorAreaLogin({
@@ -838,7 +838,6 @@ class TipBoxArea extends StatelessWidget {
     );
   }
 }
-
 //순수짠거...
 class CircleIndicator extends StatelessWidget {
   const CircleIndicator({Key? key}) : super(key: key);
