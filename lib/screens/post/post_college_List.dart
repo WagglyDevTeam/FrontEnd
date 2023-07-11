@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:waggly/components/post/post_common.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
 import 'package:waggly/widgets/header/page_appbar.dart';
@@ -80,124 +81,22 @@ class _PostCollegeList extends State<PostCollegeList> {
                   } else {
                     return Obx(() => SizedBox(
                           child: Column(children: [
-                            // Expanded(
-                            //   child: ListView.builder(
-                            //       controller: _scrollController,
-                            //       scrollDirection: Axis.vertical,
-                            //       itemCount:
-                            //           _postDetailX.bestPostCollegeData.length,
-                            //       itemBuilder: (BuildContext context, int index) {
-                            //         /**인기 글*/
-                            //         return Container(
-                            //           height: 200.h,
-                            //             padding: EdgeInsets.only(
-                            //                 left: 16.w,
-                            //                 right: 16.w,
-                            //                 top: 8.w,
-                            //                 bottom: 16.w),
-                            //             child: Column(
-                            //               mainAxisAlignment:
-                            //                   MainAxisAlignment.start,
-                            //               crossAxisAlignment:
-                            //                   CrossAxisAlignment.start,
-                            //               children: [
-                            //                 Row(
-                            //                   children: [
-                            //                     Text(
-                            //                       '인기글',
-                            //                       style: CommonText.BodyL,
-                            //                     ),
-                            //                     SizedBox(width: 6.w),
-                            //                     Icon(
-                            //                       Icons.auto_awesome,
-                            //                       color: Palette.main,
-                            //                       size: 17.w,
-                            //                     )
-                            //                   ],
-                            //                 ),
-                            //                 SizedBox(
-                            //                   height: 6,
-                            //                 ),
-                            //                 Container(
-                            //                   padding: EdgeInsets.only(
-                            //                       top: 14,
-                            //                       bottom: 14,
-                            //                       left: 10,
-                            //                       right: 10),
-                            //                   decoration: BoxDecoration(
-                            //                       color: Colors.white,
-                            //                       borderRadius:
-                            //                           BorderRadius.circular(15.0),
-                            //                       border: Border.all(
-                            //                           color: Palette.light,
-                            //                           style: BorderStyle.solid,
-                            //                           width: 1)),
-                            //                   child: Obx(() => PostContext(
-                            //                         postId: _postDetailX
-                            //                                 .bestPostCollegeData[
-                            //                                     index]
-                            //                                 .postId ??
-                            //                             0,
-                            //                         postTitle: _postDetailX
-                            //                                 .bestPostCollegeData[
-                            //                                     index]
-                            //                                 .postTitle ??
-                            //                             '',
-                            //                         postDesc: _postDetailX
-                            //                                 .bestPostCollegeData[
-                            //                                     index]
-                            //                                 .postDesc ??
-                            //                             '',
-                            //                         postCreatedAt: _postDetailX
-                            //                                 .bestPostCollegeData[
-                            //                                     index]
-                            //                                 .postCreatedAt ??
-                            //                             '',
-                            //                         authorMajor: _postDetailX
-                            //                                 .bestPostCollegeData[
-                            //                                     index]
-                            //                                 .authorMajor ??
-                            //                             '',
-                            //                         postImageCnt: _postDetailX
-                            //                                 .bestPostCollegeData[
-                            //                                     index]
-                            //                                 .postImageCnt ??
-                            //                             0,
-                            //                         postLikeCnt: _postDetailX
-                            //                                 .bestPostCollegeData[
-                            //                                     index]
-                            //                                 .postLikeCnt ??
-                            //                             0,
-                            //                         postCommentCnt: _postDetailX
-                            //                                 .bestPostCollegeData[
-                            //                                     index]
-                            //                                 .postCommentCnt ??
-                            //                             0,
-                            //                         isLikedByMe: _postDetailX
-                            //                                 .bestPostCollegeData[
-                            //                                     index]
-                            //                                 .isLikedByMe ??
-                            //                             false,
-                            //                         isBlind: _postDetailX
-                            //                                 .bestPostCollegeData[
-                            //                                     index]
-                            //                                 .isBlind ??
-                            //                             false,
-                            //                         isAnonymous: _postDetailX
-                            //                                 .bestPostCollegeData[
-                            //                                     index]
-                            //                                 .isAnonymous ??
-                            //                             false,
-                            //                         postName: postName,
-                            //                         collegeType: _pageTitle,
-                            //                       )),
-                            //                 )
-                            //               ],
-                            //             ));
-                            //       }),
-                            // ),
-                            Expanded(
-                                child: BestPostBox()),
+                            Container(
+                            alignment: Alignment.centerLeft,
+                            margin: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 0.h),
+                            child: Row(
+                              children: [
+                                Icon(Icons.auto_awesome, color: Palette.main, size: 20.h),
+                                SizedBox(width: 4.w),
+                                Text(
+                                  "인기글을 확인해보세요!",
+                                  style: CommonText.TitleS,
+                                ),
+                              ],
+                            ),
+                          ),
+                            BestPostBox(),
+                            SizedBox(height: 20.h),
                             Expanded(
                               child: ListView.builder(
                                   controller: _scrollController,
@@ -426,26 +325,39 @@ class BestPostBox extends StatelessWidget {
 
     final _postDetailX = Get.put(PostHomeController());
     var bestPostList =  _postDetailX.bestPostCollegeData;
-
+    final String postName = Get.parameters['collegeName'] ?? "";
+    var _pageTitle = _postDetailX.bestPostOn.value ? postName : postName;
     final _pageController =
     PageController(viewportFraction: 0.8, keepPage: true);
+    double safeWidth = Get.width - 72.w;
 
     List<dynamic> singBox = List.generate(bestPostList.length, (index) =>
     Container(
-      width : MediaQuery.of(context).size.width / 2 - 24.w,
+      width : MediaQuery.of(context).size.width - 34.w,
+      padding: EdgeInsets.only(left: 10.0.w, top: 5.h),
+        margin: index == 0
+            ? EdgeInsets.only(left: 16.w)
+            : index == 4
+            ? EdgeInsets.only(right: 16.w)
+            : EdgeInsets.only(left: 0, right: 0),
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage(singleImg[index]), fit: BoxFit.cover),
+          image: NetworkImage(singleImg[index]), fit: BoxFit.contain),
           borderRadius: BorderRadius.circular(20.0.r),
         ),
       child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
-            onTap: (){},
+              onTap: () {
+                // _postDetailX.selectIndex.value = index;
+                Get.toNamed(
+                    "/postDetail/param?postId=${bestPostList[index].postId ?? 0}&collegeName=$_pageTitle&collegeId=${Get.parameters['collegeId']}");
+              },
             child: Container(
-                padding: EdgeInsets.fromLTRB(8.0.w, 3.0.h, 8.0.w, 3.0.h),
+                padding: EdgeInsets.fromLTRB(10.0.w, 5.0.h, 10.0.w, 5.0.h),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     bestPostList[index].postTitle ?? '',
@@ -453,6 +365,7 @@ class BestPostBox extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: CommonText.BodyL,
                     ),
+                  SizedBox(height: 40.h),
                   Stack(
                     children: [
                       Row(
@@ -461,68 +374,74 @@ class BestPostBox extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               bestPostList[index].authorMajor ?? "",
-                              style: CommonText.BodyXSmallGray,
+                              style: TextStyle(
+                                fontSize: 10.0.sp,
+                                color: Colors.black,
+                                fontFamily: 'NotoSansKR_Rg',),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           Container(
                             alignment: Alignment.centerRight,
+                            width: safeWidth * 0.88,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
+                                if(bestPostList[index].postImageCnt != 0)
                                 Row(
                                   children: [
                                     Icon(
                                       Icons.image_outlined,
                                       size: 13.w,
-                                      color: Palette.violet,
+                                      color: Colors.white,
                                     ),
                                     SizedBox(
                                       width: 2.w,
                                     ),
                                     Text(
                                       "${bestPostList[index].postImageCnt}",
-                                      style: CommonText.BodyEngMain.copyWith(
-                                          fontSize: 10.0.sp),
+                                      style: TextStyle(fontSize: 10.0.sp, color: Colors.white, fontFamily: 'Roboto_Rg', height: 1),
                                     ),
                                   ],
                                 ),
                                 SizedBox(
                                   width: 5.w,
                                 ),
+                                if(bestPostList[index].postLikeCnt != 0)
                                 Row(
                                   children: [
                                     Icon(
                                       Icons.sentiment_satisfied,
                                       size: 13.w,
-                                      color: Palette.violet,
+                                      color: Colors.white,
                                     ),
                                     SizedBox(
                                       width: 2.w,
                                     ),
                                     Text(
                                       "${bestPostList[index].postLikeCnt}",
-                                      style: CommonText.BodyEngMain,
+                                      style: TextStyle(fontSize: 10.0.sp, color: Colors.white, fontFamily: 'Roboto_Rg', height: 1),
                                     ),
                                   ],
                                 ),
                                 SizedBox(
                                   width: 5.w,
                                 ),
+                                if(bestPostList[index].postCommentCnt != 0)
                                 Row(
                                   children: [
                                     Icon(
                                       Icons.mode_comment_outlined,
                                       size: 13.w,
-                                      color: Palette.violet,
+                                      color: Colors.white,
                                     ),
                                     SizedBox(
                                       width: 2.w,
                                     ),
                                     Text(
                                       "${bestPostList[index].postCommentCnt}",
-                                      style: CommonText.BodyEngMain,
+                                      style: TextStyle(fontSize: 10.0.sp, color: Colors.white, fontFamily: 'Roboto_Rg', height: 1),
                                     ),
                                   ],
                                 ),
@@ -550,7 +469,7 @@ class BestPostBox extends StatelessWidget {
           children: [
             SizedBox(height: 16.h),
             SizedBox(
-              height: 200.h,
+              height: 100.h,
               child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   controller: _pageController,
@@ -561,6 +480,16 @@ class BestPostBox extends StatelessWidget {
                     return SizedBox(width: 16.0.w);
                   },
                   itemCount: singBox.length)
+            ),
+            SizedBox(height: 20.h),
+            SmoothPageIndicator(
+              controller: _pageController,
+              count: 5,
+              effect: const ScrollingDotsEffect(
+                  dotHeight: 8,
+                  dotWidth: 8,
+                  dotColor: Palette.lightGray,
+                  activeDotColor: Palette.main),
             )
 
           ],
@@ -607,41 +536,39 @@ class PostContext extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: 210.w,
-                child: Text(postTitle ?? "", style: CommonText.BodyL),
-              ),
-              Text(postCreatedAt ?? "", style: CommonText.BodyEngGray),
-            ],
-          ),
-          SizedBox(height: 10.h),
-          SizedBox(
-            width: MediaQuery.of(context).size.width - 32.w,
-            child: Text(postDesc ?? "", style: CommonText.BodyS),
-          ),
-          SizedBox(height: 6.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(authorMajor ?? "", style: CommonText.BodyEngGray),
-              // postCommentCnt == 0 && postLikeCnt == 0 && postImageCnt == 0 ?
-              // SizedBox(width: 10.w) :
-              CommentSideBox(
-                imgCnt: postImageCnt,
-                likeCnt: postLikeCnt ?? 0,
-                commentCnt: postCommentCnt ?? 0,
-                active: isLikedByMe ?? false,
-              )
-            ],
-          )
-        ],
-      ),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: 210.w,
+              child: Text(postTitle ?? "", style: CommonText.BodyL),
+            ),
+            Text(postCreatedAt ?? "", style: CommonText.BodyEngGray),
+          ],
+        ),
+        SizedBox(height: 10.h),
+        SizedBox(
+          width: MediaQuery.of(context).size.width - 32.w,
+          child: Text(postDesc ?? "", style: CommonText.BodyS),
+        ),
+        SizedBox(height: 6.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(authorMajor ?? "", style: CommonText.BodyEngGray),
+            // postCommentCnt == 0 && postLikeCnt == 0 && postImageCnt == 0 ?
+            // SizedBox(width: 10.w) :
+            CommentSideBox(
+              imgCnt: postImageCnt,
+              likeCnt: postLikeCnt ?? 0,
+              commentCnt: postCommentCnt ?? 0,
+              active: isLikedByMe ?? false,
+            )
+          ],
+        )
+      ],
     );
   }
 }
