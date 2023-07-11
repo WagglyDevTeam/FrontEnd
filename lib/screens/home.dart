@@ -59,8 +59,11 @@ class HomeScreen extends StatelessWidget {
             Obx(() => PostBoxArea(post: _homeController.collegeBestPost.value)),
             SizedBox(height: 24.h),
             // GroupChatRecommendTitleArea(),
+            if(_homeController.othersBestPost.isNotEmpty)
             PostTitleArea("다른 계열"),
+            if(_homeController.othersBestPost.isNotEmpty)
             SizedBox(height: 5.h),
+            if(_homeController.othersBestPost.isNotEmpty)
             Expanded(child: RandomPostBoxArea()),
             // Obx(() => PostBoxArea(post: _homeController.othersBestPost.value)),
 
