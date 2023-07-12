@@ -59,6 +59,7 @@ class PostSpecificData {
   int? postCommentCnt;
   bool? isLikedByMe;
   bool? isBlind;
+  bool? isAnonymous;
   String? authorMajor;
   String? postTitle;
   String? postCreatedAt;
@@ -71,6 +72,7 @@ class PostSpecificData {
     this.postCommentCnt,
     this.isLikedByMe,
     this.isBlind,
+    this.isAnonymous,
     this.authorMajor,
     this.postTitle,
     this.postCreatedAt,
@@ -87,6 +89,7 @@ class PostSpecificData {
         postCommentCnt: json["postCommentCnt"],
         isLikedByMe: json["isLikedByMe"],
         isBlind: json["isBlind"],
+        isAnonymous: json["isAnonymous"],
         authorMajor: json["authorMajor"],
         postTitle: json["postTitle"],
         postCreatedAt: formatter.format(DateTime.parse(json["postCreatedAt"])),
@@ -102,6 +105,7 @@ class PostSpecificData {
         postCommentCnt: postDetailData.postCommentCnt,
         isLikedByMe: postDetailData.isLikedByMe,
         isBlind: postDetailData.isBlind,
+        isAnonymous: postDetailData.isAnonymous,
         authorMajor: postDetailData.authorMajor,
         postTitle: postDetailData.postTitle,
         postCreatedAt: postDetailData.postCreatedAt!,
