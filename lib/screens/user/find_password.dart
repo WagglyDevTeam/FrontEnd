@@ -291,16 +291,17 @@ class _InputState extends State<Input> {
                 mode: 'withButtonAndLabel',
                 label: '학교 이메일',
                 placeholder: 'abc@email.com',
-                buttonText: '인증하기',
+                buttonText: _signUpController.clickedButton.value ? '재전송' : '인증하기' ,
                 controller: _emailInput,
                 onclick: () async {
                   final String validResult = validateEmail(_emailInput.text);
+                  _signUpController.clickedButton.value = true;
                   if (validResult.isNotEmpty) {
                     _signUpController.emailValidateSuccess.value = false;
                     CustomSnackBar.messageSnackbar(
                       context,
                       validResult,
-                      EdgeInsets.only(bottom: 20, left: 20.w, right: 20.w),
+                      EdgeInsets.only(bottom: 20.h, left: 20.w, right: 20.w),
                     );
                   } else {
                     final WagglyResponseDto result = await _signUpController.checkDuplicateEmail(_emailInput.text);
@@ -441,33 +442,8 @@ class _ButtonsState extends State<Buttons> {
           if (widget.steps == 1)
             SizedBox(
               width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 155.w,
-                    height: 36.h,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(26), color: Color.fromRGBO(218, 175, 254, 0.2)),
-                    child: TextButton(
-                      child: Text(
-                        '이전',
-                        style: TextStyle(
-                          color: Color(0xffA558E0),
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      onPressed: () {
-                        widget.setSteps(0);
-                      },
-                    ),
-                  ),
-                  Obx(
+              child: Obx(
                     () => Container(
-                      width: 155.w,
-                      height: 36.h,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(26),
@@ -477,7 +453,7 @@ class _ButtonsState extends State<Buttons> {
                               : Color(0xffE8E8E8)),
                       child: TextButton(
                         child: Text(
-                          '변경하기',
+                          '다음',
                           style: TextStyle(
                             color: _signUpController.passwordInputEmpty.value == false &&
                                     _signUpController.passwordConfirmInputEmpty.value == false &&
@@ -548,12 +524,9 @@ class _ButtonsState extends State<Buttons> {
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-        ],
-      ),
-    );
+    ),
+              ]),
+            );
   }
 }
 

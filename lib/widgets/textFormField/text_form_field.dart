@@ -110,9 +110,9 @@ class RenderTextFormField extends StatelessWidget {
                     ),
                     Obx(
                       () => Container(
-                        width: 60.w,
+                        width: 70.w,
                         margin: EdgeInsets.fromLTRB(8.w, 0.h, 0.w, 0.h),
-                        padding: EdgeInsets.fromLTRB(0.w, 2.h, 0.w, 2.h),
+                        padding: EdgeInsets.fromLTRB(0.w, 0.h, 0.w, 0.h),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20.r),
                           border: Border.all(
@@ -124,6 +124,7 @@ class RenderTextFormField extends StatelessWidget {
                           () => TextButton(
                             child: Text(
                               buttonText,
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w500,
