@@ -29,6 +29,7 @@ class SignUpController extends GetxController {
   RxBool passwordInputEmpty = true.obs;
   RxBool passwordConfirmInputEmpty = true.obs;
   RxBool nicknameInputEmpty = true.obs;
+  RxBool clickedButton = false.obs;
 
   RxBool emailValidateSuccess = true.obs;
   RxBool certiNumValidateSuccess = true.obs;
