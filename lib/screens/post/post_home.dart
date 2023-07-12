@@ -6,6 +6,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:waggly/components/Post/post_common.dart';
 import 'package:waggly/controller/myPage/notification_controller.dart';
+import 'package:waggly/controller/post/post_search_controller.dart';
 import 'package:waggly/screens/home.dart';
 import 'package:waggly/screens/post/post_search.dart';
 import 'package:waggly/utils/text_frame.dart';
@@ -113,8 +114,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ActionButton(
-                      //  event: () => Get.toNamed("/searchPost"),
-                      event: () =>  Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: PostSearchScreen()),),
+                      event: () => Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: PostSearchScreen()),),
                         isIcon: Icon(
                           Icons.search,
                           color: Palette.gray,

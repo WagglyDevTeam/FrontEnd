@@ -122,18 +122,11 @@ class PostSearchScreen extends StatelessWidget {
               child: SearchHistoryBox(
               itemList:postSearchController.historyList,
           )):
-              SizedBox(
-                height: MediaQuery.of(context).size.height - 180.h,
-                child: postSearchController.searchedPost.length == 0 ? SearchBlank() :SearchPostList(),),),
-         //  Obx (() =>
-         // SizedBox(
-         //     height: MediaQuery.of(context).size.height - 180.h,
-         //     child: postSearchController.searchedPost.length == 0 ? SearchBlank() :SearchPostList(),),
-         //  // SizedBox(
-         //  //   height: MediaQuery.of(context).size.height - 180.h,
-         //  //   child: SearchPostList(),
-         //  // ),
-         //  ),
+              Expanded(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height - 180.h,
+                  child: postSearchController.searchedPost.length == 0 ? SearchBlank() :SearchPostList(),),
+              ),),
         ],
       ),
     );
@@ -164,7 +157,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.pop(context);
+                 Navigator.pop(context);
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -177,6 +170,7 @@ class TopAppBar extends StatelessWidget with PreferredSizeWidget {
                     iconSize: 20.0.sp,
                     onPressed: () {
                       Navigator.pop(context);
+                      Get.put(PostSearchController()).getInPage.value = true;
                     },
                   ),
                 ),
@@ -357,7 +351,7 @@ class SearchPostList extends StatelessWidget {
             ),
           onTap: (){
             postDetail.selectIndex.value = index;
-            // Get.toNamed("/postDetail/param?postId=$postId&collegeName=$collegeType")
+         //   Get.toNamed("/postDetail/param?postId=${postDetail.searchedPost[index].postId}&collegeName=$collegeType");
           },
         );
       },

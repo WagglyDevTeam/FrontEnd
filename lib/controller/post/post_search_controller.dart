@@ -63,8 +63,10 @@ class PostSearchController extends GetxController {
 
    if(result.status == '200'){
      print('result value = ${searchResult.value}');
+     searchResult.value = true;
      if(postJson != []){
        List<PostSearchData> postData = List<PostSearchData>.from(postJson.map((x) => PostSearchData.fromJson(x)).toList());
+       print('postData $postData');
        searchedPost.value = postData;
        // update();
        // searchedPost.refresh();
@@ -72,5 +74,9 @@ class PostSearchController extends GetxController {
    }
 
 
+ }
+
+ Future<void> resetPostSearch() async{
+   searchedPost.value = [];
  }
 }
